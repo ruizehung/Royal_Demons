@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.StackPane?>
+
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.layout.AnchorPane?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0"
+            prefWidth="960.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="uwu.openjfx.InitialGameScreenController">
+    <ImageView>
+        <Image url="@/uwu/openjfx/map1v2.png"/>
+    </ImageView>
+    <ImageView layoutX="800" layoutY="20">
+        <Image url="@/uwu/openjfx/coin.png"/>
+    </ImageView>
+    <Label fx:id="coins" text="1000" layoutX="835" layoutY="17"/>
+</AnchorPane>
