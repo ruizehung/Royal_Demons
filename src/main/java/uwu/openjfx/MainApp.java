@@ -31,6 +31,7 @@ public class MainApp extends Application {
 
         @Override
         public void start(Stage stage) throws Exception {
+                Font.loadFont(getClass().getResourceAsStream("fonts/AkayaTelivigala-Regular.ttf"), 20);
                 //region BACKGROUND
                 StackPane head = new StackPane();
 
