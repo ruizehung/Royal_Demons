@@ -33,7 +33,7 @@ public class MainApp extends Application {
         //region BACKGROUND
         StackPane head = new StackPane();
 
-        InputStream is = Files.newInputStream(Paths.get("images/WelcomeScreen.png"));
+        InputStream is = Files.newInputStream(Paths.get("src/main/resources/images/WelcomeScreen.png"));
         Image img = new Image(is);
         is.close();
 
