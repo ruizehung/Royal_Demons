@@ -10,15 +10,12 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -35,7 +32,8 @@ public class MainApp extends Application {
         //region BACKGROUND
         StackPane head = new StackPane();
 
-        InputStream is = Files.newInputStream(Paths.get("src/main/resources/images/WelcomeScreen.png"));
+        InputStream is = Files.newInputStream(
+                Paths.get("src/main/resources/images/WelcomeScreen.png"));
         Image img = new Image(is);
         is.close();
 
@@ -52,8 +50,8 @@ public class MainApp extends Application {
         Button startBtn = new Button("START");
         startBtn.setPrefHeight(50);
         startBtn.setPrefWidth(150);
-        startBtn.setStyle("-fx-font-weight: bold; -fx-background-color: #634801; " +
-                "-fx-background-radius: 22; -fx-font-size: 30; -fx-text-fill: ffb900");
+        startBtn.setStyle("-fx-font-weight: bold; -fx-background-color: #634801; "
+                + "-fx-background-radius: 22; -fx-font-size: 30; -fx-text-fill: ffb900");
         startBtn.setOnAction(event -> {
             // transition to initial configuration screen
             Parent root = null;
@@ -63,7 +61,8 @@ public class MainApp extends Application {
                 e.printStackTrace();
             }
             Scene initialConfigScene = new Scene(root);
-            initialConfigScene.getStylesheets().add(getClass().getResource("CSS/styles.css").toExternalForm());
+            initialConfigScene.getStylesheets().add(getClass().getResource("CSS/styles.css")
+                    .toExternalForm());
             stage.setScene(initialConfigScene);
         });
 
@@ -77,8 +76,6 @@ public class MainApp extends Application {
         //endregion
 
         head.getChildren().addAll(imgView, borderPane);
-
-//        Parent root = FXMLLoader.load(getClass().getResource("scene.fxml"));
 
         Scene scene = new Scene(head, 960, 640);
 

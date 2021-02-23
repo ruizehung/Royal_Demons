@@ -14,16 +14,17 @@ public class InitialGameScreenController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        switch (UserSetting.difficulty) {
-            case "Easy":
-                coins.setText("1000");
-                break;
-            case "Medium":
-                coins.setText("800");
-                break;
-            case "Hard":
-                coins.setText("600");
-                break;
+        switch (UserSetting.getDifficulty()) {
+        case "Easy":
+            coins.setText("1000");
+            break;
+        case "Medium":
+            coins.setText("800");
+            break;
+        case "Hard":
+            coins.setText("600");
+            break;
+        default:
         }
     }
 

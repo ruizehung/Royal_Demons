@@ -54,27 +54,14 @@ public class InitialConfigScreenController implements Initializable {
             e.printStackTrace();
         }
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("CSS/initialGameScreenStyles.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("CSS/initialGameScreenStyles.css")
+                .toExternalForm());
         stage.setScene(scene);
     }
 
-    //    @FXML
-//    public void handleGoBack(ActionEvent event) {
-//        Stage stage = (Stage) letsGoButton.getScene().getWindow();
-//        Parent root = null;
-//        try {
-//            root = FXMLLoader.load(getClass().getResource("initialGameScreen.fxml"));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        Scene scene = new Scene(root);
-//        scene.getStylesheets().add(getClass().getResource("CSS/initialGameScreenStyles.css").toExternalForm());
-//        stage.setScene(scene);
-//
-//    }
     @FXML
     public void handleDifficultyChange() {
-        UserSetting.difficulty = (String) difficultyComboBox.getValue();
+        UserSetting.setDifficulty((String) difficultyComboBox.getValue());
         System.out.println((String) difficultyComboBox.getValue());
     }
 
