@@ -61,8 +61,6 @@ public class MainApp extends Application {
                 e.printStackTrace();
             }
             Scene initialConfigScene = new Scene(root);
-            initialConfigScene.getStylesheets().add(getClass().getResource("CSS/styles.css")
-                    .toExternalForm());
             stage.setScene(initialConfigScene);
         });
 
