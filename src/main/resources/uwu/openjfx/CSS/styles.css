@@ -1,3 +1,11 @@
+@font-face {
+    src: url('fonts/AkayaTelivigala-Regular.ttf');
+}
+
 .label {
-    -fx-text-fill: blue;
+    -fx-font-family: "Akaya Telivigala";
+}
+
+#configScreenCenter .label {
+    -fx-font-size: 30;
 }
