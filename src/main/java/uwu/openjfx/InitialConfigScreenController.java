@@ -58,7 +58,7 @@ public class InitialConfigScreenController implements Initializable {
         stage.setScene(scene);
     }
 
-//    @FXML
+    //    @FXML
 //    public void handleGoBack(ActionEvent event) {
 //        Stage stage = (Stage) letsGoButton.getScene().getWindow();
 //        Parent root = null;
