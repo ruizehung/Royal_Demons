@@ -1,16 +1,22 @@
 package uwu.openjfx;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class InitialConfigScreenController  implements Initializable {
+public class InitialConfigScreenController implements Initializable {
 
     @FXML
     private Label title;
@@ -38,5 +44,19 @@ public class InitialConfigScreenController  implements Initializable {
         letsGoButton.setDisable(playerName.isEmpty() || playerName.trim().isEmpty());
     }
 
+    @FXML
+    public void handleLetsGo(ActionEvent event) {
+        System.out.println("let's go is hit !!!");
+        Stage stage = (Stage) letsGoButton.getScene().getWindow();
+        // transition to initial game screen ???
+//        Parent root = null;
+//        try {
+//            root = FXMLLoader.load(getClass().getResource("initialConfigScreen.fxml"));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        stage.setScene(new Scene(root));
+
+    }
 
 }

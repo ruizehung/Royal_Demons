@@ -21,6 +21,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -52,6 +53,16 @@ public class MainApp extends Application {
                 startBtn.setPrefWidth(150);
                 startBtn.setStyle("-fx-font-weight: bold; -fx-background-color: #634801; " +
                         "-fx-background-radius: 22; -fx-font-size: 30; -fx-text-fill: ffb900");
+                startBtn.setOnAction(event -> {
+                        // transition to initial configuration screen
+                        Parent root = null;
+                        try {
+                                root = FXMLLoader.load(getClass().getResource("initialConfigScreen.fxml"));
+                        } catch (IOException e) {
+                                e.printStackTrace();
+                        }
+                        stage.setScene(new Scene(root));
+                });
 
                 borderPane.setMargin(title, new Insets(80, 0, 0, 0));
                 borderPane.setMargin(startBtn, new Insets(0, 0, 92, 0));
