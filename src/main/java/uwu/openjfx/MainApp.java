@@ -79,7 +79,7 @@ public class MainApp extends Application {
 
 //        Parent root = FXMLLoader.load(getClass().getResource("scene.fxml"));
 
-                Scene scene = new Scene(head);
+                Scene scene = new Scene(head, 960, 640);
 
                 stage.setTitle("JavaFX and Gradle");
                 stage.setScene(scene);

@@ -40,7 +40,7 @@
                 <Label text="Your Name:"  GridPane.rowIndex="0" GridPane.columnIndex="0"/>
                 <TextField fx:id="playerNameField" GridPane.rowIndex="0" GridPane.columnIndex="1" onKeyReleased="#handleKeyReleased"/>
                 <Label text="Game Difficulty:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                <ComboBox fx:id="difficultyComboBox" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="1">
+                <ComboBox fx:id="difficultyComboBox" onAction="#handleDifficultyChange" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="1">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
                             <String fx:value="Easy"/>

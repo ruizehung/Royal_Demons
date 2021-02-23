@@ -35,7 +35,6 @@ public class InitialConfigScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         letsGoButton.setDisable(true);
-        System.out.println(javafx.scene.text.Font.getFamilies());
     }
 
     @FXML
@@ -46,17 +45,37 @@ public class InitialConfigScreenController implements Initializable {
 
     @FXML
     public void handleLetsGo(ActionEvent event) {
-        System.out.println("let's go is hit !!!");
         Stage stage = (Stage) letsGoButton.getScene().getWindow();
         // transition to initial game screen ???
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(getClass().getResource("initialGameScreen.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("CSS/initialGameScreenStyles.css").toExternalForm());
+        stage.setScene(scene);
+    }
+
+//    @FXML
+//    public void handleGoBack(ActionEvent event) {
+//        Stage stage = (Stage) letsGoButton.getScene().getWindow();
 //        Parent root = null;
 //        try {
-//            root = FXMLLoader.load(getClass().getResource("initialConfigScreen.fxml"));
+//            root = FXMLLoader.load(getClass().getResource("initialGameScreen.fxml"));
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-//        stage.setScene(new Scene(root));
-
+//        Scene scene = new Scene(root);
+//        scene.getStylesheets().add(getClass().getResource("CSS/initialGameScreenStyles.css").toExternalForm());
+//        stage.setScene(scene);
+//
+//    }
+    @FXML
+    public void handleDifficultyChange() {
+        UserSetting.difficulty = (String) difficultyComboBox.getValue();
+        System.out.println((String) difficultyComboBox.getValue());
     }
 
 }
