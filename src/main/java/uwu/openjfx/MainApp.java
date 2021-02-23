@@ -61,7 +61,9 @@ public class MainApp extends Application {
                         } catch (IOException e) {
                                 e.printStackTrace();
                         }
-                        stage.setScene(new Scene(root));
+                        Scene initialConfigScene = new Scene(root);
+                        initialConfigScene.getStylesheets().add(getClass().getResource("CSS/styles.css").toExternalForm());
+                        stage.setScene(initialConfigScene);
                 });
 
                 borderPane.setMargin(title, new Insets(80, 0, 0, 0));
@@ -78,7 +80,6 @@ public class MainApp extends Application {
 //        Parent root = FXMLLoader.load(getClass().getResource("scene.fxml"));
 
                 Scene scene = new Scene(head);
-//        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 
                 stage.setTitle("JavaFX and Gradle");
                 stage.setScene(scene);
