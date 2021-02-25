@@ -27,27 +27,34 @@ public class TestMainApp {
         game.start(stage);
     }
 
-    /**
-     * @param robot - Will be injected by the test runner.
-     */
+    //ray 1
     @Test
-    void should_contain_start_button_with_text(FxRobot robot) {
+    void testWelcomeScreenContainsStartButton(FxRobot robot) {
         FxAssert.verifyThat(".button", LabeledMatchers.hasText("START"));
     }
 
-    /**
-     * @param robot - Will be injected by the test runner.
-     */
-//    @Test
-//    void when_button_is_clicked_scene_changes(FxRobot robot) {
-//        // when:
-//        robot.clickOn(".button");
-//
-//        // then:
-//        FxAssert.verifyThat(button, LabeledMatchers.hasText("clicked!"));
-//        // or (lookup by css id):
-//        FxAssert.verifyThat("#myButton", LabeledMatchers.hasText("clicked!"));
-//        // or (lookup by css class):
-//        FxAssert.verifyThat(".button", LabeledMatchers.hasText("clicked!"));
-//    }
+    //devan 1
+    @Test
+    void testChangeSceneToInitialConfig(FxRobot robot) {
+        robot.clickOn(".button");
+
+        FxAssert.verifyThat(".label", LabeledMatchers.hasText("Initial Configuration"));
+    }
+
+    //devan 2
+    @Test
+    void testHardDifficultySetsGold(FxRobot robot) {
+        //go to initial config
+        robot.clickOn(".button");
+        //change name
+        robot.clickOn("#playerNameField");
+        robot.write("Devan");
+        //change to hard
+        robot.clickOn("#difficultyComboBox");
+        robot.clickOn("Hard");
+        //go to initial game screen
+        robot.clickOn("Let's Go!");
+        //check if money label updated
+        FxAssert.verifyThat("#coins", LabeledMatchers.hasText("600"));
+    }
 }

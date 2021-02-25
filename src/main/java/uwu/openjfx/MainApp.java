@@ -48,7 +48,6 @@ public class MainApp extends Application {
         title.setStyle("-fx-fill: ffb900; -fx-stroke: black; -fx-stroke-width: 2px");
 
         Button startBtn = new Button("START");
-//        startBtn.setId("start_btn");
         startBtn.setPrefHeight(50);
         startBtn.setPrefWidth(150);
         startBtn.setStyle("-fx-font-weight: bold; -fx-background-color: #634801; "
@@ -58,18 +57,18 @@ public class MainApp extends Application {
             Parent root = null;
             try {
                 root = FXMLLoader.load(getClass().getResource("initialConfigScreen.fxml"));
+                Scene initialConfigScene = new Scene(root);
+                stage.setScene(initialConfigScene);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Scene initialConfigScene = new Scene(root);
-            stage.setScene(initialConfigScene);
         });
 
-        borderPane.setMargin(title, new Insets(80, 0, 0, 0));
-        borderPane.setMargin(startBtn, new Insets(0, 0, 92, 0));
+        BorderPane.setMargin(title, new Insets(80, 0, 0, 0));
+        BorderPane.setMargin(startBtn, new Insets(0, 0, 92, 0));
 
-        borderPane.setAlignment(title, Pos.CENTER);
-        borderPane.setAlignment(startBtn, Pos.CENTER);
+        BorderPane.setAlignment(title, Pos.CENTER);
+        BorderPane.setAlignment(startBtn, Pos.CENTER);
         borderPane.setTop(title);
         borderPane.setBottom(startBtn);
         //endregion
@@ -78,7 +77,7 @@ public class MainApp extends Application {
 
         Scene scene = new Scene(head, 960, 640);
 
-        stage.setTitle("JavaFX and Gradle");
+        stage.setTitle("Royal Demons");
         stage.setScene(scene);
         stage.show();
     }
