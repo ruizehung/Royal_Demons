@@ -48,6 +48,7 @@ public class MainApp extends Application {
         title.setStyle("-fx-fill: ffb900; -fx-stroke: black; -fx-stroke-width: 2px");
 
         Button startBtn = new Button("START");
+//        startBtn.setId("start_btn");
         startBtn.setPrefHeight(50);
         startBtn.setPrefWidth(150);
         startBtn.setStyle("-fx-font-weight: bold; -fx-background-color: #634801; "
