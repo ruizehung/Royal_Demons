@@ -104,4 +104,32 @@ public class TestMainApp {
         FxAssert.verifyThat("#difficultyComboBox",
                 ComboBoxMatchers.hasSelectedItem("Easy"));
     }
+
+    //alice 1
+    @Test
+    void testEasyDifficultySetsGold(FxRobot robot) {
+        //go to initial config screen
+        robot.clickOn(".button");
+        //change name
+        robot.clickOn("#playerNameField");
+        robot.write("Alice");
+        //change difficulty to easy
+        robot.clickOn("#difficultyComboBox");
+        robot.clickOn("Easy");
+        //go to initial game screen
+        robot.clickOn("Let's Go!");
+        //check if money label updated
+        FxAssert.verifyThat("#coins", LabeledMatchers.hasText("1000"));
+    }
+
+    //alice 2
+    @Test
+    void testGameSelectContainsAllDifficultyLevels(FxRobot robot) {
+        //go to initial config screen
+        robot.clickOn(".button");
+        //check if the game difficulty combo box contains all appropriate levels,
+        //easy, medium, and hard
+        FxAssert.verifyThat("#difficultyComboBox",
+                ComboBoxMatchers.containsItems("Easy", "Medium", "Hard"));
+    }
 }
