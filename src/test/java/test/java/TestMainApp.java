@@ -59,4 +59,23 @@ public class TestMainApp {
         //check if money label updated
         FxAssert.verifyThat("#coins", LabeledMatchers.hasText("600"));
     }
+
+    //jason 1
+    @Test
+    void testGameContainsCorrectWeaponChoices(FxRobot robot) {
+        // Go to initial config screen
+        robot.clickOn(".button");
+        // Check if the starting weapon combo box contains all the correct weapons
+        FxAssert.verifyThat("#startingWeaponComboBox",
+                ComboBoxMatchers.containsItems("Sword", "Wand", "Bow"));
+    }
+    //jason 2
+    @Test
+    void testGameDefaultDifficultyIsEasy(FxRobot robot) {
+        // Go to initial config screen
+        robot.clickOn(".button");
+        // Check if difficulty is set to easy by default
+        FxAssert.verifyThat("#difficultyComboBox",
+                ComboBoxMatchers.hasSelectedItem("Easy"));
+    }
 }
