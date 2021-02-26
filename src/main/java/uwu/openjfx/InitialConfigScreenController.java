@@ -58,6 +58,7 @@ public class InitialConfigScreenController implements Initializable {
     @FXML
     public void handleDifficultyChange() {
         UserSetting.setDifficulty((String) difficultyComboBox.getValue());
+        System.out.println((String) difficultyComboBox.getValue());
     }
 
 }
