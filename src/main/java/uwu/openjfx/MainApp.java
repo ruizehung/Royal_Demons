@@ -57,18 +57,18 @@ public class MainApp extends Application {
             Parent root = null;
             try {
                 root = FXMLLoader.load(getClass().getResource("initialConfigScreen.fxml"));
+                Scene initialConfigScene = new Scene(root);
+                stage.setScene(initialConfigScene);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Scene initialConfigScene = new Scene(root);
-            stage.setScene(initialConfigScene);
         });
 
-        borderPane.setMargin(title, new Insets(80, 0, 0, 0));
-        borderPane.setMargin(startBtn, new Insets(0, 0, 92, 0));
+        BorderPane.setMargin(title, new Insets(80, 0, 0, 0));
+        BorderPane.setMargin(startBtn, new Insets(0, 0, 92, 0));
 
-        borderPane.setAlignment(title, Pos.CENTER);
-        borderPane.setAlignment(startBtn, Pos.CENTER);
+        BorderPane.setAlignment(title, Pos.CENTER);
+        BorderPane.setAlignment(startBtn, Pos.CENTER);
         borderPane.setTop(title);
         borderPane.setBottom(startBtn);
         //endregion
@@ -77,7 +77,7 @@ public class MainApp extends Application {
 
         Scene scene = new Scene(head, 960, 640);
 
-        stage.setTitle("JavaFX and Gradle");
+        stage.setTitle("Royal Demons");
         stage.setScene(scene);
         stage.show();
     }
