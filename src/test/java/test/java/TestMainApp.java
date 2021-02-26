@@ -13,8 +13,6 @@ import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.matcher.control.ListViewMatchers;
 import uwu.openjfx.MainApp;
 
-import java.awt.*;
-
 @ExtendWith(ApplicationExtension.class)
 public class TestMainApp {
 
@@ -86,5 +84,24 @@ public class TestMainApp {
         robot.clickOn(".button");
         //check that the weapons combo box has three options
         FxAssert.verifyThat("#startingWeaponComboBox", ComboBoxMatchers.hasItems(3));
+    }
+
+    //jason 1
+    @Test
+    void testGameContainsCorrectWeaponChoices(FxRobot robot) {
+        // Go to initial config screen
+        robot.clickOn(".button");
+        // Check if the starting weapon combo box contains all the correct weapons
+        FxAssert.verifyThat("#startingWeaponComboBox",
+                ComboBoxMatchers.containsItems("Sword", "Wand", "Bow"));
+    }
+    //jason 2
+    @Test
+    void testGameDefaultDifficultyIsEasy(FxRobot robot) {
+        // Go to initial config screen
+        robot.clickOn(".button");
+        // Check if difficulty is set to easy by default
+        FxAssert.verifyThat("#difficultyComboBox",
+                ComboBoxMatchers.hasSelectedItem("Easy"));
     }
 }
