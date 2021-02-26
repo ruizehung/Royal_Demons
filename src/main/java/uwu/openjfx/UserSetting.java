@@ -1,6 +1,13 @@
 package uwu.openjfx;
 
 public class UserSetting {
-    static public String difficulty = "Easy";
+    private static String difficulty = "Easy";
 
+    public static String getDifficulty() {
+        return difficulty;
+    }
+
+    public static void setDifficulty(String difficulty) {
+        UserSetting.difficulty = difficulty;
+    }
 }

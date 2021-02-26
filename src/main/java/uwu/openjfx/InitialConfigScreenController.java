@@ -1,6 +1,5 @@
 package uwu.openjfx;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -8,7 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -18,8 +16,6 @@ import java.util.ResourceBundle;
 
 public class InitialConfigScreenController implements Initializable {
 
-    @FXML
-    private Label title;
     @FXML
     private TextField playerNameField;
     @FXML
@@ -40,13 +36,13 @@ public class InitialConfigScreenController implements Initializable {
     @FXML
     public void handleKeyReleased() {
         String playerName = playerNameField.getText();
-        letsGoButton.setDisable(playerName.isEmpty() || playerName.trim().isEmpty());
+        letsGoButton.setDisable(playerName == null || playerName.isEmpty()
+                || playerName.trim().isEmpty());
     }
 
     @FXML
-    public void handleLetsGo(ActionEvent event) {
+    public void handleLetsGo() {
         Stage stage = (Stage) letsGoButton.getScene().getWindow();
-        // transition to initial game screen ???
         Parent root = null;
         try {
             root = FXMLLoader.load(getClass().getResource("initialGameScreen.fxml"));
@@ -54,27 +50,14 @@ public class InitialConfigScreenController implements Initializable {
             e.printStackTrace();
         }
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("CSS/initialGameScreenStyles.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("CSS/initialGameScreenStyles.css")
+                .toExternalForm());
         stage.setScene(scene);
     }
 
-//    @FXML
-//    public void handleGoBack(ActionEvent event) {
-//        Stage stage = (Stage) letsGoButton.getScene().getWindow();
-//        Parent root = null;
-//        try {
-//            root = FXMLLoader.load(getClass().getResource("initialGameScreen.fxml"));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        Scene scene = new Scene(root);
-//        scene.getStylesheets().add(getClass().getResource("CSS/initialGameScreenStyles.css").toExternalForm());
-//        stage.setScene(scene);
-//
-//    }
     @FXML
     public void handleDifficultyChange() {
-        UserSetting.difficulty = (String) difficultyComboBox.getValue();
+        UserSetting.setDifficulty((String) difficultyComboBox.getValue());
     }
 
 }
