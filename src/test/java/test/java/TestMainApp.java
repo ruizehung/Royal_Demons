@@ -1,8 +1,5 @@
 package test.java;
 
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,11 +13,6 @@ import uwu.openjfx.MainApp;
 @ExtendWith(ApplicationExtension.class)
 public class TestMainApp {
 
-    /**
-     * Will be called with {@code @Before} semantics, i. e. before each test method.
-     *
-     * @param stage - Will be injected by the test runner.
-     */
     @Start
     private void start(Stage stage) throws Exception {
         MainApp game = new MainApp();
