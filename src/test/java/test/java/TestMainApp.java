@@ -1,5 +1,6 @@
 package test.java;
 
+import javafx.scene.Node;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,6 +10,8 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.matcher.control.LabeledMatchers;
 import uwu.openjfx.MainApp;
+
+import java.awt.*;
 
 @ExtendWith(ApplicationExtension.class)
 public class TestMainApp {
@@ -23,6 +26,13 @@ public class TestMainApp {
     @Test
     void testWelcomeScreenContainsStartButton(FxRobot robot) {
         FxAssert.verifyThat(".button", LabeledMatchers.hasText("START"));
+    }
+
+    //ray 2
+    @Test
+    void testInitConfigScreenLetsGoDisabledWithEmptyName(FxRobot robot) {
+        robot.clickOn(".button");
+        FxAssert.verifyThat("#letsGoButton", Node::isDisabled);
     }
 
     //devan 1
