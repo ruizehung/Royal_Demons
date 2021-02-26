@@ -80,6 +80,8 @@ public class MainApp extends Application {
         stage.setTitle("Royal Demons");
         stage.setScene(scene);
         stage.show();
+
+        UserSetting.reset();
     }
 
     public static void main(String[] args) {
