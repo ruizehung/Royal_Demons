@@ -8,10 +8,9 @@ import org.testfx.api.FxAssert;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
+import org.testfx.matcher.control.ComboBoxMatchers;
 import org.testfx.matcher.control.LabeledMatchers;
 import uwu.openjfx.MainApp;
-
-import java.awt.*;
 
 @ExtendWith(ApplicationExtension.class)
 public class TestMainApp {
