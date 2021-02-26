@@ -121,16 +121,5 @@ public class TestMainApp {
         //check if money label updated
         FxAssert.verifyThat("#coins", LabeledMatchers.hasText("1000"));
     }
-
-    //alice 2
-    @Test
-    void testGameSelectContainsAllDifficultyLevels(FxRobot robot) {
-        //go to initial config screen
-        robot.clickOn(".button");
-        //check if the game difficulty combo box contains all appropriate levels,
-        //easy, medium, and hard
-        FxAssert.verifyThat("#difficultyComboBox",
-                ComboBoxMatchers.containsItems("Easy", "Medium", "Hard"));
-    }
-
+    
 }
