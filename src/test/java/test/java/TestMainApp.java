@@ -18,8 +18,8 @@ public class TestMainApp {
     /**
      * Starts the test.
      *
-     * @param stage- passes in the initial stage of the game
-     * @throws Exception- throws an exception if there is an issue
+     * @param stage passes in the initial stage of the game
+     * @throws Exception throws an exception if there is an issue
      *                    when running the tests
      */
     @Start
@@ -31,7 +31,7 @@ public class TestMainApp {
     /**
      * A test that ensures the welcome screen contains a start button.
      *
-     * @param robot- simulates a user's actions when using the game interface
+     * @param robot simulates a user's actions when using the game interface
      */
     //ray 1
     @Test
@@ -43,7 +43,7 @@ public class TestMainApp {
      * A test that ensures that the "Let's Go" button is disabled if
      * the "Name" field is empty.
      *
-     * @param robot- simulates a user's actions when using the game interface
+     * @param robot simulates a user's actions when using the game interface
      */
     //ray 2
     @Test
@@ -56,7 +56,7 @@ public class TestMainApp {
      * A test that ensures the game changes to the "Initial Configuration" screen
      * once the start button has been pressed.
      *
-     * @param robot- simulates a user's actions when using the game interface
+     * @param robot simulates a user's actions when using the game interface
      */
     //devan 1
     @Test
@@ -70,7 +70,7 @@ public class TestMainApp {
      * A test that checks if the "hard" difficulty level appropriately changes the
      * amount of money to 600 coins.
      *
-     * @param robot- simulates a user's actions when using the game interface
+     * @param robot simulates a user's actions when using the game interface
      */
     //devan 2
     @Test
@@ -93,7 +93,7 @@ public class TestMainApp {
      * A test that checks if the "medium" difficulty level appropriately changes the
      * amount of money to 800 coins.
      *
-     * @param robot- simulates a user's actions when using the game interface
+     * @param robot simulates a user's actions when using the game interface
      */
     //james 1
     @Test
@@ -115,7 +115,7 @@ public class TestMainApp {
     /**
      * A test that checks if weapon combo box has the correct number of items.
      *
-     * @param robot- simulates a user's actions when using the game interface
+     * @param robot simulates a user's actions when using the game interface
      */
     //james 2
     @Test
@@ -130,7 +130,7 @@ public class TestMainApp {
      * A test that checks if weapon combo box has the correct weapons/options,
      * a sword, wand, or bow option.
      *
-     * @param robot- simulates a user's actions when using the game interface
+     * @param robot simulates a user's actions when using the game interface
      */
     //jason 1
     @Test
@@ -147,7 +147,7 @@ public class TestMainApp {
      * It ensures that the difficulty combo box should be on "easy" (even if the player
      * does not interact with the combo box).
      *
-     * @param robot- simulates a user's actions when using the game interface
+     * @param robot simulates a user's actions when using the game interface
      */
     //jason 2
     @Test
@@ -163,7 +163,7 @@ public class TestMainApp {
      * A test that checks if the "easy" difficulty level appropriately changes the
      * amount of money to 1000 coins.
      *
-     * @param robot- simulates a user's actions when using the game interface
+     * @param robot simulates a user's actions when using the game interface
      */
     //alice 1
     @Test
@@ -186,7 +186,7 @@ public class TestMainApp {
      * A test that ensures the difficulty combo box contains all appropriate levels,
      * easy, medium, and hard.
      *
-     * @param robot- simulates a user's actions when using the game interface
+     * @param robot simulates a user's actions when using the game interface
      */
     //alice 2
     @Test
