@@ -6,12 +6,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0"
             prefWidth="960.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="uwu.openjfx.InitialGameScreenController">
+            fx:controller="uwu.openjfx.Controller.InitialGameScreenController">
     <ImageView>
-        <Image url="@/uwu/openjfx/map1v2.png"/>
+        <Image url="@/uwu/openjfx/images/initMap.png"/>
     </ImageView>
     <ImageView layoutX="800" layoutY="20">
-        <Image url="@/uwu/openjfx/coin.png"/>
+        <Image url="@/uwu/openjfx/images/coin.png"/>
     </ImageView>
-    <Label fx:id="coins" text="1000" layoutX="835" layoutY="17"/>
+    <Label fx:id="coins" text="1000" layoutX="835" layoutY="10"/>
 </AnchorPane>

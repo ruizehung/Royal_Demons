@@ -17,10 +17,10 @@
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
            prefHeight="640.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/8.0.171"
-           xmlns:fx="http://javafx.com/fxml/1" stylesheets="@/uwu/openjfx/CSS/styles.css"
-           fx:controller="uwu.openjfx.InitialConfigScreenController">
+           xmlns:fx="http://javafx.com/fxml/1" stylesheets="@/uwu/openjfx/css/styles.css"
+           fx:controller="uwu.openjfx.Controller.InitialConfigScreenController">
     <ImageView opacity="0.45">
-        <Image url="@/uwu/openjfx/dungeon_bg.png"/>
+        <Image url="@/uwu/openjfx/images/dungeon_bg.png"/>
     </ImageView>
     <BorderPane>
         <top>
@@ -28,7 +28,7 @@
                 <padding>
                     <Insets top="50"/>
                 </padding>
-                <Label text="Initial Configuration" style="-fx-font-size: 80" />
+                <Label text="Initial Configuration" style="-fx-font-size: 90" />
             </GridPane>
 
         </top>

@@ -1,4 +1,4 @@
-package uwu.openjfx;
+package uwu.openjfx.Controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import uwu.openjfx.UserSetting;
 
 import java.io.IOException;
 import java.net.URL;
@@ -45,20 +46,21 @@ public class InitialConfigScreenController implements Initializable {
         Stage stage = (Stage) letsGoButton.getScene().getWindow();
         Parent root = null;
         try {
-            root = FXMLLoader.load(getClass().getResource("initialGameScreen.fxml"));
+            String fxmlLocation = "/uwu/openjfx/fxml/initialGameScreen.fxml";
+            root = FXMLLoader.load(getClass().getResource(fxmlLocation));
+            Scene scene = new Scene(root);
+            String cssLocation = "/uwu/openjfx/css/styles.css";
+            scene.getStylesheets().add(getClass().getResource(cssLocation)
+                    .toExternalForm());
+            stage.setScene(scene);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("CSS/initialGameScreenStyles.css")
-                .toExternalForm());
-        stage.setScene(scene);
     }
 
     @FXML
     public void handleDifficultyChange() {
         UserSetting.setDifficulty((String) difficultyComboBox.getValue());
-        System.out.println((String) difficultyComboBox.getValue());
     }
 
 }

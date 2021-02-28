@@ -10,7 +10,6 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.matcher.control.ComboBoxMatchers;
 import org.testfx.matcher.control.LabeledMatchers;
-import org.testfx.matcher.control.ListViewMatchers;
 import uwu.openjfx.MainApp;
 
 @ExtendWith(ApplicationExtension.class)

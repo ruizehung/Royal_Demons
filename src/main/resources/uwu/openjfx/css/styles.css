@@ -1,0 +1,30 @@
+.label {
+    -fx-font-family: "Akaya Telivigala";
+}
+
+#configScreenCenter .label {
+    -fx-font-size: 30;
+}
+
+#coins.label {
+    -fx-font-size: 40;
+    -fx-text-fill: #ffffff;
+}
+
+#welcomeTitle {
+    -fx-font-family: "Akaya Telivigala";
+    -fx-font-size: 90;
+    -fx-fill: ffb900;
+    -fx-stroke: black;
+    -fx-stroke-width: 2px;
+    -fx-text-fill: #FFD700;
+}
+
+#startBtn {
+    -fx-font-family: "Akaya Telivigala";
+    -fx-font-size: 35;
+    -fx-font-weight: bold;
+    -fx-background-color: #634801;
+    -fx-background-radius: 22;
+    -fx-text-fill: ffb900
+}
