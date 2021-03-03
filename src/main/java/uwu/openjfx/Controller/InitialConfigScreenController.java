@@ -9,7 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import uwu.openjfx.UserSetting;
+import uwu.openjfx.Model.UserSetting;
 
 import java.io.IOException;
 import java.net.URL;
