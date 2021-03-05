@@ -4,13 +4,14 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import uwu.openjfx.Controller.WelcomeScreenController;
-import uwu.openjfx.Model.GameMap;
-import uwu.openjfx.Model.Room;
-import uwu.openjfx.Model.UserSetting;
+import uwu.openjfx.Model.*;
 
 
 public class MainApp extends Application {
-    private GameMap gameMap;
+
+    private GameState gameState = new GameState();
+    // load resources
+    private Resources resources = new Resources();
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -20,7 +21,9 @@ public class MainApp extends Application {
         stage.setScene(welcomeScene);
         stage.show();
         UserSetting.reset();
-        gameMap = new GameMap(20);
+
+        GameMap gameMap = gameState.getGameMap();
+
         System.out.println(gameMap.getRooms().values().size());
         for (Room room : gameMap.getRooms().values()) {
             System.out.print(room.getCoordinate() + ",");

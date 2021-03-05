@@ -15,6 +15,8 @@ public class Room {
     private Room westRoom;
     private Room eastRoom;
 
+
+
     public Room(Coordinate coordinate) {
         this.coordinate = coordinate;
     }
@@ -80,4 +82,5 @@ public class Room {
     public void setNumAdjRooms(int numAdjRooms) {
         this.numAdjRooms = numAdjRooms;
     }
+
 }

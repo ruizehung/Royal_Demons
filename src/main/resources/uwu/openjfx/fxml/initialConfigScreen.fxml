@@ -75,6 +75,7 @@
                 <padding>
                     <Insets bottom="10" right="10"/>
                 </padding>
+                <Button fx:id="mapButton" text="View Map" onAction="#handleViewMap" prefWidth="90" />
                 <Button fx:id="letsGoButton" text="Let's Go!" onAction="#handleLetsGo" prefWidth="90" />
                 <Button fx:id="goBackButton" text="Go Back" prefWidth="90"/>
             </HBox>

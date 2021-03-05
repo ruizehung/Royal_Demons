@@ -13,6 +13,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import uwu.openjfx.MainApp;
 
 import java.io.IOException;
 import java.io.InputStream;

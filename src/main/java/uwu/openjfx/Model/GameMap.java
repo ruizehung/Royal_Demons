@@ -1,6 +1,8 @@
 package uwu.openjfx.Model;
 
 
+import javafx.util.Pair;
+
 import java.util.*;
 
 public class GameMap {
@@ -13,6 +15,8 @@ public class GameMap {
     private Room initialRoom;
     private Room bossRoom;
 
+    private List<Pair<Pair<Integer, Integer>, String>> directions = new ArrayList<>();
+
     public GameMap() {
         this(20);
     }
@@ -22,6 +26,11 @@ public class GameMap {
         finalBossDist = random.nextInt(3) + 6;
         System.out.println("finalBossDist: " + finalBossDist);
         generateRooms();
+
+        directions.add(new Pair(new Pair(0, 1), "North"));
+        directions.add(new Pair(new Pair(1, 0), "East"));
+        directions.add(new Pair(new Pair(0, -1), "South"));
+        directions.add(new Pair(new Pair(-1, 0), "West"));
     }
 
     private void generateRooms() {
@@ -31,6 +40,7 @@ public class GameMap {
 
         Queue<Coordinate> roomsToCreate = new LinkedList<>();
 
+        // Since initial room must have 4 doors -> connect to 4 rooms
         roomsToCreate.add(new Coordinate(0, 1));
         roomsToCreate.add(new Coordinate(1, 0));
         roomsToCreate.add(new Coordinate(0, -1));
@@ -55,10 +65,11 @@ public class GameMap {
         }
 
         // connect the rooms
+        for (Room room : rooms.values()) {
+            connectRoomWithAdjacentRooms(room);
+        }
 
         // determine shop rooms
-
-
 
     }
 
@@ -84,6 +95,38 @@ public class GameMap {
                 Coordinate newCoordinate = availableAdjacentCoordinates.get(randomIndex);
                 roomsToCreate.add(newCoordinate);
                 availableAdjacentCoordinates.remove(randomIndex);
+            }
+        }
+    }
+
+    public void connectRoomWithAdjacentRooms(Room room) {
+        Coordinate coordinate = room.getCoordinate();
+        Coordinate adjacentCoordinate = new Coordinate(0, 0);
+        Room adjacentRoom;
+        for (Pair<Pair<Integer, Integer>, String> dir : directions) {
+            adjacentCoordinate.setX(coordinate.getX() + dir.getKey().getKey());
+            adjacentCoordinate.setX(coordinate.getX() + dir.getKey().getValue());
+            adjacentRoom = rooms.get(adjacentCoordinate);
+            if (adjacentRoom != null) {
+                switch (dir.getValue()) {
+                    case "North":
+                        room.setNorthRoom(adjacentRoom);
+                        adjacentRoom.setSouthRoom(room);
+                        break;
+                    case "East":
+                        room.setEastRoom(adjacentRoom);
+                        adjacentRoom.setWestRoom(room);
+                        break;
+                    case "South":
+                        room.setSouthRoom(adjacentRoom);
+                        adjacentRoom.setNorthRoom(room);
+                        break;
+                    case "West":
+                        room.setWestRoom(adjacentRoom);
+                        adjacentRoom.setEastRoom(room);
+                        break;
+                    default:
+                }
             }
         }
     }
