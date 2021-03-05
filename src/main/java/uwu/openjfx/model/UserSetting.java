@@ -1,4 +1,4 @@
-package uwu.openjfx;
+package uwu.openjfx.model;
 
 public class UserSetting {
     private static String difficulty = "Easy";

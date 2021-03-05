@@ -3,7 +3,58 @@
 }
 
 #configScreenCenter .label {
-    -fx-font-size: 30;
+    -fx-font-family: "Akaya Telivigala";
+    -fx-font-size: 40;
+    -fx-font-weight: bold;
+    -fx-stroke: black;
+    -fx-stroke-width: 2px;
+    -fx-text-fill: ffb900;
+}
+
+#configScreenCenter .label .text {
+    -fx-stroke: black;
+}
+
+.text-field {
+    -fx-font-family: "Akaya Telivigala";
+    -fx-font-size: 35;
+    -fx-font-weight: bold;
+    -fx-background-color: #634801;
+    -fx-background-radius: 22;
+    -fx-text-fill: ffb900;
+    -fx-alignment: center;
+}
+
+.combo-box-base {
+    -fx-font-family: "Akaya Telivigala";
+    -fx-font-size: 35;
+    -fx-font-weight: bold;
+    -fx-background-color: #634801;
+    -fx-background-radius: 22;
+    -fx-text-fill: ffb900;
+}
+
+.combo-box-base .list-cell {
+    -fx-alignment: center;
+    -fx-background-color: transparent;
+    -fx-text-fill: ffb900;
+}
+
+.combo-box-popup .list-view{
+    -fx-background-color: transparent;
+}
+
+.combo-box-popup .list-cell {
+    -fx-background-color: #634801;
+    -fx-background-radius: 22;
+    -fx-text-fill: ffb900;
+    -fx-background-insets: 1 -3 1 1, 1 -2 1 1 ;
+    -fx-alignment: center;
+}
+
+.combo-box-popup .list-cell:hover {
+    -fx-text-fill: #634801 ;
+    -fx-background-color: ffb900 ;
 }
 
 #coins.label {
@@ -11,16 +62,16 @@
     -fx-text-fill: #ffffff;
 }
 
-#welcomeTitle {
+#title {
     -fx-font-family: "Akaya Telivigala";
     -fx-font-size: 90;
-    -fx-fill: ffb900;
+    -fx-fill: #ffb900;
     -fx-stroke: black;
     -fx-stroke-width: 2px;
     -fx-text-fill: #FFD700;
 }
 
-#startBtn {
+.button {
     -fx-font-family: "Akaya Telivigala";
     -fx-font-size: 35;
     -fx-font-weight: bold;

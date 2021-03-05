@@ -9,6 +9,7 @@ repositories {
 
 dependencies {
     implementation 'org.junit.jupiter:junit-jupiter:5.4.2'
+    implementation 'io.github.typhon0:AnimateFX:1.2.1'
     testCompile "org.testfx:testfx-core:4.0.16-alpha"
     testCompile 'org.junit.jupiter:junit-jupiter-api:5.4.2'
     testCompile "org.testfx:testfx-junit5:4.0.16-alpha"

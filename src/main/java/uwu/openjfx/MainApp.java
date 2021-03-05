@@ -3,7 +3,8 @@ package uwu.openjfx;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import uwu.openjfx.Controller.WelcomeScreenController;
+import uwu.openjfx.controller.WelcomeScreenController;
+import uwu.openjfx.model.UserSetting;
 
 
 public class MainApp extends Application {
