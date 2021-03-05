@@ -1,5 +1,7 @@
 package uwu.openjfx;
 
+import animatefx.animation.BounceIn;
+import animatefx.animation.SlideInRight;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -8,21 +10,35 @@ import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import uwu.openjfx.controller.SceneSwapController;
 import uwu.openjfx.controller.WelcomeScreenController;
 import uwu.openjfx.model.UserSetting;
+
+import java.io.IOException;
 
 
 public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        WelcomeScreenController welcomeScreen = new WelcomeScreenController(stage);
-        Scene welcomeScene = welcomeScreen.getWelcomeScene();
+        SceneSwapController.setMainStage(stage);
+        SceneSwapController.init();
+
         //stage.setTitle("Royal Demons");
-        stage.setScene(welcomeScene);
-        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-        stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
-        stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+
+        stage.initStyle(StageStyle.TRANSPARENT);
+        Parent root = null;
+        try {
+            String fxmlLocation = "/uwu/openjfx/view/welcomeScreenView.fxml";
+            root = FXMLLoader.load(getClass().getResource(fxmlLocation));
+            Scene welcomeScene = new Scene(root);
+            SceneSwapController.addScene("welcome", welcomeScene);
+            stage.setScene(SceneSwapController.getScene("welcome"));
+            new BounceIn(root).play();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         stage.setResizable(false);
         stage.show();
 

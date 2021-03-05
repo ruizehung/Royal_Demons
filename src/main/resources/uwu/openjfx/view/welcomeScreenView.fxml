@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+           prefHeight="640.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/8.0.171"
+           xmlns:fx="http://javafx.com/fxml/1" stylesheets="@/uwu/openjfx/css/styles.css"
+           fx:controller="uwu.openjfx.controller.WelcomeScreenController">
+    <ImageView>
+        <Image url="@/uwu/openjfx/images/dungeon_bg.png"/>
+    </ImageView>
+    <BorderPane>
+        <top>
+            <GridPane alignment="center" hgap="10" vgap="10" BorderPane.alignment="center">
+                <padding>
+                    <Insets top="50"/>
+                </padding>
+                <Text fx:id="title" text="Royal Demons"/>
+            </GridPane>
+        </top>
+        <bottom>
+            <HBox spacing="10" alignment="BOTTOM_CENTER">
+                <padding>
+                    <Insets bottom="50" right="10" left="10"/>
+                </padding>
+                <Button fx:id="startBtn" text="START" onAction="#handleStart" prefWidth="200" />
+                <Button fx:id="exitBtn" text="EXIT" onAction="#handleExit" prefWidth="200" />
+            </HBox>
+        </bottom>
+    </BorderPane>
+</StackPane>

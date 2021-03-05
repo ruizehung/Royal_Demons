@@ -55,6 +55,7 @@ public class TestMainApp {
     @Test
     void testInitConfigScreenLetsGoDisabledWithEmptyName(FxRobot robot) {
         robot.clickOn(".button");
+        WaitForAsyncUtils.sleep(1000, TimeUnit.MILLISECONDS);
         FxAssert.verifyThat("#letsGoButton", Node::isDisabled);
     }
 
@@ -84,7 +85,7 @@ public class TestMainApp {
         //go to initial config
         robot.clickOn(".button");
         //change name
-        WaitForAsyncUtils.waitFor(1000, TimeUnit.MILLISECONDS, robot.lookup("#playerNameField").tryQuery().isPresent());
+        WaitForAsyncUtils.sleep(1000, TimeUnit.MILLISECONDS);
         robot.clickOn("#playerNameField");
         robot.write("Devan");
         //change to hard
@@ -108,6 +109,7 @@ public class TestMainApp {
         //go to initial config
         robot.clickOn(".button");
         //change name
+        WaitForAsyncUtils.sleep(1000, TimeUnit.MILLISECONDS);
         robot.clickOn("#playerNameField");
         robot.write("James");
         //change to hard
@@ -178,6 +180,7 @@ public class TestMainApp {
         //go to initial config screen
         robot.clickOn(".button");
         //change name
+        WaitForAsyncUtils.sleep(1000, TimeUnit.MILLISECONDS);
         robot.clickOn("#playerNameField");
         robot.write("Alice");
         //change difficulty to easy

@@ -30,7 +30,7 @@
                 <padding>
                     <Insets top="50"/>
                 </padding>
-                <Text fx:id="title" text="Initial Configuration" style="-fx-font-size: 90" />
+                <Text fx:id="title" text="Initial Configuration"/>
             </GridPane>
 
         </top>

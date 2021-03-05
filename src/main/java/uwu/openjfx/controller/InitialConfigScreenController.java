@@ -7,10 +7,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.ComboBoxListCell;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import uwu.openjfx.MainApp;
 import uwu.openjfx.model.UserSetting;
 
 import java.io.IOException;
@@ -69,17 +69,13 @@ public class InitialConfigScreenController implements Initializable {
 
     @FXML
     public void handleLetsGo() {
-        Stage stage = (Stage) letsGoButton.getScene().getWindow();
         Parent root = null;
         try {
             String fxmlLocation = "/uwu/openjfx/view/initialGameScreenView.fxml";
             root = FXMLLoader.load(getClass().getResource(fxmlLocation));
             Scene scene = new Scene(root);
-            String cssLocation = "/uwu/openjfx/css/styles.css";
-            scene.getStylesheets().add(getClass().getResource(cssLocation)
-                    .toExternalForm());
             SceneSwapController.addScene("initGame", scene);
-            stage.setScene(scene);
+            SceneSwapController.getMainStage().setScene(SceneSwapController.getScene("initGame"));
             new FadeIn(root).play();
         } catch (IOException e) {
             e.printStackTrace();
@@ -88,9 +84,8 @@ public class InitialConfigScreenController implements Initializable {
 
     @FXML
     public void handleGoBack() {
-        Stage stage = (Stage) letsGoButton.getScene().getWindow();
         Scene welcomeScene = SceneSwapController.getScene("welcome");
-        stage.setScene(welcomeScene);
+        SceneSwapController.getMainStage().setScene(welcomeScene);
         new SlideInLeft(welcomeScene.getRoot()).play();
     }
 
