@@ -1,18 +1,13 @@
 package uwu.openjfx.controller;
 
-import animatefx.animation.Bounce;
-import animatefx.animation.FadeIn;
-import animatefx.animation.SlideInLeft;
-import animatefx.animation.Tada;
+import animatefx.animation.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.ComboBoxListCell;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -56,6 +51,10 @@ public class InitialConfigScreenController implements Initializable {
         new Bounce(startingWeaponComboBox).setDelay(Duration.valueOf("1000ms")).play();
         new Bounce(letsGoButton).setDelay(Duration.valueOf("1000ms")).play();
         new Bounce(goBackButton).setDelay(Duration.valueOf("1000ms")).play();
+
+        playerNameField.setOnMouseEntered(e -> new Shake(playerNameField).play());
+        difficultyComboBox.setOnMouseEntered(e -> new Shake(difficultyComboBox).play());
+        startingWeaponComboBox.setOnMouseEntered(e -> new Shake(startingWeaponComboBox).play());
 
         letsGoButton.setOnMouseEntered(e -> new Tada(letsGoButton).play());
         goBackButton.setOnMouseEntered(e -> new Tada(goBackButton).play());

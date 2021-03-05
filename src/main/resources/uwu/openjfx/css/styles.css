@@ -1,3 +1,7 @@
+.root {
+    -fx-background-color: rgba(0,0,0,0.5);
+}
+
 .label {
     -fx-font-family: "Akaya Telivigala";
 }
@@ -23,6 +27,7 @@
     -fx-background-radius: 22;
     -fx-text-fill: ffb900;
     -fx-alignment: center;
+    visibility: true;
 }
 
 .combo-box-base {

@@ -1,20 +1,26 @@
 package test.java;
 
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.stage.Stage;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxAssert;
 import org.testfx.api.FxRobot;
+import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.matcher.control.ComboBoxMatchers;
 import org.testfx.matcher.control.LabeledMatchers;
+import org.testfx.matcher.control.TextMatchers;
+import org.testfx.util.WaitForAsyncUtils;
 import uwu.openjfx.MainApp;
+
+import java.util.concurrent.TimeUnit;
 
 @ExtendWith(ApplicationExtension.class)
 public class TestMainApp {
-
     /**
      * Starts the test.
      *
@@ -63,7 +69,7 @@ public class TestMainApp {
     void testChangeSceneToInitialConfig(FxRobot robot) {
         robot.clickOn(".button");
 
-        FxAssert.verifyThat(".label", LabeledMatchers.hasText("Initial Configuration"));
+        FxAssert.verifyThat("#title", TextMatchers.hasText("Initial Configuration"));
     }
 
     /**
@@ -78,6 +84,7 @@ public class TestMainApp {
         //go to initial config
         robot.clickOn(".button");
         //change name
+        WaitForAsyncUtils.waitFor(1000, TimeUnit.MILLISECONDS, robot.lookup("#playerNameField").tryQuery().isPresent());
         robot.clickOn("#playerNameField");
         robot.write("Devan");
         //change to hard
