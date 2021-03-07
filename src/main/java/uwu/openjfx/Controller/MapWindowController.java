@@ -37,16 +37,21 @@ public class MapWindowController implements Initializable {
         Coordinate coordinate;
         // Identifying starting room
         coordinate = GameState.getInstance().getGameMap().getInitialRoom().getCoordinate();
-        ((Text)vBoxes[coordinate.getX() + 50][50 - coordinate.getY()].getChildren().get(0)).setText("S");
-        ((Text)vBoxes[coordinate.getX() + 50][50 - coordinate.getY()].getChildren().get(0)).setStyle("-fx-fill: red;");
+        ((Text) vBoxes[coordinate.getX() + 50][50 - coordinate.getY()].getChildren().get(0))
+                .setText("S");
+        ((Text) vBoxes[coordinate.getX() + 50][50 - coordinate.getY()].getChildren().get(0))
+                .setStyle("-fx-fill: red;");
 
         // Identifying boss room
         coordinate = GameState.getInstance().getGameMap().getBossRoom().getCoordinate();
-        ((Text)vBoxes[coordinate.getX() + 50][50 - coordinate.getY()].getChildren().get(0)).setText("B");
-        ((Text)vBoxes[coordinate.getX() + 50][50 - coordinate.getY()].getChildren().get(0)).setStyle("-fx-fill: red;");
+        ((Text) vBoxes[coordinate.getX() + 50][50 - coordinate.getY()].getChildren().get(0))
+                .setText("B");
+        ((Text) vBoxes[coordinate.getX() + 50][50 - coordinate.getY()].getChildren().get(0))
+                .setStyle("-fx-fill: red;");
 
         // Highlight current room
         coordinate = GameState.getInstance().getCurrentRoom().getCoordinate();
-        vBoxes[coordinate.getX() + 50][50 - coordinate.getY()].setStyle("-fx-background-color: yellow;");
+        vBoxes[coordinate.getX() + 50][50 - coordinate.getY()]
+                .setStyle("-fx-background-color: yellow;");
     }
 }

@@ -43,11 +43,13 @@ public class InitialConfigScreenController implements Initializable {
     @FXML
     public void handleLetsGo() {
         // set current room to initial room
-        GameState.getInstance().setCurrentRoom(GameState.getInstance().getGameMap().getInitialRoom());
+        GameState.getInstance().setCurrentRoom(GameState.getInstance()
+                .getGameMap().getInitialRoom());
 
         Stage stage = (Stage) letsGoButton.getScene().getWindow();
         try {
-            Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/uwu/openjfx/fxml/roomView.fxml")));
+            Scene scene = new Scene(FXMLLoader.load(getClass()
+                    .getResource("/uwu/openjfx/fxml/roomView.fxml")));
             stage.setScene(scene);
         } catch (IOException e) {
             e.printStackTrace();

@@ -26,7 +26,7 @@ public class Resources {
         return instance;
     }
 
-    public Image get(String fileName){
+    public Image get(String fileName) {
         Image image = frames.get(fileName);
         return image;
     }

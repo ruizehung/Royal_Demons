@@ -35,7 +35,7 @@ public class GameMap {
 
     private void generateRooms() {
         // generate first room
-        initialRoom = new Room(new Coordinate(0,0), 4);
+        initialRoom = new Room(new Coordinate(0, 0), 4);
         rooms.put(initialRoom.getCoordinate(), initialRoom);
 
         Queue<Coordinate> roomsToCreate = new LinkedList<>();
@@ -123,23 +123,23 @@ public class GameMap {
             adjacentRoom = rooms.get(adjacentCoordinate);
             if (adjacentRoom != null) {
                 switch (dir.getValue()) {
-                    case "North":
-                        room.setNorthRoom(adjacentRoom);
-                        adjacentRoom.setSouthRoom(room);
-                        break;
-                    case "East":
-                        room.setEastRoom(adjacentRoom);
-                        adjacentRoom.setWestRoom(room);
-                        break;
-                    case "South":
-                        room.setSouthRoom(adjacentRoom);
-                        adjacentRoom.setNorthRoom(room);
-                        break;
-                    case "West":
-                        room.setWestRoom(adjacentRoom);
-                        adjacentRoom.setEastRoom(room);
-                        break;
-                    default:
+                case "North":
+                    room.setNorthRoom(adjacentRoom);
+                    adjacentRoom.setSouthRoom(room);
+                    break;
+                case "East":
+                    room.setEastRoom(adjacentRoom);
+                    adjacentRoom.setWestRoom(room);
+                    break;
+                case "South":
+                    room.setSouthRoom(adjacentRoom);
+                    adjacentRoom.setNorthRoom(room);
+                    break;
+                case "West":
+                    room.setWestRoom(adjacentRoom);
+                    adjacentRoom.setEastRoom(room);
+                    break;
+                default:
                 }
             }
         }

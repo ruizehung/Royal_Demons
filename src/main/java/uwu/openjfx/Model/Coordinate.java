@@ -32,10 +32,11 @@ public class Coordinate {
     }
 
     public boolean equals(Object obj) {
-        if (obj == this)
+        if (obj == this) {
             return true;
-        else if (!(obj instanceof Coordinate))
+        } else if (!(obj instanceof Coordinate)) {
             return false;
+        }
 
         Coordinate anotherCoordinate = (Coordinate) obj;
         return this.x == anotherCoordinate.x && this.y == anotherCoordinate.y;

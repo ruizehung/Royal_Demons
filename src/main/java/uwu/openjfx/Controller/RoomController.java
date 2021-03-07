@@ -59,37 +59,51 @@ public class RoomController implements Initializable {
             for (int col = 0; col < columns; col++) {
                 if (col == 0) {
                     if (row == 0) {
-                        imageViews[row][col] = new ImageView(Resources.getInstance().get("topLeftEdge.png"));
+                        imageViews[row][col] = new ImageView(Resources.getInstance()
+                                .get("topLeftEdge.png"));
                     } else if (row == 1) {
-                        imageViews[row][col] = new ImageView(Resources.getInstance().get("topLeftWall.png"));
-                    }else if (row == rows - 2) {
-                        imageViews[row][col] = new ImageView(Resources.getInstance().get("bottomLeftCorner.png"));
+                        imageViews[row][col] = new ImageView(Resources.getInstance()
+                                .get("topLeftWall.png"));
+                    } else if (row == rows - 2) {
+                        imageViews[row][col] = new ImageView(Resources.getInstance()
+                                .get("bottomLeftCorner.png"));
                     } else if (row == rows - 1) {
-                        imageViews[row][col] = new ImageView(Resources.getInstance().get("bottomLeftWall.png"));
+                        imageViews[row][col] = new ImageView(Resources.getInstance()
+                                .get("bottomLeftWall.png"));
                     } else {
-                        imageViews[row][col] = new ImageView(Resources.getInstance().get("centerLeftWall.png"));
+                        imageViews[row][col] = new ImageView(Resources.getInstance()
+                                .get("centerLeftWall.png"));
                     }
                 } else if (col == columns - 1) {
                     if (row == 0) {
-                        imageViews[row][col] = new ImageView(Resources.getInstance().get("topRightEdge.png"));
+                        imageViews[row][col] = new ImageView(Resources.getInstance()
+                                .get("topRightEdge.png"));
                     } else if (row == 1) {
-                        imageViews[row][col] = new ImageView(Resources.getInstance().get("topRightWall.png"));
-                    }else if (row == rows - 2) {
-                        imageViews[row][col] = new ImageView(Resources.getInstance().get("bottomRightCorner.png"));
+                        imageViews[row][col] = new ImageView(Resources.getInstance()
+                                .get("topRightWall.png"));
+                    } else if (row == rows - 2) {
+                        imageViews[row][col] = new ImageView(Resources.getInstance()
+                                .get("bottomRightCorner.png"));
                     } else if (row == rows - 1) {
-                        imageViews[row][col] = new ImageView(Resources.getInstance().get("bottomRightWall.png"));
+                        imageViews[row][col] = new ImageView(Resources.getInstance()
+                                .get("bottomRightWall.png"));
                     } else {
-                        imageViews[row][col] = new ImageView(Resources.getInstance().get("centerRightWall.png"));
+                        imageViews[row][col] = new ImageView(Resources.getInstance()
+                                .get("centerRightWall.png"));
                     }
                 } else {
                     if (row == 0) {
-                        imageViews[row][col] = new ImageView(Resources.getInstance().get("topMiddleEdge.png"));
+                        imageViews[row][col] = new ImageView(Resources.getInstance()
+                                .get("topMiddleEdge.png"));
                     } else if (row == 1 || row == rows - 1) {
-                        imageViews[row][col] = new ImageView(Resources.getInstance().get("middleWall.png"));
+                        imageViews[row][col] = new ImageView(Resources.getInstance()
+                                .get("middleWall.png"));
                     } else if (row == rows - 2) {
-                        imageViews[row][col] = new ImageView(Resources.getInstance().get("bottomMiddleEdge.png"));
+                        imageViews[row][col] = new ImageView(Resources.getInstance()
+                                .get("bottomMiddleEdge.png"));
                     } else {
-                        imageViews[row][col] = new ImageView(Resources.getInstance().get("floor_1_32x32.png"));
+                        imageViews[row][col] = new ImageView(Resources.getInstance()
+                                .get("floor_1_32x32.png"));
                     }
                 }
                 // imageViews[row][col] = new ImageView(Resources.floors[random.nextInt(8)]);
@@ -132,7 +146,8 @@ public class RoomController implements Initializable {
 
         Stage stage = (Stage) blockGrid.getScene().getWindow();
         try {
-            Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/uwu/openjfx/fxml/roomView.fxml")));
+            Scene scene = new Scene(FXMLLoader.load(getClass()
+                    .getResource("/uwu/openjfx/fxml/roomView.fxml")));
             stage.setScene(scene);
         } catch (IOException e) {
             e.printStackTrace();
