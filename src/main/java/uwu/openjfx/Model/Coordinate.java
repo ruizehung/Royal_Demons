@@ -42,6 +42,6 @@ public class Coordinate {
     }
 
     public String toString() {
-        return "[" + x + ", " + y + "]";
+        return "(" + x + ", " + y + ")";
     }
 }

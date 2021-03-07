@@ -6,7 +6,7 @@
     -fx-font-size: 30;
 }
 
-#coins.label {
+#coins.label, #coordinates.label {
     -fx-font-size: 40;
     -fx-text-fill: #ffffff;
 }

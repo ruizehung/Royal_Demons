@@ -22,15 +22,15 @@ public class GameMap {
     }
 
     public GameMap(int numOfRooms) {
-        this.numOfRooms = numOfRooms;
-        finalBossDist = random.nextInt(3) + 6;
-        System.out.println("finalBossDist: " + finalBossDist);
-        generateRooms();
-
         directions.add(new Pair(new Pair(0, 1), "North"));
         directions.add(new Pair(new Pair(1, 0), "East"));
         directions.add(new Pair(new Pair(0, -1), "South"));
         directions.add(new Pair(new Pair(-1, 0), "West"));
+
+        this.numOfRooms = numOfRooms;
+        finalBossDist = random.nextInt(3) + 6;
+        System.out.println("finalBossDist: " + finalBossDist);
+        generateRooms();
     }
 
     private void generateRooms() {
@@ -49,7 +49,20 @@ public class GameMap {
         int numRoomsGenerated = 1;
         int maxDistFromInitRoom = 0;
 
-        while (!roomsToCreate.isEmpty() && (numRoomsGenerated < numOfRooms || maxDistFromInitRoom < finalBossDist)) {
+        while (numRoomsGenerated < numOfRooms || maxDistFromInitRoom < finalBossDist) {
+            if (roomsToCreate.isEmpty()) {
+                for (Room room: rooms.values()) {
+                    for (Coordinate coordinate: room.getAdjacentCoordinates()) {
+                        if (getRoom(coordinate) == null) {
+                            roomsToCreate.add(coordinate);
+                        }
+                    }
+                    if (roomsToCreate.size() > 2) {
+                        break;
+                    }
+                }
+            }
+
             Coordinate coordinate = roomsToCreate.poll();
             if (getRoom(coordinate) == null) { // if the coordinate does not have a room yet
                 Room newRoom = new Room(coordinate);
@@ -100,12 +113,13 @@ public class GameMap {
     }
 
     public void connectRoomWithAdjacentRooms(Room room) {
-        Coordinate coordinate = room.getCoordinate();
+        Coordinate coordinate;
         Coordinate adjacentCoordinate = new Coordinate(0, 0);
         Room adjacentRoom;
         for (Pair<Pair<Integer, Integer>, String> dir : directions) {
+            coordinate = room.getCoordinate();
             adjacentCoordinate.setX(coordinate.getX() + dir.getKey().getKey());
-            adjacentCoordinate.setX(coordinate.getX() + dir.getKey().getValue());
+            adjacentCoordinate.setY(coordinate.getY() + dir.getKey().getValue());
             adjacentRoom = rooms.get(adjacentCoordinate);
             if (adjacentRoom != null) {
                 switch (dir.getValue()) {

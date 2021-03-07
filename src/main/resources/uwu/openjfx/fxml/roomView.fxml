@@ -6,9 +6,11 @@
 
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0"
             prefWidth="960.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="uwu.openjfx.Controller.RoomController">
+            fx:controller="uwu.openjfx.Controller.RoomController" stylesheets="@/uwu/openjfx/css/styles.css">
     <ImageView>
         <Image url="@/uwu/openjfx/images/backgroundPNG.png"/>
     </ImageView>
@@ -17,6 +19,13 @@
     <ImageView layoutX="800" layoutY="20">
         <Image url="@/uwu/openjfx/images/coin.png"/>
     </ImageView>
+    <Button fx:id="mapButton" text="View Map" onAction="#showMapWindow" layoutX="80" layoutY="10"/>
+    <Label fx:id="coordinates" text="(?, ?)" layoutX="80" layoutY="50"/>
     <Label fx:id="coins" text="1000" layoutX="835" layoutY="10"/>
-<!--    <Label fx:id="coordinates" text="(?, ?)" layoutX="80" layoutY="10"/>-->
+    <HBox spacing="10" layoutX="80" layoutY="590">
+        <Button fx:id="goNorthButton" onAction="#switchRoom" text="Go North"/>
+        <Button fx:id="goEastButton" onAction="#switchRoom" text="Go East"/>
+        <Button fx:id="goSouthButton" onAction="#switchRoom" text="Go South"/>
+        <Button fx:id="goWestButton" onAction="#switchRoom" text="Go West"/>
+    </HBox>
 </AnchorPane>

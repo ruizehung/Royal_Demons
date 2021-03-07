@@ -14,6 +14,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import uwu.openjfx.MainApp;
+import uwu.openjfx.Model.Coordinate;
+import uwu.openjfx.Model.GameState;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,6 +61,22 @@ public class WelcomeScreenController {
         startBtn.setPrefWidth(150);
         startBtn.setOnAction(event -> {
             // transition to initial configuration screen
+            Stage stage = (Stage) startBtn.getScene().getWindow();
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/uwu/openjfx/fxml/initialConfigScreen.fxml"));
+                Scene scene = new Scene(loader.load());
+
+                // pass initial room to RoomController
+                InitialConfigScreenController initialConfigScreenController = loader.getController();
+
+                stage.setScene(scene);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+
+
             Parent root = null;
             try {
                 String fxmlLocation = "/uwu/openjfx/fxml/initialConfigScreen.fxml";

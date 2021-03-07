@@ -15,8 +15,6 @@ public class Room {
     private Room westRoom;
     private Room eastRoom;
 
-
-
     public Room(Coordinate coordinate) {
         this.coordinate = coordinate;
     }
