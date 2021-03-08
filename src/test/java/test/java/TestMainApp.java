@@ -42,7 +42,7 @@ public class TestMainApp {
     //ray 1
     @Test
     void testWelcomeScreenContainsStartButton(FxRobot robot) {
-        FxAssert.verifyThat(".button", LabeledMatchers.hasText("START"));
+        FxAssert.verifyThat("#startBtn", LabeledMatchers.hasText("START"));
     }
 
     /**
@@ -54,8 +54,8 @@ public class TestMainApp {
     //ray 2
     @Test
     void testInitConfigScreenLetsGoDisabledWithEmptyName(FxRobot robot) {
-        robot.clickOn(".button");
-        WaitForAsyncUtils.sleep(1000, TimeUnit.MILLISECONDS);
+        robot.clickOn("#startBtn");
+        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         FxAssert.verifyThat("#letsGoButton", Node::isDisabled);
     }
 
@@ -68,8 +68,8 @@ public class TestMainApp {
     //devan 1
     @Test
     void testChangeSceneToInitialConfig(FxRobot robot) {
-        robot.clickOn(".button");
-
+        robot.clickOn("#startBtn");
+        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         FxAssert.verifyThat("#title", TextMatchers.hasText("Initial Configuration"));
     }
 
@@ -83,9 +83,9 @@ public class TestMainApp {
     @Test
     void testHardDifficultySetsGold(FxRobot robot) {
         //go to initial config
-        robot.clickOn(".button");
+        robot.clickOn("#startBtn");
         //change name
-        WaitForAsyncUtils.sleep(1000, TimeUnit.MILLISECONDS);
+        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         robot.clickOn("#playerNameField");
         robot.write("Devan");
         //change to hard
@@ -107,9 +107,9 @@ public class TestMainApp {
     @Test
     void testMediumDifficultySetsGold(FxRobot robot) {
         //go to initial config
-        robot.clickOn(".button");
+        robot.clickOn("#startBtn");
         //change name
-        WaitForAsyncUtils.sleep(1000, TimeUnit.MILLISECONDS);
+        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         robot.clickOn("#playerNameField");
         robot.write("James");
         //change to hard
@@ -130,8 +130,9 @@ public class TestMainApp {
     @Test
     void testWeaponComboBox(FxRobot robot) {
         //go to initial config
-        robot.clickOn(".button");
+        robot.clickOn("#startBtn");
         //check that the weapons combo box has three options
+        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         FxAssert.verifyThat("#startingWeaponComboBox", ComboBoxMatchers.hasItems(3));
     }
 
@@ -145,8 +146,9 @@ public class TestMainApp {
     @Test
     void testGameContainsCorrectWeaponChoices(FxRobot robot) {
         // Go to initial config screen
-        robot.clickOn(".button");
+        robot.clickOn("#startBtn");
         // Check if the starting weapon combo box contains all the correct weapons
+        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         FxAssert.verifyThat("#startingWeaponComboBox",
                 ComboBoxMatchers.containsItems("Sword", "Wand", "Bow"));
     }
@@ -162,8 +164,9 @@ public class TestMainApp {
     @Test
     void testGameDefaultDifficultyIsEasy(FxRobot robot) {
         // Go to initial config screen
-        robot.clickOn(".button");
+        robot.clickOn("#startBtn");
         // Check if difficulty is set to easy by default
+        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         FxAssert.verifyThat("#difficultyComboBox",
                 ComboBoxMatchers.hasSelectedItem("Easy"));
     }
@@ -178,9 +181,9 @@ public class TestMainApp {
     @Test
     void testEasyDifficultySetsGold(FxRobot robot) {
         //go to initial config screen
-        robot.clickOn(".button");
+        robot.clickOn("#startBtn");
         //change name
-        WaitForAsyncUtils.sleep(1000, TimeUnit.MILLISECONDS);
+        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         robot.clickOn("#playerNameField");
         robot.write("Alice");
         //change difficulty to easy
@@ -202,9 +205,10 @@ public class TestMainApp {
     @Test
     void testGameSelectContainsAllDifficultyLevels(FxRobot robot) {
         //go to initial config screen
-        robot.clickOn(".button");
+        robot.clickOn("#startBtn");
         //check if the game difficulty combo box contains all appropriate levels,
         //easy, medium, and hard
+        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         FxAssert.verifyThat("#difficultyComboBox",
                 ComboBoxMatchers.containsItems("Easy", "Medium", "Hard"));
     }

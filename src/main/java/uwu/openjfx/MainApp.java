@@ -1,21 +1,16 @@
 package uwu.openjfx;
 
 import animatefx.animation.BounceIn;
-import animatefx.animation.SlideInRight;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import uwu.openjfx.controller.SceneSwapController;
-import uwu.openjfx.controller.WelcomeScreenController;
-import uwu.openjfx.model.UserSetting;
+import uwu.openjfx.model.*;
 
 import java.io.IOException;
-
 
 public class MainApp extends Application {
 
@@ -24,9 +19,9 @@ public class MainApp extends Application {
         SceneSwapController.setMainStage(stage);
         SceneSwapController.init();
 
-        //stage.setTitle("Royal Demons");
+        stage.setTitle("Royal Demons");
 
-        stage.initStyle(StageStyle.TRANSPARENT);
+        //stage.initStyle(StageStyle.TRANSPARENT);
         Parent root = null;
         try {
             String fxmlLocation = "/uwu/openjfx/view/welcomeScreenView.fxml";
@@ -42,7 +37,19 @@ public class MainApp extends Application {
         stage.setResizable(false);
         stage.show();
 
+        Resources resources = Resources.getInstance();
+        resources.loadResources();
+
         UserSetting.reset();
+        GameState.getInstance().generateMap();
+        GameMap gameMap = GameState.getInstance().getGameMap();
+
+        System.out.println(gameMap.getRooms().values().size());
+        for (Room room : gameMap.getRooms().values()) {
+            System.out.print(room.getCoordinate() + ",");
+        }
+        System.out.println("\nBoss room: ");
+        System.out.println(gameMap.getBossRoom().getCoordinate());
     }
 
     public static void main(String[] args) {

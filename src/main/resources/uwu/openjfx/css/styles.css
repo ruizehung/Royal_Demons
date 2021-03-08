@@ -62,7 +62,7 @@
     -fx-background-color: ffb900 ;
 }
 
-#coins.label {
+#coins.label, #coordinates.label {
     -fx-font-size: 40;
     -fx-text-fill: #ffffff;
 }

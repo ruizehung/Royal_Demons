@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0"
+            prefWidth="960.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="uwu.openjfx.controller.RoomController" stylesheets="@/uwu/openjfx/css/styles.css">
+    <ImageView>
+        <Image url="@/uwu/openjfx/images/backgroundPNG.png"/>
+    </ImageView>
+    <GridPane fx:id="blockGrid" alignment="center" layoutX="112" layoutY="80">
+    </GridPane>
+    <Button fx:id="mapButton" text="View Map" onAction="#showMapWindow" layoutX="80" layoutY="10"/>
+    <Label fx:id="coordinates" text="(?, ?)" layoutX="300" layoutY="15"/>
+    <Pane fx:id="coinPane">
+        <ImageView layoutX="800" layoutY="20">
+            <Image url="@/uwu/openjfx/images/coin.png"/>
+        </ImageView>
+        <Label fx:id="coins" text="1000" layoutX="835" layoutY="10"/>
+    </Pane>
+    <HBox spacing="10" layoutX="125" layoutY="565">
+        <Button fx:id="goNorthButton" onAction="#switchRoom" text="Go North"/>
+        <Button fx:id="goEastButton" onAction="#switchRoom" text="Go East"/>
+        <Button fx:id="goSouthButton" onAction="#switchRoom" text="Go South"/>
+        <Button fx:id="goWestButton" onAction="#switchRoom" text="Go West"/>
+    </HBox>
+</AnchorPane>

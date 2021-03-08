@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.DialogPane?>
+
+<?import javafx.scene.layout.GridPane?>
+<DialogPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="uwu.openjfx.controller.MapWindowController">
+    <content>
+        <GridPane fx:id="mapGrid"  vgap="3" hgap="3">
+        </GridPane>
+    </content>
+
+</DialogPane>
