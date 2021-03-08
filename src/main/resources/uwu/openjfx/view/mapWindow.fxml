@@ -6,7 +6,8 @@
 <?import javafx.scene.layout.GridPane?>
 <DialogPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="uwu.openjfx.controller.MapWindowController">
+            fx:controller="uwu.openjfx.controller.MapWindowController"
+            stylesheets="@/uwu/openjfx/css/styles.css">
     <content>
         <GridPane fx:id="mapGrid"  vgap="3" hgap="3">
         </GridPane>

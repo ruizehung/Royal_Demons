@@ -17,14 +17,14 @@
     </ImageView>
     <GridPane fx:id="blockGrid" alignment="center" layoutX="112" layoutY="80">
     </GridPane>
-    <Button fx:id="mapButton" text="View Map" onAction="#showMapWindow" layoutX="80" layoutY="10"/>
-    <Label fx:id="coordinates" text="(?, ?)" layoutX="300" layoutY="15"/>
     <Pane fx:id="coinPane">
         <ImageView layoutX="800" layoutY="20">
             <Image url="@/uwu/openjfx/images/coin.png"/>
         </ImageView>
         <Label fx:id="coins" text="1000" layoutX="835" layoutY="10"/>
     </Pane>
+    <Button fx:id="mapButton" text="View Map" onAction="#showMapWindow" layoutX="80" layoutY="10"/>
+    <Label fx:id="coordinates" text="(?, ?)" layoutX="300" layoutY="15"/>
     <HBox spacing="10" layoutX="125" layoutY="565">
         <Button fx:id="goNorthButton" onAction="#switchRoom" text="Go North"/>
         <Button fx:id="goEastButton" onAction="#switchRoom" text="Go East"/>

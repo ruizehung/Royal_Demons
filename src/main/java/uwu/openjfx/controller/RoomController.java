@@ -1,10 +1,12 @@
 package uwu.openjfx.controller;
 
 import animatefx.animation.Bounce;
+import animatefx.animation.FadeIn;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -161,11 +163,16 @@ public class RoomController implements Initializable {
             GameState.getInstance().setCurrentRoom(room.getWestRoom());
         }
 
-        Stage stage = (Stage) blockGrid.getScene().getWindow();
         try {
-            Scene scene = new Scene(FXMLLoader.load(getClass()
-                    .getResource("/uwu/openjfx/view/roomView.fxml")));
-            stage.setScene(scene);
+            String fxmlLocation = "/uwu/openjfx/view/roomView.fxml";
+            Parent root = FXMLLoader.load(getClass().getResource(fxmlLocation));
+            Scene scene = new Scene(root);
+            SceneSwapController.addScene(
+                    "room" + GameState.getInstance().getCurrentRoom().getCoordinate(), scene);
+            SceneSwapController.getMainStage().setScene(
+                    SceneSwapController.getScene(
+                            "room" + GameState.getInstance().getCurrentRoom().getCoordinate()));
+            new FadeIn(root).play();
         } catch (IOException e) {
             e.printStackTrace();
         }
