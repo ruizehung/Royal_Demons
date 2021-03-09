@@ -15,8 +15,8 @@ public class AnimationComponent extends Component {
     private AnimationChannel animIdle, animWalk;
 
     public AnimationComponent() {
-        animIdle = new AnimationChannel(FXGL.image("skelet_ani.png"), 8, 32, 32, Duration.seconds(1), 0, 3);
-        animWalk = new AnimationChannel(FXGL.image("skelet_ani.png"), 8, 32, 32, Duration.seconds(1), 4, 7);
+        animIdle = new AnimationChannel(FXGL.image("skelet.png"), 8, 32, 32, Duration.seconds(0.5), 0, 3);
+        animWalk = new AnimationChannel(FXGL.image("skelet.png"), 8, 32, 32, Duration.seconds(0.5), 4, 7);
 
         texture = new AnimatedTexture(animIdle);
     }
