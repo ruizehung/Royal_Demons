@@ -15,7 +15,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import uwu.openjfx.model.GameState;
 import uwu.openjfx.model.Resources;
@@ -48,6 +47,8 @@ public class RoomController implements Initializable {
     private Button goSouthButton;
     @FXML
     private Button goWestButton;
+    @FXML
+    private Button beatBossButton;
 
     private Room room = GameState.getInstance().getCurrentRoom();
     private int rows = 15;
@@ -58,6 +59,11 @@ public class RoomController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        if (!room.getCoordinate().equals(GameState.getInstance().getGameMap().getBossRoom()
+                .getCoordinate())) {
+            beatBossButton.setDisable(true);
+        }
+
         new Bounce(coinPane).setDelay(Duration.valueOf("1000ms")).play();
         switch (UserSetting.getDifficulty()) {
         case "Easy":
@@ -134,6 +140,7 @@ public class RoomController implements Initializable {
 
         configureSwitchRoomButtons();
         coordinates.setText(room.getCoordinate().toString());
+
     }
 
     private void configureSwitchRoomButtons() {
@@ -197,4 +204,18 @@ public class RoomController implements Initializable {
         dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
         Optional<ButtonType> result = dialog.showAndWait();
     }
+
+    @FXML
+    public void handleBeatBoss(ActionEvent actionEvent) {
+        ImageView imageView = new ImageView(Resources.getInstance()
+                .get("winScreen.png"));
+        Pane borderPane = new Pane();
+        borderPane.getChildren().add(imageView);
+        Scene scene = new Scene(borderPane);
+        SceneSwapController.addScene("winScreen", scene);
+        SceneSwapController.getMainStage().setScene(SceneSwapController
+                .getScene("winScreen"));
+        new FadeIn(borderPane).play();
+    }
+
 }

@@ -24,6 +24,7 @@
         <Label fx:id="coins" text="1000" layoutX="835" layoutY="10"/>
     </Pane>
     <Button fx:id="mapButton" text="View Map" onAction="#showMapWindow" layoutX="80" layoutY="10"/>
+    <Button fx:id="beatBossButton" text="Beat Boss" onAction="#handleBeatBoss" layoutX="400" layoutY="10"/>
     <Label fx:id="coordinates" text="(?, ?)" layoutX="300" layoutY="15"/>
     <HBox spacing="10" layoutX="125" layoutY="565">
         <Button fx:id="goNorthButton" onAction="#switchRoom" text="Go North"/>

@@ -7,8 +7,6 @@ import javafx.scene.control.Label;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-// TODO: UI including hp, mp, $$
-
 public class UIController implements Initializable {
 
     @FXML

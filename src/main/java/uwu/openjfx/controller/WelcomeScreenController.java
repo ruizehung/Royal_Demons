@@ -40,8 +40,8 @@ public class WelcomeScreenController implements Initializable {
                 root = FXMLLoader.load(getClass().getResource(fxmlLocation));
                 Scene initialConfigScene = new Scene(root);
                 SceneSwapController.addScene("initialConfig", initialConfigScene);
-                SceneSwapController.getMainStage().setScene(SceneSwapController.getScene("initialConfig"));
-                new SlideInRight(root).play();
+                SceneSwapController.getMainStage().setScene(SceneSwapController
+                        .getScene("initialConfig"));
             } catch (IOException e) {
                 e.printStackTrace();
             }

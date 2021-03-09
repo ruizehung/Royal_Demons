@@ -1,14 +1,11 @@
 package test.java;
 
-import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.stage.Stage;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxAssert;
 import org.testfx.api.FxRobot;
-import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.matcher.control.ComboBoxMatchers;
