@@ -13,8 +13,13 @@ import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.matcher.control.TextMatchers;
 import org.testfx.util.WaitForAsyncUtils;
 import uwu.openjfx.MainApp;
+import uwu.openjfx.model.Coordinate;
+import uwu.openjfx.model.GameState;
+import uwu.openjfx.model.Room;
 
 import java.util.concurrent.TimeUnit;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(ApplicationExtension.class)
 public class TestMainApp {
@@ -166,6 +171,56 @@ public class TestMainApp {
         WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         FxAssert.verifyThat("#difficultyComboBox",
                 ComboBoxMatchers.hasSelectedItem("Easy"));
+    }
+
+    /**
+     * A test that checks if the player correctly navigates to the top room (0, 1) after going North.
+     *
+     * @param robot simulates a user's actions when using the game interface
+     */
+    //jason 3
+    @Test
+    void testGoNorthFromStart(FxRobot robot) {
+        // Go to initial config screen
+        robot.clickOn("#startBtn");
+        // Check if difficulty is set to easy by default
+        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
+        robot.clickOn("#playerNameField");
+        robot.write("Jason");
+        // Go to initial game screen
+        robot.clickOn("Let's Go!");
+        robot.clickOn("#goNorthButton");
+        // Create a test room that holds the correct coordinate should the player navigate to the North room
+        Coordinate northCoord = new Coordinate(0, 1);
+        Room roomTest = new Room(northCoord);
+        // Get player's actual current room and compare
+        Room currRoom = GameState.getInstance().getCurrentRoom();
+        assertEquals(roomTest.getCoordinate(), currRoom.getCoordinate());
+    }
+    /**
+     * A test that checks if the correct win screen image is shown after killing the final boss.
+     *
+     * @param robot simulates a user's actions when using the game interface
+     */
+    //jason 4
+    @Test
+    void testWinScreenIsShownAfterBossIsKilled(FxRobot robot) {
+        // Go to initial config screen
+        robot.clickOn("#startBtn");
+        // Check if difficulty is set to easy by default
+        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
+        robot.clickOn("#playerNameField");
+        robot.write("Jason");
+        // Go to initial game screen
+        robot.clickOn("Let's Go!");
+        // Get current boss coordinate and go to that exact room
+        Coordinate bossCoordinate = GameState.getInstance().getGameMap().getBossRoom().getCoordinate();
+        GameState.getInstance().setCurrentRoom(new Room(bossCoordinate));
+        // Auto kill boss
+        // Boss.health = 0
+        robot.clickOn("#beatBossButton");
+        // Check to see if win screen picture is presented
+        // Imageview.equals(Imageview)?
     }
 
     /**
