@@ -13,6 +13,7 @@ import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.matcher.control.TextMatchers;
 import org.testfx.util.WaitForAsyncUtils;
 import uwu.openjfx.MainApp;
+import uwu.openjfx.controller.SceneSwapController;
 import uwu.openjfx.model.Coordinate;
 import uwu.openjfx.model.GameState;
 import uwu.openjfx.model.Room;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(ApplicationExtension.class)
 public class TestMainApp {
@@ -58,7 +60,6 @@ public class TestMainApp {
     @Test
     void testInitConfigScreenLetsGoDisabledWithEmptyName(FxRobot robot) {
         robot.clickOn("#startBtn");
-        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         FxAssert.verifyThat("#letsGoButton", Node::isDisabled);
     }
 
@@ -72,7 +73,6 @@ public class TestMainApp {
     @Test
     void testChangeSceneToInitialConfig(FxRobot robot) {
         robot.clickOn("#startBtn");
-        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         FxAssert.verifyThat("#title", TextMatchers.hasText("Initial Configuration"));
     }
 
@@ -88,7 +88,6 @@ public class TestMainApp {
         //go to initial config
         robot.clickOn("#startBtn");
         //change name
-        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         robot.clickOn("#playerNameField");
         robot.write("Devan");
         //change to hard
@@ -98,6 +97,36 @@ public class TestMainApp {
         robot.clickOn("Let's Go!");
         //check if money label updated
         FxAssert.verifyThat("#coins", LabeledMatchers.hasText("600"));
+    }
+
+    /**
+     * A test that checks if the scene handler correctly stores scenes.
+     *
+     * @param robot simulates a user's actions when using the game interface
+     */
+    //devan 3
+    @Test
+    void testSceneSwapperAddsScene(FxRobot robot) {
+        //go to initial config and confirm scene has been stored
+        robot.clickOn("#startBtn");
+        assertTrue(SceneSwapController.getSceneMap().containsKey("welcome")
+                && SceneSwapController.getSceneMap().get("welcome") != null);
+    }
+
+    /**
+     * A test that checks if the go back button retrieves and displays the
+     * welcome scene.
+     *
+     * @param robot simulates a user's actions when using the game interface
+     */
+    //devan 4
+    @Test
+    void testGoBackButtonSceneHandling(FxRobot robot) {
+        //go to initial config
+        robot.clickOn("#startBtn");
+        //go back to welcome
+        robot.clickOn("#goBackButton");
+        FxAssert.verifyThat("#startBtn", LabeledMatchers.hasText("START"));
     }
 
     /**
@@ -112,7 +141,6 @@ public class TestMainApp {
         //go to initial config
         robot.clickOn("#startBtn");
         //change name
-        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         robot.clickOn("#playerNameField");
         robot.write("James");
         //change to hard
@@ -135,7 +163,6 @@ public class TestMainApp {
         //go to initial config
         robot.clickOn("#startBtn");
         //check that the weapons combo box has three options
-        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         FxAssert.verifyThat("#startingWeaponComboBox", ComboBoxMatchers.hasItems(3));
     }
 
@@ -150,7 +177,6 @@ public class TestMainApp {
         // Go to initial config screen
         robot.clickOn("#startBtn");
         // Check if difficulty is set to easy by default
-        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         robot.clickOn("#playerNameField");
         robot.write("James");
         // Go to initial game screen
@@ -176,7 +202,6 @@ public class TestMainApp {
         // Go to initial config screen
         robot.clickOn("#startBtn");
         // Check if difficulty is set to easy by default
-        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         robot.clickOn("#playerNameField");
         robot.write("James");
         // Go to initial game screen
@@ -204,7 +229,6 @@ public class TestMainApp {
         // Go to initial config screen
         robot.clickOn("#startBtn");
         // Check if the starting weapon combo box contains all the correct weapons
-        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         FxAssert.verifyThat("#startingWeaponComboBox",
                 ComboBoxMatchers.containsItems("Sword", "Wand", "Bow"));
     }
@@ -222,7 +246,6 @@ public class TestMainApp {
         // Go to initial config screen
         robot.clickOn("#startBtn");
         // Check if difficulty is set to easy by default
-        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         FxAssert.verifyThat("#difficultyComboBox",
                 ComboBoxMatchers.hasSelectedItem("Easy"));
     }
@@ -238,7 +261,6 @@ public class TestMainApp {
         // Go to initial config screen
         robot.clickOn("#startBtn");
         // Check if difficulty is set to easy by default
-        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         robot.clickOn("#playerNameField");
         robot.write("Jason");
         // Go to initial game screen
@@ -262,7 +284,6 @@ public class TestMainApp {
         // Go to initial config screen
         robot.clickOn("#startBtn");
         // Check if difficulty is set to easy by default
-        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         robot.clickOn("#playerNameField");
         robot.write("Jason");
         // Go to initial game screen
@@ -287,7 +308,6 @@ public class TestMainApp {
         //go to initial config screen
         robot.clickOn("#startBtn");
         //change name
-        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         robot.clickOn("#playerNameField");
         robot.write("Alice");
         //change difficulty to easy
@@ -312,7 +332,6 @@ public class TestMainApp {
         robot.clickOn("#startBtn");
         //check if the game difficulty combo box contains all appropriate levels,
         //easy, medium, and hard
-        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         FxAssert.verifyThat("#difficultyComboBox",
                 ComboBoxMatchers.containsItems("Easy", "Medium", "Hard"));
     }

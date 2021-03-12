@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import uwu.openjfx.model.GameState;
 import uwu.openjfx.model.UserSetting;
 import java.io.IOException;
@@ -39,15 +40,15 @@ public class InitialConfigScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         letsGoButton.setDisable(true);
-        //        new Bounce(title).setDelay(Duration.valueOf("1000ms")).play();
-        //        new Bounce(playerNameLabel).setDelay(Duration.valueOf("1000ms")).play();
-        //        new Bounce(difficultyLabel).setDelay(Duration.valueOf("1000ms")).play();
-        //        new Bounce(startingWeaponLabel).setDelay(Duration.valueOf("1000ms")).play();
-        //        new Bounce(playerNameField).setDelay(Duration.valueOf("1000ms")).play();
-        //        new Bounce(difficultyComboBox).setDelay(Duration.valueOf("1000ms")).play();
-        //        new Bounce(startingWeaponComboBox).setDelay(Duration.valueOf("1000ms")).play();
-        //        new Bounce(letsGoButton).setDelay(Duration.valueOf("1000ms")).play();
-        //        new Bounce(goBackButton).setDelay(Duration.valueOf("1000ms")).play();
+        new Bounce(title).setDelay(Duration.valueOf("1000ms")).play();
+        new Bounce(playerNameLabel).setDelay(Duration.valueOf("1000ms")).play();
+        new Bounce(difficultyLabel).setDelay(Duration.valueOf("1000ms")).play();
+        new Bounce(startingWeaponLabel).setDelay(Duration.valueOf("1000ms")).play();
+        new Bounce(playerNameField).setDelay(Duration.valueOf("1000ms")).play();
+        new Bounce(difficultyComboBox).setDelay(Duration.valueOf("1000ms")).play();
+        new Bounce(startingWeaponComboBox).setDelay(Duration.valueOf("1000ms")).play();
+        new Bounce(letsGoButton).setDelay(Duration.valueOf("1000ms")).play();
+        new Bounce(goBackButton).setDelay(Duration.valueOf("1000ms")).play();
 
         playerNameField.setOnMouseEntered(e -> new Shake(playerNameField).play());
         difficultyComboBox.setOnMouseEntered(e -> new Shake(difficultyComboBox).play());
@@ -86,7 +87,7 @@ public class InitialConfigScreenController implements Initializable {
     public void handleGoBack() {
         Scene welcomeScene = SceneSwapController.getScene("welcome");
         SceneSwapController.getMainStage().setScene(welcomeScene);
-        new SlideInLeft(welcomeScene.getRoot()).play();
+        new FadeIn(welcomeScene.getRoot()).play();
     }
 
     @FXML
