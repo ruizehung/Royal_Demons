@@ -384,8 +384,8 @@ public class TestMainApp {
         robot.clickOn("#goWestButton");
         // Create a test room that holds the correct coordinate should the
         // player navigate to the West room
-        Coordinate WestCoord = new Coordinate(-1, 0);
-        Room roomTest = new Room(WestCoord);
+        Coordinate westCoord = new Coordinate(-1, 0);
+        Room roomTest = new Room(westCoord);
         // Get player's actual current room and compare
         Room currRoom = GameState.getInstance().getCurrentRoom();
         assertEquals(roomTest.getCoordinate(), currRoom.getCoordinate());
