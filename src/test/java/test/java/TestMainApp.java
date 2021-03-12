@@ -72,7 +72,7 @@ public class TestMainApp {
     @Test
     void testChangeSceneToInitialConfig(FxRobot robot) {
         robot.clickOn("#startBtn");
-        //WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
+        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         FxAssert.verifyThat("#title", TextMatchers.hasText("Initial Configuration"));
     }
 
@@ -88,7 +88,7 @@ public class TestMainApp {
         //go to initial config
         robot.clickOn("#startBtn");
         //change name
-//        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
+        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         robot.clickOn("#playerNameField");
         robot.write("Devan");
         //change to hard
@@ -112,7 +112,7 @@ public class TestMainApp {
         //go to initial config
         robot.clickOn("#startBtn");
         //change name
-//        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
+        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         robot.clickOn("#playerNameField");
         robot.write("James");
         //change to hard
@@ -135,7 +135,7 @@ public class TestMainApp {
         //go to initial config
         robot.clickOn("#startBtn");
         //check that the weapons combo box has three options
-//        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
+        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         FxAssert.verifyThat("#startingWeaponComboBox", ComboBoxMatchers.hasItems(3));
     }
 
@@ -204,7 +204,7 @@ public class TestMainApp {
         // Go to initial config screen
         robot.clickOn("#startBtn");
         // Check if the starting weapon combo box contains all the correct weapons
-//        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
+        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         FxAssert.verifyThat("#startingWeaponComboBox",
                 ComboBoxMatchers.containsItems("Sword", "Wand", "Bow"));
     }
@@ -222,7 +222,7 @@ public class TestMainApp {
         // Go to initial config screen
         robot.clickOn("#startBtn");
         // Check if difficulty is set to easy by default
-//        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
+        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         FxAssert.verifyThat("#difficultyComboBox",
                 ComboBoxMatchers.hasSelectedItem("Easy"));
     }
@@ -238,7 +238,7 @@ public class TestMainApp {
         // Go to initial config screen
         robot.clickOn("#startBtn");
         // Check if difficulty is set to easy by default
-//        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
+        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         robot.clickOn("#playerNameField");
         robot.write("Jason");
         // Go to initial game screen
@@ -262,7 +262,7 @@ public class TestMainApp {
         // Go to initial config screen
         robot.clickOn("#startBtn");
         // Check if difficulty is set to easy by default
-//        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
+        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         robot.clickOn("#playerNameField");
         robot.write("Jason");
         // Go to initial game screen
@@ -287,7 +287,7 @@ public class TestMainApp {
         //go to initial config screen
         robot.clickOn("#startBtn");
         //change name
-//        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
+        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         robot.clickOn("#playerNameField");
         robot.write("Alice");
         //change difficulty to easy
@@ -312,7 +312,7 @@ public class TestMainApp {
         robot.clickOn("#startBtn");
         //check if the game difficulty combo box contains all appropriate levels,
         //easy, medium, and hard
-//        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
+        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         FxAssert.verifyThat("#difficultyComboBox",
                 ComboBoxMatchers.containsItems("Easy", "Medium", "Hard"));
     }
