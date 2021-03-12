@@ -42,13 +42,14 @@ public class WelcomeScreenController implements Initializable {
                 SceneSwapController.addScene("initialConfig", initialConfigScene);
                 SceneSwapController.getMainStage().setScene(SceneSwapController
                         .getScene("initialConfig"));
+                new FadeIn(root).play();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
             Scene initConfigScene = SceneSwapController.getScene("initConfig");
             SceneSwapController.getMainStage().setScene(initConfigScene);
-            new SlideInRight(initConfigScene.getRoot()).play();
+            new FadeIn(initConfigScene.getRoot()).play();
         }
     }
 

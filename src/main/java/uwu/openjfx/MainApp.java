@@ -1,6 +1,8 @@
 package uwu.openjfx;
 
 import animatefx.animation.BounceIn;
+import animatefx.animation.FadeIn;
+import animatefx.animation.SlideInLeft;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -28,7 +30,7 @@ public class MainApp extends Application {
             Scene welcomeScene = new Scene(root);
             SceneSwapController.addScene("welcome", welcomeScene);
             stage.setScene(SceneSwapController.getScene("welcome"));
-            new BounceIn(root).play();
+            new FadeIn(root).play();
         } catch (IOException e) {
             e.printStackTrace();
         }

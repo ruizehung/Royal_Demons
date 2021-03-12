@@ -50,4 +50,8 @@ public class SceneSwapController {
     public static void setMainStage(Stage mainStage) {
         SceneSwapController.mainStage = mainStage;
     }
+
+    public static HashMap<String, Scene> getSceneMap() {
+        return scenes;
+    }
 }
