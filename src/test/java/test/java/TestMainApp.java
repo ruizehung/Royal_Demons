@@ -338,4 +338,56 @@ public class TestMainApp {
         FxAssert.verifyThat("#difficultyComboBox",
                 ComboBoxMatchers.containsItems("Easy", "Medium", "Hard"));
     }
+
+    /**
+     * Checks to see if the player correctly navigates to the expected South coordinates,
+     * (0,-1), after clicking the "Go South" button.
+     *
+     * @param robot simulates a user's actions when using the game interface
+     */
+    //alice 3
+    @Test
+    void testGoSouthFromStart(FxRobot robot) {
+        // Go to initial config screen
+        robot.clickOn("#startBtn");
+        // Check if difficulty is set to easy by default
+        robot.clickOn("#playerNameField");
+        robot.write("Alice");
+        // Go to initial game screen
+        robot.clickOn("Let's Go!");
+        robot.clickOn("#goSouthButton");
+        // Create a test room that holds the correct coordinate should the
+        // player navigate to the South room
+        Coordinate southCoord = new Coordinate(0, -1);
+        Room roomTest = new Room(southCoord);
+        // Get player's actual current room and compare
+        Room currRoom = GameState.getInstance().getCurrentRoom();
+        assertEquals(roomTest.getCoordinate(), currRoom.getCoordinate());
+    }
+
+    /**
+     * Checks to see if the player correctly navigates to the expected coordinates,
+     * (-1,0), after clicking the "Go West" button.
+     *
+     * @param robot simulates a user's actions when using the game interface
+     */
+    //alice 4
+    @Test
+    void testGoWestFromStart(FxRobot robot) {
+        // Go to initial config screen
+        robot.clickOn("#startBtn");
+        // Check if difficulty is set to easy by default
+        robot.clickOn("#playerNameField");
+        robot.write("Alice");
+        // Go to initial game screen
+        robot.clickOn("Let's Go!");
+        robot.clickOn("#goWestButton");
+        // Create a test room that holds the correct coordinate should the
+        // player navigate to the West room
+        Coordinate WestCoord = new Coordinate(-1, 0);
+        Room roomTest = new Room(WestCoord);
+        // Get player's actual current room and compare
+        Room currRoom = GameState.getInstance().getCurrentRoom();
+        assertEquals(roomTest.getCoordinate(), currRoom.getCoordinate());
+    }
 }
