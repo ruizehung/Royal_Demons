@@ -81,4 +81,13 @@ public class Room {
         this.numAdjRooms = numAdjRooms;
     }
 
+    public List<Room> getAdjacentRooms() {
+        ArrayList<Room> adjacentRooms = new ArrayList<>();
+        adjacentRooms.add(getNorthRoom());
+        adjacentRooms.add(getEastRoom());
+        adjacentRooms.add(getSouthRoom());
+        adjacentRooms.add(getWestRoom());
+        return adjacentRooms;
+    }
+
 }

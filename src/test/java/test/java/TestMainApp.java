@@ -13,12 +13,11 @@ import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.matcher.control.TextMatchers;
 import org.testfx.util.WaitForAsyncUtils;
 import uwu.openjfx.MainApp;
-import uwu.openjfx.controller.RoomController;
 import uwu.openjfx.model.Coordinate;
 import uwu.openjfx.model.GameState;
 import uwu.openjfx.model.Room;
-
-import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -138,6 +137,59 @@ public class TestMainApp {
         //check that the weapons combo box has three options
 //        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         FxAssert.verifyThat("#startingWeaponComboBox", ComboBoxMatchers.hasItems(3));
+    }
+
+    /**
+     * A test that checks if the player correctly navigates to the top room (1, 0) after going East.
+     *
+     * @param robot simulates a user's actions when using the game interface
+     */
+    //james 3
+    @Test
+    void testGoEastFromStart(FxRobot robot) {
+        // Go to initial config screen
+        robot.clickOn("#startBtn");
+        // Check if difficulty is set to easy by default
+        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
+        robot.clickOn("#playerNameField");
+        robot.write("James");
+        // Go to initial game screen
+        robot.clickOn("Let's Go!");
+        robot.clickOn("#goEastButton");
+        // Create a test room that holds the correct coordinate should the player navigate to the East room
+        Coordinate eastCoord = new Coordinate(1, 0);
+        Room roomTest = new Room(eastCoord);
+        // Get player's actual current room and compare
+        Room currRoom = GameState.getInstance().getCurrentRoom();
+        assertEquals(roomTest.getCoordinate(), currRoom.getCoordinate());
+    }
+
+    /**
+     * A test that checks to make sure the 4 rooms adjacent to the initial room
+     * have the appropriate coordinates.
+     *
+     * @param robot simulates a user's actions when using the game interface
+     */
+    //james 4
+    @Test
+    void testInitialAdjacentRooms(FxRobot robot) {
+        // Go to initial config screen
+        robot.clickOn("#startBtn");
+        // Check if difficulty is set to easy by default
+        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
+        robot.clickOn("#playerNameField");
+        robot.write("James");
+        // Go to initial game screen
+        robot.clickOn("Let's Go!");
+        // Get the list of coordinates adjacent to the initial room
+        List<Coordinate> initList = GameState.getInstance().getCurrentRoom().getAdjacentCoordinates();
+        // Make sure that the list of coordinates equals { [0, 1]; [1, 0]; [0, -1]; [-1, 0] }
+        List<Coordinate> correctList = new ArrayList<>();
+        correctList.add(new Coordinate(0, 1));
+        correctList.add(new Coordinate(1, 0));
+        correctList.add(new Coordinate(0, -1));
+        correctList.add(new Coordinate(-1, 0));
+        assertEquals(initList, correctList);
     }
 
     /**

@@ -28,9 +28,9 @@ public class GameMap {
         directions.add(new Pair(new Pair(-1, 0), "West"));
 
         this.numOfRooms = numOfRooms;
-        finalBossDist = random.nextInt(3) + 6;
-        System.out.println("finalBossDist: " + finalBossDist);
+        finalBossDist = random.nextInt(3) + 7;
         generateRooms();
+        System.out.println("boss room distance: " + bossRoom.getDistFromInitRoom());
     }
 
     private void generateRooms() {
