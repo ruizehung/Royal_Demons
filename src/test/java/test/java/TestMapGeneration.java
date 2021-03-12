@@ -15,15 +15,15 @@ public class TestMapGeneration {
     private GameState gameState = GameState.getInstance();
 
     // ray 3
-    @RepeatedTest(100)
-    void testBoosRoomAtLeast6RoomsAway() {
+    @RepeatedTest(500)
+    void testBossRoomAtLeast6RoomsAway() {
         gameState.generateNewMap();
         assert (gameState.getGameMap().getBossRoom().getDistFromInitRoom() > 6);
     }
 
     // ray 4
-    @RepeatedTest(100)
-    void testBoosRoomReachable() {
+    @RepeatedTest(500)
+    void testBossRoomReachable() {
         gameState.generateNewMap();
 
         Room initialRoom = gameState.getGameMap().getInitialRoom();
