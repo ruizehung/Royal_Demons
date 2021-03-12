@@ -11,7 +11,6 @@ import org.testfx.framework.junit5.Start;
 import org.testfx.matcher.control.ComboBoxMatchers;
 import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.matcher.control.TextMatchers;
-import org.testfx.util.WaitForAsyncUtils;
 import uwu.openjfx.MainApp;
 import uwu.openjfx.controller.SceneSwapController;
 import uwu.openjfx.model.Coordinate;
@@ -19,7 +18,6 @@ import uwu.openjfx.model.GameState;
 import uwu.openjfx.model.Room;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -182,7 +180,8 @@ public class TestMainApp {
         // Go to initial game screen
         robot.clickOn("Let's Go!");
         robot.clickOn("#goEastButton");
-        // Create a test room that holds the correct coordinate should the player navigate to the East room
+        // Create a test room that holds the correct coordinate should the
+        // player navigate to the East room
         Coordinate eastCoord = new Coordinate(1, 0);
         Room roomTest = new Room(eastCoord);
         // Get player's actual current room and compare
@@ -207,7 +206,8 @@ public class TestMainApp {
         // Go to initial game screen
         robot.clickOn("Let's Go!");
         // Get the list of coordinates adjacent to the initial room
-        List<Coordinate> initList = GameState.getInstance().getCurrentRoom().getAdjacentCoordinates();
+        List<Coordinate> initList = GameState.getInstance()
+                .getCurrentRoom().getAdjacentCoordinates();
         // Make sure that the list of coordinates equals { [0, 1]; [1, 0]; [0, -1]; [-1, 0] }
         List<Coordinate> correctList = new ArrayList<>();
         correctList.add(new Coordinate(0, 1));
@@ -251,7 +251,8 @@ public class TestMainApp {
     }
 
     /**
-     * A test that checks if the player correctly navigates to the top room (0, 1) after going North.
+     * A test that checks if the player correctly navigates to the top
+     * room (0, 1) after going North.
      *
      * @param robot simulates a user's actions when using the game interface
      */
@@ -266,7 +267,8 @@ public class TestMainApp {
         // Go to initial game screen
         robot.clickOn("Let's Go!");
         robot.clickOn("#goNorthButton");
-        // Create a test room that holds the correct coordinate should the player navigate to the North room
+        // Create a test room that holds the correct coordinate should the
+        // player navigate to the North room
         Coordinate northCoord = new Coordinate(0, 1);
         Room roomTest = new Room(northCoord);
         // Get player's actual current room and compare
@@ -289,7 +291,8 @@ public class TestMainApp {
         // Go to initial game screen
         robot.clickOn("Let's Go!");
         // Get current boss coordinate and go to that exact room
-        Coordinate bossCoordinate = GameState.getInstance().getGameMap().getBossRoom().getCoordinate();
+        Coordinate bossCoordinate = GameState.getInstance().getGameMap()
+                .getBossRoom().getCoordinate();
         GameState.getInstance().setCurrentRoom(new Room(bossCoordinate));
         // Auto kill boss
         // Boss.health = 0

@@ -1,8 +1,6 @@
 package uwu.openjfx;
 
-import animatefx.animation.BounceIn;
 import animatefx.animation.FadeIn;
-import animatefx.animation.SlideInLeft;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -45,12 +43,13 @@ public class MainApp extends Application {
         GameState.getInstance().generateNewMap();
         GameMap gameMap = GameState.getInstance().getGameMap();
 
-        System.out.println(gameMap.getRooms().values().size());
-        for (Room room : gameMap.getRooms().values()) {
-            System.out.print(room.getCoordinate() + ",");
-        }
-        System.out.println("\nBoss room: ");
-        System.out.println(gameMap.getBossRoom().getDistFromInitRoom());
+        // debugging print statements for room generation
+        //System.out.println(gameMap.getRooms().values().size());
+        //for (Room room : gameMap.getRooms().values()) {
+        //    System.out.print(room.getCoordinate() + ",");
+        //}
+        //System.out.println("\nBoss room: ");
+        //System.out.println(gameMap.getBossRoom().getDistFromInitRoom());
     }
 
     public static void main(String[] args) {

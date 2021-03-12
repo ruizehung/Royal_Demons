@@ -10,7 +10,7 @@
         <entry key="location-1" value="BUNDLED:(bundled):Google Checks" />
         <entry key="location-2" value="HTTP_URL:https://raw.githubusercontent.com/Georgia-Tech-CS2340/cs2340-codestyle/master/cs2340_checks.xml:CS 2340" />
         <entry key="scan-before-checkin" value="false" />
-        <entry key="scanscope" value="JavaOnly" />
+        <entry key="scanscope" value="JavaOnlyWithTests" />
         <entry key="suppress-errors" value="false" />
       </map>
     </option>

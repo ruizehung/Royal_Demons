@@ -30,7 +30,8 @@ public class GameMap {
         this.numOfRooms = numOfRooms;
         finalBossDist = random.nextInt(3) + 7;
         generateRooms();
-        System.out.println("boss room distance: " + bossRoom.getDistFromInitRoom());
+        //debug print statement for boss room distance
+        //System.out.println("boss room distance: " + bossRoom.getDistFromInitRoom());
     }
 
     private void generateRooms() {
