@@ -14,7 +14,7 @@ public class GameState {
         return instance;
     }
 
-    public void generateMap() {
+    public void generateNewMap() {
         gameMap = new GameMap(90);
     }
 

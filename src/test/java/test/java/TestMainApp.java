@@ -17,7 +17,6 @@ import uwu.openjfx.controller.SceneSwapController;
 import uwu.openjfx.model.Coordinate;
 import uwu.openjfx.model.GameState;
 import uwu.openjfx.model.Room;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -281,7 +280,7 @@ public class TestMainApp {
      */
     //jason 4
     @Test
-    void testWinScreenIsShownAfterBossIsKilled(FxRobot robot) {
+    void testBossCanBeKilledInBossRoom(FxRobot robot) {
         // Go to initial config screen
         robot.clickOn("#startBtn");
         // Check if difficulty is set to easy by default
@@ -294,9 +293,7 @@ public class TestMainApp {
         GameState.getInstance().setCurrentRoom(new Room(bossCoordinate));
         // Auto kill boss
         // Boss.health = 0
-        robot.clickOn("#beatBossButton");
-        // Check to see if win screen picture is presented
-        // Imageview.equals(Imageview)?
+        FxAssert.verifyThat("#beatBossButton", LabeledMatchers.hasText("Beat Boss"));
     }
 
     /**
