@@ -5,17 +5,18 @@ import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.MenuItem;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.input.virtual.VirtualButton;
 import com.almasb.fxgl.physics.CollisionHandler;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
+
+import uwu.openjfx.model.PlayerControl;
 
 import java.util.EnumSet;
 import java.util.Map;
+
+import static com.almasb.fxgl.dsl.FXGL.getInput;
+import static com.almasb.fxgl.dsl.FXGL.spawn;
 
 public class MainApp extends GameApplication {
 
@@ -56,49 +57,71 @@ public class MainApp extends GameApplication {
 //            FXGL.inc("pixelsMoved", -5);
 //        });
 
-        FXGL.onKey(KeyCode.W, () -> {
-            player.translateY(-5); // move up 5 pixels
-            FXGL.inc("pixelsMoved", +5);
-        });
-
-        FXGL.onKey(KeyCode.S, () -> {
-            player.translateY(5); // move down 5 pixels
-            FXGL.inc("pixelsMoved", +5);
-        });
-
-        FXGL.getInput().addAction(new UserAction("Right") {
+        getInput().addAction(new UserAction("Left") {
             @Override
             protected void onAction() {
-                player.getComponent(AnimationComponent.class).moveRight();
+                player.getComponent(PlayerControl.class).left();
             }
-        }, KeyCode.D);
 
-        FXGL.getInput().addAction(new UserAction("Left") {
+            @Override
+            protected void onActionEnd() {
+                player.getComponent(PlayerControl.class).stop();
+            }
+
+        }, KeyCode.A, VirtualButton.LEFT);
+
+        getInput().addAction(new UserAction("Right") {
             @Override
             protected void onAction() {
-                player.getComponent(AnimationComponent.class).moveLeft();
+                player.getComponent(PlayerControl.class).right();
             }
-        }, KeyCode.A);
+
+            @Override
+            protected void onActionEnd() {
+                player.getComponent(PlayerControl.class).stop();
+            }
+        }, KeyCode.D, VirtualButton.RIGHT);
+
+        getInput().addAction(new UserAction("Up") {
+            @Override
+            protected void onAction() {
+                player.getComponent(PlayerControl.class).up();
+            }
+
+            @Override
+            protected void onActionEnd() {
+                player.getComponent(PlayerControl.class).stop();
+            }
+
+        }, KeyCode.W, VirtualButton.UP);
+
+        getInput().addAction(new UserAction("Down") {
+            @Override
+            protected void onAction() {
+                player.getComponent(PlayerControl.class).down();
+            }
+
+            @Override
+            protected void onActionEnd() {
+                player.getComponent(PlayerControl.class).stop();
+            }
+        }, KeyCode.S, VirtualButton.DOWN);
+
     }
 
     @Override
     protected void initGame() {
+        FXGL.getPhysicsWorld().setGravity(0, 0);
         FXGL.getGameWorld().addEntityFactory(new SimpleFactory());
+        FXGL.setLevelFromMap("tmx/initialRoom.tmx");
+        player = spawn("player", 50, 50);
 
-        player = FXGL.entityBuilder()
-                .type(EntityType.PLAYER)
-                .at(300, 300)
-                .with(new AnimationComponent())
-                .viewWithBBox(new Rectangle(30, 30, Color.TRANSPARENT))
-                .with(new CollidableComponent(true))
-                .buildAndAttach();
-
-        FXGL.entityBuilder()
-                .type(EntityType.COIN)
-                .at(500, 200)
-                .viewWithBBox(new Circle(15, 15, 15, Color.YELLOW))
-                .with(new CollidableComponent(true))
-                .buildAndAttach();
+//        FXGL.entityBuilder()
+//                .type(EntityType.COIN)
+//                .at(500, 200)
+//                .viewWithBBox(new Circle(15, 15, 15, Color.YELLOW))
+//                .with(new CollidableComponent(true))
+//                .buildAndAttach();
 //        FXGL.run(() -> {
 //            FXGL.spawn("enemy", FXGLMath.randomPoint(
 //                    new Rectangle2D(0, 0, FXGL.getAppWidth(), FXGL.getAppHeight()))
@@ -129,19 +152,19 @@ public class MainApp extends GameApplication {
 
     @Override
     protected void initUI() {
-        Text textPixels = new Text();
-        textPixels.setTranslateX(50); // x = 50
-        textPixels.setTranslateY(100); // y = 100
-
-        textPixels.textProperty().bind(FXGL.getWorldProperties().intProperty("pixelsMoved").asString());
-
-        FXGL.getGameScene().addUINode(textPixels); // add to the scene graph
-
-        var skeletTexture = FXGL.getAssetLoader().loadTexture("skelet_idle_anim_f0_32x32.png");
-        skeletTexture.setTranslateX(50);
-        skeletTexture.setTranslateY(450);
-
-        FXGL.getGameScene().addUINode(skeletTexture);
+//        Text textPixels = new Text();
+//        textPixels.setTranslateX(50); // x = 50
+//        textPixels.setTranslateY(100); // y = 100
+//
+//        textPixels.textProperty().bind(FXGL.getWorldProperties().intProperty("pixelsMoved").asString());
+//
+//        FXGL.getGameScene().addUINode(textPixels); // add to the scene graph
+//
+//        var skeletTexture = FXGL.getAssetLoader().loadTexture("skelet_idle_anim_f0_32x32.png");
+//        skeletTexture.setTranslateX(50);
+//        skeletTexture.setTranslateY(450);
+//
+//        FXGL.getGameScene().addUINode(skeletTexture);
 
     }
 
