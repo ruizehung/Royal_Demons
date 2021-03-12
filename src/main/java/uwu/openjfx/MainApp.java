@@ -40,7 +40,7 @@ public class MainApp extends Application {
         resources.loadResources();
 
         UserSetting.reset();
-        GameState.getInstance().generateMap();
+        GameState.getInstance().generateNewMap();
         GameMap gameMap = GameState.getInstance().getGameMap();
 
         System.out.println(gameMap.getRooms().values().size());
@@ -48,7 +48,7 @@ public class MainApp extends Application {
             System.out.print(room.getCoordinate() + ",");
         }
         System.out.println("\nBoss room: ");
-        System.out.println(gameMap.getBossRoom().getCoordinate());
+        System.out.println(gameMap.getBossRoom().getDistFromInitRoom());
     }
 
     public static void main(String[] args) {
