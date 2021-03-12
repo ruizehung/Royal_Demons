@@ -13,10 +13,12 @@ import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.matcher.control.TextMatchers;
 import org.testfx.util.WaitForAsyncUtils;
 import uwu.openjfx.MainApp;
+import uwu.openjfx.controller.RoomController;
 import uwu.openjfx.model.Coordinate;
 import uwu.openjfx.model.GameState;
 import uwu.openjfx.model.Room;
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -71,7 +73,7 @@ public class TestMainApp {
     @Test
     void testChangeSceneToInitialConfig(FxRobot robot) {
         robot.clickOn("#startBtn");
-        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
+        //WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         FxAssert.verifyThat("#title", TextMatchers.hasText("Initial Configuration"));
     }
 
@@ -87,7 +89,7 @@ public class TestMainApp {
         //go to initial config
         robot.clickOn("#startBtn");
         //change name
-        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
+//        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         robot.clickOn("#playerNameField");
         robot.write("Devan");
         //change to hard
@@ -111,7 +113,7 @@ public class TestMainApp {
         //go to initial config
         robot.clickOn("#startBtn");
         //change name
-        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
+//        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         robot.clickOn("#playerNameField");
         robot.write("James");
         //change to hard
@@ -134,7 +136,7 @@ public class TestMainApp {
         //go to initial config
         robot.clickOn("#startBtn");
         //check that the weapons combo box has three options
-        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
+//        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         FxAssert.verifyThat("#startingWeaponComboBox", ComboBoxMatchers.hasItems(3));
     }
 
@@ -150,7 +152,7 @@ public class TestMainApp {
         // Go to initial config screen
         robot.clickOn("#startBtn");
         // Check if the starting weapon combo box contains all the correct weapons
-        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
+//        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         FxAssert.verifyThat("#startingWeaponComboBox",
                 ComboBoxMatchers.containsItems("Sword", "Wand", "Bow"));
     }
@@ -168,7 +170,7 @@ public class TestMainApp {
         // Go to initial config screen
         robot.clickOn("#startBtn");
         // Check if difficulty is set to easy by default
-        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
+//        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         FxAssert.verifyThat("#difficultyComboBox",
                 ComboBoxMatchers.hasSelectedItem("Easy"));
     }
@@ -184,7 +186,7 @@ public class TestMainApp {
         // Go to initial config screen
         robot.clickOn("#startBtn");
         // Check if difficulty is set to easy by default
-        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
+//        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         robot.clickOn("#playerNameField");
         robot.write("Jason");
         // Go to initial game screen
@@ -204,11 +206,11 @@ public class TestMainApp {
      */
     //jason 4
     @Test
-    void testWinScreenIsShownAfterBossIsKilled(FxRobot robot) {
+    void testBossCanBeKilledInBossRoom(FxRobot robot) {
         // Go to initial config screen
         robot.clickOn("#startBtn");
         // Check if difficulty is set to easy by default
-        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
+//        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         robot.clickOn("#playerNameField");
         robot.write("Jason");
         // Go to initial game screen
@@ -218,9 +220,7 @@ public class TestMainApp {
         GameState.getInstance().setCurrentRoom(new Room(bossCoordinate));
         // Auto kill boss
         // Boss.health = 0
-        robot.clickOn("#beatBossButton");
-        // Check to see if win screen picture is presented
-        // Imageview.equals(Imageview)?
+        FxAssert.verifyThat("#beatBossButton", LabeledMatchers.hasText("Beat Boss"));
     }
 
     /**
@@ -235,7 +235,7 @@ public class TestMainApp {
         //go to initial config screen
         robot.clickOn("#startBtn");
         //change name
-        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
+//        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         robot.clickOn("#playerNameField");
         robot.write("Alice");
         //change difficulty to easy
@@ -260,7 +260,7 @@ public class TestMainApp {
         robot.clickOn("#startBtn");
         //check if the game difficulty combo box contains all appropriate levels,
         //easy, medium, and hard
-        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
+//        WaitForAsyncUtils.sleep(2000, TimeUnit.MILLISECONDS);
         FxAssert.verifyThat("#difficultyComboBox",
                 ComboBoxMatchers.containsItems("Easy", "Medium", "Hard"));
     }
