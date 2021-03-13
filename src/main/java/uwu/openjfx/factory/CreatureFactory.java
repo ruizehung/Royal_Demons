@@ -6,6 +6,7 @@ import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.entity.components.CollidableComponent;
+import com.almasb.fxgl.entity.components.IrremovableComponent;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
@@ -26,9 +27,10 @@ public class CreatureFactory implements EntityFactory {
 
         return FXGL.entityBuilder(data)
                 .type(RoyalType.PLAYER)
-                .with(physics)
                 .viewWithBBox(new Rectangle(30, 30, Color.TRANSPARENT))
+                .with(physics)
                 .with(new CollidableComponent(true))
+                .with(new IrremovableComponent())
                 .with(new PlayerControl())
                 .build();
     }

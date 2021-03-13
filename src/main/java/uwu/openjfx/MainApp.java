@@ -6,8 +6,11 @@ import com.almasb.fxgl.app.MenuItem;
 import com.almasb.fxgl.app.scene.Viewport;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.input.virtual.VirtualButton;
+import com.almasb.fxgl.physics.PhysicsComponent;
+import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 
 import javafx.scene.paint.Color;
@@ -105,19 +108,27 @@ public class MainApp extends GameApplication {
 
     @Override
     protected void initGame() {
-
         FXGL.getGameWorld().addEntityFactory(new StructureFactory());
         FXGL.getGameWorld().addEntityFactory(new CreatureFactory());
-
         FXGL.getGameScene().setBackgroundColor(Color.BLACK);
+
         FXGL.setLevelFromMap("tmx/initialRoom.tmx");
         player = spawn("player", 300, 300);
+
+        set("player", player);
 
 
         Viewport viewport = getGameScene().getViewport();
         viewport.setBounds(-32*5 , -getAppHeight(), 32*50, 32 * 50);
         viewport.bindToEntity(player, getAppWidth() / 2, getAppHeight() / 2);
         viewport.setLazy(true);
+
+        FXGL.entityBuilder()
+            .type(RoyalType.DOOR)
+            .viewWithBBox("lizard_m_idle_anim_f0.png")
+            .with(new CollidableComponent(true))
+            .at(500, 500)
+            .buildAndAttach();
     }
 
     @Override
@@ -128,6 +139,16 @@ public class MainApp extends GameApplication {
     @Override
     protected void initPhysics() {
         FXGL.getPhysicsWorld().setGravity(0, 0);
+
+        FXGL.onCollisionOneTimeOnly(RoyalType.PLAYER, RoyalType.DOOR, (player, door) -> {
+            getInput().setProcessInput(false);
+            player.getComponent(PlayerControl.class).stop();
+
+            getGameScene().getViewport().fade(() -> {
+                changeRoom();
+                getInput().setProcessInput(true);
+            });
+        });
     }
 
     @Override
@@ -146,6 +167,14 @@ public class MainApp extends GameApplication {
 //
 //        FXGL.getGameScene().addUINode(skeletTexture);
 
+    }
+
+    private void changeRoom() {
+        if (player != null) {
+            player.getComponent(PhysicsComponent.class).overwritePosition(new Point2D(300, 300));
+            player.setZIndex(Integer.MAX_VALUE);
+        }
+        setLevelFromMap("tmx/testRoom.tmx");
     }
 
     public static void main(String[] args) {
