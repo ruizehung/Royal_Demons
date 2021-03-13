@@ -16,8 +16,6 @@ public class PlayerControl extends Component {
 
     private AnimationChannel animIdle, animWalk;
 
-    private int jumps = 2;
-
     public PlayerControl() {
         animIdle = new AnimationChannel(FXGL.image("skelet.png"), 8, 32, 32, Duration.seconds(0.5), 0, 3);
         animWalk = new AnimationChannel(FXGL.image("skelet.png"), 8, 32, 32, Duration.seconds(0.5), 4, 7);
@@ -31,13 +29,6 @@ public class PlayerControl extends Component {
     public void onAdded() {
         entity.getTransformComponent().setScaleOrigin(new Point2D(16, 21));
         entity.getViewComponent().addChild(texture);
-
-        physics.onGroundProperty().addListener((obs, old, isOnGround) -> {
-            if (isOnGround) {
-                //play("land.wav");
-                jumps = 2;
-            }
-        });
     }
 
     @Override
@@ -74,15 +65,5 @@ public class PlayerControl extends Component {
     public void stop() {
         physics.setVelocityX(0);
         physics.setVelocityY(0);
-    }
-
-    public void jump() {
-        if (jumps == 0)
-            return;
-
-        //play("jump.wav");
-        physics.setVelocityY(-300);
-
-        jumps--;
     }
 }
