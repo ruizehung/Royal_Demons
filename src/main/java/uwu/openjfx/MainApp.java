@@ -14,9 +14,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 
 import javafx.scene.paint.Color;
-import uwu.openjfx.factory.CreatureFactory;
-import uwu.openjfx.factory.StructureFactory;
-import uwu.openjfx.model.PlayerControl;
+import uwu.openjfx.components.PlayerComponent;
 
 import java.util.EnumSet;
 import java.util.Map;
@@ -45,24 +43,20 @@ public class MainApp extends GameApplication {
     @Override
     protected void onPreInit() {
         getSettings().setGlobalMusicVolume(0.25);
-//        loopBGM("some_music.wav");
+        // loopBGM("some_music.wav");
     }
 
     @Override
     protected void initInput() {
-//        FXGL.onKeyDown(KeyCode.D, () -> {
-//            FXGL.getNotificationService().pushNotification("Hello World!");
-//        });
-
         getInput().addAction(new UserAction("Left") {
             @Override
             protected void onAction() {
-                player.getComponent(PlayerControl.class).left();
+                player.getComponent(PlayerComponent.class).left();
             }
 
             @Override
             protected void onActionEnd() {
-                player.getComponent(PlayerControl.class).stop();
+                player.getComponent(PlayerComponent.class).stop();
             }
 
         }, KeyCode.A, VirtualButton.LEFT);
@@ -70,24 +64,24 @@ public class MainApp extends GameApplication {
         getInput().addAction(new UserAction("Right") {
             @Override
             protected void onAction() {
-                player.getComponent(PlayerControl.class).right();
+                player.getComponent(PlayerComponent.class).right();
             }
 
             @Override
             protected void onActionEnd() {
-                player.getComponent(PlayerControl.class).stop();
+                player.getComponent(PlayerComponent.class).stop();
             }
         }, KeyCode.D, VirtualButton.RIGHT);
 
         getInput().addAction(new UserAction("Up") {
             @Override
             protected void onAction() {
-                player.getComponent(PlayerControl.class).up();
+                player.getComponent(PlayerComponent.class).up();
             }
 
             @Override
             protected void onActionEnd() {
-                player.getComponent(PlayerControl.class).stop();
+                player.getComponent(PlayerComponent.class).stop();
             }
 
         }, KeyCode.W, VirtualButton.UP);
@@ -95,12 +89,12 @@ public class MainApp extends GameApplication {
         getInput().addAction(new UserAction("Down") {
             @Override
             protected void onAction() {
-                player.getComponent(PlayerControl.class).down();
+                player.getComponent(PlayerComponent.class).down();
             }
 
             @Override
             protected void onActionEnd() {
-                player.getComponent(PlayerControl.class).stop();
+                player.getComponent(PlayerComponent.class).stop();
             }
         }, KeyCode.S, VirtualButton.DOWN);
 
@@ -123,6 +117,8 @@ public class MainApp extends GameApplication {
         viewport.bindToEntity(player, getAppWidth() / 2, getAppHeight() / 2);
         viewport.setLazy(true);
 
+
+        // for testing door only
         FXGL.entityBuilder()
             .type(RoyalType.DOOR)
             .viewWithBBox("lizard_m_idle_anim_f0.png")
@@ -142,7 +138,7 @@ public class MainApp extends GameApplication {
 
         FXGL.onCollisionOneTimeOnly(RoyalType.PLAYER, RoyalType.DOOR, (player, door) -> {
             getInput().setProcessInput(false);
-            player.getComponent(PlayerControl.class).stop();
+            player.getComponent(PlayerComponent.class).stop();
 
             getGameScene().getViewport().fade(() -> {
                 changeRoom();

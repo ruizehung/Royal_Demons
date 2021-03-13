@@ -1,4 +1,4 @@
-package uwu.openjfx.factory;
+package uwu.openjfx;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
@@ -12,8 +12,7 @@ import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import uwu.openjfx.RoyalType;
-import uwu.openjfx.model.PlayerControl;
+import uwu.openjfx.components.PlayerComponent;
 
 public class CreatureFactory implements EntityFactory {
     @Spawns("player")
@@ -31,7 +30,7 @@ public class CreatureFactory implements EntityFactory {
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .with(new IrremovableComponent())
-                .with(new PlayerControl())
+                .with(new PlayerComponent())
                 .build();
     }
 

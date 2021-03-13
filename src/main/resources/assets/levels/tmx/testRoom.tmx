@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="2" nextobjectid="1">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="6">
  <tileset firstgid="1" name="mapTileSet" tilewidth="32" tileheight="32" tilecount="15" columns="5">
-  <image source="../../../../../../../UwU_Dungeon_Crawler/src/main/resources/assets/levels/tmx/mapTileSet.png" width="160" height="96"/>
+  <image source="mapTileSet.png" width="160" height="96"/>
  </tileset>
  <layer id="1" name="Tile Layer 1" width="40" height="40">
   <data encoding="csv">
@@ -47,4 +47,10 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="2" name="Object Layer 1">
+  <object id="1" type="wall" x="54.3478" y="1216.22" width="1161.87" height="17.6263"/>
+  <object id="3" type="wall" x="56.5503" y="35.2527" width="1161.87" height="17.6263"/>
+  <object id="4" type="wall" x="54.3478" y="60.2233" width="7.3443" height="1154.52"/>
+  <object id="5" type="wall" x="1215.48" y="63.163" width="7.3443" height="1154.52"/>
+ </objectgroup>
 </map>

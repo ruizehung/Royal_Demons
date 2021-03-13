@@ -1,4 +1,4 @@
-package uwu.openjfx.model;
+package uwu.openjfx.components;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
@@ -8,7 +8,7 @@ import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
 
-public class PlayerControl extends Component {
+public class PlayerComponent extends Component {
 
     private PhysicsComponent physics;
 
@@ -16,7 +16,7 @@ public class PlayerControl extends Component {
 
     private AnimationChannel animIdle, animWalk;
 
-    public PlayerControl() {
+    public PlayerComponent() {
         animIdle = new AnimationChannel(FXGL.image("skelet.png"), 8, 32, 32, Duration.seconds(0.5), 0, 3);
         animWalk = new AnimationChannel(FXGL.image("skelet.png"), 8, 32, 32, Duration.seconds(0.5), 4, 7);
 
