@@ -6,7 +6,8 @@ import com.almasb.fxgl.app.MenuItem;
 import com.almasb.fxgl.app.scene.Viewport;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.components.CollidableComponent;
+import com.almasb.fxgl.entity.components.IDComponent;
+import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.input.virtual.VirtualButton;
 import com.almasb.fxgl.physics.PhysicsComponent;
@@ -17,6 +18,7 @@ import javafx.scene.paint.Color;
 import uwu.openjfx.components.PlayerComponent;
 
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
@@ -25,6 +27,7 @@ import static com.almasb.fxgl.dsl.FXGL.getAppHeight;
 public class MainApp extends GameApplication {
 
     private Entity player;
+    private Map<String, Level> rooms = new HashMap<>();
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -102,14 +105,12 @@ public class MainApp extends GameApplication {
 
     @Override
     protected void initGame() {
-        FXGL.getGameWorld().addEntityFactory(new StructureFactory());
-        FXGL.getGameWorld().addEntityFactory(new CreatureFactory());
-        FXGL.getGameScene().setBackgroundColor(Color.BLACK);
+        getGameWorld().addEntityFactory(new StructureFactory());
+        getGameWorld().addEntityFactory(new CreatureFactory());
+        getGameScene().setBackgroundColor(Color.BLACK);
 
-        FXGL.setLevelFromMap("tmx/initialRoom.tmx");
+        rooms.put("initialRoom", setLevelFromMap("tmx/initialRoom.tmx"));
         player = spawn("player", 300, 300);
-
-        set("player", player);
 
 
         Viewport viewport = getGameScene().getViewport();
@@ -117,14 +118,11 @@ public class MainApp extends GameApplication {
         viewport.bindToEntity(player, getAppWidth() / 2, getAppHeight() / 2);
         viewport.setLazy(true);
 
-
-        // for testing door only
-        FXGL.entityBuilder()
-            .type(RoyalType.DOOR)
-            .viewWithBBox("lizard_m_idle_anim_f0.png")
-            .with(new CollidableComponent(true))
-            .at(500, 500)
-            .buildAndAttach();
+        for (Entity entity : rooms.get("initialRoom").getEntities()) {
+            if (entity.isType(RoyalType.WALL) || entity.isType(RoyalType.DOOR)) {
+                System.out.println(entity.getComponent(IDComponent.class));
+            }
+        }
     }
 
     @Override
@@ -170,6 +168,7 @@ public class MainApp extends GameApplication {
             player.getComponent(PhysicsComponent.class).overwritePosition(new Point2D(300, 300));
             player.setZIndex(Integer.MAX_VALUE);
         }
+
         setLevelFromMap("tmx/testRoom.tmx");
     }
 

@@ -26,7 +26,7 @@ public class CreatureFactory implements EntityFactory {
 
         return FXGL.entityBuilder(data)
                 .type(RoyalType.PLAYER)
-                .viewWithBBox(new Rectangle(30, 30, Color.TRANSPARENT))
+                .viewWithBBox(new Rectangle(30, 40, Color.TRANSPARENT))
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .with(new IrremovableComponent())

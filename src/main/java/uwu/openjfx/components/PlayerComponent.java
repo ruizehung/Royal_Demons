@@ -17,8 +17,8 @@ public class PlayerComponent extends Component {
     private AnimationChannel animIdle, animWalk;
 
     public PlayerComponent() {
-        animIdle = new AnimationChannel(FXGL.image("skelet.png"), 8, 32, 32, Duration.seconds(0.5), 0, 3);
-        animWalk = new AnimationChannel(FXGL.image("skelet.png"), 8, 32, 32, Duration.seconds(0.5), 4, 7);
+        animIdle = new AnimationChannel(FXGL.image("lizard_m_idle_40x70x4.png"), 4, 40, 70, Duration.seconds(0.5), 0, 3);
+        animWalk = new AnimationChannel(FXGL.image("lizard_m_run_40x70x4.png"), 4, 40, 70, Duration.seconds(0.5), 0, 3);
 
         texture = new AnimatedTexture(animIdle);
 
