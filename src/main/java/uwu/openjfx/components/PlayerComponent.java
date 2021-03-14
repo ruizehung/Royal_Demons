@@ -16,6 +16,11 @@ public class PlayerComponent extends Component {
 
     private AnimationChannel animIdle, animWalk;
 
+    //TODO: remove temp vars and put in char state class
+    public static String playerName;
+    public static String playerWeapon;
+    public static String gameDifficulty;
+
     public PlayerComponent() {
         animIdle = new AnimationChannel(FXGL.image("skelet.png"), 8, 32, 32, Duration.seconds(0.5), 0, 3);
         animWalk = new AnimationChannel(FXGL.image("skelet.png"), 8, 32, 32, Duration.seconds(0.5), 4, 7);
