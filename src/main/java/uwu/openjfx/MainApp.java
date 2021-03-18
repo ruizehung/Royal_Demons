@@ -4,6 +4,7 @@ import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.MenuItem;
 import com.almasb.fxgl.app.scene.Viewport;
+import com.almasb.fxgl.core.collection.PropertyMap;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.components.IDComponent;
@@ -15,11 +16,13 @@ import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 
 import javafx.scene.paint.Color;
+import uwu.openjfx.collision.PlayerSkeletCollisionHandler;
 import uwu.openjfx.components.PlayerComponent;
 
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 import static com.almasb.fxgl.dsl.FXGL.getAppHeight;
@@ -27,14 +30,12 @@ import static com.almasb.fxgl.dsl.FXGL.getAppHeight;
 public class MainApp extends GameApplication {
 
     private Entity player;
-    private Map<String, Level> rooms = new HashMap<>();
+    private Map<String, RoomData> gameMap = new HashMap<>();
 
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setWidth(960);
         settings.setHeight(640);
-//        settings.setWidth(1280);
-//        settings.setHeight(720);
         settings.setTitle("Royal Demons");
         settings.setVersion("0.1");
         settings.setAppIcon("lizard_m_idle_anim_f0.png");
@@ -109,20 +110,26 @@ public class MainApp extends GameApplication {
         getGameWorld().addEntityFactory(new CreatureFactory());
         getGameScene().setBackgroundColor(Color.BLACK);
 
-        rooms.put("initialRoom", setLevelFromMap("tmx/initialRoom.tmx"));
-        player = spawn("player", 300, 300);
+        Level curLevel = setLevelFromMap("tmx/initialRoom.tmx");
 
+        player = spawn("player", 300, 300);
 
         Viewport viewport = getGameScene().getViewport();
         viewport.setBounds(-32*5 , -getAppHeight(), 32*50, 32 * 50);
         viewport.bindToEntity(player, getAppWidth() / 2, getAppHeight() / 2);
         viewport.setLazy(true);
 
-        for (Entity entity : rooms.get("initialRoom").getEntities()) {
-            if (entity.isType(RoyalType.WALL) || entity.isType(RoyalType.DOOR)) {
-                System.out.println(entity.getComponent(IDComponent.class));
-            }
-        }
+//        for (Entity entity : curLevel.getEntities()) {
+//            if (entity.isType(RoyalType.SKELET)) {
+//                System.out.println(entity);
+//                System.out.println(entity.getComponent(IDComponent.class));
+//                System.out.println(entity.getType());
+//                System.out.println(entity.getProperties());
+//            }
+//        }
+        RoomData roomData = new RoomData("initialRoom", curLevel.getEntities());
+        gameMap.put("initialRoom", roomData);
+        set("curRoom", roomData);
     }
 
     @Override
@@ -133,6 +140,7 @@ public class MainApp extends GameApplication {
     @Override
     protected void initPhysics() {
         FXGL.getPhysicsWorld().setGravity(0, 0);
+        FXGL.getPhysicsWorld().addCollisionHandler(new PlayerSkeletCollisionHandler());
 
         FXGL.onCollisionOneTimeOnly(RoyalType.PLAYER, RoyalType.DOOR, (player, door) -> {
             getInput().setProcessInput(false);
@@ -147,20 +155,25 @@ public class MainApp extends GameApplication {
 
     @Override
     protected void initUI() {
-//        Text textPixels = new Text();
-//        textPixels.setTranslateX(50); // x = 50
-//        textPixels.setTranslateY(100); // y = 100
-//
-//        textPixels.textProperty().bind(FXGL.getWorldProperties().intProperty("pixelsMoved").asString());
-//
-//        FXGL.getGameScene().addUINode(textPixels); // add to the scene graph
-//
-//        var skeletTexture = FXGL.getAssetLoader().loadTexture("skelet_idle_anim_f0_32x32.png");
-//        skeletTexture.setTranslateX(50);
-//        skeletTexture.setTranslateY(450);
-//
-//        FXGL.getGameScene().addUINode(skeletTexture);
 
+    }
+
+    private void loadRoom(String roomName) {
+        RoomData roomData = gameMap.get(roomName);
+        Level curLevel = setLevelFromMap("tmx/" + roomName + ".tmx");
+        if (roomData != null) {
+            for (Entity entity : curLevel.getEntities()) {
+                if (entity.isType(RoyalType.SKELET)) {
+                    IDComponent idComponent = entity.getComponent(IDComponent.class);
+                    if (roomData.getEntityData(idComponent.getId(), "isAlive") == 0) {
+                        entity.removeFromWorld();
+                    }
+                }
+            }
+            set("curRoom", roomData);
+        } else {
+            set("curRoom", new RoomData(roomName, curLevel.getEntities()));
+        }
     }
 
     private void changeRoom() {
@@ -169,7 +182,12 @@ public class MainApp extends GameApplication {
             player.setZIndex(Integer.MAX_VALUE);
         }
 
-        setLevelFromMap("tmx/testRoom.tmx");
+        if (((RoomData) geto("curRoom")).getName() == "initialRoom") {
+            loadRoom("testRoom");
+
+        } else {
+            loadRoom("initialRoom");
+        }
     }
 
     public static void main(String[] args) {
