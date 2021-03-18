@@ -17,8 +17,8 @@ public class PlayerComponent extends Component {
     private AnimationChannel animIdle, animWalk;
 
     public PlayerComponent() {
-        animIdle = new AnimationChannel(FXGL.image("lizard_m_idle_40x70x4.png"), 4, 40, 70, Duration.seconds(0.5), 0, 3);
-        animWalk = new AnimationChannel(FXGL.image("lizard_m_run_40x70x4.png"), 4, 40, 70, Duration.seconds(0.5), 0, 3);
+        animIdle = new AnimationChannel(FXGL.image("lizard_m_40x55.png"), 9, 40, 55, Duration.seconds(0.5), 0, 3);
+        animWalk = new AnimationChannel(FXGL.image("lizard_m_40x55.png"), 9, 40, 55, Duration.seconds(0.5), 4, 7);
 
         texture = new AnimatedTexture(animIdle);
 
@@ -27,7 +27,7 @@ public class PlayerComponent extends Component {
 
     @Override
     public void onAdded() {
-        entity.getTransformComponent().setScaleOrigin(new Point2D(20, 35));
+        entity.getTransformComponent().setScaleOrigin(new Point2D(20, 25));
         entity.getViewComponent().addChild(texture);
     }
 

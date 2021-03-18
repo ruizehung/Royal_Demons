@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="29">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="30">
  <tileset firstgid="1" name="0x72_DungeonTilesetII_32x32" tilewidth="32" tileheight="32" tilecount="1024" columns="32">
   <image source="0x72_DungeonTilesetII_32x32.png" width="1024" height="1024"/>
  </tileset>
@@ -84,12 +84,6 @@
   <object id="6" type="wall" x="867.435" y="56.3806" width="29.3648" height="227.87"/>
   <object id="7" type="wall" x="64.0151" y="58.7297" width="29.3648" height="227.87"/>
   <object id="8" type="wall" x="61.666" y="347.679" width="29.3648" height="227.87"/>
-  <object id="9" name="Door" type="door" x="420.837" y="58.6565">
-   <properties>
-    <property name="direction" value="north"/>
-   </properties>
-   <polygon points="0,0 5.1208,-12.5692 15.3624,-17.6901 28.8627,-17.6901 41.8975,-18.1556 48.4149,-13.9658 51.6736,-6.05186 56.3288,5.58633 54.4667,32.1214 55.3978,35.3801 2.79317,34.449 -2.79317,30.2593 -3.25869,17.2245"/>
-  </object>
   <object id="10" name="Door" type="door" x="884.331" y="284.28" width="24.683" height="64.6864">
    <properties>
     <property name="direction" value="east"/>
@@ -105,12 +99,17 @@
     <property name="direction" value="south"/>
    </properties>
   </object>
-  <object id="15" type="wall" x="409.56" y="24.8154" width="78.8153" height="28.1902"/>
+  <object id="15" type="wall" x="407.718" y="11.9205" width="78.8153" height="28.1902"/>
   <object id="25" name="Enemy" type="skelet" x="641.134" y="158.53" width="29.4613" height="32.2671">
    <properties>
     <property name="bheight" type="int" value="30"/>
     <property name="bwidth" type="int" value="30"/>
     <property name="type_" value="skelet"/>
+   </properties>
+  </object>
+  <object id="29" name="Door" type="door" x="406.853" y="36.5449" width="83.4114" height="26.3852">
+   <properties>
+    <property name="direction" value="south"/>
    </properties>
   </object>
  </objectgroup>
