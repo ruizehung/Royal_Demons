@@ -14,7 +14,7 @@ import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import uwu.openjfx.components.SkeletComponent;
+import uwu.openjfx.components.Enemy;
 import uwu.openjfx.components.PlayerComponent;
 
 public class CreatureFactory implements EntityFactory {
@@ -41,13 +41,12 @@ public class CreatureFactory implements EntityFactory {
     public Entity newSkelet(SpawnData data) {
         PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.DYNAMIC);
-
         return FXGL.entityBuilder(data)
-                .type(RoyalType.SKELET)
-                .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
+                .type(RoyalType.ENEMY)
+                .bbox(new HitBox(BoundingShape.box(data.<Integer>get("bwidth"), data.<Integer>get("bheight"))))
                 .with(physics)
                 .with(new CollidableComponent(true))
-                .with(new SkeletComponent())
+                .with(new Enemy(data.<String>get("type_")))
                 .build();
 
     }

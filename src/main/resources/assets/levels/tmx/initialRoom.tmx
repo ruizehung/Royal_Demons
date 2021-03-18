@@ -57,10 +57,6 @@
   <object id="3" type="wall" x="96.1655" y="576.385" width="766.89" height="20.6939"/>
   <object id="4" type="wall" x="91.2964" y="57.2124" width="13.3901" height="524.65"/>
   <object id="5" type="wall" x="856.36" y="61.4729" width="13.3901" height="524.65"/>
-  <object id="6" name="Skelet" type="skelet" x="286.585" y="158.537" width="31.7073" height="32.9268">
-   <properties>
-    <property name="isAlive" value="y"/>
-   </properties>
-  </object>
+  <object id="6" name="Skelet" type="skelet" x="286.585" y="158.537" width="31.7073" height="32.9268"/>
  </objectgroup>
 </map>

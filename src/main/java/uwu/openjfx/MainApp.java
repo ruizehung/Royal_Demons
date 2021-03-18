@@ -4,7 +4,6 @@ import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.MenuItem;
 import com.almasb.fxgl.app.scene.Viewport;
-import com.almasb.fxgl.core.collection.PropertyMap;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.components.IDComponent;
@@ -16,13 +15,14 @@ import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 
 import javafx.scene.paint.Color;
+import uwu.openjfx.MapGeneration.Coordinate;
+import uwu.openjfx.MapGeneration.GameMap;
+import uwu.openjfx.MapGeneration.Room;
 import uwu.openjfx.collision.PlayerSkeletCollisionHandler;
 import uwu.openjfx.components.PlayerComponent;
 
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 import static com.almasb.fxgl.dsl.FXGL.getAppHeight;
@@ -30,7 +30,7 @@ import static com.almasb.fxgl.dsl.FXGL.getAppHeight;
 public class MainApp extends GameApplication {
 
     private Entity player;
-    private Map<String, RoomData> gameMap = new HashMap<>();
+    private GameMap gameMap;
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -106,30 +106,21 @@ public class MainApp extends GameApplication {
 
     @Override
     protected void initGame() {
+        gameMap = new GameMap(40);
+
         getGameWorld().addEntityFactory(new StructureFactory());
         getGameWorld().addEntityFactory(new CreatureFactory());
         getGameScene().setBackgroundColor(Color.BLACK);
 
-        Level curLevel = setLevelFromMap("tmx/initialRoom.tmx");
+        loadRoom(new Coordinate(0,0));
 
         player = spawn("player", 300, 300);
+        set("player", player);
 
         Viewport viewport = getGameScene().getViewport();
         viewport.setBounds(-32*5 , -getAppHeight(), 32*50, 32 * 50);
         viewport.bindToEntity(player, getAppWidth() / 2, getAppHeight() / 2);
         viewport.setLazy(true);
-
-//        for (Entity entity : curLevel.getEntities()) {
-//            if (entity.isType(RoyalType.SKELET)) {
-//                System.out.println(entity);
-//                System.out.println(entity.getComponent(IDComponent.class));
-//                System.out.println(entity.getType());
-//                System.out.println(entity.getProperties());
-//            }
-//        }
-        RoomData roomData = new RoomData("initialRoom", curLevel.getEntities());
-        gameMap.put("initialRoom", roomData);
-        set("curRoom", roomData);
     }
 
     @Override
@@ -146,8 +137,27 @@ public class MainApp extends GameApplication {
             getInput().setProcessInput(false);
             player.getComponent(PlayerComponent.class).stop();
 
+            Room curRoom = FXGL.geto("curRoom");
+            Coordinate newCoordinate;
+            switch (door.getString("direction")) {
+                case "north":
+                    newCoordinate = curRoom.getNorthRoom().getCoordinate();
+                    break;
+                case "east":
+                    newCoordinate = curRoom.getEastRoom().getCoordinate();
+                    break;
+                case "south":
+                    newCoordinate = curRoom.getSouthRoom().getCoordinate();
+                    break;
+                case "west":
+                    newCoordinate = curRoom.getWestRoom().getCoordinate();
+                    break;
+                default:
+                    newCoordinate = curRoom.getCoordinate();
+                    System.err.println("Error getting new coordinate!");
+            }
             getGameScene().getViewport().fade(() -> {
-                changeRoom();
+                loadRoom(newCoordinate);
                 getInput().setProcessInput(true);
             });
         });
@@ -158,35 +168,42 @@ public class MainApp extends GameApplication {
 
     }
 
-    private void loadRoom(String roomName) {
-        RoomData roomData = gameMap.get(roomName);
-        Level curLevel = setLevelFromMap("tmx/" + roomName + ".tmx");
-        if (roomData != null) {
-            for (Entity entity : curLevel.getEntities()) {
-                if (entity.isType(RoyalType.SKELET)) {
-                    IDComponent idComponent = entity.getComponent(IDComponent.class);
-                    if (roomData.getEntityData(idComponent.getId(), "isAlive") == 0) {
-                        entity.removeFromWorld();
-                    }
-                }
-            }
-            set("curRoom", roomData);
-        } else {
-            set("curRoom", new RoomData(roomName, curLevel.getEntities()));
-        }
-    }
 
-    private void changeRoom() {
+    private void loadRoom(Coordinate coordinate) {
+        Room room = gameMap.getRoom(coordinate);
+        Level curLevel = setLevelFromMap("tmx/" + room.getRoomType() + ".tmx");
+
         if (player != null) {
             player.getComponent(PhysicsComponent.class).overwritePosition(new Point2D(300, 300));
             player.setZIndex(Integer.MAX_VALUE);
         }
 
-        if (((RoomData) geto("curRoom")).getName() == "initialRoom") {
-            loadRoom("testRoom");
+        for (Entity entity : curLevel.getEntities()) {
+            if (entity.isType(RoyalType.ENEMY)) {
+                IDComponent idComponent = entity.getComponent(IDComponent.class);
+                if (!room.visited()) {
+                    room.setEntityData(idComponent.getId(), "isAlive", 1);
+                } else {
+                    if (room.getEntityData(idComponent.getId(), "isAlive") == 0) {
+                        entity.removeFromWorld();
+                    }
+                }
+            }
+        }
 
+        if (!room.visited()) {
+            room.setVisited(true);
+        }
+
+        set("curRoom", room);
+        System.out.println(room.getCoordinate());
+    }
+
+    private void changeRoom() {
+        if (((Room) geto("curRoom")).getCoordinate().equals(new Coordinate(0, 0))) {
+            loadRoom(new Coordinate(1, 0));
         } else {
-            loadRoom("initialRoom");
+            loadRoom(new Coordinate(0, 0));
         }
     }
 

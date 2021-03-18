@@ -1,26 +1,21 @@
 package uwu.openjfx;
 
-import com.almasb.fxgl.core.collection.PropertyMap;
-import com.almasb.fxgl.core.serialization.Bundle;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.components.IDComponent;
-import com.almasb.fxgl.net.BundleUDPMessageReader;
-import jdk.jshell.spi.SPIResolutionException;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
-public class RoomData {
+public class RoomDataObsolete {
     private String name;
     private Map<Integer, Map<String, Integer>> entitiesData;
 
-    public RoomData(String name, List<Entity> entityList) {
+    public RoomDataObsolete(String name, List<Entity> entityList) {
         this.name = name;
         entitiesData = new HashMap<>();
         for (Entity entity : entityList) {
-            if (entity.isType(RoyalType.SKELET)) {
+            if (entity.isType(RoyalType.ENEMY)) {
                 IDComponent idComponent = entity.getComponent(IDComponent.class);
                 Map<String, Integer> properties = new HashMap<>();
                 properties.put("isAlive", 1);
