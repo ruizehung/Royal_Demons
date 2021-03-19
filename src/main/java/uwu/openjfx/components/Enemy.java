@@ -12,6 +12,7 @@ import com.almasb.fxgl.pathfinding.astar.AStarPathfinder;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
+import com.almasb.fxgl.time.LocalTimer;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
 
@@ -23,6 +24,8 @@ public class Enemy extends Component {
     private AnimatedTexture texture;
 
     private AnimationChannel animIdle, animWalk;
+
+    private LocalTimer moveTimer;
 
     public Enemy(String type) {
         animIdle = new AnimationChannel(FXGL.image(type + ".png"), 8, 32, 32, Duration.seconds(0.5), 0, 3);
@@ -37,16 +40,23 @@ public class Enemy extends Component {
     public void onAdded() {
         entity.getTransformComponent().setScaleOrigin(new Point2D(16, 16));
         entity.getViewComponent().addChild(texture);
+
+        moveTimer = FXGL.newLocalTimer();
+        moveTimer.capture();
     }
 
     @Override
     public void onUpdate(double tpf) {
         Entity player = FXGL.geto("player");
-        if (getEntity().distance(player) < 100) {
-            // constantly signal other AI that player is close
-//            System.out.println("Player with 100 dist!");
+        if (getEntity().distance(player) < 300) {
+            // constantly signal other AI that player is clos
+            double xDir = player.getX() - getEntity().getX() > 0 ? 1 : -1;
+            double yDir = player.getY() - getEntity().getY() > 0 ? 1 : -1;
+            physics.setVelocityX(70 * xDir);
+            physics.setVelocityY(70 * yDir);
         } else {
-            // don't signal
+            physics.setVelocityX(0);
+            physics.setVelocityY(0);
         }
 
         if (physics.isMoving()) {

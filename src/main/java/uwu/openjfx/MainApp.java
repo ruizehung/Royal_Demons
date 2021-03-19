@@ -7,6 +7,7 @@ import com.almasb.fxgl.app.MenuItem;
 import com.almasb.fxgl.app.scene.Viewport;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.entity.components.IDComponent;
 import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.input.UserAction;
@@ -20,6 +21,7 @@ import javafx.scene.paint.Color;
 import uwu.openjfx.MapGeneration.Coordinate;
 import uwu.openjfx.MapGeneration.GameMap;
 import uwu.openjfx.MapGeneration.Room;
+import uwu.openjfx.collision.MeleeSwordEnemyCollisionHandler;
 import uwu.openjfx.collision.PlayerSkeletCollisionHandler;
 import uwu.openjfx.components.PlayerComponent;
 
@@ -113,6 +115,7 @@ public class MainApp extends GameApplication {
             protected void onActionBegin() {
                 if (!player.getComponent(PlayerComponent.class).isAttacking()) {
                     player.getComponent(PlayerComponent.class).autoAttack();
+//                    meleeAttack();
                 }
             }
         }, MouseButton.PRIMARY);
@@ -147,6 +150,7 @@ public class MainApp extends GameApplication {
     protected void initPhysics() {
         FXGL.getPhysicsWorld().setGravity(0, 0);
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerSkeletCollisionHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new MeleeSwordEnemyCollisionHandler());
 
         FXGL.onCollisionOneTimeOnly(RoyalType.PLAYER, RoyalType.DOOR, (player, door) -> {
             getInput().setProcessInput(false);
@@ -216,6 +220,11 @@ public class MainApp extends GameApplication {
 
         set("curRoom", newRoom);
         System.out.println(newRoom.getCoordinate());
+    }
+
+    public void meleeAttack() {
+        Entity meleeSword = new Entity();
+        meleeSword = spawn("meleeSword", player.getX() + 5, player.getY());
     }
 
     public static void main(String[] args) {
