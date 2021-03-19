@@ -1,6 +1,5 @@
 package uwu.openjfx;
 
-import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.MenuItem;
@@ -16,7 +15,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 
 import javafx.scene.paint.Color;
-import uwu.openjfx.MapGeneration.Coordinate;
 import uwu.openjfx.MapGeneration.GameMap;
 import uwu.openjfx.MapGeneration.Room;
 import uwu.openjfx.collision.PlayerSkeletCollisionHandler;
@@ -121,7 +119,7 @@ public class MainApp extends GameApplication {
         set("player", player);
 
         Viewport viewport = getGameScene().getViewport();
-        viewport.setBounds(-32*5 , -getAppHeight(), 32*50, 32 * 50);
+        viewport.setBounds(-32*5 , -getAppHeight(), 32*70, 32 * 70);
         viewport.bindToEntity(player, getAppWidth() / 2, getAppHeight() / 2);
         viewport.setLazy(true);
     }
@@ -182,6 +180,7 @@ public class MainApp extends GameApplication {
 
         if (player != null) {
             player.getComponent(PhysicsComponent.class).overwritePosition(new Point2D(300, 300));
+
             player.setZIndex(Integer.MAX_VALUE);
         }
 

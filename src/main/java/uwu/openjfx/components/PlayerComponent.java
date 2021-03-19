@@ -33,6 +33,7 @@ public class PlayerComponent extends Component {
 
     @Override
     public void onUpdate(double tpf) {
+
         if (physics.isMoving()) {
             if (texture.getAnimationChannel() != animWalk) {
                 texture.loopAnimationChannel(animWalk);
@@ -47,6 +48,7 @@ public class PlayerComponent extends Component {
     public void left() {
         getEntity().setScaleX(-1);
         physics.setVelocityX(-170);
+
     }
 
     public void right() {

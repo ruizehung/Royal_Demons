@@ -42,6 +42,8 @@ public class CreatureFactory implements EntityFactory {
     public Entity newSkelet(SpawnData data) {
         PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.DYNAMIC);
+        physics.setFixtureDef(new FixtureDef().friction(1.0f));
+
         return FXGL.entityBuilder(data)
                 .type(RoyalType.ENEMY)
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("bwidth"), data.<Integer>get("bheight"))))
