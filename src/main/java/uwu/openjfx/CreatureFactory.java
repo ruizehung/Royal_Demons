@@ -13,8 +13,6 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import javafx.geometry.Point2D;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import uwu.openjfx.components.Enemy;
 import uwu.openjfx.components.PlayerComponent;
 
@@ -30,7 +28,8 @@ public class CreatureFactory implements EntityFactory {
 
         return FXGL.entityBuilder(data)
                 .type(RoyalType.PLAYER)
-                .bbox(new HitBox(BoundingShape.polygon(new Point2D(3, 15), new Point2D(38, 15), new Point2D(38, 55), new Point2D(3, 55))))
+                .bbox(new HitBox(BoundingShape.polygon(new Point2D(3, 15), new Point2D(38, 15),
+                        new Point2D(38, 55), new Point2D(3, 55))))
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .with(new IrremovableComponent())

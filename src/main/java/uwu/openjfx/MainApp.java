@@ -15,6 +15,7 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 
+import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import uwu.openjfx.MapGeneration.Coordinate;
 import uwu.openjfx.MapGeneration.GameMap;
@@ -55,6 +56,7 @@ public class MainApp extends GameApplication {
 
     @Override
     protected void initInput() {
+        //region Movement
         getInput().addAction(new UserAction("Left") {
             @Override
             protected void onAction() {
@@ -104,6 +106,16 @@ public class MainApp extends GameApplication {
                 player.getComponent(PlayerComponent.class).stop();
             }
         }, KeyCode.S, VirtualButton.DOWN);
+        //endregion
+
+        getInput().addAction(new UserAction("LMB") {
+            @Override
+            protected void onActionBegin() {
+                if (!player.getComponent(PlayerComponent.class).isAttacking()) {
+                    player.getComponent(PlayerComponent.class).autoAttack();
+                }
+            }
+        }, MouseButton.PRIMARY);
 
     }
 
