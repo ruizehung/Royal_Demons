@@ -30,6 +30,7 @@ public class StructureFactory implements EntityFactory {
                 .type(RoyalType.DOOR)
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
                 .with(new CollidableComponent(true))
+                .with(new PhysicsComponent())
                 .build();
     }
 

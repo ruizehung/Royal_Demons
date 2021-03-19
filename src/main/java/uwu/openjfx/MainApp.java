@@ -115,7 +115,7 @@ public class MainApp extends GameApplication {
         getGameWorld().addEntityFactory(new CreatureFactory());
         getGameScene().setBackgroundColor(Color.BLACK);
 
-        loadRoom(new Coordinate(0,0));
+        loadRoom(gameMap.getInitialRoom());
 
         player = spawn("player", 300, 300);
         set("player", player);
@@ -141,28 +141,33 @@ public class MainApp extends GameApplication {
             player.getComponent(PlayerComponent.class).stop();
 
             Room curRoom = FXGL.geto("curRoom");
-            Coordinate newCoordinate;
+            Room newRoom;
             switch (door.getString("direction")) {
                 case "north":
-                    newCoordinate = curRoom.getNorthRoom().getCoordinate();
+                    newRoom = curRoom.getNorthRoom();
                     break;
                 case "east":
-                    newCoordinate = curRoom.getEastRoom().getCoordinate();
+                    newRoom = curRoom.getEastRoom();
                     break;
                 case "south":
-                    newCoordinate = curRoom.getSouthRoom().getCoordinate();
+                    newRoom = curRoom.getSouthRoom();
                     break;
                 case "west":
-                    newCoordinate = curRoom.getWestRoom().getCoordinate();
+                    newRoom = curRoom.getWestRoom();
                     break;
                 default:
-                    newCoordinate = curRoom.getCoordinate();
-                    System.err.println("Error getting new coordinate!");
+                    newRoom = curRoom;
+                    System.err.println("Error getting new room!");
             }
-            getGameScene().getViewport().fade(() -> {
-                loadRoom(newCoordinate);
+
+            if (newRoom != null) {
+                getGameScene().getViewport().fade(() -> {
+                    loadRoom(newRoom);
+                    getInput().setProcessInput(true);
+                });
+            } else {
                 getInput().setProcessInput(true);
-            });
+            }
         });
     }
 
@@ -172,9 +177,8 @@ public class MainApp extends GameApplication {
     }
 
 
-    private void loadRoom(Coordinate coordinate) {
-        Room room = gameMap.getRoom(coordinate);
-        Level curLevel = setLevelFromMap("tmx/" + room.getRoomType() + ".tmx");
+    private void loadRoom(Room newRoom) {
+        Level curLevel = setLevelFromMap("tmx/" + newRoom.getRoomType() + ".tmx");
 
         if (player != null) {
             player.getComponent(PhysicsComponent.class).overwritePosition(new Point2D(300, 300));
@@ -184,30 +188,22 @@ public class MainApp extends GameApplication {
         for (Entity entity : curLevel.getEntities()) {
             if (entity.isType(RoyalType.ENEMY)) {
                 IDComponent idComponent = entity.getComponent(IDComponent.class);
-                if (!room.visited()) {
-                    room.setEntityData(idComponent.getId(), "isAlive", 1);
+                if (!newRoom.visited()) {
+                    newRoom.setEntityData(idComponent.getId(), "isAlive", 1);
                 } else {
-                    if (room.getEntityData(idComponent.getId(), "isAlive") == 0) {
+                    if (newRoom.getEntityData(idComponent.getId(), "isAlive") == 0) {
                         entity.removeFromWorld();
                     }
                 }
             }
         }
 
-        if (!room.visited()) {
-            room.setVisited(true);
+        if (!newRoom.visited()) {
+            newRoom.setVisited(true);
         }
 
-        set("curRoom", room);
-        System.out.println(room.getCoordinate());
-    }
-
-    private void changeRoom() {
-        if (((Room) geto("curRoom")).getCoordinate().equals(new Coordinate(0, 0))) {
-            loadRoom(new Coordinate(1, 0));
-        } else {
-            loadRoom(new Coordinate(0, 0));
-        }
+        set("curRoom", newRoom);
+        System.out.println(newRoom.getCoordinate());
     }
 
     public static void main(String[] args) {

@@ -44,7 +44,7 @@ public class Enemy extends Component {
         Entity player = FXGL.geto("player");
         if (getEntity().distance(player) < 100) {
             // constantly signal other AI that player is close
-            System.out.println("Player with 100 dist!");
+//            System.out.println("Player with 100 dist!");
         } else {
             // don't signal
         }

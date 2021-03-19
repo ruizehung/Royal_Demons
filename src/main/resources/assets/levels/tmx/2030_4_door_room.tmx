@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="30">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="31">
  <tileset firstgid="1" name="0x72_DungeonTilesetII_32x32" tilewidth="32" tileheight="32" tilecount="1024" columns="32">
   <image source="0x72_DungeonTilesetII_32x32.png" width="1024" height="1024"/>
  </tileset>
- <layer id="1" name="Tile Layer 1" width="30" height="20">
+ <layer id="1" name="Tile Layer 1" width="30" height="20" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,225,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,4,226,0,0,
@@ -27,7 +27,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,130,130,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="3" name="Tile Layer 2" width="30" height="20">
+ <layer id="3" name="Tile Layer 2" width="30" height="20" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -51,7 +51,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="2" name="Tile Layer 3" width="30" height="20">
+ <layer id="2" name="Tile Layer 3" width="30" height="20" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,418,419,420,421,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,450,451,452,453,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -75,7 +75,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,257,0,0,258,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="4" name="Object Layer 1">
+ <objectgroup id="4" name="Object Layer 1" locked="1">
   <object id="1" type="wall" x="83.3959" y="55.2057" width="330.237" height="28.1902"/>
   <object id="2" type="wall" x="485.106" y="55.2057" width="388.789" height="28.1902"/>
   <object id="3" type="wall" x="86.3325" y="576.724" width="420.503" height="28.1902"/>
@@ -109,8 +109,9 @@
   </object>
   <object id="29" name="Door" type="door" x="406.853" y="36.5449" width="83.4114" height="26.3852">
    <properties>
-    <property name="direction" value="south"/>
+    <property name="direction" value="north"/>
    </properties>
   </object>
+  <object id="30" type="wall" x="101.317" y="89.3433" width="56.1849" height="32.2373"/>
  </objectgroup>
 </map>
