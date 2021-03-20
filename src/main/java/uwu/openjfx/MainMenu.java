@@ -68,6 +68,7 @@ public class MainMenu extends FXGLMenu {
         String title = (type == MenuType.MAIN_MENU)
                 ? FXGL.getSettings().getTitle()
                 : "Paused";
+
         getContentRoot().getChildren().addAll(
                 createBackground(getAppWidth(), getAppHeight()),
                 //replace with function to get title
@@ -569,8 +570,14 @@ public class MainMenu extends FXGLMenu {
         public MenuButton(String stringKey) {
             text = stringKey;
             btn = FXGL.getUIFactoryService().newButton(text);
-            btn.setStyle("-fx-background-color: transparent");
+            btn.setStyle("-fx-background-color: transparent;");
             btn.setAlignment(Pos.CENTER_LEFT);
+            btn.setOnMouseEntered(event -> {
+                FXGL.play("ui_hover.wav");
+            });
+            btn.setOnMouseClicked(event -> {
+                FXGL.play("ui_confirm.wav");
+            });
 
             Polygon p = new Polygon(0.0, 0.0, 220.0, 0.0, 250.0, 35.0, 0.0, 35.0);
             p.setMouseTransparent(true);

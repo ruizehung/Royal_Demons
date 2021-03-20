@@ -26,20 +26,18 @@ import static com.almasb.fxgl.dsl.FXGL.getAppHeight;
 public class MainApp extends GameApplication {
 
     private Entity player;
+    private GameMap gameMap;
 
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setWidth(960);
         settings.setHeight(640);
-//        settings.setWidth(1280);
-//        settings.setHeight(720);
         settings.setTitle("Royal Demons");
         settings.setVersion("0.1");
         settings.setAppIcon("lizard_m_idle_anim_f0.png");
         settings.setFontUI("ThaleahFat.ttf");
         settings.setMainMenuEnabled(true);
         settings.setSceneFactory(new MainMenuSceneFactory());
-        settings.setSoundMenuSelect("drop.wav");
         settings.setGameMenuEnabled(true);
         settings.setEnabledMenuItems(EnumSet.of(MenuItem.EXTRA));
     }
@@ -106,29 +104,21 @@ public class MainApp extends GameApplication {
 
     @Override
     protected void initGame() {
-        FXGL.getGameWorld().addEntityFactory(new StructureFactory());
-        FXGL.getGameWorld().addEntityFactory(new CreatureFactory());
-        FXGL.getGameScene().setBackgroundColor(Color.BLACK);
+        gameMap = new GameMap(40);
 
-        FXGL.setLevelFromMap("tmx/initialRoom.tmx");
+        getGameWorld().addEntityFactory(new StructureFactory());
+        getGameWorld().addEntityFactory(new CreatureFactory());
+        getGameScene().setBackgroundColor(Color.BLACK);
+
+        loadRoom(gameMap.getInitialRoom());
+
         player = spawn("player", 300, 300);
-
         set("player", player);
-
 
         Viewport viewport = getGameScene().getViewport();
         viewport.setBounds(-32 * 5, -getAppHeight(), 32 * 50, 32 * 50);
         viewport.bindToEntity(player, getAppWidth() / 2.0, getAppHeight() / 2.0);
         viewport.setLazy(true);
-
-
-        // for testing door only
-        FXGL.entityBuilder()
-            .type(RoyalType.DOOR)
-            .viewWithBBox("lizard_m_idle_anim_f0.png")
-            .with(new CollidableComponent(true))
-            .at(500, 500)
-            .buildAndAttach();
     }
 
     @Override
