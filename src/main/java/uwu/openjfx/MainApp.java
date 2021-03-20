@@ -27,7 +27,17 @@ import uwu.openjfx.components.TrapComponent;
 import java.util.EnumSet;
 import java.util.Map;
 
-import static com.almasb.fxgl.dsl.FXGL.*;
+import static com.almasb.fxgl.dsl.FXGL.getAppHeight;
+import static com.almasb.fxgl.dsl.FXGL.play;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getAppWidth;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameScene;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getInput;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getSettings;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.loopBGM;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.set;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
+import static com.almasb.fxgl.dsl.FXGL.setLevelFromMap;
 
 public class MainApp extends GameApplication {
 
@@ -115,11 +125,14 @@ public class MainApp extends GameApplication {
             protected void onActionBegin() {
                 if (!player.getComponent(PlayerComponent.class).isAttacking()) {
                     player.getComponent(PlayerComponent.class).autoAttack();
-//                    meleeAttack();
+                    if (FXGL.getInput().getMousePositionWorld().getX() > player.getX() + 20) {
+                        player.setScaleX(1);
+                    } else {
+                        player.setScaleX(-1);
+                    }
                 }
             }
         }, MouseButton.PRIMARY);
-
     }
 
     @Override
@@ -128,6 +141,7 @@ public class MainApp extends GameApplication {
 
         getGameWorld().addEntityFactory(new StructureFactory());
         getGameWorld().addEntityFactory(new CreatureFactory());
+        getGameWorld().addEntityFactory(new WeaponFactory());
         getGameScene().setBackgroundColor(Color.BLACK);
 
         getAudioPlayer().stopAllMusic();
@@ -240,11 +254,6 @@ public class MainApp extends GameApplication {
 
         set("curRoom", newRoom);
         System.out.println(newRoom.getCoordinate());
-    }
-
-    public void meleeAttack() {
-        Entity meleeSword = new Entity();
-        meleeSword = spawn("meleeSword", player.getX() + 5, player.getY());
     }
 
     public static void main(String[] args) {

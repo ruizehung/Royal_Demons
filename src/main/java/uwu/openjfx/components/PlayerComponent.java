@@ -21,6 +21,8 @@ public class PlayerComponent extends Component {
 
     private AnimationChannel animIdle, animWalk, animAutoAttack;
 
+    private Entity meleeSword1;
+
     private boolean attacking = false;
     private boolean startAttacking = false;
     private int attackDuration = 500; // Milliseconds
@@ -39,7 +41,6 @@ public class PlayerComponent extends Component {
                 40, 55, Duration.seconds(attackDuration / 1000), 8, 8);
 
         texture = new AnimatedTexture(animIdle);
-
         texture.loop();
     }
 
@@ -47,10 +48,12 @@ public class PlayerComponent extends Component {
     public void onAdded() {
         entity.getTransformComponent().setScaleOrigin(new Point2D(20, 25));
         entity.getViewComponent().addChild(texture);
+        meleeSword1 = spawn("meleeSword1", getEntity().getX(), getEntity().getY() + 50);
     }
 
     @Override
     public void onUpdate(double tpf) {
+        updateSwordPosition();
         if (!attacking) {
             if (physics.isMoving()) {
                 if (texture.getAnimationChannel() != animWalk) {
@@ -63,11 +66,11 @@ public class PlayerComponent extends Component {
             }
         }
         if (startAttacking) {
-            final Entity meleeSword = spawn("meleeSword", getEntity().getScaleX() > 0 ?
-                    getEntity().getX() + 50 : getEntity().getX() - 50, getEntity().getY());
+            final Entity meleeSword1HitBox = spawn("meleeSword1HitBox", getEntity().getScaleX() > 0 ?
+                    getEntity().getX(): getEntity().getX() - 40, getEntity().getY() - 15);
             FXGL.getGameTimer().runAtInterval(() -> {
-                meleeSword.removeFromWorld();
-            }, Duration.seconds(0.1));
+                meleeSword1HitBox.removeFromWorld();
+            }, Duration.seconds(.1));
             startAttacking = false;
             attacking = false;
         }
@@ -102,6 +105,16 @@ public class PlayerComponent extends Component {
     public void stop() {
         physics.setVelocityX(0);
         physics.setVelocityY(0);
+    }
+
+    private void updateSwordPosition() {
+        if (getEntity().getScaleX() > 0) {
+            meleeSword1.setPosition(getEntity().getX() - 32, getEntity().getY() + 61);
+            meleeSword1.setRotation(-100);
+        } else {
+            meleeSword1.setPosition(getEntity().getX() + 75, getEntity().getY() + 41);
+            meleeSword1.setRotation(100);
+        }
     }
 
     public void autoAttack() {

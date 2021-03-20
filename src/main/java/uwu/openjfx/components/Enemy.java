@@ -48,16 +48,21 @@ public class Enemy extends Component {
     @Override
     public void onUpdate(double tpf) {
         Entity player = FXGL.geto("player");
-
-        if (getEntity().distance(player) < 300) {
-            // constantly signal other AI that player is clos
-            double xDir = player.getX() - getEntity().getX() > 0 ? 1 : -1;
-            double yDir = player.getY() - getEntity().getY() > 0 ? 1 : -1;
-            physics.setVelocityX(70 * xDir);
-            physics.setVelocityY(70 * yDir);
-        } else {
-            physics.setVelocityX(0);
-            physics.setVelocityY(0);
+        if (moveTimer.elapsed(Duration.seconds(1))) {
+            if (getEntity().distance(player) < 75) {
+                physics.setVelocityX(0);
+                physics.setVelocityY(0);
+            } else if (getEntity().distance(player) < 300) {
+                // constantly signal other AI that player is clos
+                double xDir = (player.getX() + 20) - getEntity().getX() > 0 ? 1 : -1;
+                double yDir = (player.getY() + 27.5) - getEntity().getY() > 0 ? 1 : -1;
+                physics.setVelocityX(70 * xDir);
+                physics.setVelocityY(70 * yDir);
+            } else {
+                physics.setVelocityX(0);
+                physics.setVelocityY(0);
+            }
+            moveTimer.capture();
         }
 
         if (physics.isMoving()) {
