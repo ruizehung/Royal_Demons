@@ -66,16 +66,11 @@ public class PlayerComponent extends Component {
             }
         }
         if (startAttacking) {
-            final Entity meleeSword1HitBoxRect = spawn("meleeSword1HitBoxRect", getEntity().getScaleX() > 0 ?
-                    getEntity().getX() + 40 : getEntity().getX() - 50, getEntity().getY());
-
-            final Entity meleeSword1HitBoxCurve = spawn(getEntity().getScaleX() > 0 ?
-                    "meleeSword1HitBoxCurveRight" : "meleeSword1HitBoxCurveLeft",
-                    getEntity().getX(), getEntity().getY());
+            final Entity meleeSword1HitBox = spawn("meleeSword1HitBox", getEntity().getScaleX() > 0 ?
+                    getEntity().getX(): getEntity().getX() - 40, getEntity().getY() - 15);
             FXGL.getGameTimer().runAtInterval(() -> {
-                meleeSword1HitBoxRect.removeFromWorld();
-                meleeSword1HitBoxCurve.removeFromWorld();
-            }, Duration.seconds(.01));
+                meleeSword1HitBox.removeFromWorld();
+            }, Duration.seconds(.1));
             startAttacking = false;
             attacking = false;
         }

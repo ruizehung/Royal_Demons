@@ -1,13 +1,11 @@
 package uwu.openjfx;
 
-import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.MenuItem;
 import com.almasb.fxgl.app.scene.Viewport;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.entity.components.IDComponent;
 import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.input.UserAction;
@@ -20,7 +18,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-import uwu.openjfx.MapGeneration.Coordinate;
 import uwu.openjfx.MapGeneration.GameMap;
 import uwu.openjfx.MapGeneration.Room;
 import uwu.openjfx.collision.MeleeSwordEnemyCollisionHandler;
@@ -30,8 +27,17 @@ import uwu.openjfx.components.PlayerComponent;
 import java.util.EnumSet;
 import java.util.Map;
 
-import static com.almasb.fxgl.dsl.FXGL.*;
 import static com.almasb.fxgl.dsl.FXGL.getAppHeight;
+import static com.almasb.fxgl.dsl.FXGL.play;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getAppWidth;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameScene;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getInput;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getSettings;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.loopBGM;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.set;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
+import static com.almasb.fxgl.dsl.FXGL.setLevelFromMap;
 
 public class MainApp extends GameApplication {
 
@@ -120,11 +126,14 @@ public class MainApp extends GameApplication {
             protected void onActionBegin() {
                 if (!player.getComponent(PlayerComponent.class).isAttacking()) {
                     player.getComponent(PlayerComponent.class).autoAttack();
-//                    meleeAttack();
+                    if (FXGL.getInput().getMousePositionWorld().getX() > player.getX() + 20) {
+                        player.setScaleX(1);
+                    } else {
+                        player.setScaleX(-1);
+                    }
                 }
             }
         }, MouseButton.PRIMARY);
-
     }
 
     @Override
@@ -240,11 +249,6 @@ public class MainApp extends GameApplication {
 
         set("curRoom", newRoom);
         System.out.println(newRoom.getCoordinate());
-    }
-
-    public void meleeAttack() {
-        Entity meleeSword = new Entity();
-        meleeSword = spawn("meleeSword", player.getX() + 5, player.getY());
     }
 
     public static void main(String[] args) {

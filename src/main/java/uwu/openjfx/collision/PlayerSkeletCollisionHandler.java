@@ -23,7 +23,7 @@ public class PlayerSkeletCollisionHandler extends CollisionHandler {
     protected void onCollisionBegin(Entity player, Entity skelet) {
         HealthComponent healthComponent = player.getComponent(HealthComponent.class);
         healthComponent.deductHealth();
-        System.out.println(healthComponent.getHealthPoints());
+//        System.out.println(healthComponent.getHealthPoints());
         invulnerableTimer = FXGL.newLocalTimer();
         invulnerableTimer.capture();
     }
@@ -32,7 +32,7 @@ public class PlayerSkeletCollisionHandler extends CollisionHandler {
         if (invulnerableTimer.elapsed(Duration.seconds(1))) {
             HealthComponent healthComponent = player.getComponent(HealthComponent.class);
             healthComponent.deductHealth();
-            System.out.println(healthComponent.getHealthPoints());
+//            System.out.println(healthComponent.getHealthPoints());
             invulnerableTimer.capture();
         }
         Room curRoom = FXGL.geto("curRoom");
