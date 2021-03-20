@@ -57,17 +57,6 @@ public class CreatureFactory implements EntityFactory {
                 .build();
     }
 
-    @Spawns("meleeSword")
-    public Entity newMeleeSword(SpawnData data) {
-        Rectangle hitbox = new Rectangle(50, 75, Color.WHITE);
-        hitbox.setOpacity(0.5);
-        return FXGL.entityBuilder(data)
-            .type(RoyalType.MELEE)
-            .viewWithBBox(hitbox)
-            .with(new CollidableComponent(true))
-            .build();
-    }
-
 //    @Spawns("ally")
 //    public Entity newAlly(SpawnData data) {
 //        return FXGL.entityBuilder(data)

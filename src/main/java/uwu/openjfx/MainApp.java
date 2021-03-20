@@ -133,6 +133,7 @@ public class MainApp extends GameApplication {
 
         getGameWorld().addEntityFactory(new StructureFactory());
         getGameWorld().addEntityFactory(new CreatureFactory());
+        getGameWorld().addEntityFactory(new WeaponFactory());
         getGameScene().setBackgroundColor(Color.BLACK);
 
         loadRoom(gameMap.getInitialRoom());
