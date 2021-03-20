@@ -42,6 +42,7 @@ import java.util.function.Supplier;
 
 import static com.almasb.fxgl.core.math.FXGLMath.noise1D;
 import static com.almasb.fxgl.dsl.FXGL.getSettings;
+import static com.almasb.fxgl.dsl.FXGL.loopBGM;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.random;
 
 public class MainMenu extends FXGLMenu {
@@ -295,10 +296,19 @@ public class MainMenu extends FXGLMenu {
 
         MenuButton itemMain = new MenuButton("Main Menu");
         itemMain.setOnAction(event -> {
-            fireExitToMainMenu();
-            PlayerComponent.playerName = null;
-            PlayerComponent.playerWeapon = null;
-            PlayerComponent.gameDifficulty = null;
+            String text = FXGL.localize("menu.exitMainMenu") + "\n"
+                    + FXGL.localize("menu.unsavedProgress");
+
+            FXGL.getDialogService().showConfirmationBox(text, yes -> {
+                if (yes) {
+                    FXGL.getGameController().gotoMainMenu();
+                    FXGL.getAudioPlayer().stopAllMusic();
+                    loopBGM("MainMenu.mp3");
+                    PlayerComponent.playerName = null;
+                    PlayerComponent.playerWeapon = null;
+                    PlayerComponent.gameDifficulty = null;
+                }
+            });
         });
         box.add(itemMain);
 

@@ -1,13 +1,11 @@
 package uwu.openjfx;
 
-import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.MenuItem;
 import com.almasb.fxgl.app.scene.Viewport;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.entity.components.IDComponent;
 import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.input.UserAction;
@@ -15,12 +13,9 @@ import com.almasb.fxgl.input.virtual.VirtualButton;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
-
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-
-import uwu.openjfx.MapGeneration.Coordinate;
 import uwu.openjfx.MapGeneration.GameMap;
 import uwu.openjfx.MapGeneration.Room;
 import uwu.openjfx.collision.MeleeSwordEnemyCollisionHandler;
@@ -31,7 +26,6 @@ import java.util.EnumSet;
 import java.util.Map;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
-import static com.almasb.fxgl.dsl.FXGL.getAppHeight;
 
 public class MainApp extends GameApplication {
 
@@ -44,7 +38,7 @@ public class MainApp extends GameApplication {
         settings.setHeight(640);
         settings.setTitle("Royal Demons");
         settings.setVersion("0.1");
-        settings.setAppIcon("lizard_m_idle_anim_f0.png");
+        settings.setAppIcon("lizard_m_40x55.png");
         settings.setFontUI("ThaleahFat.ttf");
         settings.setMainMenuEnabled(true);
         settings.setSceneFactory(new MainMenuSceneFactory());
@@ -135,6 +129,8 @@ public class MainApp extends GameApplication {
         getGameScene().setBackgroundColor(Color.BLACK);
 
         loadRoom(gameMap.getInitialRoom());
+        FXGL.getAudioPlayer().stopAllMusic();
+        loopBGM("evil4.mp3");
 
         player = spawn("player", 300, 300);
         set("player", player);
@@ -163,21 +159,21 @@ public class MainApp extends GameApplication {
             Room curRoom = FXGL.geto("curRoom");
             Room newRoom;
             switch (door.getString("direction")) {
-                case "north":
-                    newRoom = curRoom.getNorthRoom();
-                    break;
-                case "east":
-                    newRoom = curRoom.getEastRoom();
-                    break;
-                case "south":
-                    newRoom = curRoom.getSouthRoom();
-                    break;
-                case "west":
-                    newRoom = curRoom.getWestRoom();
-                    break;
-                default:
-                    newRoom = curRoom;
-                    System.err.println("Error getting new room!");
+            case "north":
+                newRoom = curRoom.getNorthRoom();
+                break;
+            case "east":
+                newRoom = curRoom.getEastRoom();
+                break;
+            case "south":
+                newRoom = curRoom.getSouthRoom();
+                break;
+            case "west":
+                newRoom = curRoom.getWestRoom();
+                break;
+            default:
+                newRoom = curRoom;
+                System.err.println("Error getting new room!");
             }
 
             if (newRoom != null) {
