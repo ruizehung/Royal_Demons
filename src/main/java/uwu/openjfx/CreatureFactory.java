@@ -12,11 +12,7 @@ import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
-import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import uwu.openjfx.components.Enemy;
 import uwu.openjfx.components.HealthComponent;
 import uwu.openjfx.components.PlayerComponent;
@@ -54,7 +50,7 @@ public class CreatureFactory implements EntityFactory {
                 .bbox(new HitBox(BoundingShape.box(30, 30)))
                 .with(physics)
                 .with(new CollidableComponent(true))
-                .with(new Enemy(data.<String>get("type_")))
+                .with(new Enemy("skelet"))
                 .with(new HealthComponent(5))
                 .build();
     }
