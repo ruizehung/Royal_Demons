@@ -27,6 +27,15 @@ import java.util.EnumSet;
 import java.util.Map;
 
 import static com.almasb.fxgl.dsl.FXGL.getAppHeight;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getAppWidth;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getAudioPlayer;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameScene;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getInput;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getSettings;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.loopBGM;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.set;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
 import static com.almasb.fxgl.dsl.FXGL.setLevelFromMap;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
