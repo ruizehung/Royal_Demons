@@ -20,7 +20,9 @@ import uwu.openjfx.MapGeneration.GameMap;
 import uwu.openjfx.MapGeneration.Room;
 import uwu.openjfx.collision.MeleeSwordEnemyCollisionHandler;
 import uwu.openjfx.collision.PlayerSkeletCollisionHandler;
+import uwu.openjfx.collision.PlayerTriggerCollisionHandler;
 import uwu.openjfx.components.PlayerComponent;
+import uwu.openjfx.components.TrapComponent;
 
 import java.util.EnumSet;
 import java.util.Map;
@@ -128,16 +130,16 @@ public class MainApp extends GameApplication {
         getGameWorld().addEntityFactory(new CreatureFactory());
         getGameScene().setBackgroundColor(Color.BLACK);
 
-        loadRoom(gameMap.getInitialRoom());
-        FXGL.getAudioPlayer().stopAllMusic();
+        getAudioPlayer().stopAllMusic();
         loopBGM("evil4.mp3");
-
-        player = spawn("player", 300, 300);
+        player = spawn("player", 0, 0);
         set("player", player);
 
+        loadRoom(gameMap.getInitialRoom(), "west");
+
         Viewport viewport = getGameScene().getViewport();
-        viewport.setBounds(-32 * 5, -getAppHeight(), 32 * 50, 32 * 50);
-        viewport.bindToEntity(player, getAppWidth() / 2.0, getAppHeight() / 2.0);
+        viewport.setBounds(-32*5 , -getAppHeight(), 32*70, 32 * 70);
+        viewport.bindToEntity(player, getAppWidth() / 2, getAppHeight() / 2);
         viewport.setLazy(true);
     }
 
@@ -151,6 +153,7 @@ public class MainApp extends GameApplication {
         FXGL.getPhysicsWorld().setGravity(0, 0);
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerSkeletCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new MeleeSwordEnemyCollisionHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new PlayerTriggerCollisionHandler());
 
         FXGL.onCollisionOneTimeOnly(RoyalType.PLAYER, RoyalType.DOOR, (player, door) -> {
             getInput().setProcessInput(false);
@@ -158,27 +161,32 @@ public class MainApp extends GameApplication {
 
             Room curRoom = FXGL.geto("curRoom");
             Room newRoom;
+            String spawnPosition = "north";
             switch (door.getString("direction")) {
-            case "north":
-                newRoom = curRoom.getNorthRoom();
-                break;
-            case "east":
-                newRoom = curRoom.getEastRoom();
-                break;
-            case "south":
-                newRoom = curRoom.getSouthRoom();
-                break;
-            case "west":
-                newRoom = curRoom.getWestRoom();
-                break;
-            default:
-                newRoom = curRoom;
-                System.err.println("Error getting new room!");
+                case "north":
+                    newRoom = curRoom.getNorthRoom();
+                    spawnPosition = "south";
+                    break;
+                case "east":
+                    newRoom = curRoom.getEastRoom();
+                    spawnPosition = "west";
+                    break;
+                case "south":
+                    newRoom = curRoom.getSouthRoom();
+                    spawnPosition = "north";
+                    break;
+                case "west":
+                    newRoom = curRoom.getWestRoom();
+                    spawnPosition = "east";
+                    break;
+                default:
+                    newRoom = curRoom;
+                    System.err.println("Error getting new room!");
             }
-
+            final String spawnPosition_ = spawnPosition;
             if (newRoom != null) {
                 getGameScene().getViewport().fade(() -> {
-                    loadRoom(newRoom);
+                    loadRoom(newRoom, spawnPosition_);
                     getInput().setProcessInput(true);
                 });
             } else {
@@ -189,31 +197,12 @@ public class MainApp extends GameApplication {
 
     @Override
     protected void initUI() {
-        Text textPixels = new Text();
-        textPixels.setTranslateX(50); // x = 50
-        textPixels.setTranslateY(100); // y = 100
 
-        textPixels.textProperty().bind(FXGL.getWorldProperties()
-                .intProperty("pixelsMoved").asString());
-
-        FXGL.getGameScene().addUINode(textPixels); // add to the scene graph
-
-        var skeletTexture = FXGL.getAssetLoader().loadTexture(
-                "skelet_idle_anim_f0_32x32.png");
-        skeletTexture.setTranslateX(50);
-        skeletTexture.setTranslateY(450);
-
-        FXGL.getGameScene().addUINode(skeletTexture);
     }
 
 
-    private void loadRoom(Room newRoom) {
+    private void loadRoom(Room newRoom, String playerSpawnPosition) {
         Level curLevel = setLevelFromMap("tmx/" + newRoom.getRoomType() + ".tmx");
-
-        if (player != null) {
-            player.getComponent(PhysicsComponent.class).overwritePosition(new Point2D(300, 300));
-            player.setZIndex(Integer.MAX_VALUE);
-        }
 
         for (Entity entity : curLevel.getEntities()) {
             if (entity.isType(RoyalType.ENEMY)) {
@@ -225,6 +214,23 @@ public class MainApp extends GameApplication {
                         entity.removeFromWorld();
                     }
                 }
+            }
+            if (entity.isType(RoyalType.TRAP) || entity.isType(RoyalType.TRAP_TRIGGER)) {
+                IDComponent idComponent = entity.getComponent(IDComponent.class);
+                if (!newRoom.visited()) {
+                    newRoom.setEntityData(idComponent.getId(), "triggered", 0);
+                } else {
+                    if (newRoom.getEntityData(idComponent.getId(), "triggered") == 1) {
+                        entity.getComponent(TrapComponent.class).trigger();
+                    }
+                }
+            }
+
+            if (player != null && entity.isType(RoyalType.POINT) && entity.getProperties()
+                    .getString("position").equals(playerSpawnPosition)) {
+                player.getComponent(PhysicsComponent.class).overwritePosition(
+                        new Point2D(entity.getX(), entity.getY()));
+                player.setZIndex(Integer.MAX_VALUE);
             }
         }
 

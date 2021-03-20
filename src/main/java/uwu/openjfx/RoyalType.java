@@ -1,5 +1,5 @@
 package uwu.openjfx;
 
 public enum RoyalType {
-    PLAYER, WALL, DOOR, ENEMY, MELEE
+    PLAYER, WALL, DOOR, ENEMY, TRAP_TRIGGER, TRAP, POINT, MELEE
 }

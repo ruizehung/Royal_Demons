@@ -43,17 +43,19 @@ public class CreatureFactory implements EntityFactory {
                 .build();
     }
 
-    @Spawns("skelet")
-    public Entity newSkelet(SpawnData data) {
+    @Spawns("minion")
+    public Entity newMinion(SpawnData data) {
         PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.DYNAMIC);
+        physics.setFixtureDef(new FixtureDef().friction(1.0f));
+
         return FXGL.entityBuilder(data)
                 .type(RoyalType.ENEMY)
-                .bbox(new HitBox(BoundingShape.box(data.<Integer>get("bwidth"), data.<Integer>get("bheight"))))
+                .bbox(new HitBox(BoundingShape.box(30, 30)))
                 .with(physics)
                 .with(new CollidableComponent(true))
-                .with(new Enemy(data.<String>get("type_")))
                 .with(new HealthComponent(3))
+                .with(new Enemy("skelet"))
                 .build();
     }
 

@@ -48,6 +48,7 @@ public class Enemy extends Component {
     @Override
     public void onUpdate(double tpf) {
         Entity player = FXGL.geto("player");
+
         if (getEntity().distance(player) < 300) {
             // constantly signal other AI that player is clos
             double xDir = player.getX() - getEntity().getX() > 0 ? 1 : -1;

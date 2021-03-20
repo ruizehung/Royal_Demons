@@ -20,7 +20,8 @@ public class Room {
 
     private Boolean visited = false;
     // set different room type based on numb of adjacent rooms
-    private String roomType = "2030_4_door_room";
+//    private String roomType = "2030_4_door_room";
+    private String roomType = "60_60_4_door";
     private Map<Integer, Map<String, Integer>> entitiesData;
 
 
@@ -59,6 +60,15 @@ public class Room {
             entitiesData.put(id, new HashMap<>());
         }
         entitiesData.get(id).put(propertyName, val);
+    }
+
+    public Boolean enemiesStillAlive() {
+        for (Map<String, Integer> data : entitiesData.values()) {
+            if (data.get("isAlive") != null && data.get("isAlive") == 1) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public Coordinate getCoordinate() {

@@ -2,6 +2,7 @@ package uwu.openjfx.collision;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.entity.components.IDComponent;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.time.LocalTimer;
@@ -20,7 +21,7 @@ public class PlayerSkeletCollisionHandler extends CollisionHandler {
     }
 
     @Override
-    protected void onCollisionBegin(Entity player, Entity skelet) {
+    protected void onCollisionBegin(Entity player, Entity enemy) {
         HealthComponent healthComponent = player.getComponent(HealthComponent.class);
         healthComponent.deductHealth();
         System.out.println(healthComponent.getHealthPoints());
@@ -35,6 +36,5 @@ public class PlayerSkeletCollisionHandler extends CollisionHandler {
             System.out.println(healthComponent.getHealthPoints());
             invulnerableTimer.capture();
         }
-        Room curRoom = FXGL.geto("curRoom");
     }
 }
