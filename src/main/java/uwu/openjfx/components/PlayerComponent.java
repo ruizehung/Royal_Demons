@@ -32,6 +32,7 @@ public class PlayerComponent extends Component {
     public static String playerWeapon;
     public static String gameDifficulty;
     public static int gold;
+    private boolean removeThisLaterPlease = false;
 
     public PlayerComponent() {
         animIdle = new AnimationChannel(FXGL.image("lizard_m_40x55.png"), 9,
@@ -49,11 +50,17 @@ public class PlayerComponent extends Component {
     public void onAdded() {
         entity.getTransformComponent().setScaleOrigin(new Point2D(20, 25));
         entity.getViewComponent().addChild(texture);
-        meleeSword1 = spawn("meleeSword1", getEntity().getX(), getEntity().getY() + 50);
+        // meleeSword1 = spawn("meleeSword1", getEntity().getX(), getEntity().getY() + 50);
     }
 
     @Override
     public void onUpdate(double tpf) {
+        // region REMOVE THIS LATER
+        if (!removeThisLaterPlease) {
+            meleeSword1 = spawn("meleeSword1", getEntity().getX(), getEntity().getY() + 50);
+            removeThisLaterPlease = true;
+        }
+        // endregion
         updateSwordPosition();
         if (!attacking) {
             if (physics.isMoving()) {

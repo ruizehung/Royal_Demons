@@ -26,4 +26,9 @@ public class SwordComponent extends Component {
         entity.getTransformComponent().setScaleOrigin(new Point2D(0, 0));
         entity.getViewComponent().addChild(texture);
     }
+
+    @Override
+    public void onUpdate(double tpf) {
+        texture.loopAnimationChannel(animIdle);
+    }
 }

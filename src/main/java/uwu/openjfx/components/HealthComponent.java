@@ -10,9 +10,12 @@ import uwu.openjfx.DieScreenMenu;
 import uwu.openjfx.MapGeneration.Room;
 import uwu.openjfx.RoyalType;
 
+import java.util.Timer;
+
 // Handles any altercations to health of creature
 public class HealthComponent extends Component {
     private int healthPoints;
+    private boolean isInvulnerable;
     private IntegerProperty playerHealth;
 
     public HealthComponent(int healthPoints) {
@@ -31,14 +34,25 @@ public class HealthComponent extends Component {
                 Room curRoom = FXGL.geto("curRoom");
                 curRoom.setEntityData(idComponent.getId(), "isAlive", 0);
             } else {
-
                 FXGL.getSceneService().pushSubScene(new DieScreenMenu(MenuType.GAME_MENU));
-                //FXGL.getSceneService().getCurrentScene().addChild(box);
-//                FXGL.getDialogService().showMessageBox("L", () -> {
-//                    MainMenu.resetToMainMenu();
-//                });
             }
         }
+        isInvulnerable = true;
+        invulnerability();
+    }
+
+    private void invulnerability() {
+        isInvulnerable = true;
+        Timer t = new java.util.Timer();
+        t.schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        isInvulnerable = false;
+                        t.cancel();
+                    }
+                }, 2000
+        );
 
     }
 
@@ -48,6 +62,10 @@ public class HealthComponent extends Component {
 
     public void setHealthPoints(int healthPoints) {
         this.healthPoints = healthPoints;
+    }
+
+    public boolean getIsInvulnerable() {
+        return isInvulnerable;
     }
 
     public IntegerProperty getPlayerHealth() {
