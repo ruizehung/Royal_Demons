@@ -22,9 +22,6 @@ public class PlayerSkeletCollisionHandler extends CollisionHandler {
         HealthComponent healthComponent = player.getComponent(HealthComponent.class);
         if (!healthComponent.getIsInvulnerable()) {
             healthComponent.deductHealth();
-        } else {
-            System.out.println("Player is currently invulnerable. " +
-                    "Player is currently at " + healthComponent.getHealthPoints() + " hearts");
         }
     }
 }
