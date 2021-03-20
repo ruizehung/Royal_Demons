@@ -31,6 +31,7 @@ public class PlayerComponent extends Component {
     public static String playerName;
     public static String playerWeapon;
     public static String gameDifficulty;
+    public static int gold;
 
     public PlayerComponent() {
         animIdle = new AnimationChannel(FXGL.image("lizard_m_40x55.png"), 9,

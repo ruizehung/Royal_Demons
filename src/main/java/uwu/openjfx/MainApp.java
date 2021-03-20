@@ -15,11 +15,13 @@ import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import uwu.openjfx.MapGeneration.GameMap;
 import uwu.openjfx.MapGeneration.Room;
 import uwu.openjfx.collision.MeleeSwordEnemyCollisionHandler;
 import uwu.openjfx.collision.PlayerSkeletCollisionHandler;
 import uwu.openjfx.collision.PlayerTriggerCollisionHandler;
+import uwu.openjfx.components.HealthComponent;
 import uwu.openjfx.components.PlayerComponent;
 import uwu.openjfx.components.TrapComponent;
 
@@ -35,13 +37,14 @@ public class MainApp extends GameApplication {
     private Entity player;
     private GameMap gameMap;
 
+
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setWidth(960);
         settings.setHeight(640);
         settings.setTitle("Royal Demons");
         settings.setVersion("0.1");
-        settings.setAppIcon("lizard_m_40x55.png");
+        settings.setAppIcon("skelet_idle_anim_f0_32x32.png");
         settings.setFontUI("ThaleahFat.ttf");
         settings.setMainMenuEnabled(true);
         settings.setSceneFactory(new MainMenuSceneFactory());
@@ -135,7 +138,7 @@ public class MainApp extends GameApplication {
         getGameWorld().addEntityFactory(new WeaponFactory());
         getGameScene().setBackgroundColor(Color.BLACK);
 
-        FXGL.getAudioPlayer().stopAllMusic();
+        getAudioPlayer().stopMusic(FXGL.getAssetLoader().loadMusic("MainMenu.mp3"));
         loopBGM("evil4.mp3");
         player = spawn("player", 0, 0);
         set("player", player);
@@ -168,25 +171,25 @@ public class MainApp extends GameApplication {
             Room newRoom;
             String spawnPosition = "north";
             switch (door.getString("direction")) {
-                case "north":
-                    newRoom = curRoom.getNorthRoom();
-                    spawnPosition = "south";
-                    break;
-                case "east":
-                    newRoom = curRoom.getEastRoom();
-                    spawnPosition = "west";
-                    break;
-                case "south":
-                    newRoom = curRoom.getSouthRoom();
-                    spawnPosition = "north";
-                    break;
-                case "west":
-                    newRoom = curRoom.getWestRoom();
-                    spawnPosition = "east";
-                    break;
-                default:
-                    newRoom = curRoom;
-                    System.err.println("Error getting new room!");
+            case "north":
+                newRoom = curRoom.getNorthRoom();
+                spawnPosition = "south";
+                break;
+            case "east":
+                newRoom = curRoom.getEastRoom();
+                spawnPosition = "west";
+                break;
+            case "south":
+                newRoom = curRoom.getSouthRoom();
+                spawnPosition = "north";
+                break;
+            case "west":
+                newRoom = curRoom.getWestRoom();
+                spawnPosition = "east";
+                break;
+            default:
+                newRoom = curRoom;
+                System.err.println("Error getting new room!");
             }
             final String spawnPosition_ = spawnPosition;
             if (newRoom != null) {
@@ -202,7 +205,14 @@ public class MainApp extends GameApplication {
 
     @Override
     protected void initUI() {
+        Text textPixels = getUIFactoryService().newText("", 75);
+        textPixels.setTranslateX(25);
+        textPixels.setTranslateY(75);
+        textPixels.setStroke(Color.WHITE);
 
+        textPixels.textProperty().bind(
+                player.getComponent(HealthComponent.class).getPlayerHealth().asString());
+        getGameScene().addUINode(textPixels); // add to the scene graph
     }
 
 

@@ -301,12 +301,7 @@ public class MainMenu extends FXGLMenu {
 
             FXGL.getDialogService().showConfirmationBox(text, yes -> {
                 if (yes) {
-                    FXGL.getGameController().gotoMainMenu();
-                    FXGL.getAudioPlayer().stopAllMusic();
-                    loopBGM("MainMenu.mp3");
-                    PlayerComponent.playerName = null;
-                    PlayerComponent.playerWeapon = null;
-                    PlayerComponent.gameDifficulty = null;
+                    resetToMainMenu();
                 }
             });
         });
@@ -329,6 +324,15 @@ public class MainMenu extends FXGLMenu {
 //        }
 
         return box;
+    }
+
+    public static void resetToMainMenu() {
+        FXGL.getGameController().gotoMainMenu();
+        FXGL.getAudioPlayer().stopAllMusic();
+        loopBGM("MainMenu.mp3");
+        PlayerComponent.playerName = null;
+        PlayerComponent.playerWeapon = null;
+        PlayerComponent.gameDifficulty = null;
     }
 
     private MenuBox createOptionsMenu() {

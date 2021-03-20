@@ -1,4 +1,4 @@
-package uwu.openjfx;
+package uwu.openjfx.components;
 
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
