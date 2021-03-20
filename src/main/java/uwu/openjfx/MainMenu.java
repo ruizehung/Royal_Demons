@@ -42,6 +42,7 @@ import java.util.function.Supplier;
 
 import static com.almasb.fxgl.core.math.FXGLMath.noise1D;
 import static com.almasb.fxgl.dsl.FXGL.getSettings;
+import static com.almasb.fxgl.dsl.FXGL.loopBGM;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.random;
 
 public class MainMenu extends FXGLMenu {
@@ -68,6 +69,7 @@ public class MainMenu extends FXGLMenu {
         String title = (type == MenuType.MAIN_MENU)
                 ? FXGL.getSettings().getTitle()
                 : "Paused";
+
         getContentRoot().getChildren().addAll(
                 createBackground(getAppWidth(), getAppHeight()),
                 //replace with function to get title
@@ -294,10 +296,19 @@ public class MainMenu extends FXGLMenu {
 
         MenuButton itemMain = new MenuButton("Main Menu");
         itemMain.setOnAction(event -> {
-            fireExitToMainMenu();
-            PlayerComponent.playerName = null;
-            PlayerComponent.playerWeapon = null;
-            PlayerComponent.gameDifficulty = null;
+            String text = FXGL.localize("menu.exitMainMenu") + "\n"
+                    + FXGL.localize("menu.unsavedProgress");
+
+            FXGL.getDialogService().showConfirmationBox(text, yes -> {
+                if (yes) {
+                    FXGL.getGameController().gotoMainMenu();
+                    FXGL.getAudioPlayer().stopAllMusic();
+                    loopBGM("MainMenu.mp3");
+                    PlayerComponent.playerName = null;
+                    PlayerComponent.playerWeapon = null;
+                    PlayerComponent.gameDifficulty = null;
+                }
+            });
         });
         box.add(itemMain);
 
@@ -569,8 +580,14 @@ public class MainMenu extends FXGLMenu {
         public MenuButton(String stringKey) {
             text = stringKey;
             btn = FXGL.getUIFactoryService().newButton(text);
-            btn.setStyle("-fx-background-color: transparent");
+            btn.setStyle("-fx-background-color: transparent;");
             btn.setAlignment(Pos.CENTER_LEFT);
+            btn.setOnMouseEntered(event -> {
+                FXGL.play("ui_hover.wav");
+            });
+            btn.setOnMouseClicked(event -> {
+                FXGL.play("ui_confirm.wav");
+            });
 
             Polygon p = new Polygon(0.0, 0.0, 220.0, 0.0, 250.0, 35.0, 0.0, 35.0);
             p.setMouseTransparent(true);
