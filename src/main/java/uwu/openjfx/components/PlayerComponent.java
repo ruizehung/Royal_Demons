@@ -25,6 +25,11 @@ public class PlayerComponent extends Component {
     private boolean startAttacking = false;
     private int attackDuration = 500; // Milliseconds
 
+    //TODO: remove temp vars and put in char state class
+    public static String playerName;
+    public static String playerWeapon;
+    public static String gameDifficulty;
+
     public PlayerComponent() {
         animIdle = new AnimationChannel(FXGL.image("lizard_m_40x55.png"), 9,
                 40, 55, Duration.seconds(0.5), 0, 3);

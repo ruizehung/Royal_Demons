@@ -18,6 +18,8 @@ import javafx.scene.input.KeyCode;
 
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+
 import uwu.openjfx.MapGeneration.Coordinate;
 import uwu.openjfx.MapGeneration.GameMap;
 import uwu.openjfx.MapGeneration.Room;
@@ -43,7 +45,10 @@ public class MainApp extends GameApplication {
         settings.setTitle("Royal Demons");
         settings.setVersion("0.1");
         settings.setAppIcon("lizard_m_idle_anim_f0.png");
+        settings.setFontUI("ThaleahFat.ttf");
         settings.setMainMenuEnabled(true);
+        settings.setSceneFactory(new MainMenuSceneFactory());
+        settings.setSoundMenuSelect("drop.wav");
         settings.setGameMenuEnabled(true);
         settings.setEnabledMenuItems(EnumSet.of(MenuItem.EXTRA));
 //        settings.setDeveloperMenuEnabled(true);
@@ -53,7 +58,7 @@ public class MainApp extends GameApplication {
     @Override
     protected void onPreInit() {
         getSettings().setGlobalMusicVolume(0.25);
-        // loopBGM("some_music.wav");
+        loopBGM("MainMenu.mp3");
     }
 
     @Override
@@ -136,8 +141,8 @@ public class MainApp extends GameApplication {
         set("player", player);
 
         Viewport viewport = getGameScene().getViewport();
-        viewport.setBounds(-32*5 , -getAppHeight(), 32*50, 32 * 50);
-        viewport.bindToEntity(player, getAppWidth() / 2, getAppHeight() / 2);
+        viewport.setBounds(-32 * 5, -getAppHeight(), 32 * 50, 32 * 50);
+        viewport.bindToEntity(player, getAppWidth() / 2.0, getAppHeight() / 2.0);
         viewport.setLazy(true);
     }
 
@@ -189,7 +194,21 @@ public class MainApp extends GameApplication {
 
     @Override
     protected void initUI() {
+        Text textPixels = new Text();
+        textPixels.setTranslateX(50); // x = 50
+        textPixels.setTranslateY(100); // y = 100
 
+        textPixels.textProperty().bind(FXGL.getWorldProperties()
+                .intProperty("pixelsMoved").asString());
+
+        FXGL.getGameScene().addUINode(textPixels); // add to the scene graph
+
+        var skeletTexture = FXGL.getAssetLoader().loadTexture(
+                "skelet_idle_anim_f0_32x32.png");
+        skeletTexture.setTranslateX(50);
+        skeletTexture.setTranslateY(450);
+
+        FXGL.getGameScene().addUINode(skeletTexture);
     }
 
 
