@@ -51,7 +51,7 @@ public class CreatureFactory implements EntityFactory {
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .with(new Enemy("skelet"))
-                .with(new HealthComponent(5))
+                .with(new HealthComponent(1))
                 .build();
     }
 
