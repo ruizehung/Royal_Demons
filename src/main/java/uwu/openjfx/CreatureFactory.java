@@ -54,7 +54,7 @@ public class CreatureFactory implements EntityFactory {
                 .bbox(new HitBox(BoundingShape.box(30, 30)))
                 .with(physics)
                 .with(new CollidableComponent(true))
-                .with(new Enemy(data.<String>get("type_")))
+                .with(new Enemy("skelet"))
                 .with(new HealthComponent(5))
                 .build();
     }
