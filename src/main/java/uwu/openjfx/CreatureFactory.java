@@ -7,11 +7,18 @@ import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.entity.components.IrremovableComponent;
+import com.almasb.fxgl.physics.BoundingShape;
+import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
+import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import uwu.openjfx.components.Enemy;
+import uwu.openjfx.components.HealthComponent;
 import uwu.openjfx.components.PlayerComponent;
 
 public class CreatureFactory implements EntityFactory {
@@ -26,23 +33,40 @@ public class CreatureFactory implements EntityFactory {
 
         return FXGL.entityBuilder(data)
                 .type(RoyalType.PLAYER)
-                .viewWithBBox(new Rectangle(30, 30, Color.TRANSPARENT))
+                .bbox(new HitBox(BoundingShape.polygon(new Point2D(3, 15), new Point2D(38, 15),
+                        new Point2D(38, 55), new Point2D(3, 55))))
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .with(new IrremovableComponent())
                 .with(new PlayerComponent())
+                .with(new HealthComponent(10))
                 .build();
     }
 
-//    @Spawns("enemy")
-//    public Entity newEnemy(SpawnData data) {
-//        return FXGL.entityBuilder(data)
-////                .view(new Rectangle(40, 40, Color.RED))
-//                .view("skelet_idle_anim_f0_32x32.png")
-//                .with(new ProjectileComponent(new Point2D(1, 0), 150))
-//                .build();
-//
-//    }
+    @Spawns("skelet")
+    public Entity newSkelet(SpawnData data) {
+        PhysicsComponent physics = new PhysicsComponent();
+        physics.setBodyType(BodyType.DYNAMIC);
+        return FXGL.entityBuilder(data)
+                .type(RoyalType.ENEMY)
+                .bbox(new HitBox(BoundingShape.box(data.<Integer>get("bwidth"), data.<Integer>get("bheight"))))
+                .with(physics)
+                .with(new CollidableComponent(true))
+                .with(new Enemy(data.<String>get("type_")))
+                .with(new HealthComponent(3))
+                .build();
+    }
+
+    @Spawns("meleeSword")
+    public Entity newMeleeSword(SpawnData data) {
+        Rectangle hitbox = new Rectangle(50, 75, Color.WHITE);
+        hitbox.setOpacity(0.5);
+        return FXGL.entityBuilder(data)
+            .type(RoyalType.MELEE)
+            .viewWithBBox(hitbox)
+            .with(new CollidableComponent(true))
+            .build();
+    }
 
 //    @Spawns("ally")
 //    public Entity newAlly(SpawnData data) {

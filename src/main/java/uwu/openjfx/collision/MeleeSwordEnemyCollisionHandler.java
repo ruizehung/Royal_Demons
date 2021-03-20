@@ -1,0 +1,24 @@
+package uwu.openjfx.collision;
+
+import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.components.IDComponent;
+import com.almasb.fxgl.physics.CollisionHandler;
+import uwu.openjfx.MapGeneration.Room;
+import uwu.openjfx.RoyalType;
+import uwu.openjfx.components.HealthComponent;
+
+public class MeleeSwordEnemyCollisionHandler extends CollisionHandler  {
+    public MeleeSwordEnemyCollisionHandler() {
+        super(RoyalType.MELEE, RoyalType.ENEMY);
+    }
+
+    @Override
+    protected void onCollisionBegin(Entity sword, Entity enemy) {
+        HealthComponent healthComponent = enemy.getComponent(HealthComponent.class);
+        healthComponent.deductHealth();
+        IDComponent idComponent = enemy.getComponent(IDComponent.class);
+        Room curRoom = FXGL.geto("curRoom");
+        curRoom.setEntityData(idComponent.getId(), "isAlive", 0);
+    }
+}

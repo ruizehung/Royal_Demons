@@ -1,5 +1,6 @@
 package uwu.openjfx;
 
+import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.MenuItem;
@@ -7,14 +8,23 @@ import com.almasb.fxgl.app.scene.Viewport;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.components.CollidableComponent;
+import com.almasb.fxgl.entity.components.IDComponent;
+import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.input.virtual.VirtualButton;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 
+import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+
+import uwu.openjfx.MapGeneration.Coordinate;
+import uwu.openjfx.MapGeneration.GameMap;
+import uwu.openjfx.MapGeneration.Room;
+import uwu.openjfx.collision.MeleeSwordEnemyCollisionHandler;
+import uwu.openjfx.collision.PlayerSkeletCollisionHandler;
 import uwu.openjfx.components.PlayerComponent;
 
 import java.util.EnumSet;
@@ -40,6 +50,8 @@ public class MainApp extends GameApplication {
         settings.setSceneFactory(new MainMenuSceneFactory());
         settings.setGameMenuEnabled(true);
         settings.setEnabledMenuItems(EnumSet.of(MenuItem.EXTRA));
+//        settings.setDeveloperMenuEnabled(true);
+//        settings.setApplicationMode(ApplicationMode.DEVELOPER);
     }
 
     @Override
@@ -50,6 +62,7 @@ public class MainApp extends GameApplication {
 
     @Override
     protected void initInput() {
+        //region Movement
         getInput().addAction(new UserAction("Left") {
             @Override
             protected void onAction() {
@@ -99,6 +112,17 @@ public class MainApp extends GameApplication {
                 player.getComponent(PlayerComponent.class).stop();
             }
         }, KeyCode.S, VirtualButton.DOWN);
+        //endregion
+
+        getInput().addAction(new UserAction("LMB") {
+            @Override
+            protected void onActionBegin() {
+                if (!player.getComponent(PlayerComponent.class).isAttacking()) {
+                    player.getComponent(PlayerComponent.class).autoAttack();
+//                    meleeAttack();
+                }
+            }
+        }, MouseButton.PRIMARY);
 
     }
 
@@ -129,15 +153,41 @@ public class MainApp extends GameApplication {
     @Override
     protected void initPhysics() {
         FXGL.getPhysicsWorld().setGravity(0, 0);
+        FXGL.getPhysicsWorld().addCollisionHandler(new PlayerSkeletCollisionHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new MeleeSwordEnemyCollisionHandler());
 
         FXGL.onCollisionOneTimeOnly(RoyalType.PLAYER, RoyalType.DOOR, (player, door) -> {
             getInput().setProcessInput(false);
             player.getComponent(PlayerComponent.class).stop();
 
-            getGameScene().getViewport().fade(() -> {
-                changeRoom();
+            Room curRoom = FXGL.geto("curRoom");
+            Room newRoom;
+            switch (door.getString("direction")) {
+                case "north":
+                    newRoom = curRoom.getNorthRoom();
+                    break;
+                case "east":
+                    newRoom = curRoom.getEastRoom();
+                    break;
+                case "south":
+                    newRoom = curRoom.getSouthRoom();
+                    break;
+                case "west":
+                    newRoom = curRoom.getWestRoom();
+                    break;
+                default:
+                    newRoom = curRoom;
+                    System.err.println("Error getting new room!");
+            }
+
+            if (newRoom != null) {
+                getGameScene().getViewport().fade(() -> {
+                    loadRoom(newRoom);
+                    getInput().setProcessInput(true);
+                });
+            } else {
                 getInput().setProcessInput(true);
-            });
+            }
         });
     }
 
@@ -158,15 +208,41 @@ public class MainApp extends GameApplication {
         skeletTexture.setTranslateY(450);
 
         FXGL.getGameScene().addUINode(skeletTexture);
-
     }
 
-    private void changeRoom() {
+
+    private void loadRoom(Room newRoom) {
+        Level curLevel = setLevelFromMap("tmx/" + newRoom.getRoomType() + ".tmx");
+
         if (player != null) {
             player.getComponent(PhysicsComponent.class).overwritePosition(new Point2D(300, 300));
             player.setZIndex(Integer.MAX_VALUE);
         }
-        setLevelFromMap("tmx/testRoom.tmx");
+
+        for (Entity entity : curLevel.getEntities()) {
+            if (entity.isType(RoyalType.ENEMY)) {
+                IDComponent idComponent = entity.getComponent(IDComponent.class);
+                if (!newRoom.visited()) {
+                    newRoom.setEntityData(idComponent.getId(), "isAlive", 1);
+                } else {
+                    if (newRoom.getEntityData(idComponent.getId(), "isAlive") == 0) {
+                        entity.removeFromWorld();
+                    }
+                }
+            }
+        }
+
+        if (!newRoom.visited()) {
+            newRoom.setVisited(true);
+        }
+
+        set("curRoom", newRoom);
+        System.out.println(newRoom.getCoordinate());
+    }
+
+    public void meleeAttack() {
+        Entity meleeSword = new Entity();
+        meleeSword = spawn("meleeSword", player.getX() + 5, player.getY());
     }
 
     public static void main(String[] args) {
