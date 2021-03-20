@@ -15,7 +15,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import uwu.openjfx.MapGeneration.GameMap;
 import uwu.openjfx.MapGeneration.Room;
 import uwu.openjfx.collision.MeleeSwordEnemyCollisionHandler;
@@ -38,6 +37,7 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.loopBGM;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.set;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
 import static com.almasb.fxgl.dsl.FXGL.setLevelFromMap;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
 public class MainApp extends GameApplication {
 
@@ -144,7 +144,7 @@ public class MainApp extends GameApplication {
         getGameWorld().addEntityFactory(new WeaponFactory());
         getGameScene().setBackgroundColor(Color.BLACK);
 
-        getAudioPlayer().stopAllMusic();
+        FXGL.getAudioPlayer().stopAllMusic();
         loopBGM("evil4.mp3");
         player = spawn("player", 0, 0);
         set("player", player);
@@ -152,8 +152,8 @@ public class MainApp extends GameApplication {
         loadRoom(gameMap.getInitialRoom(), "west");
 
         Viewport viewport = getGameScene().getViewport();
-        viewport.setBounds(-32*5 , -getAppHeight(), 32*70, 32 * 70);
-        viewport.bindToEntity(player, getAppWidth() / 2, getAppHeight() / 2);
+        viewport.setBounds(-32 * 5, -getAppHeight(), 32 * 70, 32 * 70);
+        viewport.bindToEntity(player, getAppWidth() / 2.0, getAppHeight() / 2.0);
         viewport.setLazy(true);
     }
 
