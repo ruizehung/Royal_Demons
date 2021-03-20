@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="31">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="36">
  <tileset firstgid="1" name="0x72_DungeonTilesetII_32x32" tilewidth="32" tileheight="32" tilecount="1024" columns="32">
   <image source="0x72_DungeonTilesetII_32x32.png" width="1024" height="1024"/>
  </tileset>
@@ -75,11 +75,11 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,257,0,0,258,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="4" name="Object Layer 1" locked="1">
+ <objectgroup id="4" name="Object Layer 1">
   <object id="1" type="wall" x="83.3959" y="55.2057" width="330.237" height="28.1902"/>
   <object id="2" type="wall" x="485.106" y="55.2057" width="388.789" height="28.1902"/>
-  <object id="3" type="wall" x="86.3325" y="576.724" width="420.503" height="28.1902"/>
-  <object id="4" type="wall" x="579.073" y="576.724" width="293.647" height="28.1902"/>
+  <object id="3" type="wall" x="84.7593" y="571.48" width="420.503" height="28.1902"/>
+  <object id="4" type="wall" x="579.597" y="571.48" width="293.647" height="28.1902"/>
   <object id="5" type="wall" x="865.673" y="347.679" width="29.3648" height="227.87"/>
   <object id="6" type="wall" x="867.435" y="56.3806" width="29.3648" height="227.87"/>
   <object id="7" type="wall" x="64.0151" y="58.7297" width="29.3648" height="227.87"/>
@@ -100,18 +100,23 @@
    </properties>
   </object>
   <object id="15" type="wall" x="407.718" y="11.9205" width="78.8153" height="28.1902"/>
-  <object id="25" name="Enemy" type="skelet" x="641.134" y="158.53" width="29.4613" height="32.2671">
-   <properties>
-    <property name="bheight" type="int" value="30"/>
-    <property name="bwidth" type="int" value="30"/>
-    <property name="type_" value="skelet"/>
-   </properties>
-  </object>
   <object id="29" name="Door" type="door" x="406.853" y="36.5449" width="83.4114" height="26.3852">
    <properties>
     <property name="direction" value="north"/>
    </properties>
   </object>
   <object id="30" type="wall" x="101.317" y="89.3433" width="56.1849" height="32.2373"/>
+  <object id="31" name="Minion" type="minion" x="597.945" y="243.412">
+   <point/>
+  </object>
+  <object id="33" name="Minion" type="minion" x="367.412" y="276.264">
+   <point/>
+  </object>
+  <object id="34" name="Minion" type="minion" x="688.78" y="411.577">
+   <point/>
+  </object>
+  <object id="35" name="Minion" type="minion" x="338.282" y="437.888">
+   <point/>
+  </object>
  </objectgroup>
 </map>

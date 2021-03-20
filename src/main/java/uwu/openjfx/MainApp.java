@@ -18,7 +18,9 @@ import javafx.scene.paint.Color;
 import uwu.openjfx.MapGeneration.GameMap;
 import uwu.openjfx.MapGeneration.Room;
 import uwu.openjfx.collision.PlayerSkeletCollisionHandler;
+import uwu.openjfx.collision.PlayerTriggerCollisionHandler;
 import uwu.openjfx.components.PlayerComponent;
+import uwu.openjfx.components.TrapComponent;
 
 import java.util.EnumSet;
 import java.util.Map;
@@ -113,10 +115,10 @@ public class MainApp extends GameApplication {
         getGameWorld().addEntityFactory(new CreatureFactory());
         getGameScene().setBackgroundColor(Color.BLACK);
 
-        loadRoom(gameMap.getInitialRoom());
-
-        player = spawn("player", 300, 300);
+        player = spawn("player", 0, 0);
         set("player", player);
+
+        loadRoom(gameMap.getInitialRoom(), "west");
 
         Viewport viewport = getGameScene().getViewport();
         viewport.setBounds(-32*5 , -getAppHeight(), 32*70, 32 * 70);
@@ -133,6 +135,7 @@ public class MainApp extends GameApplication {
     protected void initPhysics() {
         FXGL.getPhysicsWorld().setGravity(0, 0);
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerSkeletCollisionHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new PlayerTriggerCollisionHandler());
 
         FXGL.onCollisionOneTimeOnly(RoyalType.PLAYER, RoyalType.DOOR, (player, door) -> {
             getInput().setProcessInput(false);
@@ -140,27 +143,32 @@ public class MainApp extends GameApplication {
 
             Room curRoom = FXGL.geto("curRoom");
             Room newRoom;
+            String spawnPosition = "north";
             switch (door.getString("direction")) {
                 case "north":
                     newRoom = curRoom.getNorthRoom();
+                    spawnPosition = "south";
                     break;
                 case "east":
                     newRoom = curRoom.getEastRoom();
+                    spawnPosition = "west";
                     break;
                 case "south":
                     newRoom = curRoom.getSouthRoom();
+                    spawnPosition = "north";
                     break;
                 case "west":
                     newRoom = curRoom.getWestRoom();
+                    spawnPosition = "east";
                     break;
                 default:
                     newRoom = curRoom;
                     System.err.println("Error getting new room!");
             }
-
+            final String spawnPosition_ = spawnPosition;
             if (newRoom != null) {
                 getGameScene().getViewport().fade(() -> {
-                    loadRoom(newRoom);
+                    loadRoom(newRoom, spawnPosition_);
                     getInput().setProcessInput(true);
                 });
             } else {
@@ -175,14 +183,8 @@ public class MainApp extends GameApplication {
     }
 
 
-    private void loadRoom(Room newRoom) {
+    private void loadRoom(Room newRoom, String playerSpawnPosition) {
         Level curLevel = setLevelFromMap("tmx/" + newRoom.getRoomType() + ".tmx");
-
-        if (player != null) {
-            player.getComponent(PhysicsComponent.class).overwritePosition(new Point2D(300, 300));
-
-            player.setZIndex(Integer.MAX_VALUE);
-        }
 
         for (Entity entity : curLevel.getEntities()) {
             if (entity.isType(RoyalType.ENEMY)) {
@@ -194,6 +196,23 @@ public class MainApp extends GameApplication {
                         entity.removeFromWorld();
                     }
                 }
+            }
+            if (entity.isType(RoyalType.TRAP) || entity.isType(RoyalType.TRAP_TRIGGER)) {
+                IDComponent idComponent = entity.getComponent(IDComponent.class);
+                if (!newRoom.visited()) {
+                    newRoom.setEntityData(idComponent.getId(), "triggered", 0);
+                } else {
+                    if (newRoom.getEntityData(idComponent.getId(), "triggered") == 1) {
+                        entity.getComponent(TrapComponent.class).trigger();
+                    }
+                }
+            }
+
+            if (player != null && entity.isType(RoyalType.POINT) && entity.getProperties()
+                    .getString("position").equals(playerSpawnPosition)) {
+                player.getComponent(PhysicsComponent.class).overwritePosition(
+                        new Point2D(entity.getX(), entity.getY()));
+                player.setZIndex(Integer.MAX_VALUE);
             }
         }
 
