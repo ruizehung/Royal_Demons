@@ -6,9 +6,12 @@ import com.almasb.fxgl.entity.components.IDComponent;
 import uwu.openjfx.MapGeneration.Room;
 import uwu.openjfx.RoyalType;
 
+import java.util.Timer;
+
 // Handles any altercations to health of creature
 public class HealthComponent extends Component {
     private int healthPoints;
+    private boolean isInvulnerable;
 
     public HealthComponent(int healthPoints) {
         this.healthPoints = healthPoints;
@@ -25,6 +28,22 @@ public class HealthComponent extends Component {
                 curRoom.setEntityData(idComponent.getId(), "isAlive", 0);
             }
         }
+        isInvulnerable = true;
+        invulnerability();
+    }
+
+    private void invulnerability() {
+        isInvulnerable = true;
+        Timer t = new java.util.Timer();
+        t.schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        isInvulnerable = false;
+                        t.cancel();
+                    }
+                }, 2000
+        );
     }
 
     public int getHealthPoints() {
@@ -33,5 +52,9 @@ public class HealthComponent extends Component {
 
     public void setHealthPoints(int healthPoints) {
         this.healthPoints = healthPoints;
+    }
+
+    public boolean getIsInvulnerable() {
+        return isInvulnerable;
     }
 }
