@@ -62,6 +62,11 @@ public class MainApp extends GameApplication {
         settings.setSceneFactory(new MainMenuSceneFactory());
         settings.setGameMenuEnabled(true);
         settings.setEnabledMenuItems(EnumSet.of(MenuItem.EXTRA));
+        // TODO: give credits to all sources that we use
+        settings.getCredits().addAll(Arrays.asList(
+                "Asset by 0x72 from itch.io",
+                "0x72.itch.io/dungeontileset-ii"
+        ));
 //        settings.setDeveloperMenuEnabled(true);
 //        settings.setApplicationMode(ApplicationMode.DEVELOPER);
     }

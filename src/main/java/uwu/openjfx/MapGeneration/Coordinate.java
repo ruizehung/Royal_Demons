@@ -2,6 +2,11 @@ package uwu.openjfx.MapGeneration;
 
 import java.util.Objects;
 
+/*
+This class is inspired by jabu.10245's answer at
+stackoverflow.com/questions/34092551/java-hashmap-in-hashmap-store-all-coordinates-of-pixels
+ */
+
 public class Coordinate {
     private int x;
     private int y;
