@@ -17,19 +17,27 @@ import javafx.geometry.Point2D;
 import javafx.util.Duration;
 
 import java.util.Hashtable;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Enemy extends Component {
     private PhysicsComponent physics;
 
-    private AnimatedTexture texture;
+    private int width;
+    private int height;
 
+    private AnimatedTexture texture;
     private AnimationChannel animIdle, animWalk;
 
     private LocalTimer moveTimer;
 
-    public Enemy(String type) {
-        animIdle = new AnimationChannel(FXGL.image(type + ".png"), 8, 32, 32, Duration.seconds(0.5), 0, 3);
-        animWalk = new AnimationChannel(FXGL.image(type + ".png"), 8, 32, 32, Duration.seconds(0.5), 4, 7);
+    public Enemy(String type, int width, int height) {
+        this.width = width;
+        this.height = height;
+
+        animIdle = new AnimationChannel(FXGL.image("creatures/minions/" + type), 8, width, height, Duration.seconds(0.5), 0, 3);
+        animWalk = new AnimationChannel(FXGL.image("creatures/minions/" + type), 8, width, height, Duration.seconds(0.5), 4, 7);
 
         texture = new AnimatedTexture(animIdle);
 
@@ -38,7 +46,7 @@ public class Enemy extends Component {
 
     @Override
     public void onAdded() {
-        entity.getTransformComponent().setScaleOrigin(new Point2D(16, 16));
+        entity.getTransformComponent().setScaleOrigin(new Point2D(width / 2, height / 2));
         entity.getViewComponent().addChild(texture);
 
         moveTimer = FXGL.newLocalTimer();
