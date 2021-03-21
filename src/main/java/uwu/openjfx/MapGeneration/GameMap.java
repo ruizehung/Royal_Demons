@@ -1,9 +1,20 @@
 package uwu.openjfx.MapGeneration;
 
 
+import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.components.IDComponent;
+import com.almasb.fxgl.entity.level.Level;
+import com.almasb.fxgl.physics.PhysicsComponent;
+import javafx.geometry.Point2D;
 import javafx.util.Pair;
+import uwu.openjfx.RoyalType;
+import uwu.openjfx.components.TrapComponent;
 
 import java.util.*;
+
+import static com.almasb.fxgl.dsl.FXGL.geto;
+import static com.almasb.fxgl.dsl.FXGL.setLevelFromMap;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.set;
 
 public class GameMap {
     private Random random = new Random();
@@ -30,8 +41,34 @@ public class GameMap {
         this.numOfRooms = numOfRooms;
         finalBossDist = random.nextInt(3) + 7;
         generateRooms();
+
+        initialRoom.setRoomType("initialRoom");
         //debug print statement for boss room distance
         //System.out.println("boss room distance: " + bossRoom.getDistFromInitRoom());
+    }
+
+    public Room getRoom(Coordinate coordinate) {
+        return rooms.get(coordinate);
+    }
+
+    public int getNumOfRooms() {
+        return numOfRooms;
+    }
+
+    public void setNumOfRooms(int numOfRooms) {
+        this.numOfRooms = numOfRooms;
+    }
+
+    public Room getInitialRoom() {
+        return initialRoom;
+    }
+
+    public Map<Coordinate, Room> getRooms() {
+        return rooms;
+    }
+
+    public Room getBossRoom() {
+        return bossRoom;
     }
 
     private void generateRooms() {
@@ -150,28 +187,45 @@ public class GameMap {
         }
     }
 
-    public Room getRoom(Coordinate coordinate) {
-        return rooms.get(coordinate);
+    public void loadRoom(Room newRoom, String playerSpawnPosition) {
+        Level curLevel = setLevelFromMap("tmx/" + newRoom.getRoomType() + ".tmx");
+        for (Entity entity : curLevel.getEntities()) {
+            if (entity.isType(RoyalType.ENEMY)) {
+                IDComponent idComponent = entity.getComponent(IDComponent.class);
+                if (!newRoom.visited()) {
+                    newRoom.setEntityData(idComponent.getId(), "isAlive", 1);
+                } else {
+                    if (newRoom.getEntityData(idComponent.getId(), "isAlive") == 0) {
+                        entity.removeFromWorld();
+                    }
+                }
+            }
+            if (entity.isType(RoyalType.TRAP) || entity.isType(RoyalType.TRAP_TRIGGER)) {
+                IDComponent idComponent = entity.getComponent(IDComponent.class);
+                if (!newRoom.visited()) {
+                    newRoom.setEntityData(idComponent.getId(), "triggered", 0);
+                } else {
+                    if (newRoom.getEntityData(idComponent.getId(), "triggered") == 1) {
+                        entity.getComponent(TrapComponent.class).trigger();
+                    }
+                }
+            }
+            Entity player = geto("player");
+            if (player != null && entity.isType(RoyalType.POINT) && entity.getProperties()
+                    .getString("position").equals(playerSpawnPosition)) {
+                player.getComponent(PhysicsComponent.class).overwritePosition(
+                        new Point2D(entity.getX(), entity.getY()));
+                player.setZIndex(Integer.MAX_VALUE);
+            }
+        }
+
+        if (!newRoom.visited()) {
+            newRoom.setVisited(true);
+        }
+
+        set("curRoom", newRoom);
+        set("curLevel", curLevel);
+        System.out.println(newRoom.getCoordinate());
     }
 
-
-    public int getNumOfRooms() {
-        return numOfRooms;
-    }
-
-    public void setNumOfRooms(int numOfRooms) {
-        this.numOfRooms = numOfRooms;
-    }
-
-    public Room getInitialRoom() {
-        return initialRoom;
-    }
-
-    public Map<Coordinate, Room> getRooms() {
-        return rooms;
-    }
-
-    public Room getBossRoom() {
-        return bossRoom;
-    }
 }

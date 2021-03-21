@@ -1,5 +1,6 @@
 package uwu.openjfx.components;
 
+import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
@@ -8,12 +9,13 @@ import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
+import uwu.openjfx.DieScreenMenu;
 
 import java.util.Timer;
 
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 
-public class PlayerComponent extends Component {
+public class PlayerComponent extends HealthComponent {
 
     private PhysicsComponent physics;
 
@@ -37,7 +39,8 @@ public class PlayerComponent extends Component {
     public static int gold;
     private boolean removeThisLaterPlease = false;
 
-    public PlayerComponent() {
+    public PlayerComponent(int healthPoints) {
+        super(healthPoints);
         animIdle = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
                 40, 55, Duration.seconds(0.5), 0, 3);
         animWalk = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
@@ -194,5 +197,10 @@ public class PlayerComponent extends Component {
 
     public boolean isAttacking() {
         return attacking;
+    }
+
+    @Override
+    public void die() {
+        FXGL.getSceneService().pushSubScene(new DieScreenMenu(MenuType.GAME_MENU));
     }
 }

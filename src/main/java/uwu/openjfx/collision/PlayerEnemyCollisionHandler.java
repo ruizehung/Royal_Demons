@@ -4,6 +4,7 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import uwu.openjfx.RoyalType;
 import uwu.openjfx.components.HealthComponent;
+import uwu.openjfx.components.PlayerComponent;
 
 public class PlayerEnemyCollisionHandler extends CollisionHandler {
 
@@ -12,9 +13,9 @@ public class PlayerEnemyCollisionHandler extends CollisionHandler {
     }
 
     protected void onCollision(Entity player, Entity enemy) {
-        HealthComponent healthComponent = player.getComponent(HealthComponent.class);
-        if (!healthComponent.getIsInvulnerable()) {
-            healthComponent.deductHealth();
+        PlayerComponent playerComponent = player.getComponent(PlayerComponent.class);
+        if (!playerComponent.getIsInvulnerable()) {
+            playerComponent.deductHealth();
         }
     }
 }

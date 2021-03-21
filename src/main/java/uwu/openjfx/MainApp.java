@@ -18,10 +18,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import uwu.openjfx.MapGeneration.GameMap;
 import uwu.openjfx.MapGeneration.Room;
-import uwu.openjfx.collision.EnemyAttackPlayerCollisionHandler;
-import uwu.openjfx.collision.PlayerAttackEnemyCollisionHandler;
-import uwu.openjfx.collision.PlayerEnemyCollisionHandler;
-import uwu.openjfx.collision.PlayerTriggerCollisionHandler;
+import uwu.openjfx.collision.*;
+import uwu.openjfx.input.KillAllEnemy;
+import uwu.openjfx.input.ShowMapAction;
 import uwu.openjfx.components.HealthComponent;
 import uwu.openjfx.components.PlayerComponent;
 import uwu.openjfx.components.TrapComponent;
@@ -51,7 +50,8 @@ public class MainApp extends GameApplication {
     private Entity player;
     private GameMap gameMap;
     private List<String> minionList;
-
+    final private Boolean developerCheat = true;
+    // TODO: be able to beat the boss and show win screen
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -74,6 +74,8 @@ public class MainApp extends GameApplication {
 //        settings.setApplicationMode(ApplicationMode.DEVELOPER);
     }
 
+
+
     @Override
     protected void onPreInit() {
         getSettings().setGlobalMusicVolume(0.25);
@@ -82,6 +84,10 @@ public class MainApp extends GameApplication {
 
     @Override
     protected void initInput() {
+        if (developerCheat) {
+            getInput().addAction(new KillAllEnemy("KillAll"), KeyCode.K);
+        }
+        // TODO: refactor all these to input package
         //region Movement
         getInput().addAction(new UserAction("Left") {
             @Override
@@ -162,12 +168,15 @@ public class MainApp extends GameApplication {
             }
         }, KeyCode.SPACE);
         // endregion
+
+        getInput().addAction(new ShowMapAction("showMap"), KeyCode.M);
     }
 
     @Override
     protected void initGame() {
         loadEnemies();
         gameMap = new GameMap(40);
+        set("gameMap", gameMap);
 
         getGameWorld().addEntityFactory(new StructureFactory());
         getGameWorld().addEntityFactory(new CreatureFactory());
@@ -179,7 +188,7 @@ public class MainApp extends GameApplication {
         player = spawn("player", 0, 0);
         set("player", player);
 
-        loadRoom(gameMap.getInitialRoom(), "west");
+        gameMap.loadRoom(gameMap.getInitialRoom(), "center");
 
         Viewport viewport = getGameScene().getViewport();
         viewport.setBounds(-32 * 5, -getAppHeight(), 32 * 70, 32 * 70);
@@ -190,6 +199,7 @@ public class MainApp extends GameApplication {
     @Override
     protected void initGameVars(Map<String, Object> vars) {
         vars.put("pixelsMoved", 0);
+        vars.put("developerCheat", developerCheat);
     }
 
     @Override
@@ -199,45 +209,7 @@ public class MainApp extends GameApplication {
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerAttackEnemyCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new EnemyAttackPlayerCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerTriggerCollisionHandler());
-
-        FXGL.onCollisionOneTimeOnly(RoyalType.PLAYER, RoyalType.DOOR, (player, door) -> {
-            getInput().setProcessInput(false);
-            player.getComponent(PlayerComponent.class).stop();
-
-            Room curRoom = FXGL.geto("curRoom");
-            Room newRoom;
-            String spawnPosition = "north";
-            switch (door.getString("direction")) {
-                case "north":
-                    newRoom = curRoom.getNorthRoom();
-                    spawnPosition = "south";
-                    break;
-                case "east":
-                    newRoom = curRoom.getEastRoom();
-                    spawnPosition = "west";
-                    break;
-                case "south":
-                    newRoom = curRoom.getSouthRoom();
-                    spawnPosition = "north";
-                    break;
-                case "west":
-                    newRoom = curRoom.getWestRoom();
-                    spawnPosition = "east";
-                    break;
-                default:
-                    newRoom = curRoom;
-                    System.err.println("Error getting new room!");
-            }
-            final String spawnPosition_ = spawnPosition;
-            if (newRoom != null) {
-                getGameScene().getViewport().fade(() -> {
-                    loadRoom(newRoom, spawnPosition_);
-                    getInput().setProcessInput(true);
-                });
-            } else {
-                getInput().setProcessInput(true);
-            }
-        });
+        FXGL.getPhysicsWorld().addCollisionHandler(new PlayerDoorCollisionHandler());
     }
 
     @Override
@@ -248,50 +220,8 @@ public class MainApp extends GameApplication {
         textPixels.setStroke(Color.WHITE);
 
         textPixels.textProperty().bind(
-                player.getComponent(HealthComponent.class).getPlayerHealth().asString());
+                player.getComponent(PlayerComponent.class).getPlayerHealth().asString());
         getGameScene().addUINode(textPixels); // add to the scene graph
-    }
-
-
-    private void loadRoom(Room newRoom, String playerSpawnPosition) {
-        Level curLevel = setLevelFromMap("tmx/" + newRoom.getRoomType() + ".tmx");
-
-        for (Entity entity : curLevel.getEntities()) {
-            if (entity.isType(RoyalType.ENEMY)) {
-                IDComponent idComponent = entity.getComponent(IDComponent.class);
-                if (!newRoom.visited()) {
-                    newRoom.setEntityData(idComponent.getId(), "isAlive", 1);
-                } else {
-                    if (newRoom.getEntityData(idComponent.getId(), "isAlive") == 0) {
-                        entity.removeFromWorld();
-                    }
-                }
-            }
-            if (entity.isType(RoyalType.TRAP) || entity.isType(RoyalType.TRAP_TRIGGER)) {
-                IDComponent idComponent = entity.getComponent(IDComponent.class);
-                if (!newRoom.visited()) {
-                    newRoom.setEntityData(idComponent.getId(), "triggered", 0);
-                } else {
-                    if (newRoom.getEntityData(idComponent.getId(), "triggered") == 1) {
-                        entity.getComponent(TrapComponent.class).trigger();
-                    }
-                }
-            }
-
-            if (player != null && entity.isType(RoyalType.POINT) && entity.getProperties()
-                    .getString("position").equals(playerSpawnPosition)) {
-                player.getComponent(PhysicsComponent.class).overwritePosition(
-                        new Point2D(entity.getX(), entity.getY()));
-                player.setZIndex(Integer.MAX_VALUE);
-            }
-        }
-
-        if (!newRoom.visited()) {
-            newRoom.setVisited(true);
-        }
-
-        set("curRoom", newRoom);
-        System.out.println(newRoom.getCoordinate());
     }
 
     public void loadEnemies() {

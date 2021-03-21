@@ -3,18 +3,20 @@ package uwu.openjfx.components;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
+import com.almasb.fxgl.entity.components.IDComponent;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import com.almasb.fxgl.time.LocalTimer;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
+import uwu.openjfx.MapGeneration.Room;
 
 import java.util.Timer;
 
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 
-public class EnemyComponent extends Component {
+public class EnemyComponent extends HealthComponent {
     private PhysicsComponent physics;
 
     private String type;
@@ -34,7 +36,8 @@ public class EnemyComponent extends Component {
 
     private LocalTimer moveTimer;
 
-    public EnemyComponent(String type, int width, int height) {
+    public EnemyComponent(int healthPoints, String type, int width, int height) {
+        super(healthPoints);
         this.type = type;
         this.width = width;
         this.height = height;
@@ -151,5 +154,13 @@ public class EnemyComponent extends Component {
                     }
                 }, attackDuration
         );
+    }
+
+    @Override
+    public void die() {
+        getEntity().removeFromWorld();
+        IDComponent idComponent = getEntity().getComponent(IDComponent.class);
+        Room curRoom = FXGL.geto("curRoom");
+        curRoom.setEntityData(idComponent.getId(), "isAlive", 0);
     }
 }
