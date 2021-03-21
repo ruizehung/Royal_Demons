@@ -12,7 +12,6 @@ import javafx.util.Duration;
 import java.util.Timer;
 
 import static com.almasb.fxgl.dsl.FXGL.spawn;
-import static com.almasb.fxgl.dsl.FXGL.text;
 
 public class PlayerComponent extends Component {
 
@@ -45,9 +44,9 @@ public class PlayerComponent extends Component {
                 40, 55, Duration.seconds(0.5), 4, 7);
         animAutoAttack = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
                 40, 55, Duration.seconds(attackDuration / 1000), 8, 8);
-        animSwordUltimate1 = new AnimationChannel(FXGL.image("lizard_m_40x55.png"), 9,
+        animSwordUltimate1 = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
                 40, 55, Duration.seconds(ultimateChargeDuration / 1000), 7, 7);
-        animSwordUltimate2 = new AnimationChannel(FXGL.image("lizard_m_40x55.png"), 9,
+        animSwordUltimate2 = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
                 40, 55, Duration.seconds(attackDuration / 1000), 8, 8);
 
         texture = new AnimatedTexture(animIdle);

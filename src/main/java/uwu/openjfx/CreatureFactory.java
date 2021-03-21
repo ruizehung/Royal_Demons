@@ -13,7 +13,8 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import javafx.geometry.Point2D;
-import uwu.openjfx.components.Enemy;
+//import uwu.openjfx.components.Enemy;
+import uwu.openjfx.components.EnemyComponent;
 import uwu.openjfx.components.HealthComponent;
 import uwu.openjfx.components.PlayerComponent;
 
@@ -40,7 +41,7 @@ public class CreatureFactory implements EntityFactory {
                 .with(new CollidableComponent(true))
                 .with(new IrremovableComponent())
                 .with(new PlayerComponent())
-                .with(new HealthComponent(100))
+                .with(new HealthComponent(10))
                 .build();
     }
 
@@ -66,7 +67,7 @@ public class CreatureFactory implements EntityFactory {
                 .bbox(new HitBox(BoundingShape.polygon(point2DList)))
                 .with(physics)
                 .with(new CollidableComponent(true))
-                .with(new Enemy(minionFileName, widthHeight.get(0), widthHeight.get(1)))
+                .with(new EnemyComponent(minionFileName, widthHeight.get(0), widthHeight.get(1)))
                 .with(new HealthComponent(1))
                 .build();
     }

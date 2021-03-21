@@ -19,6 +19,8 @@ public class EnemyComponent extends Component {
 
     private String type;
     private AnimatedTexture texture;
+    private int width;
+    private int height;
 
     private AnimationChannel animIdle, animWalk, animMeleeAttack, animLunge1, animLunge2;
 
@@ -32,14 +34,17 @@ public class EnemyComponent extends Component {
 
     private LocalTimer moveTimer;
 
-    public EnemyComponent(String type) {
+    public EnemyComponent(String type, int width, int height) {
         this.type = type;
-        animIdle = new AnimationChannel(FXGL.image(type + ".png"),
-                8, 32, 32, Duration.seconds(0.5), 0, 3);
-        animWalk = new AnimationChannel(FXGL.image(type + ".png"),
-                8, 32, 32, Duration.seconds(0.5), 4, 7);
-        animMeleeAttack = new AnimationChannel(FXGL.image(type + ".png"),
-                8, 32, 32, Duration.seconds(attackDuration / 1000), 4, 4);
+        this.width = width;
+        this.height = height;
+
+        animIdle = new AnimationChannel(FXGL.image("creatures/minions/" + type),
+                8, width, height, Duration.seconds(0.5), 0, 3);
+        animWalk = new AnimationChannel(FXGL.image("creatures/minions/" + type),
+                8, width, height, Duration.seconds(0.5), 4, 7);
+        animMeleeAttack = new AnimationChannel(FXGL.image("creatures/minions/" + type),
+                8, width, height, Duration.seconds(attackDuration / 1000), 4, 4);
 
         texture = new AnimatedTexture(animIdle);
 
@@ -48,7 +53,7 @@ public class EnemyComponent extends Component {
 
     @Override
     public void onAdded() {
-        entity.getTransformComponent().setScaleOrigin(new Point2D(16, 16));
+        entity.getTransformComponent().setScaleOrigin(new Point2D(width / 2, height / 2));
         entity.getViewComponent().addChild(texture);
 
         moveTimer = FXGL.newLocalTimer();
@@ -96,10 +101,10 @@ public class EnemyComponent extends Component {
         }
         // Enemy does the actual attack, spawns hitbox and then shrinks
         if (startAttacking) {
-            final Entity meleeSkeletHitBox = spawn("meleeEnemySkeletAttack", getEntity().getScaleX() > 0 ?
-                    getEntity().getX(): getEntity().getX() - 40, getEntity().getY() - 15);
+            final Entity meleeHitBox = spawn("meleeEnemyAttack", getEntity().getScaleX() > 0 ?
+                    getEntity().getX(): getEntity().getX() - 40, getEntity().getY() - 5);
             FXGL.getGameTimer().runAtInterval(() -> {
-                meleeSkeletHitBox.removeFromWorld();
+                meleeHitBox.removeFromWorld();
             }, Duration.seconds(.01));
             shrinkDown = true;
             startAttacking = false;
