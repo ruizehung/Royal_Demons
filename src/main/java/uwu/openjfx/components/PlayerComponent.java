@@ -78,7 +78,7 @@ public class PlayerComponent extends Component {
                     getEntity().getX(): getEntity().getX() - 40, getEntity().getY() - 15);
             FXGL.getGameTimer().runAtInterval(() -> {
                 meleeSword1HitBox.removeFromWorld();
-            }, Duration.seconds(.1));
+            }, Duration.seconds(.01));
             startAttacking = false;
             attacking = false;
         }

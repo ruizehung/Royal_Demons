@@ -20,8 +20,8 @@ public class WeaponFactory implements EntityFactory {
 
     @Spawns("meleeSword1HitBox")
     public Entity newMeleeSword1HitBox(SpawnData data) {
-        Rectangle hitBox = new Rectangle(80, 90, Color.WHITE);
-        hitBox.setOpacity(0.5);
+        Rectangle hitBox = new Rectangle(80, 110, Color.WHITE);
+        hitBox.setOpacity(0.5); 
         return FXGL.entityBuilder(data)
                 .type(RoyalType.PLAYERATTACK)
                 .viewWithBBox(hitBox)
