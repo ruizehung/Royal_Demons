@@ -29,6 +29,17 @@ public class WeaponFactory implements EntityFactory {
                 .build();
     }
 
+    @Spawns("meleeUltimateHitBox")
+    public Entity newMeleeUltimateHitBox(SpawnData data) {
+        Rectangle hitBox = new Rectangle(175, 175, Color.ORANGE);
+        hitBox.setOpacity(0.5);
+        return FXGL.entityBuilder(data)
+                .type(RoyalType.PLAYERATTACK)
+                .viewWithBBox(hitBox)
+                .with(new CollidableComponent(true))
+                .build();
+    }
+
     @Spawns("meleeEnemySkeletAttack")
     public Entity newMeleeHitBox(SpawnData data) {
         Rectangle hitBox = new Rectangle(80, 60, Color.RED);

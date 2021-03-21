@@ -14,6 +14,7 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import uwu.openjfx.MapGeneration.GameMap;
@@ -124,6 +125,7 @@ public class MainApp extends GameApplication {
         }, KeyCode.S, VirtualButton.DOWN);
         //endregion
 
+        // Player Input
         getInput().addAction(new UserAction("LMB") {
             @Override
             protected void onActionBegin() {
@@ -137,6 +139,20 @@ public class MainApp extends GameApplication {
                 }
             }
         }, MouseButton.PRIMARY);
+        getInput().addAction(new UserAction("SPACE") {
+            @Override
+            protected void onActionBegin() {
+                if (!player.getComponent(PlayerComponent.class).isAttacking()) {
+                    player.getComponent(PlayerComponent.class).ultimateAttack();
+                    if (FXGL.getInput().getMousePositionWorld().getX() > player.getX() + 20) {
+                        player.setScaleX(1);
+                    } else {
+                        player.setScaleX(-1);
+                    }
+                }
+            }
+        }, KeyCode.SPACE);
+        // endregion
     }
 
     @Override
@@ -182,25 +198,25 @@ public class MainApp extends GameApplication {
             Room newRoom;
             String spawnPosition = "north";
             switch (door.getString("direction")) {
-            case "north":
-                newRoom = curRoom.getNorthRoom();
-                spawnPosition = "south";
-                break;
-            case "east":
-                newRoom = curRoom.getEastRoom();
-                spawnPosition = "west";
-                break;
-            case "south":
-                newRoom = curRoom.getSouthRoom();
-                spawnPosition = "north";
-                break;
-            case "west":
-                newRoom = curRoom.getWestRoom();
-                spawnPosition = "east";
-                break;
-            default:
-                newRoom = curRoom;
-                System.err.println("Error getting new room!");
+                case "north":
+                    newRoom = curRoom.getNorthRoom();
+                    spawnPosition = "south";
+                    break;
+                case "east":
+                    newRoom = curRoom.getEastRoom();
+                    spawnPosition = "west";
+                    break;
+                case "south":
+                    newRoom = curRoom.getSouthRoom();
+                    spawnPosition = "north";
+                    break;
+                case "west":
+                    newRoom = curRoom.getWestRoom();
+                    spawnPosition = "east";
+                    break;
+                default:
+                    newRoom = curRoom;
+                    System.err.println("Error getting new room!");
             }
             final String spawnPosition_ = spawnPosition;
             if (newRoom != null) {
