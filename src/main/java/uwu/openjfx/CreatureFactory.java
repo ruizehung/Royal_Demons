@@ -13,9 +13,14 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import javafx.geometry.Point2D;
-import uwu.openjfx.components.EnemyComponent;
+import uwu.openjfx.components.Enemy;
 import uwu.openjfx.components.HealthComponent;
 import uwu.openjfx.components.PlayerComponent;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CreatureFactory implements EntityFactory {
     @Spawns("player")
@@ -45,16 +50,39 @@ public class CreatureFactory implements EntityFactory {
         physics.setBodyType(BodyType.DYNAMIC);
         physics.setFixtureDef(new FixtureDef().friction(1.0f));
 
+        List<String> minionList = FXGL.geto("minionList");
+        String minionFileName = minionList.get(FXGL.random(0, minionList.size() - 1));
+        List<Integer> widthHeight = parseSizes(minionFileName);
+
+        // TODO: better to manually define bbox tailor to each minion
+        List<Point2D> point2DList = new ArrayList<>();
+        point2DList.add(new Point2D(3, 5));
+        point2DList.add(new Point2D(widthHeight.get(0) - 3, 5));
+        point2DList.add(new Point2D(widthHeight.get(0) - 3, widthHeight.get(1) - 2));
+        point2DList.add(new Point2D(3, widthHeight.get(1) - 2));
+
         return FXGL.entityBuilder(data)
                 .type(RoyalType.ENEMY)
-                .bbox(new HitBox(BoundingShape.box(30, 30)))
+                .bbox(new HitBox(BoundingShape.polygon(point2DList)))
                 .with(physics)
                 .with(new CollidableComponent(true))
-                .with(new EnemyComponent("skelet"))
+                .with(new Enemy(minionFileName, widthHeight.get(0), widthHeight.get(1)))
                 .with(new HealthComponent(1))
                 .build();
     }
 
+    private List<Integer> parseSizes(String fileName) {
+        List<Integer> widthHeight = new ArrayList<>();
+        String pattern = "(\\d+)x(\\d+)";
+        Pattern r = Pattern.compile(pattern);
+        Matcher m = r.matcher(fileName);
+        m.find();
+        String[] sizes = m.group(0).split("x");
+        for (String size : sizes) {
+            widthHeight.add(Integer.parseInt(size));
+        }
+        return  widthHeight;
+    }
 //    @Spawns("ally")
 //    public Entity newAlly(SpawnData data) {
 //        return FXGL.entityBuilder(data)

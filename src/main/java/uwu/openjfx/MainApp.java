@@ -1,5 +1,6 @@
 package uwu.openjfx;
 
+import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.MenuItem;
@@ -27,8 +28,8 @@ import uwu.openjfx.components.HealthComponent;
 import uwu.openjfx.components.PlayerComponent;
 import uwu.openjfx.components.TrapComponent;
 
-import java.util.EnumSet;
-import java.util.Map;
+import java.io.File;
+import java.util.*;
 
 import static com.almasb.fxgl.dsl.FXGL.getAppHeight;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getAppWidth;
@@ -47,6 +48,7 @@ public class MainApp extends GameApplication {
 
     private Entity player;
     private GameMap gameMap;
+    private List<String> minionList;
 
 
     @Override
@@ -157,6 +159,7 @@ public class MainApp extends GameApplication {
 
     @Override
     protected void initGame() {
+        loadEnemies();
         gameMap = new GameMap(40);
 
         getGameWorld().addEntityFactory(new StructureFactory());
@@ -282,6 +285,17 @@ public class MainApp extends GameApplication {
 
         set("curRoom", newRoom);
         System.out.println(newRoom.getCoordinate());
+    }
+
+    public void loadEnemies() {
+        minionList = new ArrayList<>();
+        File dir = new File("src/main/resources/assets/textures/creatures/minions");
+        for (File file : dir.listFiles()) {
+            if (file.getName().endsWith(".png")) {
+                minionList.add(file.getName());
+            }
+        }
+        set("minionList", minionList);
     }
 
     public static void main(String[] args) {

@@ -6,6 +6,7 @@ import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.entity.components.CollidableComponent;
+import com.almasb.fxgl.entity.components.IrremovableComponent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import uwu.openjfx.components.SwordComponent;
@@ -20,8 +21,8 @@ public class WeaponFactory implements EntityFactory {
 
     @Spawns("meleeSword1HitBox")
     public Entity newMeleeSword1HitBox(SpawnData data) {
-        Rectangle hitBox = new Rectangle(80, 90, Color.WHITE);
-        hitBox.setOpacity(0.5);
+        Rectangle hitBox = new Rectangle(80, 110, Color.WHITE);
+        hitBox.setOpacity(0.5); 
         return FXGL.entityBuilder(data)
                 .type(RoyalType.PLAYERATTACK)
                 .viewWithBBox(hitBox)

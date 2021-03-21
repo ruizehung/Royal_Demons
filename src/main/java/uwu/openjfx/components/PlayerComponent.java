@@ -39,11 +39,11 @@ public class PlayerComponent extends Component {
     private boolean removeThisLaterPlease = false;
 
     public PlayerComponent() {
-        animIdle = new AnimationChannel(FXGL.image("lizard_m_40x55.png"), 9,
+        animIdle = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
                 40, 55, Duration.seconds(0.5), 0, 3);
-        animWalk = new AnimationChannel(FXGL.image("lizard_m_40x55.png"), 9,
+        animWalk = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
                 40, 55, Duration.seconds(0.5), 4, 7);
-        animAutoAttack = new AnimationChannel(FXGL.image("lizard_m_40x55.png"), 9,
+        animAutoAttack = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
                 40, 55, Duration.seconds(attackDuration / 1000), 8, 8);
         animSwordUltimate1 = new AnimationChannel(FXGL.image("lizard_m_40x55.png"), 9,
                 40, 55, Duration.seconds(ultimateChargeDuration / 1000), 7, 7);
