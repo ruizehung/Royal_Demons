@@ -12,6 +12,7 @@ import javafx.util.Duration;
 import java.util.Timer;
 
 import static com.almasb.fxgl.dsl.FXGL.spawn;
+import static com.almasb.fxgl.dsl.FXGL.text;
 
 public class PlayerComponent extends Component {
 
@@ -19,13 +20,16 @@ public class PlayerComponent extends Component {
 
     private AnimatedTexture texture;
 
-    private AnimationChannel animIdle, animWalk, animAutoAttack;
+    private AnimationChannel animIdle, animWalk, animAutoAttack, animSwordUltimate1, animSwordUltimate2;
 
-    private Entity meleeSword1;
+    private Entity meleeSword1; // Player's sword
 
-    private boolean attacking = false;
-    private boolean startAttacking = false;
+    private boolean attacking = false; // Player has initiated attack charge/channel
+    private boolean startAttacking = false; // Player does the actual attack
+    private boolean ultimateActivated = false; // Player is using ultimate
+    private boolean ultimateCD = false; // When Player can activate Ultimate again
     private int attackDuration = 500; // Milliseconds
+    private int ultimateChargeDuration = 1000; // Milliseconds
 
     //TODO: remove temp vars and put in char state class
     public static String playerName;
@@ -40,6 +44,10 @@ public class PlayerComponent extends Component {
         animWalk = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
                 40, 55, Duration.seconds(0.5), 4, 7);
         animAutoAttack = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
+                40, 55, Duration.seconds(attackDuration / 1000), 8, 8);
+        animSwordUltimate1 = new AnimationChannel(FXGL.image("lizard_m_40x55.png"), 9,
+                40, 55, Duration.seconds(ultimateChargeDuration / 1000), 7, 7);
+        animSwordUltimate2 = new AnimationChannel(FXGL.image("lizard_m_40x55.png"), 9,
                 40, 55, Duration.seconds(attackDuration / 1000), 8, 8);
 
         texture = new AnimatedTexture(animIdle);
@@ -62,6 +70,7 @@ public class PlayerComponent extends Component {
         }
         // endregion
         updateSwordPosition();
+        // region Movement
         if (!attacking) {
             if (physics.isMoving()) {
                 if (texture.getAnimationChannel() != animWalk) {
@@ -73,15 +82,37 @@ public class PlayerComponent extends Component {
                 }
             }
         }
+        //endregion
+
+        //region Attacking
         if (startAttacking) {
-            final Entity meleeSword1HitBox = spawn("meleeSword1HitBox", getEntity().getScaleX() > 0 ?
-                    getEntity().getX(): getEntity().getX() - 40, getEntity().getY() - 15);
-            FXGL.getGameTimer().runAtInterval(() -> {
-                meleeSword1HitBox.removeFromWorld();
-            }, Duration.seconds(.01));
+            if (ultimateActivated) {
+                texture.playAnimationChannel(animSwordUltimate2);
+                final Entity meleeUltimateHitBox = spawn("meleeUltimateHitBox",
+                        getEntity().getX() -  67.5, getEntity().getY() - 60.0);
+                FXGL.getGameTimer().runAtInterval(() -> {
+                    meleeUltimateHitBox.removeFromWorld();
+                }, Duration.seconds(.01));
+                ultimateCD = true;
+            } else {
+                final Entity meleeSword1HitBox = spawn("meleeSword1HitBox", getEntity().getScaleX() > 0 ?
+                        getEntity().getX(): getEntity().getX() - 40, getEntity().getY() - 15);
+                FXGL.getGameTimer().runAtInterval(() -> {
+                    meleeSword1HitBox.removeFromWorld();
+                }, Duration.seconds(.01));
+            }
             startAttacking = false;
             attacking = false;
+            ultimateActivated = false;
         }
+        // Player ultimate is on cooldown from activation recently
+        if (ultimateCD) {
+            FXGL.getGameTimer().runAtInterval(() -> {
+                ultimateCD = false;
+                FXGL.getGameTimer().clear();
+            }, Duration.seconds(2));
+        }
+        // endregion
     }
 
     public void left() {
@@ -126,6 +157,7 @@ public class PlayerComponent extends Component {
     }
 
     public void autoAttack() {
+        // Perform autoattack based on weapon (SWORD, BOW, WAND)
         attacking = true;
         stop();
         texture.playAnimationChannel(animAutoAttack);
@@ -139,6 +171,26 @@ public class PlayerComponent extends Component {
                     }
                 }, attackDuration
         );
+    }
+
+    public void ultimateAttack() {
+        // Perform ultimate based on weapon (SWORD, BOW, WAND)
+        if (!ultimateCD) {
+            ultimateActivated = true;
+            attacking = true;
+            stop();
+            texture.playAnimationChannel(animSwordUltimate1);
+            Timer t = new java.util.Timer();
+            t.schedule(
+                    new java.util.TimerTask() {
+                        @Override
+                        public void run() {
+                            startAttacking = true;
+                            t.cancel();
+                        }
+                    }, ultimateChargeDuration
+            );
+        }
     }
 
     public boolean isAttacking() {
