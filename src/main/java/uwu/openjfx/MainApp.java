@@ -28,6 +28,7 @@ import uwu.openjfx.components.TrapComponent;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
