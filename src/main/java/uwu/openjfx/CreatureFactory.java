@@ -13,7 +13,6 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import javafx.geometry.Point2D;
-import javafx.scene.shape.Polygon;
 import uwu.openjfx.components.Enemy;
 import uwu.openjfx.components.HealthComponent;
 import uwu.openjfx.components.PlayerComponent;
@@ -41,7 +40,7 @@ public class CreatureFactory implements EntityFactory {
                 .with(new CollidableComponent(true))
                 .with(new IrremovableComponent())
                 .with(new PlayerComponent())
-                .with(new HealthComponent(10))
+                .with(new HealthComponent(100))
                 .build();
     }
 

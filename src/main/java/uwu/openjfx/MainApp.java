@@ -19,8 +19,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import uwu.openjfx.MapGeneration.GameMap;
 import uwu.openjfx.MapGeneration.Room;
-import uwu.openjfx.collision.MeleeSwordEnemyCollisionHandler;
-import uwu.openjfx.collision.PlayerSkeletCollisionHandler;
+import uwu.openjfx.collision.EnemyAttackPlayerCollisionHandler;
+import uwu.openjfx.collision.PlayerAttackEnemyCollisionHandler;
+import uwu.openjfx.collision.PlayerEnemyCollisionHandler;
 import uwu.openjfx.collision.PlayerTriggerCollisionHandler;
 import uwu.openjfx.components.HealthComponent;
 import uwu.openjfx.components.PlayerComponent;
@@ -171,8 +172,9 @@ public class MainApp extends GameApplication {
     @Override
     protected void initPhysics() {
         FXGL.getPhysicsWorld().setGravity(0, 0);
-        FXGL.getPhysicsWorld().addCollisionHandler(new PlayerSkeletCollisionHandler());
-        FXGL.getPhysicsWorld().addCollisionHandler(new MeleeSwordEnemyCollisionHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new PlayerEnemyCollisionHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new PlayerAttackEnemyCollisionHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new EnemyAttackPlayerCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerTriggerCollisionHandler());
 
         FXGL.onCollisionOneTimeOnly(RoyalType.PLAYER, RoyalType.DOOR, (player, door) -> {

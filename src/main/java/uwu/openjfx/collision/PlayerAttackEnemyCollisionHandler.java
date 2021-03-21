@@ -8,9 +8,9 @@ import uwu.openjfx.MapGeneration.Room;
 import uwu.openjfx.RoyalType;
 import uwu.openjfx.components.HealthComponent;
 
-public class MeleeSwordEnemyCollisionHandler extends CollisionHandler  {
-    public MeleeSwordEnemyCollisionHandler() {
-        super(RoyalType.MELEE, RoyalType.ENEMY);
+public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
+    public PlayerAttackEnemyCollisionHandler() {
+        super(RoyalType.PLAYERATTACK, RoyalType.ENEMY);
     }
 
     @Override

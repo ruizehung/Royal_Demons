@@ -21,10 +21,21 @@ public class WeaponFactory implements EntityFactory {
 
     @Spawns("meleeSword1HitBox")
     public Entity newMeleeSword1HitBox(SpawnData data) {
-        Rectangle hitBox = new Rectangle(80, 90, Color.WHITE);
+        Rectangle hitBox = new Rectangle(80, 110, Color.WHITE);
+        hitBox.setOpacity(0.5); 
+        return FXGL.entityBuilder(data)
+                .type(RoyalType.PLAYERATTACK)
+                .viewWithBBox(hitBox)
+                .with(new CollidableComponent(true))
+                .build();
+    }
+
+    @Spawns("meleeEnemySkeletAttack")
+    public Entity newMeleeHitBox(SpawnData data) {
+        Rectangle hitBox = new Rectangle(80, 60, Color.RED);
         hitBox.setOpacity(0.5);
         return FXGL.entityBuilder(data)
-                .type(RoyalType.MELEE)
+                .type(RoyalType.ENEMYATTACK)
                 .viewWithBBox(hitBox)
                 .with(new CollidableComponent(true))
                 .build();
