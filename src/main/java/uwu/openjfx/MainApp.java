@@ -6,24 +6,18 @@ import com.almasb.fxgl.app.MenuItem;
 import com.almasb.fxgl.app.scene.Viewport;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.components.IDComponent;
-import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.input.virtual.VirtualButton;
-import com.almasb.fxgl.physics.PhysicsComponent;
-import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import uwu.openjfx.MapGeneration.GameMap;
-import uwu.openjfx.MapGeneration.Room;
 import uwu.openjfx.collision.*;
 import uwu.openjfx.input.KillAllEnemy;
 import uwu.openjfx.input.ShowMapAction;
-import uwu.openjfx.components.HealthComponent;
 import uwu.openjfx.components.PlayerComponent;
-import uwu.openjfx.components.TrapComponent;
+import uwu.openjfx.input.TeleportToBossRoom;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -42,7 +36,6 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.getSettings;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.loopBGM;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.set;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
-import static com.almasb.fxgl.dsl.FXGL.setLevelFromMap;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
 public class MainApp extends GameApplication {
@@ -62,13 +55,14 @@ public class MainApp extends GameApplication {
         settings.setAppIcon("skelet_idle_anim_f0_32x32.png");
         settings.setFontUI("ThaleahFat.ttf");
         settings.setMainMenuEnabled(true);
-        settings.setSceneFactory(new MainMenuSceneFactory());
+//        settings.setSceneFactory(new MainMenuSceneFactory());
         settings.setGameMenuEnabled(true);
         settings.setEnabledMenuItems(EnumSet.of(MenuItem.EXTRA));
         // TODO: give credits to all sources that we use
         settings.getCredits().addAll(Arrays.asList(
-                "Asset by 0x72 from itch.io",
-                "0x72.itch.io/dungeontileset-ii"
+                "Asset by 0x72, aekae13 from itch.io",
+                "0x72.itch.io/dungeontileset-ii",
+                "aekae13.itch.io/16x16-dungeon-walls-reconfig"
         ));
 //        settings.setDeveloperMenuEnabled(true);
 //        settings.setApplicationMode(ApplicationMode.DEVELOPER);
@@ -86,6 +80,7 @@ public class MainApp extends GameApplication {
     protected void initInput() {
         if (developerCheat) {
             getInput().addAction(new KillAllEnemy("KillAll"), KeyCode.K);
+            getInput().addAction(new TeleportToBossRoom("TeleportToBossRoom"), KeyCode.B);
         }
         // TODO: refactor all these to input package
         //region Movement

@@ -43,6 +43,7 @@ public class GameMap {
         generateRooms();
 
         initialRoom.setRoomType("initialRoom");
+        bossRoom.setRoomType("bossRoom");
         //debug print statement for boss room distance
         //System.out.println("boss room distance: " + bossRoom.getDistFromInitRoom());
     }

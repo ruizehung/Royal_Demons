@@ -36,18 +36,18 @@ public class EnemyComponent extends HealthComponent {
 
     private LocalTimer moveTimer;
 
-    public EnemyComponent(int healthPoints, String type, int width, int height) {
+    public EnemyComponent(int healthPoints, String assetName, int width, int height) {
         super(healthPoints);
-        this.type = type;
+        this.type = assetName;
         this.width = width;
         this.height = height;
 
-        animIdle = new AnimationChannel(FXGL.image("creatures/minions/" + type),
-                8, width, height, Duration.seconds(0.5), 0, 3);
-        animWalk = new AnimationChannel(FXGL.image("creatures/minions/" + type),
-                8, width, height, Duration.seconds(0.5), 4, 7);
-        animMeleeAttack = new AnimationChannel(FXGL.image("creatures/minions/" + type),
-                8, width, height, Duration.seconds(attackDuration / 1000), 4, 4);
+        animIdle = new AnimationChannel(FXGL.image(assetName), 8,
+                width, height, Duration.seconds(0.5), 0, 3);
+        animWalk = new AnimationChannel(FXGL.image(assetName),8,
+                width, height, Duration.seconds(0.5), 4, 7);
+        animMeleeAttack = new AnimationChannel(FXGL.image(assetName),8,
+                width, height, Duration.seconds(attackDuration / 1000), 4, 4);
 
         texture = new AnimatedTexture(animIdle);
 

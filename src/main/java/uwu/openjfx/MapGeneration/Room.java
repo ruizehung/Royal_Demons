@@ -17,7 +17,6 @@ public class Room {
     private Room westRoom;
     private Room eastRoom;
 
-
     private Boolean visited = false;
     // set different room type based on numb of adjacent rooms
     private String roomType = "60_60_4_door";
