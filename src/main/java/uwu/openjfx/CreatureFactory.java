@@ -14,10 +14,8 @@ import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import javafx.geometry.Point2D;
 //import uwu.openjfx.components.Enemy;
-import uwu.openjfx.components.BossComponent;
-import uwu.openjfx.components.EnemyComponent;
-import uwu.openjfx.components.HealthComponent;
-import uwu.openjfx.components.PlayerComponent;
+import javafx.scene.shape.Circle;
+import uwu.openjfx.components.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,6 +73,37 @@ public class CreatureFactory implements EntityFactory {
                 .build();
     }
 
+    @Spawns("miniBoss")
+    public Entity newMiniBoss(SpawnData data) {
+        PhysicsComponent physics = new PhysicsComponent();
+        physics.setBodyType(BodyType.DYNAMIC);
+        physics.setFixtureDef(new FixtureDef().friction(1.0f));
+
+        List<String> minionList = FXGL.geto("miniBossList");
+        String miniBossFileName = minionList.get(FXGL.random(0, minionList.size() - 1));
+        List<Integer> widthHeight = parseSizes(miniBossFileName);
+        EnemyComponent enemyComponent = new EnemyComponent(1,
+                "creatures/miniBoss/" + miniBossFileName,
+                widthHeight.get(0), widthHeight.get(1));
+
+        // TODO: better to manually define bbox tailor to each minion
+        List<Point2D> point2DList = Arrays.asList(
+                new Point2D(3, 5),
+                new Point2D(widthHeight.get(0) - 3, 5),
+                new Point2D(widthHeight.get(0) - 3, widthHeight.get(1) - 2),
+                new Point2D(3, widthHeight.get(1) - 2)
+        );
+
+        return FXGL.entityBuilder(data)
+                .type(RoyalType.ENEMY)
+                .bbox(new HitBox(BoundingShape.polygon(point2DList)))
+                .with(physics)
+                .with(new CollidableComponent(true))
+                .with(enemyComponent)
+                .with("enemyComponent", enemyComponent)
+                .build();
+    }
+
     @Spawns("finalBoss")
     public Entity newfinalBoss(SpawnData data) {
         PhysicsComponent physics = new PhysicsComponent();
@@ -101,6 +130,16 @@ public class CreatureFactory implements EntityFactory {
                 .with(new CollidableComponent(true))
                 .with(bossComponent)
                 .with("enemyComponent", bossComponent)
+                .build();
+    }
+
+    @Spawns("coin")
+    public Entity newCoin(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(RoyalType.COIN)
+                .bbox(new HitBox(BoundingShape.circle(8)))
+                .with(new CollidableComponent(true))
+                .with(new CoinComponent(FXGL.random(1,6)))
                 .build();
     }
 

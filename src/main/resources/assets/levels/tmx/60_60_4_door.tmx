@@ -6,7 +6,7 @@
  <tileset firstgid="1025" name="skull_32x32_right" tilewidth="32" tileheight="32" tilecount="1" columns="1">
   <image source="skull_32x32_right.png" width="32" height="32"/>
  </tileset>
- <layer id="1" name="Tile Layer 1" width="60" height="60">
+ <layer id="1" name="Tile Layer 1" width="60" height="60" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -70,7 +70,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="3" name="Tile Layer 3" width="60" height="60">
+ <layer id="3" name="Tile Layer 3" width="60" height="60" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -287,13 +287,12 @@
   <object id="88" type="wall" x="1721.71" y="225.112" width="6.41114" height="378.397"/>
   <object id="89" type="wall" x="1217.51" y="572.038" width="6.41114" height="385.374"/>
   <object id="90" type="wall" x="1217.72" y="732.758" width="127.023" height="21.2154"/>
-  <object id="91" type="wall" x="1409.63" y="733.729" width="156.149" height="21.2154"/>
+  <object id="91" type="wall" x="1409.63" y="733.729" width="308.791" height="21.2154"/>
   <object id="92" type="wall" x="1396.99" y="957.021" width="6.41114" height="96.7009"/>
   <object id="93" type="wall" x="1375.65" y="585.509" width="191.1" height="21.2154"/>
   <object id="95" type="wall" x="1375.4" y="446.602" width="30.4207" height="138.511"/>
   <object id="97" type="wall" x="1406.8" y="447.249" width="160.518" height="31.7149"/>
   <object id="98" type="wall" x="1536.25" y="545.308" width="30.4207" height="40.7764"/>
-  <object id="99" type="wall" x="1637.78" y="731.787" width="83.6571" height="21.2154"/>
   <object id="100" type="wall" x="1215.78" y="956.236" width="185.275" height="26.2159"/>
   <object id="101" type="wall" x="1467.23" y="955.379" width="258.414" height="25.7789"/>
   <object id="103" type="wall" x="1493.88" y="733.949" width="6.41114" height="217.638"/>
@@ -423,7 +422,7 @@
   <object id="148" name="Minion" type="minion" x="619.447" y="369.365">
    <point/>
   </object>
-  <object id="149" name="Minion" type="minion" x="653.175" y="1009.38">
+  <object id="149" name="Mini Boss" type="miniBoss" x="653.175" y="1009.38">
    <point/>
   </object>
   <object id="150" name="Minion" type="minion" x="714.051" y="943.567">

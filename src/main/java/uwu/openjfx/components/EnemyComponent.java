@@ -158,9 +158,13 @@ public class EnemyComponent extends HealthComponent {
 
     @Override
     public void die() {
+        if (FXGL.random() < 0.5) {
+            FXGL.spawn("coin", getEntity().getX(), getEntity().getY());
+        }
         getEntity().removeFromWorld();
         IDComponent idComponent = getEntity().getComponent(IDComponent.class);
         Room curRoom = FXGL.geto("curRoom");
         curRoom.setEntityData(idComponent.getId(), "isAlive", 0);
+
     }
 }

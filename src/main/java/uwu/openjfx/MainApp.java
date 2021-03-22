@@ -43,8 +43,12 @@ public class MainApp extends GameApplication {
     private Entity player;
     private GameMap gameMap;
     private List<String> minionList;
+    private List<String> miniBossList;
     final private Boolean developerCheat = true;
-    // TODO: be able to beat the boss and show win screen
+
+    // Todo: display gold!!! We must have all the features from M2, M3
+    // Todo: make more rooms
+
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -205,6 +209,7 @@ public class MainApp extends GameApplication {
         FXGL.getPhysicsWorld().addCollisionHandler(new EnemyAttackPlayerCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerTriggerCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerDoorCollisionHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new PlayerCoinCollisionHandler());
     }
 
     @Override
@@ -228,6 +233,16 @@ public class MainApp extends GameApplication {
             }
         }
         set("minionList", minionList);
+
+        miniBossList = new ArrayList<>();
+        dir = new File("src/main/resources/assets/textures/creatures/miniBoss");
+        for (File file : dir.listFiles()) {
+            if (file.getName().endsWith(".png")) {
+                miniBossList.add(file.getName());
+            }
+        }
+        set("miniBossList", miniBossList);
+
     }
 
     public static void main(String[] args) {
