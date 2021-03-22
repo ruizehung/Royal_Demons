@@ -16,8 +16,8 @@ public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
 
     @Override
     protected void onCollisionBegin(Entity sword, Entity enemy) {
-        EnemyComponent enemyComponent = enemy.getComponent(EnemyComponent.class);
-        enemyComponent.deductHealth();
+        HealthComponent enemyHealth = enemy.getComponent(EnemyComponent.class);
+        enemyHealth.deductHealth();
         IDComponent idComponent = enemy.getComponent(IDComponent.class);
         Room curRoom = FXGL.geto("curRoom");
         curRoom.setEntityData(idComponent.getId(), "isAlive", 0);
