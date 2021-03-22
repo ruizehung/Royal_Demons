@@ -10,10 +10,7 @@ import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
-
 import java.util.Timer;
-
-import static com.almasb.fxgl.dsl.FXGL.play;
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 
 public class PlayerComponent extends Component {
@@ -106,14 +103,24 @@ public class PlayerComponent extends Component {
                     double angle = Math.atan2(opposite, adjacent);
                     angle = Math.toDegrees(angle);
                     Vec2 dir = Vec2.fromAngle(angle);
-                    final Entity rangedUltimateHitBox = spawn("rangedUltimateHitBox",
+                    final Entity rangedUltimateHitBox = spawn("rangedBowUltimateHitBox",
                             new SpawnData(
                                     entity.getScaleX() > 0 ? entity.getX() + 20.0 : entity.getX() - 15.0,
                                     entity.getY() + 27.5).put("dir", dir.toPoint2D()));
                     rangedUltimateHitBox.setScaleX(2);
                     rangedUltimateHitBox.setScaleY(2);
                 } else if (playerWeapon.equals("Wand")) {
-
+                    double opposite = currMouseY - entity.getY();
+                    double adjacent = currMouseX - entity.getX();
+                    double angle = Math.atan2(opposite, adjacent);
+                    angle = Math.toDegrees(angle);
+                    Vec2 dir = Vec2.fromAngle(angle);
+                    final Entity rangedMagicUltimateHitBox = spawn("rangedMagicUltimateHitBox",
+                            new SpawnData(
+                                    entity.getScaleX() > 0 ? entity.getX() + 24.0 : entity.getX() - 16.0,
+                                    entity.getY() + 19.5).put("dir", dir.toPoint2D()));
+                    rangedMagicUltimateHitBox.setScaleX(2);
+                    rangedMagicUltimateHitBox.setScaleY(2);
                 }
                 ultimateCD = true;
             } else {
@@ -135,7 +142,16 @@ public class PlayerComponent extends Component {
                                     entity.getScaleX() > 0 ? entity.getX() + 20.0 : entity.getX() - 15.0,
                                     entity.getY() + 27.5).put("dir", dir.toPoint2D()));
                 } else if (playerWeapon.equals("Wand")) {
-
+                    double opposite = currMouseY - (entity.getY() + 3.5);
+                    double adjacent = currMouseX - (entity.getScaleX() > 0 ?
+                            entity.getX() + 8.0 : entity.getX() - 32.0);
+                    double angle = Math.atan2(opposite, adjacent);
+                    angle = Math.toDegrees(angle);
+                    Vec2 dir = Vec2.fromAngle(angle);
+                    final Entity rangedMagic1HitBox = spawn("rangedMagic1HitBox",
+                            new SpawnData(
+                                    entity.getScaleX() > 0 ? entity.getX() + 8.0 : entity.getX() - 32.0,
+                                    entity.getY() + 3.5).put("dir", dir.toPoint2D()));
                 }
             }
             startAttacking = false;
@@ -215,7 +231,7 @@ public class PlayerComponent extends Component {
                 break;
             case "Wand":
                 texture.playAnimationChannel(animAutoAttack);
-                attackDuration = 800;
+                attackDuration = 1200;
                 break;
             default:
         }
@@ -253,7 +269,7 @@ public class PlayerComponent extends Component {
                     break;
                 case "Wand":
                     texture.playAnimationChannel(animSwordUltimate1);
-                    ultimateChargeDuration = 1200;
+                    ultimateChargeDuration = 1500;
                     break;
                 default:
             }
