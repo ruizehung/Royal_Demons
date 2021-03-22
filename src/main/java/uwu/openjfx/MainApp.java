@@ -1,5 +1,6 @@
 package uwu.openjfx;
 
+import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.MenuItem;
@@ -139,12 +140,10 @@ public class MainApp extends GameApplication {
             @Override
             protected void onActionBegin() {
                 if (!player.getComponent(PlayerComponent.class).isAttacking()) {
+                    player.getComponent(PlayerComponent.class).setMousePosition(
+                            FXGL.getInput().getMousePositionWorld().getX(),
+                            FXGL.getInput().getMousePositionWorld().getY());
                     player.getComponent(PlayerComponent.class).autoAttack();
-                    if (FXGL.getInput().getMousePositionWorld().getX() > player.getX() + 20) {
-                        player.setScaleX(1);
-                    } else {
-                        player.setScaleX(-1);
-                    }
                 }
             }
         }, MouseButton.PRIMARY);
@@ -152,12 +151,10 @@ public class MainApp extends GameApplication {
             @Override
             protected void onActionBegin() {
                 if (!player.getComponent(PlayerComponent.class).isAttacking()) {
+                    player.getComponent(PlayerComponent.class).setMousePosition(
+                            FXGL.getInput().getMousePositionWorld().getX(),
+                            FXGL.getInput().getMousePositionWorld().getY());
                     player.getComponent(PlayerComponent.class).ultimateAttack();
-                    if (FXGL.getInput().getMousePositionWorld().getX() > player.getX() + 20) {
-                        player.setScaleX(1);
-                    } else {
-                        player.setScaleX(-1);
-                    }
                 }
             }
         }, KeyCode.SPACE);

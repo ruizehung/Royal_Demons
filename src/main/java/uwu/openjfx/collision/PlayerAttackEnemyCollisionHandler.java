@@ -6,6 +6,7 @@ import com.almasb.fxgl.entity.components.IDComponent;
 import com.almasb.fxgl.physics.CollisionHandler;
 import uwu.openjfx.MapGeneration.Room;
 import uwu.openjfx.RoyalType;
+import uwu.openjfx.components.AttackThroughComponent;
 import uwu.openjfx.components.HealthComponent;
 
 public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
@@ -14,9 +15,10 @@ public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
     }
 
     @Override
-    protected void onCollisionBegin(Entity sword, Entity enemy) {
+    protected void onCollisionBegin(Entity weapon, Entity enemy) {
         HealthComponent healthComponent = enemy.getComponent(HealthComponent.class);
         healthComponent.deductHealth();
+        if (!weapon.hasComponent(AttackThroughComponent.class)) weapon.removeFromWorld();
         IDComponent idComponent = enemy.getComponent(IDComponent.class);
         Room curRoom = FXGL.geto("curRoom");
         curRoom.setEntityData(idComponent.getId(), "isAlive", 0);

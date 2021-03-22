@@ -1,7 +1,9 @@
 package uwu.openjfx.components;
 
+import com.almasb.fxgl.core.math.Vec2;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
@@ -11,6 +13,7 @@ import javafx.util.Duration;
 
 import java.util.Timer;
 
+import static com.almasb.fxgl.dsl.FXGL.play;
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 
 public class PlayerComponent extends Component {
@@ -23,11 +26,14 @@ public class PlayerComponent extends Component {
 
     private Entity meleeSword1; // Player's sword
 
+    private double currMouseX;
+    private double currMouseY;
+
     private boolean attacking = false; // Player has initiated attack charge/channel
     private boolean startAttacking = false; // Player does the actual attack
     private boolean ultimateActivated = false; // Player is using ultimate
     private boolean ultimateCD = false; // When Player can activate Ultimate again
-    private int attackDuration = 500; // Milliseconds
+    private int attackDuration = 500; // Milliseconds (500 is default for melee)
     private int ultimateChargeDuration = 1000; // Milliseconds
 
     //TODO: remove temp vars and put in char state class
@@ -86,19 +92,51 @@ public class PlayerComponent extends Component {
         //region Attacking
         if (startAttacking) {
             if (ultimateActivated) {
-                texture.playAnimationChannel(animSwordUltimate2);
-                final Entity meleeUltimateHitBox = spawn("meleeUltimateHitBox",
-                        getEntity().getX() -  67.5, getEntity().getY() - 60.0);
-                FXGL.getGameTimer().runAtInterval(() -> {
-                    meleeUltimateHitBox.removeFromWorld();
-                }, Duration.seconds(.01));
+                if (playerWeapon.equals("Sword")) {
+                    texture.playAnimationChannel(animSwordUltimate2);
+                    final Entity meleeUltimateHitBox = spawn("meleeUltimateHitBox",
+                            getEntity().getX() -  67.5, getEntity().getY() - 60.0);
+                    FXGL.getGameTimer().runAtInterval(() -> {
+                        meleeUltimateHitBox.removeFromWorld();
+                    }, Duration.seconds(.01));
+                } else if (playerWeapon.equals("Bow")) {
+                    double opposite = currMouseY - (entity.getY() + 27.5);
+                    double adjacent = currMouseX - (entity.getScaleX() > 0 ?
+                            entity.getX() + 35.0 : entity.getX() - 10.0);
+                    double angle = Math.atan2(opposite, adjacent);
+                    angle = Math.toDegrees(angle);
+                    Vec2 dir = Vec2.fromAngle(angle);
+                    final Entity rangedUltimateHitBox = spawn("rangedUltimateHitBox",
+                            new SpawnData(
+                                    entity.getScaleX() > 0 ? entity.getX() + 35.0 : entity.getX(),
+                                    entity.getY() + 27.5).put("dir", dir.toPoint2D()));
+                    rangedUltimateHitBox.setScaleX(2);
+                    rangedUltimateHitBox.setScaleY(2);
+                } else if (playerWeapon.equals("Wand")) {
+
+                }
                 ultimateCD = true;
             } else {
-                final Entity meleeSword1HitBox = spawn("meleeSword1HitBox", getEntity().getScaleX() > 0 ?
-                        getEntity().getX(): getEntity().getX() - 40, getEntity().getY() - 15);
-                FXGL.getGameTimer().runAtInterval(() -> {
-                    meleeSword1HitBox.removeFromWorld();
-                }, Duration.seconds(.01));
+                if (playerWeapon.equals("Sword")) {
+                    final Entity meleeSword1HitBox = spawn("meleeSword1HitBox", getEntity().getScaleX() > 0 ?
+                            getEntity().getX(): getEntity().getX() - 40, getEntity().getY() - 15);
+                    FXGL.getGameTimer().runAtInterval(() -> {
+                        meleeSword1HitBox.removeFromWorld();
+                    }, Duration.seconds(.01));
+                } else if (playerWeapon.equals("Bow")) {
+                    double opposite = currMouseY - (entity.getY() + 27.5);
+                    double adjacent = currMouseX - (entity.getScaleX() > 0 ?
+                            entity.getX() + 35.0 : entity.getX() - 10.0);
+                    double angle = Math.atan2(opposite, adjacent);
+                    angle = Math.toDegrees(angle);
+                    Vec2 dir = Vec2.fromAngle(angle);
+                    final Entity rangedArrow1HitBox = spawn("rangedArrow1HitBox",
+                            new SpawnData(
+                                    entity.getScaleX() > 0 ? entity.getX() + 35.0 : entity.getX(),
+                                    entity.getY() + 27.5).put("dir", dir.toPoint2D()));
+                } else if (playerWeapon.equals("Wand")) {
+
+                }
             }
             startAttacking = false;
             attacking = false;
@@ -114,6 +152,7 @@ public class PlayerComponent extends Component {
         // endregion
     }
 
+    // region Player Movement
     public void left() {
         if (!attacking) {
             getEntity().setScaleX(-1);
@@ -144,22 +183,42 @@ public class PlayerComponent extends Component {
         physics.setVelocityX(0);
         physics.setVelocityY(0);
     }
+    // endregion
 
     private void updateSwordPosition() {
         if (getEntity().getScaleX() > 0) {
-            meleeSword1.setPosition(getEntity().getX() - 32, getEntity().getY() + 61);
+            meleeSword1.setPosition(getEntity().getX() - 25, getEntity().getY() + 25);
             meleeSword1.setRotation(-100);
         } else {
-            meleeSword1.setPosition(getEntity().getX() + 75, getEntity().getY() + 41);
+            meleeSword1.setPosition(getEntity().getX() + 45, getEntity().getY() + 25);
             meleeSword1.setRotation(100);
         }
     }
 
     public void autoAttack() {
         // Perform autoattack based on weapon (SWORD, BOW, WAND)
+        if (currMouseX > entity.getX() + 20) {
+            entity.setScaleX(1);
+        } else {
+            entity.setScaleX(-1);
+        }
         attacking = true;
         stop();
-        texture.playAnimationChannel(animAutoAttack);
+        switch (playerWeapon) {
+            case "Sword":
+                texture.playAnimationChannel(animAutoAttack);
+                attackDuration = 500;
+                break;
+            case "Bow":
+                texture.playAnimationChannel(animAutoAttack);
+                attackDuration = 800;
+                break;
+            case "Wand":
+                texture.playAnimationChannel(animAutoAttack);
+                attackDuration = 800;
+                break;
+            default:
+        }
         Timer t = new java.util.Timer();
         t.schedule(
                 new java.util.TimerTask() {
@@ -174,11 +233,30 @@ public class PlayerComponent extends Component {
 
     public void ultimateAttack() {
         // Perform ultimate based on weapon (SWORD, BOW, WAND)
+        if (currMouseX > entity.getX() + 20) {
+            entity.setScaleX(1);
+        } else {
+            entity.setScaleX(-1);
+        }
         if (!ultimateCD) {
             ultimateActivated = true;
             attacking = true;
             stop();
-            texture.playAnimationChannel(animSwordUltimate1);
+            switch (playerWeapon) {
+                case "Sword":
+                    texture.playAnimationChannel(animSwordUltimate1);
+                    ultimateChargeDuration = 1000;
+                    break;
+                case "Bow":
+                    texture.playAnimationChannel(animSwordUltimate1);
+                    ultimateChargeDuration = 1000;
+                    break;
+                case "Wand":
+                    texture.playAnimationChannel(animSwordUltimate1);
+                    ultimateChargeDuration = 1200;
+                    break;
+                default:
+            }
             Timer t = new java.util.Timer();
             t.schedule(
                     new java.util.TimerTask() {
@@ -194,5 +272,10 @@ public class PlayerComponent extends Component {
 
     public boolean isAttacking() {
         return attacking;
+    }
+
+    public void setMousePosition(double mouseXPos, double mouseYPos) {
+        currMouseX = mouseXPos;
+        currMouseY = mouseYPos;
     }
 }
