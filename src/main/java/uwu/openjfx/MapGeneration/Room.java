@@ -17,10 +17,8 @@ public class Room {
     private Room westRoom;
     private Room eastRoom;
 
-
     private Boolean visited = false;
     // set different room type based on numb of adjacent rooms
-//    private String roomType = "2030_4_door_room";
     private String roomType = "60_60_4_door";
     private Map<Integer, Map<String, Integer>> entitiesData;
 
@@ -62,13 +60,14 @@ public class Room {
         entitiesData.get(id).put(propertyName, val);
     }
 
-    public Boolean enemiesStillAlive() {
+    public Boolean enemiesCleared() {
+        // May not work if we have ally creatures
         for (Map<String, Integer> data : entitiesData.values()) {
             if (data.get("isAlive") != null && data.get("isAlive") == 1) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     public Coordinate getCoordinate() {

@@ -16,8 +16,8 @@ public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
 
     @Override
     protected void onCollisionBegin(Entity weapon, Entity enemy) {
-        HealthComponent healthComponent = enemy.getComponent(HealthComponent.class);
-        healthComponent.deductHealth();
+        HealthComponent enemyHealth = enemy.getObject("enemyComponent");
+        enemyHealth.deductHealth();
         if (!weapon.hasComponent(AttackThroughComponent.class)) weapon.removeFromWorld();
         IDComponent idComponent = enemy.getComponent(IDComponent.class);
         Room curRoom = FXGL.geto("curRoom");

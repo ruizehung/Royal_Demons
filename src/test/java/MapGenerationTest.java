@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
 
-public class TestMapGeneration {
+public class MapGenerationTest {
 
     private final int ROOMS_TO_GEN = 40;
 

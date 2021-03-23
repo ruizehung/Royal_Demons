@@ -1,31 +1,23 @@
 package uwu.openjfx;
 
-import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.MenuItem;
 import com.almasb.fxgl.app.scene.Viewport;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.components.IDComponent;
-import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.input.virtual.VirtualButton;
-import com.almasb.fxgl.physics.PhysicsComponent;
-import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import uwu.openjfx.MapGeneration.GameMap;
-import uwu.openjfx.MapGeneration.Room;
-import uwu.openjfx.collision.EnemyAttackPlayerCollisionHandler;
-import uwu.openjfx.collision.PlayerAttackEnemyCollisionHandler;
-import uwu.openjfx.collision.PlayerEnemyCollisionHandler;
-import uwu.openjfx.collision.PlayerTriggerCollisionHandler;
-import uwu.openjfx.components.HealthComponent;
+import uwu.openjfx.collision.*;
+import uwu.openjfx.input.KillAllEnemy;
+import uwu.openjfx.input.ShowMapAction;
 import uwu.openjfx.components.PlayerComponent;
-import uwu.openjfx.components.TrapComponent;
+import uwu.openjfx.input.TeleportToBossRoom;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -44,7 +36,6 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.getSettings;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.loopBGM;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.set;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
-import static com.almasb.fxgl.dsl.FXGL.setLevelFromMap;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
 public class MainApp extends GameApplication {
@@ -52,7 +43,33 @@ public class MainApp extends GameApplication {
     private Entity player;
     private GameMap gameMap;
     private List<String> minionList;
+    private List<String> miniBossList;
+    final private Boolean developerCheat = true;
 
+    // by Friday
+    // Meeting Friday 5pm! Don't forget
+    // Todo: display gold!!! We must have all the features from M2, M3
+    // Todo: fix name bugs in configuration screen
+    // Todo: show win screen
+    // Todo: Clarify robustness diagram
+    // Todo: 2 junit tests each per person
+
+    // Tier 2 priority
+    // Todo: Jason refactors interfaces
+    // Todo: Clarify robustness diagram
+    // Todo: Boss special attack??
+    // Todo: Fix notification in boss room (in boss fight)
+    // Todo: James weapons animation
+    // Todo: Alice try making some rooms
+    // Todo: Devan UI - heart/health
+
+    // Tier 3 priority
+    // Todo: Jason makes more weapons / special effects
+    // Todo: Devan more sound effects
+    // Todo: Ray more traps, lever
+    // Todo: Ray open and close door
+    // Todo: Ray tile animation for waterfall
+    // Todo: make more rooms
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -68,12 +85,15 @@ public class MainApp extends GameApplication {
         settings.setEnabledMenuItems(EnumSet.of(MenuItem.EXTRA));
         // TODO: give credits to all sources that we use
         settings.getCredits().addAll(Arrays.asList(
-                "Asset by 0x72 from itch.io",
-                "0x72.itch.io/dungeontileset-ii"
+                "Asset by 0x72, aekae13 from itch.io",
+                "0x72.itch.io/dungeontileset-ii",
+                "aekae13.itch.io/16x16-dungeon-walls-reconfig"
         ));
 //        settings.setDeveloperMenuEnabled(true);
 //        settings.setApplicationMode(ApplicationMode.DEVELOPER);
     }
+
+
 
     @Override
     protected void onPreInit() {
@@ -83,6 +103,11 @@ public class MainApp extends GameApplication {
 
     @Override
     protected void initInput() {
+        if (developerCheat) {
+            getInput().addAction(new KillAllEnemy("KillAll"), KeyCode.K);
+            getInput().addAction(new TeleportToBossRoom("TeleportToBossRoom"), KeyCode.B);
+        }
+        // TODO: refactor all these to input package
         //region Movement
         getInput().addAction(new UserAction("Left") {
             @Override
@@ -159,12 +184,15 @@ public class MainApp extends GameApplication {
             }
         }, KeyCode.SPACE);
         // endregion
+
+        getInput().addAction(new ShowMapAction("showMap"), KeyCode.M);
     }
 
     @Override
     protected void initGame() {
         loadEnemies();
         gameMap = new GameMap(40);
+        set("gameMap", gameMap);
 
         getGameWorld().addEntityFactory(new StructureFactory());
         getGameWorld().addEntityFactory(new CreatureFactory());
@@ -176,7 +204,7 @@ public class MainApp extends GameApplication {
         player = spawn("player", 0, 0);
         set("player", player);
 
-        loadRoom(gameMap.getInitialRoom(), "west");
+        gameMap.loadRoom(gameMap.getInitialRoom(), "center");
 
         Viewport viewport = getGameScene().getViewport();
         viewport.setBounds(-32 * 5, -getAppHeight(), 32 * 70, 32 * 70);
@@ -187,6 +215,7 @@ public class MainApp extends GameApplication {
     @Override
     protected void initGameVars(Map<String, Object> vars) {
         vars.put("pixelsMoved", 0);
+        vars.put("developerCheat", developerCheat);
     }
 
     @Override
@@ -196,45 +225,8 @@ public class MainApp extends GameApplication {
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerAttackEnemyCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new EnemyAttackPlayerCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerTriggerCollisionHandler());
-
-        FXGL.onCollisionOneTimeOnly(RoyalType.PLAYER, RoyalType.DOOR, (player, door) -> {
-            getInput().setProcessInput(false);
-            player.getComponent(PlayerComponent.class).stop();
-
-            Room curRoom = FXGL.geto("curRoom");
-            Room newRoom;
-            String spawnPosition = "north";
-            switch (door.getString("direction")) {
-                case "north":
-                    newRoom = curRoom.getNorthRoom();
-                    spawnPosition = "south";
-                    break;
-                case "east":
-                    newRoom = curRoom.getEastRoom();
-                    spawnPosition = "west";
-                    break;
-                case "south":
-                    newRoom = curRoom.getSouthRoom();
-                    spawnPosition = "north";
-                    break;
-                case "west":
-                    newRoom = curRoom.getWestRoom();
-                    spawnPosition = "east";
-                    break;
-                default:
-                    newRoom = curRoom;
-                    System.err.println("Error getting new room!");
-            }
-            final String spawnPosition_ = spawnPosition;
-            if (newRoom != null) {
-                getGameScene().getViewport().fade(() -> {
-                    loadRoom(newRoom, spawnPosition_);
-                    getInput().setProcessInput(true);
-                });
-            } else {
-                getInput().setProcessInput(true);
-            }
-        });
+        FXGL.getPhysicsWorld().addCollisionHandler(new PlayerDoorCollisionHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new PlayerCoinCollisionHandler());
     }
 
     @Override
@@ -245,50 +237,8 @@ public class MainApp extends GameApplication {
         textPixels.setStroke(Color.WHITE);
 
         textPixels.textProperty().bind(
-                player.getComponent(HealthComponent.class).getPlayerHealth().asString());
+                player.getComponent(PlayerComponent.class).getPlayerHealth().asString());
         getGameScene().addUINode(textPixels); // add to the scene graph
-    }
-
-
-    private void loadRoom(Room newRoom, String playerSpawnPosition) {
-        Level curLevel = setLevelFromMap("tmx/" + newRoom.getRoomType() + ".tmx");
-
-        for (Entity entity : curLevel.getEntities()) {
-            if (entity.isType(RoyalType.ENEMY)) {
-                IDComponent idComponent = entity.getComponent(IDComponent.class);
-                if (!newRoom.visited()) {
-                    newRoom.setEntityData(idComponent.getId(), "isAlive", 1);
-                } else {
-                    if (newRoom.getEntityData(idComponent.getId(), "isAlive") == 0) {
-                        entity.removeFromWorld();
-                    }
-                }
-            }
-            if (entity.isType(RoyalType.TRAP) || entity.isType(RoyalType.TRAP_TRIGGER)) {
-                IDComponent idComponent = entity.getComponent(IDComponent.class);
-                if (!newRoom.visited()) {
-                    newRoom.setEntityData(idComponent.getId(), "triggered", 0);
-                } else {
-                    if (newRoom.getEntityData(idComponent.getId(), "triggered") == 1) {
-                        entity.getComponent(TrapComponent.class).trigger();
-                    }
-                }
-            }
-
-            if (player != null && entity.isType(RoyalType.POINT) && entity.getProperties()
-                    .getString("position").equals(playerSpawnPosition)) {
-                player.getComponent(PhysicsComponent.class).overwritePosition(
-                        new Point2D(entity.getX(), entity.getY()));
-                player.setZIndex(Integer.MAX_VALUE);
-            }
-        }
-
-        if (!newRoom.visited()) {
-            newRoom.setVisited(true);
-        }
-
-        set("curRoom", newRoom);
-        System.out.println(newRoom.getCoordinate());
     }
 
     public void loadEnemies() {
@@ -300,6 +250,16 @@ public class MainApp extends GameApplication {
             }
         }
         set("minionList", minionList);
+
+        miniBossList = new ArrayList<>();
+        dir = new File("src/main/resources/assets/textures/creatures/miniBoss");
+        for (File file : dir.listFiles()) {
+            if (file.getName().endsWith(".png")) {
+                miniBossList.add(file.getName());
+            }
+        }
+        set("miniBossList", miniBossList);
+
     }
 
     public static void main(String[] args) {
