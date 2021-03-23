@@ -117,7 +117,7 @@ public class PlayerComponent extends Component {
                     Vec2 dir = Vec2.fromAngle(angle);
                     final Entity rangedMagicUltimateHitBox = spawn("rangedMagicUltimateHitBox",
                             new SpawnData(
-                                    entity.getScaleX() > 0 ? entity.getX() + 24.0 : entity.getX() - 16.0,
+                                    entity.getScaleX() > 0 ? entity.getX() + 24.0 : entity.getX() - 16,
                                     entity.getY() + 19.5).put("dir", dir.toPoint2D()));
                     rangedMagicUltimateHitBox.setScaleX(2);
                     rangedMagicUltimateHitBox.setScaleY(2);
@@ -150,7 +150,7 @@ public class PlayerComponent extends Component {
                     Vec2 dir = Vec2.fromAngle(angle);
                     final Entity rangedMagic1HitBox = spawn("rangedMagic1HitBox",
                             new SpawnData(
-                                    entity.getScaleX() > 0 ? entity.getX() + 8.0 : entity.getX() - 32.0,
+                                    entity.getScaleX() > 0 ? entity.getX() + 8.0 : entity.getX() - 32,
                                     entity.getY() + 3.5).put("dir", dir.toPoint2D()));
                 }
             }
