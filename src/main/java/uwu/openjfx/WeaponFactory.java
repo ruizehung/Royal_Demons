@@ -17,6 +17,7 @@ import uwu.openjfx.components.MagicComponent;
 import uwu.openjfx.components.SwordComponent;
 
 public class WeaponFactory implements EntityFactory {
+    
     @Spawns("meleeSword1")
     public Entity newMeleeSword1(SpawnData data) {
         return FXGL.entityBuilder(data)
@@ -43,6 +44,7 @@ public class WeaponFactory implements EntityFactory {
         hitBox.setOpacity(0.5);
         return FXGL.entityBuilder(data)
                 .type(RoyalType.PLAYERATTACK)
+                .with(new AttackThroughComponent())
                 .viewWithBBox(hitBox)
                 .with(new CollidableComponent(true))
                 .build();

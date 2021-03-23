@@ -125,15 +125,15 @@ public class PlayerComponent extends Component {
                 ultimateCD = true;
             } else {
                 if (playerWeapon.equals("Sword")) {
-                    final Entity meleeSword1HitBox = spawn("meleeSword1HitBox", getEntity().getScaleX() > 0 ?
-                            getEntity().getX() : getEntity().getX() - 40, getEntity().getY() - 15);
+                    final Entity meleeSword1HitBox = spawn("meleeSword1HitBox", getEntity().getScaleX() > 0
+                            ? getEntity().getX() : getEntity().getX() - 40, getEntity().getY() - 15);
                     FXGL.getGameTimer().runAtInterval(() -> {
                         meleeSword1HitBox.removeFromWorld();
                     }, Duration.seconds(.01));
                 } else if (playerWeapon.equals("Bow")) {
                     double opposite = currMouseY - (entity.getY() + 27.5);
-                    double adjacent = currMouseX - (entity.getScaleX() > 0 ?
-                            entity.getX() + 20.0 : entity.getX() - 15.0);
+                    double adjacent = currMouseX - (entity.getScaleX() > 0
+                            ? entity.getX() + 20.0 : entity.getX() - 15.0);
                     double angle = Math.atan2(opposite, adjacent);
                     angle = Math.toDegrees(angle);
                     Vec2 dir = Vec2.fromAngle(angle);
@@ -143,8 +143,8 @@ public class PlayerComponent extends Component {
                                     entity.getY() + 27.5).put("dir", dir.toPoint2D()));
                 } else if (playerWeapon.equals("Wand")) {
                     double opposite = currMouseY - (entity.getY() + 3.5);
-                    double adjacent = currMouseX - (entity.getScaleX() > 0 ?
-                            entity.getX() + 8.0 : entity.getX() - 32.0);
+                    double adjacent = currMouseX - (entity.getScaleX() > 0
+                            ? entity.getX() + 8.0 : entity.getX() - 32.0);
                     double angle = Math.atan2(opposite, adjacent);
                     angle = Math.toDegrees(angle);
                     Vec2 dir = Vec2.fromAngle(angle);
