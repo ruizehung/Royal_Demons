@@ -168,7 +168,7 @@ public class MainApp extends GameApplication {
                     player.getComponent(PlayerComponent.class).setMousePosition(
                             FXGL.getInput().getMousePositionWorld().getX(),
                             FXGL.getInput().getMousePositionWorld().getY());
-                    player.getComponent(PlayerComponent.class).autoAttack();
+                    player.getComponent(PlayerComponent.class).autoAttack(false);
                 }
             }
         }, MouseButton.PRIMARY);
@@ -179,7 +179,7 @@ public class MainApp extends GameApplication {
                     player.getComponent(PlayerComponent.class).setMousePosition(
                             FXGL.getInput().getMousePositionWorld().getX(),
                             FXGL.getInput().getMousePositionWorld().getY());
-                    player.getComponent(PlayerComponent.class).ultimateAttack();
+                    player.getComponent(PlayerComponent.class).autoAttack(true);
                 }
             }
         }, KeyCode.SPACE);

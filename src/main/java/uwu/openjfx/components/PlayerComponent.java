@@ -1,16 +1,19 @@
 package uwu.openjfx.components;
 
-import com.almasb.fxgl.core.math.Vec2;
 import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
 import uwu.openjfx.DieScreenMenu;
+import uwu.openjfx.weapons.Bow_0;
+import uwu.openjfx.weapons.GoldenSword_0;
+import uwu.openjfx.weapons.MagicStaff_0;
+import uwu.openjfx.weapons.Weapon;
+
 import java.util.Timer;
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 
@@ -18,21 +21,20 @@ public class PlayerComponent extends HealthComponent {
 
     private PhysicsComponent physics;
 
-    private AnimatedTexture texture;
+    private AnimatedTexture texture; // current player animation
 
     private AnimationChannel animIdle, animWalk, animAutoAttack, animSwordUltimate1, animSwordUltimate2;
 
-    private Entity meleeSword1; // Player's sword
+    private Entity meleeSword1; // Player's sword TEMPORARY
+    private Weapon currentWeapon; // Player's current weapon
 
-    private double currMouseX;
-    private double currMouseY;
+    private double currMouseX; // mouse input for x
+    private double currMouseY; // mouse input for y
 
-    private boolean attacking = false; // Player has initiated attack charge/channel
-    private boolean startAttacking = false; // Player does the actual attack
+    private boolean prepAttack = false; // Player has initiated attack charge/channel
+    private boolean startAttack = false; // Player does the actual attack
     private boolean ultimateActivated = false; // Player is using ultimate
-    private boolean ultimateCD = false; // When Player can activate Ultimate again
-    private int attackDuration = 500; // Milliseconds (500 is default for melee)
-    private int ultimateChargeDuration = 1000; // Milliseconds
+    private boolean ultimateCD = false; // how long until Player can activate Ultimate again
 
     //TODO: remove temp vars and put in char state class
     public static String playerName;
@@ -48,11 +50,7 @@ public class PlayerComponent extends HealthComponent {
         animWalk = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
                 40, 55, Duration.seconds(0.5), 4, 7);
         animAutoAttack = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
-                40, 55, Duration.seconds(attackDuration / 1000), 8, 8);
-        animSwordUltimate1 = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
-                40, 55, Duration.seconds(ultimateChargeDuration / 1000), 7, 7);
-        animSwordUltimate2 = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
-                40, 55, Duration.seconds(attackDuration / 1000), 8, 8);
+                40, 55, Duration.seconds(currentWeapon.getDuration(ultimateActivated) / 1000), 8, 8);
 
         texture = new AnimatedTexture(animIdle);
         texture.loop();
@@ -70,12 +68,25 @@ public class PlayerComponent extends HealthComponent {
         // region REMOVE THIS LATER
         if (!removeThisLaterPlease) {
             meleeSword1 = spawn("meleeSword1", getEntity().getX(), getEntity().getY() + 50);
+            switch (playerWeapon) {
+                case "Sword":
+                    currentWeapon = new GoldenSword_0();
+                    break;
+                case "Bow":
+                    currentWeapon = new Bow_0();
+                    break;
+                case "Wand":
+                    currentWeapon = new MagicStaff_0();
+                    break;
+                default:
+            }
             removeThisLaterPlease = true;
         }
-        // endregion
         updateSwordPosition();
+        // endregion
+
         // region Movement
-        if (!attacking) {
+        if (!prepAttack) { // if Player has initiated an attack, then do not perform walk/idle animations
             if (physics.isMoving()) {
                 if (texture.getAnimationChannel() != animWalk) {
                     texture.loopAnimationChannel(animWalk);
@@ -88,79 +99,14 @@ public class PlayerComponent extends HealthComponent {
         }
         //endregion
 
-        //region Attacking
-        if (startAttacking) {
-            if (ultimateActivated) {
-                if (playerWeapon.equals("Sword")) {
-                    texture.playAnimationChannel(animSwordUltimate2);
-                    final Entity meleeUltimateHitBox = spawn("meleeUltimateHitBox",
-                            getEntity().getX() -  67.5, getEntity().getY() - 60.0);
-                    FXGL.getGameTimer().runAtInterval(() -> {
-                        meleeUltimateHitBox.removeFromWorld();
-                    }, Duration.seconds(.01));
-                } else if (playerWeapon.equals("Bow")) {
-                    double opposite = currMouseY - (entity.getY() + 27.5);
-                    double adjacent = currMouseX - (entity.getScaleX() > 0 ?
-                            entity.getX() + 20.0 : entity.getX() - 15.0);
-                    double angle = Math.atan2(opposite, adjacent);
-                    angle = Math.toDegrees(angle);
-                    Vec2 dir = Vec2.fromAngle(angle);
-                    final Entity rangedUltimateHitBox = spawn("rangedBowUltimateHitBox",
-                            new SpawnData(
-                                    entity.getScaleX() > 0 ? entity.getX() + 20.0 : entity.getX() - 15.0,
-                                    entity.getY() + 27.5).put("dir", dir.toPoint2D()));
-                    rangedUltimateHitBox.setScaleX(2);
-                    rangedUltimateHitBox.setScaleY(2);
-                } else if (playerWeapon.equals("Wand")) {
-                    double opposite = currMouseY - entity.getY();
-                    double adjacent = currMouseX - entity.getX();
-                    double angle = Math.atan2(opposite, adjacent);
-                    angle = Math.toDegrees(angle);
-                    Vec2 dir = Vec2.fromAngle(angle);
-                    final Entity rangedMagicUltimateHitBox = spawn("rangedMagicUltimateHitBox",
-                            new SpawnData(
-                                    entity.getScaleX() > 0 ? entity.getX() + 24.0 : entity.getX() - 16,
-                                    entity.getY() + 19.5).put("dir", dir.toPoint2D()));
-                    rangedMagicUltimateHitBox.setScaleX(2);
-                    rangedMagicUltimateHitBox.setScaleY(2);
-                }
-                ultimateCD = true;
-            } else {
-                if (playerWeapon.equals("Sword")) {
-                    final Entity meleeSword1HitBox = spawn("meleeSword1HitBox", getEntity().getScaleX() > 0
-                            ? getEntity().getX() : getEntity().getX() - 40, getEntity().getY() - 15);
-                    FXGL.getGameTimer().runAtInterval(() -> {
-                        meleeSword1HitBox.removeFromWorld();
-                    }, Duration.seconds(.01));
-                } else if (playerWeapon.equals("Bow")) {
-                    double opposite = currMouseY - (entity.getY() + 27.5);
-                    double adjacent = currMouseX - (entity.getScaleX() > 0
-                            ? entity.getX() + 20.0 : entity.getX() - 15.0);
-                    double angle = Math.atan2(opposite, adjacent);
-                    angle = Math.toDegrees(angle);
-                    Vec2 dir = Vec2.fromAngle(angle);
-                    final Entity rangedArrow1HitBox = spawn("rangedArrow1HitBox",
-                            new SpawnData(
-                                    entity.getScaleX() > 0 ? entity.getX() + 20.0 : entity.getX() - 15.0,
-                                    entity.getY() + 27.5).put("dir", dir.toPoint2D()));
-                } else if (playerWeapon.equals("Wand")) {
-                    double opposite = currMouseY - (entity.getY() + 3.5);
-                    double adjacent = currMouseX - (entity.getScaleX() > 0
-                            ? entity.getX() + 8.0 : entity.getX() - 32.0);
-                    double angle = Math.atan2(opposite, adjacent);
-                    angle = Math.toDegrees(angle);
-                    Vec2 dir = Vec2.fromAngle(angle);
-                    final Entity rangedMagic1HitBox = spawn("rangedMagic1HitBox",
-                            new SpawnData(
-                                    entity.getScaleX() > 0 ? entity.getX() + 8.0 : entity.getX() - 32,
-                                    entity.getY() + 3.5).put("dir", dir.toPoint2D()));
-                }
-            }
-            startAttacking = false;
-            attacking = false;
+        //region Player performs attack
+        if (startAttack) { // Player performs the actual attack
+            currentWeapon.attack(getEntity(), ultimateActivated, currMouseX, currMouseY);
+            startAttack = false;
+            prepAttack = false;
             ultimateActivated = false;
         }
-        // Player ultimate is on cooldown from activation recently
+        // Player ultimate is on cooldown from recent activation
         if (ultimateCD) {
             FXGL.getGameTimer().runAtInterval(() -> {
                 ultimateCD = false;
@@ -171,28 +117,29 @@ public class PlayerComponent extends HealthComponent {
     }
 
     // region Player Movement
+    // As long as player has not initiated an attack, can move
     public void left() {
-        if (!attacking) {
+        if (!prepAttack) {
             getEntity().setScaleX(-1);
             physics.setVelocityX(-170);
         }
     }
 
     public void right() {
-        if (!attacking) {
+        if (!prepAttack) {
             getEntity().setScaleX(1);
             physics.setVelocityX(170);
         }
     }
 
     public void up() {
-        if (!attacking) {
+        if (!prepAttack) {
             physics.setVelocityY(-170);
         }
     }
 
     public void down() {
-        if (!attacking) {
+        if (!prepAttack) {
             physics.setVelocityY(170);
         }
     }
@@ -203,7 +150,8 @@ public class PlayerComponent extends HealthComponent {
     }
     // endregion
 
-    private void updateSwordPosition() {
+    // region Player Attack functions
+    private void updateSwordPosition() { // TEMP
         if (getEntity().getScaleX() > 0) {
             meleeSword1.setPosition(getEntity().getX() - 25, getEntity().getY() + 25);
             meleeSword1.setRotation(-100);
@@ -213,84 +161,37 @@ public class PlayerComponent extends HealthComponent {
         }
     }
 
-    public void autoAttack() {
-        // Perform autoattack based on weapon (SWORD, BOW, WAND)
-        if (currMouseX > entity.getX() + 20) {
+    public void autoAttack(boolean ultimateActivated) {
+        this.ultimateActivated = ultimateActivated;
+        if (currMouseX > entity.getX() + 20) { // turn player in direction of mouse
             entity.setScaleX(1);
         } else {
             entity.setScaleX(-1);
         }
-        attacking = true;
-        stop();
-        switch (playerWeapon) {
-            case "Sword":
-                texture.playAnimationChannel(animAutoAttack);
-                attackDuration = 500;
-                break;
-            case "Bow":
-                texture.playAnimationChannel(animAutoAttack);
-                attackDuration = 800;
-                break;
-            case "Wand":
-                texture.playAnimationChannel(animAutoAttack);
-                attackDuration = 1200;
-                break;
-            default:
-        }
-        Timer t = new java.util.Timer();
+        texture.playAnimationChannel(animAutoAttack); // play attack animation
+        prepAttack = true; // Player has initiated attack
+        stop(); // stop moving
+        Timer t = new java.util.Timer(); // Player performs the actual attack after duration amount of milliseconds
         t.schedule(
                 new java.util.TimerTask() {
                     @Override
                     public void run() {
-                        startAttacking = true;
+                        startAttack = true; // Player performs the actual attack
                         t.cancel();
                     }
-                }, attackDuration
+                }, currentWeapon.getDuration(ultimateActivated)
         );
     }
 
-    public void ultimateAttack() {
-        // Perform ultimate based on weapon (SWORD, BOW, WAND)
-        if (currMouseX > entity.getX() + 20) {
-            entity.setScaleX(1);
-        } else {
-            entity.setScaleX(-1);
-        }
-        if (!ultimateCD) {
-            ultimateActivated = true;
-            attacking = true;
-            stop();
-            switch (playerWeapon) {
-                case "Sword":
-                    texture.playAnimationChannel(animSwordUltimate1);
-                    ultimateChargeDuration = 1000;
-                    break;
-                case "Bow":
-                    texture.playAnimationChannel(animSwordUltimate1);
-                    ultimateChargeDuration = 1000;
-                    break;
-                case "Wand":
-                    texture.playAnimationChannel(animSwordUltimate1);
-                    ultimateChargeDuration = 1500;
-                    break;
-                default:
-            }
-            Timer t = new java.util.Timer();
-            t.schedule(
-                    new java.util.TimerTask() {
-                        @Override
-                        public void run() {
-                            startAttacking = true;
-                            t.cancel();
-                        }
-                    }, ultimateChargeDuration
-            );
-        }
+    public boolean isAttacking() {
+        return prepAttack; // used in MainApp for LMB/RMB input, confirmation of whether or not Player is attacking
     }
 
-    public boolean isAttacking() {
-        return attacking;
+    private Weapon getCurrentWeapon() {
+        return currentWeapon;
     }
+
+    // endregion
 
     public void setMousePosition(double mouseXPos, double mouseYPos) {
         currMouseX = mouseXPos;
