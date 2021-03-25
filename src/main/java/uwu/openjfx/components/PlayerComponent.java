@@ -45,12 +45,26 @@ public class PlayerComponent extends HealthComponent {
 
     public PlayerComponent(int healthPoints) {
         super(healthPoints);
+        if (currentWeapon == null) {
+            switch (playerWeapon) {
+                case "Sword":
+                    currentWeapon = new GoldenSword_0();
+                    break;
+                case "Bow":
+                    currentWeapon = new Bow_0();
+                    break;
+                case "Wand":
+                    currentWeapon = new MagicStaff_0();
+                    break;
+                default:
+            }
+        }
         animIdle = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
                 40, 55, Duration.seconds(0.5), 0, 3);
         animWalk = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
                 40, 55, Duration.seconds(0.5), 4, 7);
         animAutoAttack = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
-                40, 55, Duration.seconds(currentWeapon.getDuration(ultimateActivated) / 1000), 8, 8);
+                40, 55, Duration.seconds(currentWeapon.getDuration(ultimateActivated) / 1000f), 8, 8);
 
         texture = new AnimatedTexture(animIdle);
         texture.loop();
@@ -189,6 +203,10 @@ public class PlayerComponent extends HealthComponent {
 
     private Weapon getCurrentWeapon() {
         return currentWeapon;
+    }
+
+    private void setCurrentWeapon(Weapon weapon) {
+        currentWeapon = weapon;
     }
 
     // endregion
