@@ -62,8 +62,6 @@ public class MagicStaff_0 implements Weapon, AngleBehavior {
                         put("rightOffset", rightOffset).
                         put("frameWidth", frameWidth).
                         put("frameHeight", frameHeight));
-//        rangedHitBox.setLocalAnchor(new Point2D(frameWidth / 2, frameHeight / 2));
-//        rangedHitBox.setAnchoredPosition(0, 0);
         if (ultimateActivated) {
             rangedHitBox.setScaleX(2);
             rangedHitBox.setScaleY(2);
