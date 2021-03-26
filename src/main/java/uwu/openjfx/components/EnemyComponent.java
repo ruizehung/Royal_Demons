@@ -2,7 +2,6 @@ package uwu.openjfx.components;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.entity.components.IDComponent;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
@@ -24,7 +23,11 @@ public class EnemyComponent extends HealthComponent {
     private int width;
     private int height;
 
-    private AnimationChannel animIdle, animWalk, animMeleeAttack, animLunge1, animLunge2;
+    private AnimationChannel animIdle;
+    private AnimationChannel animWalk;
+    private AnimationChannel animMeleeAttack;
+    private AnimationChannel animLunge1;
+    private AnimationChannel animLunge2;
 
     private boolean prepAttack = false; // enemy begins attack charge
     private boolean startAttacking = false; // enemy does the attack animation / instantiate hitbox
@@ -44,10 +47,10 @@ public class EnemyComponent extends HealthComponent {
 
         animIdle = new AnimationChannel(FXGL.image(assetName), 8,
                 width, height, Duration.seconds(0.5), 0, 3);
-        animWalk = new AnimationChannel(FXGL.image(assetName),8,
+        animWalk = new AnimationChannel(FXGL.image(assetName), 8,
                 width, height, Duration.seconds(0.5), 4, 7);
-        animMeleeAttack = new AnimationChannel(FXGL.image(assetName),8,
-                width, height, Duration.seconds(attackDuration / 1000), 4, 4);
+        animMeleeAttack = new AnimationChannel(FXGL.image(assetName), 8,
+                width, height, Duration.seconds(attackDuration / 1000f), 4, 4);
 
         texture = new AnimatedTexture(animIdle);
 
@@ -56,7 +59,7 @@ public class EnemyComponent extends HealthComponent {
 
     @Override
     public void onAdded() {
-        entity.getTransformComponent().setScaleOrigin(new Point2D(width / 2, height / 2));
+        entity.getTransformComponent().setScaleOrigin(new Point2D(width / 2.0, height / 2.0));
         entity.getViewComponent().addChild(texture);
 
         moveTimer = FXGL.newLocalTimer();
@@ -104,11 +107,10 @@ public class EnemyComponent extends HealthComponent {
         }
         // Enemy does the actual attack, spawns hitbox and then shrinks
         if (startAttacking) {
-            final Entity meleeHitBox = spawn("meleeEnemyAttack", getEntity().getScaleX() > 0 ?
-                    getEntity().getX(): getEntity().getX() - 40, getEntity().getY() - 5);
-            FXGL.getGameTimer().runAtInterval(() -> {
-                meleeHitBox.removeFromWorld();
-            }, Duration.seconds(.01));
+            final Entity meleeHitBox = spawn("meleeEnemyAttack", getEntity().getScaleX() > 0
+                    ? getEntity().getX()
+                    : getEntity().getX() - 40, getEntity().getY() - 5);
+            FXGL.getGameTimer().runAtInterval(meleeHitBox::removeFromWorld, Duration.seconds(.01));
             shrinkDown = true;
             startAttacking = false;
             prepAttack = false;

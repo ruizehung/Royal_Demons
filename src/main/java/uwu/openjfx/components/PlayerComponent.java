@@ -6,6 +6,8 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
 import uwu.openjfx.DieScreenMenu;
@@ -23,7 +25,11 @@ public class PlayerComponent extends HealthComponent {
 
     private AnimatedTexture texture; // current player animation
 
-    private AnimationChannel animIdle, animWalk, animAutoAttack, animSwordUltimate1, animSwordUltimate2;
+    private AnimationChannel animIdle;
+    private AnimationChannel animWalk;
+    private AnimationChannel animAutoAttack;
+    private AnimationChannel animSwordUltimate1;
+    private AnimationChannel animSwordUltimate2;
 
     private Entity meleeSword1; // Player's sword TEMPORARY
     private Weapon currentWeapon; // Player's current weapon
@@ -41,23 +47,27 @@ public class PlayerComponent extends HealthComponent {
     public static String playerWeapon;
     public static String gameDifficulty;
     public static int gold;
+    public static IntegerProperty goldProperty;
     private boolean removeThisLaterPlease = false;
 
     public PlayerComponent(int healthPoints) {
         super(healthPoints);
         if (currentWeapon == null) {
             switch (playerWeapon) {
-                case "Sword":
-                    currentWeapon = new GoldenSword_0();
-                    break;
-                case "Bow":
-                    currentWeapon = new Bow_0();
-                    break;
-                case "Wand":
-                    currentWeapon = new MagicStaff_0();
-                    break;
-                default:
+            case "Sword":
+                currentWeapon = new GoldenSword_0();
+                break;
+            case "Bow":
+                currentWeapon = new Bow_0();
+                break;
+            case "Wand":
+                currentWeapon = new MagicStaff_0();
+                break;
+            default:
             }
+        }
+        if (goldProperty == null) {
+            goldProperty = new SimpleIntegerProperty(gold);
         }
         animIdle = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
                 40, 55, Duration.seconds(0.5), 0, 3);
@@ -83,16 +93,16 @@ public class PlayerComponent extends HealthComponent {
         if (!removeThisLaterPlease) {
             meleeSword1 = spawn("meleeSword1", getEntity().getX(), getEntity().getY() + 50);
             switch (playerWeapon) {
-                case "Sword":
-                    currentWeapon = new GoldenSword_0();
-                    break;
-                case "Bow":
-                    currentWeapon = new Bow_0();
-                    break;
-                case "Wand":
-                    currentWeapon = new MagicStaff_0();
-                    break;
-                default:
+            case "Sword":
+                currentWeapon = new GoldenSword_0();
+                break;
+            case "Bow":
+                currentWeapon = new Bow_0();
+                break;
+            case "Wand":
+                currentWeapon = new MagicStaff_0();
+                break;
+            default:
             }
             removeThisLaterPlease = true;
         }
@@ -214,6 +224,15 @@ public class PlayerComponent extends HealthComponent {
     public void setMousePosition(double mouseXPos, double mouseYPos) {
         currMouseX = mouseXPos;
         currMouseY = mouseYPos;
+    }
+
+    public void addGold(int gold) {
+        PlayerComponent.gold += gold;
+        goldProperty.set(PlayerComponent.gold);
+    }
+
+    public IntegerProperty getGold() {
+        return goldProperty;
     }
 
     @Override
