@@ -41,6 +41,14 @@ public class PlayerComponent extends HealthComponent {
     private boolean ultimateActivated = false; // Player is using ultimate
     private boolean ultimateCD = false; // how long until Player can activate Ultimate again
 
+    // Todo: remove temp vars and put in char state class
+    private static String playerName;
+    private static String playerWeapon;
+    private static String gameDifficulty;
+    private static int gold;
+
+    private static IntegerProperty goldProperty;
+
     public static String getPlayerName() {
         return playerName;
     }
@@ -65,23 +73,32 @@ public class PlayerComponent extends HealthComponent {
         PlayerComponent.gameDifficulty = gameDifficulty;
     }
 
-    // Todo: remove temp vars and put in char state class
-    private static String playerName;
-    private static String playerWeapon;
-    private static String gameDifficulty;
-    private static int gold;
-
-    private static IntegerProperty goldProperty;
-
     public PlayerComponent(int healthPoints) {
         super(healthPoints);
+
+        if (currentWeapon == null) {
+            switch (playerWeapon) {
+            case "Sword":
+                currentWeapon = new GoldenSword0();
+                break;
+            case "Bow":
+                currentWeapon = new Bow0();
+                break;
+            case "Wand":
+                currentWeapon = new MagicStaff0();
+                break;
+            default:
+            }
+        }
+
         if (!MainApp.isIsTesting()) {
             animIdle = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
                     40, 55, Duration.seconds(0.5), 0, 3);
             animWalk = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
                     40, 55, Duration.seconds(0.5), 4, 7);
             animAutoAttack = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
-                    40, 55, Duration.millis(currentWeapon.getDuration(ultimateActivated) / 1000), 8, 8);
+                    40, 55, Duration.millis(currentWeapon.getDuration(ultimateActivated) / 1000f),
+                    8, 8);
 
             texture = new AnimatedTexture(animIdle);
             texture.loop();
@@ -91,20 +108,6 @@ public class PlayerComponent extends HealthComponent {
             goldProperty = new SimpleIntegerProperty(gold);
         }
 
-        if (currentWeapon == null) {
-            switch (playerWeapon) {
-                case "Sword":
-                    currentWeapon = new GoldenSword0();
-                    break;
-                case "Bow":
-                    currentWeapon = new Bow0();
-                    break;
-                case "Wand":
-                    currentWeapon = new MagicStaff0();
-                    break;
-                default:
-            }
-        }
     }
 
     @Override
@@ -276,6 +279,10 @@ public class PlayerComponent extends HealthComponent {
 
     public static void setGold(int gold) {
         PlayerComponent.gold = gold;
+    }
+
+    public static int getGold() {
+        return gold;
     }
 
     public IntegerProperty getGoldProperty() {

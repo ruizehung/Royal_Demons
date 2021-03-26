@@ -36,9 +36,5 @@ public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
                 weapon.removeFromWorld();
             }
         }
-
-        IDComponent idComponent = enemy.getComponent(IDComponent.class);
-        Room curRoom = FXGL.geto("curRoom");
-        curRoom.setEntityData(idComponent.getId(), "isAlive", 0);
     }
 }

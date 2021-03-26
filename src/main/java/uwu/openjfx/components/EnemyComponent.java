@@ -167,6 +167,5 @@ public class EnemyComponent extends HealthComponent {
         IDComponent idComponent = getEntity().getComponent(IDComponent.class);
         Room curRoom = FXGL.geto("curRoom");
         curRoom.setEntityData(idComponent.getId(), "isAlive", 0);
-
     }
 }
