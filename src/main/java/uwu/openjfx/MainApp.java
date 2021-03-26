@@ -90,8 +90,8 @@ public class MainApp extends GameApplication {
                 "0x72.itch.io/dungeontileset-ii",
                 "aekae13.itch.io/16x16-dungeon-walls-reconfig"
         ));
-        settings.setDeveloperMenuEnabled(true);
-        settings.setApplicationMode(ApplicationMode.DEVELOPER);
+//        settings.setDeveloperMenuEnabled(true);
+//        settings.setApplicationMode(ApplicationMode.DEVELOPER);
     }
 
 

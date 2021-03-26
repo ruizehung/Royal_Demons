@@ -43,9 +43,9 @@ public class GoldenSword_0 implements Weapon {
 
     @Override
     public void attack(Entity player, double mouseCurrX, double mouseCurrY) {
-        hitBoxWidth = !ultimateActivated ? 75 : 175;
+        hitBoxWidth = !ultimateActivated ? 82 : 175;
         hitBoxHeight = !ultimateActivated ? 130 : 175;
-        swordOffset = !ultimateActivated ? 25 : 0;
+        swordOffset = !ultimateActivated ? 22 : 0;
         meleeHitBox = spawn("meleeSwordHitBox",
                 new SpawnData(player.getX(), player.getY()).put("width", hitBoxWidth).put("height", hitBoxHeight));
         meleeHitBox.getTransformComponent().setAnchoredPosition(
