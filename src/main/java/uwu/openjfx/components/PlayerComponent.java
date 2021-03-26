@@ -10,6 +10,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
 import uwu.openjfx.DieScreenMenu;
+import uwu.openjfx.MainApp;
 import uwu.openjfx.weapons.Bow0;
 import uwu.openjfx.weapons.GoldenSword0;
 import uwu.openjfx.weapons.MagicStaff0;
@@ -50,38 +51,44 @@ public class PlayerComponent extends HealthComponent {
 
     public PlayerComponent(int healthPoints) {
         super(healthPoints);
-        if (currentWeapon == null) {
-            switch (playerWeapon) {
-            case "Sword":
-                currentWeapon = new GoldenSword0();
-                break;
-            case "Bow":
-                currentWeapon = new Bow0();
-                break;
-            case "Wand":
-                currentWeapon = new MagicStaff0();
-                break;
-            default:
-            }
+        if (!MainApp.isIsTesting()) {
+            animIdle = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
+                    40, 55, Duration.seconds(0.5), 0, 3);
+            animWalk = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
+                    40, 55, Duration.seconds(0.5), 4, 7);
+            animAutoAttack = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
+                    40, 55, Duration.millis(currentWeapon.getDuration(ultimateActivated) / 1000), 8, 8);
+
+            texture = new AnimatedTexture(animIdle);
+            texture.loop();
         }
+
         if (goldProperty == null) {
             goldProperty = new SimpleIntegerProperty(gold);
         }
-        animIdle = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
-                40, 55, Duration.seconds(0.5), 0, 3);
-        animWalk = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
-                40, 55, Duration.seconds(0.5), 4, 7);
-        animAutoAttack = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
-                40, 55, Duration.millis(currentWeapon.getDuration(ultimateActivated) / 1000), 8, 8);
 
-        texture = new AnimatedTexture(animIdle);
-        texture.loop();
+        if (currentWeapon == null) {
+            switch (playerWeapon) {
+                case "Sword":
+                    currentWeapon = new GoldenSword0();
+                    break;
+                case "Bow":
+                    currentWeapon = new Bow0();
+                    break;
+                case "Wand":
+                    currentWeapon = new MagicStaff0();
+                    break;
+                default:
+            }
+        }
     }
 
     @Override
     public void onAdded() {
-        entity.getTransformComponent().setScaleOrigin(new Point2D(20, 25));
-        entity.getViewComponent().addChild(texture);
+        if (!MainApp.isIsTesting()) {
+            entity.getTransformComponent().setScaleOrigin(new Point2D(20, 25));
+            entity.getViewComponent().addChild(texture);
+        }
     }
 
     @Override

@@ -1,4 +1,7 @@
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
+import uwu.openjfx.MainApp;
 import uwu.openjfx.MapGeneration.GameMap;
 import uwu.openjfx.MapGeneration.Room;
 
@@ -10,6 +13,11 @@ import java.util.Set;
 public class MapGenerationTest {
 
     private final int ROOMS_TO_GEN = 40;
+
+    @BeforeEach
+    public void init(){
+        MainApp.setIsTesting(true);
+    }
 
     // ray 1
     @RepeatedTest(500)

@@ -1,5 +1,6 @@
 package uwu.openjfx.collision;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import uwu.openjfx.RoyalType;
@@ -12,7 +13,7 @@ public class PlayerCoinCollisionHandler extends CollisionHandler {
     }
 
     @Override
-    protected void onCollisionBegin(Entity player, Entity coin) {
+    public void onCollisionBegin(Entity player, Entity coin) {
         coin.removeFromWorld();
         player.getComponent(
                 PlayerComponent.class).addGold(coin.getComponent(CoinComponent.class).getValue());

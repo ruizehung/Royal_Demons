@@ -33,6 +33,7 @@ public class MainApp extends GameApplication {
     private List<String> miniBossList;
     private List<String> roomTypeList;
     private final Boolean developerCheat = true;
+    private static boolean isTesting = false;
 
     // Top priority : (
     // Todo: show win screen
@@ -285,6 +286,14 @@ public class MainApp extends GameApplication {
             }
         }
         set("roomTypeList", roomTypeList);
+    }
+
+    public static boolean isIsTesting() {
+        return isTesting;
+    }
+
+    public static void setIsTesting(boolean isTesting) {
+        MainApp.isTesting = isTesting;
     }
 
     public static void main(String[] args) {
