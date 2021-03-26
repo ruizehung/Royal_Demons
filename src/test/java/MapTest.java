@@ -53,6 +53,7 @@ public class MapGenerationTest {
         gameMap = null;
     }
 
+    // ray 3
     @RepeatedTest(500)
     void testInitialRoomHas4AdjRooms() {
         GameMap gameMap = new GameMap(ROOMS_TO_GEN);
