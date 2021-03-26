@@ -40,13 +40,37 @@ public class PlayerComponent extends HealthComponent {
     private boolean ultimateActivated = false; // Player is using ultimate
     private boolean ultimateCD = false; // how long until Player can activate Ultimate again
 
-    // Todo: remove temp vars and put in char state class
-    public static String playerName;
-    public static String playerWeapon;
-    public static String gameDifficulty;
-    public static int gold;
+    public static String getPlayerName() {
+        return playerName;
+    }
 
-    public static IntegerProperty goldProperty;
+    public static void setPlayerName(String playerName) {
+        PlayerComponent.playerName = playerName;
+    }
+
+    public static String getPlayerWeapon() {
+        return playerWeapon;
+    }
+
+    public static void setPlayerWeapon(String playerWeapon) {
+        PlayerComponent.playerWeapon = playerWeapon;
+    }
+
+    public static String getGameDifficulty() {
+        return gameDifficulty;
+    }
+
+    public static void setGameDifficulty(String gameDifficulty) {
+        PlayerComponent.gameDifficulty = gameDifficulty;
+    }
+
+    // Todo: remove temp vars and put in char state class
+    private static String playerName;
+    private static String playerWeapon;
+    private static String gameDifficulty;
+    private static int gold;
+
+    private static IntegerProperty goldProperty;
 
     public PlayerComponent(int healthPoints) {
         super(healthPoints);
@@ -243,7 +267,11 @@ public class PlayerComponent extends HealthComponent {
         goldProperty.set(PlayerComponent.gold);
     }
 
-    public IntegerProperty getGold() {
+    public static void setGold(int gold) {
+        PlayerComponent.gold = gold;
+    }
+
+    public IntegerProperty getGoldProperty() {
         return goldProperty;
     }
 

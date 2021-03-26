@@ -16,6 +16,5 @@ public class PlayerCoinCollisionHandler extends CollisionHandler {
         coin.removeFromWorld();
         player.getComponent(
                 PlayerComponent.class).addGold(coin.getComponent(CoinComponent.class).getValue());
-        // TODO_: player collect coins
     }
 }

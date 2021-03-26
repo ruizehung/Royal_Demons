@@ -256,7 +256,7 @@ public class MainApp extends GameApplication {
         textGold.setStroke(Color.WHITE);
 
         textGold.textProperty().bind(
-                player.getComponent(PlayerComponent.class).getGold().asString());
+                player.getComponent(PlayerComponent.class).getGoldProperty().asString());
         getGameScene().addUINode(textGold); // add to the scene graph
     }
 
