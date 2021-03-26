@@ -101,11 +101,13 @@ public class MainApp extends GameApplication {
             @Override
             protected void onAction() {
                 player.getComponent(PlayerComponent.class).left();
+                player.getComponent(PlayerComponent.class).setPressingMovementKeys(true);
             }
 
             @Override
             protected void onActionEnd() {
                 player.getComponent(PlayerComponent.class).stop();
+                player.getComponent(PlayerComponent.class).setPressingMovementKeys(false);
             }
 
         }, KeyCode.A, VirtualButton.LEFT);
@@ -114,11 +116,13 @@ public class MainApp extends GameApplication {
             @Override
             protected void onAction() {
                 player.getComponent(PlayerComponent.class).right();
+                player.getComponent(PlayerComponent.class).setPressingMovementKeys(true);
             }
 
             @Override
             protected void onActionEnd() {
                 player.getComponent(PlayerComponent.class).stop();
+                player.getComponent(PlayerComponent.class).setPressingMovementKeys(false);
             }
         }, KeyCode.D, VirtualButton.RIGHT);
 
@@ -126,11 +130,13 @@ public class MainApp extends GameApplication {
             @Override
             protected void onAction() {
                 player.getComponent(PlayerComponent.class).up();
+                player.getComponent(PlayerComponent.class).setPressingMovementKeys(true);
             }
 
             @Override
             protected void onActionEnd() {
                 player.getComponent(PlayerComponent.class).stop();
+                player.getComponent(PlayerComponent.class).setPressingMovementKeys(false);
             }
 
         }, KeyCode.W, VirtualButton.UP);
@@ -139,11 +145,13 @@ public class MainApp extends GameApplication {
             @Override
             protected void onAction() {
                 player.getComponent(PlayerComponent.class).down();
+                player.getComponent(PlayerComponent.class).setPressingMovementKeys(true);
             }
 
             @Override
             protected void onActionEnd() {
                 player.getComponent(PlayerComponent.class).stop();
+                player.getComponent(PlayerComponent.class).setPressingMovementKeys(false);
             }
         }, KeyCode.S, VirtualButton.DOWN);
         //endregion
