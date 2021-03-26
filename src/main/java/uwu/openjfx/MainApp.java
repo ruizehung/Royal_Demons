@@ -34,30 +34,24 @@ public class MainApp extends GameApplication {
     private List<String> roomTypeList;
     private final Boolean developerCheat = true;
 
-    // by Friday
-    // Meeting Friday 5pm! Don't forget
-    // Todo: display gold!!! We must have all the features from M2, M3
-    // Todo: fix name bugs in configuration screen
+    // Top priority : (
     // Todo: show win screen
-    // Todo: Clarify robustness diagram
     // Todo: 2 junit tests each per person
+    // Todo: Clarify robustness diagram
 
     // Tier 2 priority
-    // Todo: Jason refactors interfaces
-    // Todo: Clarify robustness diagram
     // Todo: Boss special attack??
-    // Todo: Fix notification in boss room (in boss fight)
-    // Todo: James weapons animation
     // Todo: Alice try making some rooms
-    // Todo: Devan UI - heart/health
 
-    // Tier 3 priority
+
+    // Tier 3 priority : )
     // Todo: Jason makes more weapons / special effects
     // Todo: Devan more sound effects
     // Todo: Ray more traps, lever
     // Todo: Ray open and close door
     // Todo: Ray tile animation for waterfall
     // Todo: make more rooms
+    // Todo: Devan UI - heart/health (more polished)
 
     @Override
     protected void initSettings(GameSettings settings) {
