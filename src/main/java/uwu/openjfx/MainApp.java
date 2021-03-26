@@ -1,6 +1,5 @@
 package uwu.openjfx;
 
-import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.MenuItem;
@@ -45,6 +44,7 @@ public class MainApp extends GameApplication {
     private GameMap gameMap;
     private List<String> minionList;
     private List<String> miniBossList;
+    private List<String> roomTypeList;
     final private Boolean developerCheat = true;
 
     // by Friday
@@ -191,7 +191,8 @@ public class MainApp extends GameApplication {
 
     @Override
     protected void initGame() {
-        loadEnemies();
+        loadRoomAsset();
+        loadEnemiesAsset();
         gameMap = new GameMap(40);
         set("gameMap", gameMap);
 
@@ -243,7 +244,7 @@ public class MainApp extends GameApplication {
         getGameScene().addUINode(textPixels); // add to the scene graph
     }
 
-    public void loadEnemies() {
+    public void loadEnemiesAsset() {
         minionList = new ArrayList<>();
         File dir = new File("src/main/resources/assets/textures/creatures/minions");
         for (File file : dir.listFiles()) {
@@ -262,6 +263,18 @@ public class MainApp extends GameApplication {
         }
         set("miniBossList", miniBossList);
 
+    }
+
+    public void loadRoomAsset() {
+        roomTypeList = new ArrayList<>();
+        File dir = new File("src/main/resources/assets/levels/tmx");
+        for (File file : dir.listFiles()) {
+            if (file.getName().endsWith(".tmx") && !file.getName().equals("initialRoom.tmx")
+                    && !file.getName().equals("bossRoom.tmx")) {
+                roomTypeList.add(file.getName().replaceAll(".tmx", ""));
+            }
+        }
+        set("roomTypeList", roomTypeList);
     }
 
     public static void main(String[] args) {

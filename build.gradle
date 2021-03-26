@@ -16,6 +16,7 @@ dependencies {
     testCompile "org.testfx:testfx-junit5:4.0.16-alpha"
     testCompile group: 'org.hamcrest', name: 'hamcrest', version: '2.1'
     compile 'com.github.almasb:fxgl:11.14'
+    compile 'com.github.almasb:fxgl-test:11.14'
 }
 
 test {

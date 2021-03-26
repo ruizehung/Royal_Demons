@@ -1,5 +1,7 @@
 package uwu.openjfx.MapGeneration;
 
+import com.almasb.fxgl.dsl.FXGL;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,13 +21,15 @@ public class Room {
 
     private Boolean visited = false;
     // set different room type based on numb of adjacent rooms
-    private String roomType = "60_60_4_door";
+    private String roomType;
     private Map<Integer, Map<String, Integer>> entitiesData;
 
 
     public Room(Coordinate coordinate) {
         entitiesData = new HashMap<>();
         this.coordinate = coordinate;
+        List<String> roomTypeList = FXGL.geto("roomTypeList");
+        roomType = roomTypeList.get(FXGL.random(0, roomTypeList.size() - 1));
     }
 
     public Room(Coordinate coordinate, int numAdjRooms) {
