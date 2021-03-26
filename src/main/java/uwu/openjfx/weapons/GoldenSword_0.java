@@ -2,8 +2,6 @@ package uwu.openjfx.weapons;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.SpawnData;
-import com.almasb.fxgl.texture.AnimatedTexture;
-import com.almasb.fxgl.texture.AnimationChannel;
 import com.almasb.fxgl.entity.Entity;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
@@ -14,11 +12,10 @@ public class GoldenSword_0 implements Weapon {
     private Entity meleeHitBox;
     private int attackDuration = 500; // Milliseconds
     private int ultimateChargeDuration = 1000; // Milliseconds
-    private int hitBoxWidthReg = 80;
-    private int hitBoxHeightReg = 110;
-    private int hitBoxWidthUlt = 175;
-    private int hitBoxHeightUlt = 175;
+    private int hitBoxWidth;
+    private int hitBoxHeight;
     private boolean ultimateActivated;
+    private double swordOffset;
 
     @Override
     public void prepAttack(Entity player) {
@@ -30,7 +27,8 @@ public class GoldenSword_0 implements Weapon {
                         put("weapon", !ultimateActivated ? "gold_sword0_slash_140x140" : "gold_sword0_ult_175x175").
                         put("duration", getDuration(ultimateActivated)).
                         put("frameWidth", width).
-                        put("frameHeight", height).put("fpr", !ultimateActivated ? 6 : 7));
+                        put("frameHeight", height).
+                        put("fpr", !ultimateActivated ? 6 : 7));
 
         gs.getTransformComponent().setAnchoredPosition(
                 new Point2D(player.getX() - (width / 2) + player.getWidth() / 2,
@@ -45,13 +43,16 @@ public class GoldenSword_0 implements Weapon {
 
     @Override
     public void attack(Entity player, double mouseCurrX, double mouseCurrY) {
-        if (!ultimateActivated) {
-            meleeHitBox = spawn("meleeSword1HitBox", player.getScaleX() > 0
-                    ? player.getX() : player.getX() - 40, player.getY() - 15);
-        } else {
-            meleeHitBox = spawn("meleeUltimateHitBox",
-                    player.getX() -  67.5, player.getY() - 60.0);
-        }
+        hitBoxWidth = !ultimateActivated ? 75 : 175;
+        hitBoxHeight = !ultimateActivated ? 130 : 175;
+        swordOffset = !ultimateActivated ? 25 : 0;
+        meleeHitBox = spawn("meleeSwordHitBox",
+                new SpawnData(player.getX(), player.getY()).put("width", hitBoxWidth).put("height", hitBoxHeight));
+        meleeHitBox.getTransformComponent().setAnchoredPosition(
+                new Point2D(
+                        player.getX() - (hitBoxWidth / 2) + player.getWidth() / 2
+                                + (player.getScaleX() > 0 ? swordOffset : -swordOffset),
+                        player.getY() - (hitBoxHeight / 2) + player.getHeight() / 2));
         FXGL.getGameTimer().runAtInterval(() -> {
             if (meleeHitBox.isActive()) {
                 meleeHitBox.removeFromWorld();

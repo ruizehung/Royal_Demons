@@ -216,7 +216,7 @@ public class GameMap {
                     .getString("position").equals(playerSpawnPosition)) {
                 player.getComponent(PhysicsComponent.class).overwritePosition(
                         new Point2D(entity.getX(), entity.getY()));
-                player.setZIndex(Integer.MAX_VALUE);
+                player.setZIndex(1000);
             }
         }
 
