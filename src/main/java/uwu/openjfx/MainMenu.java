@@ -365,6 +365,8 @@ public class MainMenu extends FXGLMenu {
         MenuButton itemLetsGo = new MenuButton("Let's Go!");
         itemLetsGo.setOnAction(e -> {
             if (PlayerComponent.playerName != null
+                    && !PlayerComponent.playerName.isEmpty()
+                    && !PlayerComponent.playerName.trim().isEmpty()
                     && PlayerComponent.playerWeapon != null
                     && PlayerComponent.gameDifficulty != null) {
                 FXGL.getDialogService().showConfirmationBox("Are you sure?", yes -> {
@@ -406,6 +408,7 @@ public class MainMenu extends FXGLMenu {
         itemEasy.setOnAction(
             e -> {
                 PlayerComponent.gameDifficulty = itemEasy.getText();
+                PlayerComponent.gold = 1000;
                 itemEasy.updateText(itemEasy.getText());
             });
 
@@ -413,6 +416,7 @@ public class MainMenu extends FXGLMenu {
         itemMedium.setOnAction(
             e -> {
                 PlayerComponent.gameDifficulty = itemMedium.getText();
+                PlayerComponent.gold = 800;
                 itemMedium.updateText(itemMedium.getText());
             });
 
@@ -420,6 +424,7 @@ public class MainMenu extends FXGLMenu {
         itemHard.setOnAction(
             e -> {
                 PlayerComponent.gameDifficulty = itemHard.getText();
+                PlayerComponent.gold = 600;
                 itemHard.updateText(itemHard.getText());
             });
 

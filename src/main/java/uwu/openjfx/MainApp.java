@@ -15,28 +15,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import uwu.openjfx.MapGeneration.GameMap;
 import uwu.openjfx.collision.*;
+import uwu.openjfx.components.PlayerComponent;
 import uwu.openjfx.input.KillAllEnemy;
 import uwu.openjfx.input.ShowMapAction;
-import uwu.openjfx.components.PlayerComponent;
 import uwu.openjfx.input.TeleportToBossRoom;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.almasb.fxgl.dsl.FXGL.getAppHeight;
-import static com.almasb.fxgl.dsl.FXGLForKtKt.getAppWidth;
-import static com.almasb.fxgl.dsl.FXGLForKtKt.getAudioPlayer;
-import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameScene;
-import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
-import static com.almasb.fxgl.dsl.FXGLForKtKt.getInput;
-import static com.almasb.fxgl.dsl.FXGLForKtKt.getSettings;
-import static com.almasb.fxgl.dsl.FXGLForKtKt.loopBGM;
-import static com.almasb.fxgl.dsl.FXGLForKtKt.set;
-import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
 public class MainApp extends GameApplication {
@@ -45,7 +32,7 @@ public class MainApp extends GameApplication {
     private GameMap gameMap;
     private List<String> minionList;
     private List<String> miniBossList;
-    final private Boolean developerCheat = true;
+    private final Boolean developerCheat = true;
 
     // by Friday
     // Meeting Friday 5pm! Don't forget
@@ -90,8 +77,8 @@ public class MainApp extends GameApplication {
                 "0x72.itch.io/dungeontileset-ii",
                 "aekae13.itch.io/16x16-dungeon-walls-reconfig"
         ));
-//        settings.setDeveloperMenuEnabled(true);
-//        settings.setApplicationMode(ApplicationMode.DEVELOPER);
+        // settings.setDeveloperMenuEnabled(true);
+        // settings.setApplicationMode(ApplicationMode.DEVELOPER);
     }
 
 
@@ -233,14 +220,35 @@ public class MainApp extends GameApplication {
 
     @Override
     protected void initUI() {
-        Text textPixels = getUIFactoryService().newText("", 75);
-        textPixels.setTranslateX(25);
-        textPixels.setTranslateY(75);
-        textPixels.setStroke(Color.WHITE);
+        Text textHealth = getUIFactoryService().newText("", 50);
+        textHealth.setTranslateX(100);
+        textHealth.setTranslateY(50);
+        textHealth.setStroke(Color.WHITE);
 
-        textPixels.textProperty().bind(
+        textHealth.textProperty().bind(
                 player.getComponent(PlayerComponent.class).getPlayerHealth().asString());
-        getGameScene().addUINode(textPixels); // add to the scene graph
+        getGameScene().addUINode(textHealth); // add to the scene graph
+
+        Text textHealthPrefix = getUIFactoryService().newText("HP:", 50);
+        textHealthPrefix.setTranslateX(25);
+        textHealthPrefix.setTranslateY(50);
+        textHealthPrefix.setStroke(Color.RED);
+        getGameScene().addUINode(textHealthPrefix);
+
+        Text textGoldPrefix = getUIFactoryService().newText("GOLD:", 50);
+        textGoldPrefix.setTranslateX(getAppWidth() - 225);
+        textGoldPrefix.setTranslateY(50);
+        textGoldPrefix.setStroke(Color.GOLD);
+        getGameScene().addUINode(textGoldPrefix);
+
+        Text textGold = getUIFactoryService().newText("", 50);
+        textGold.setTranslateX(getAppWidth() - 100);
+        textGold.setTranslateY(50);
+        textGold.setStroke(Color.WHITE);
+
+        textGold.textProperty().bind(
+                player.getComponent(PlayerComponent.class).getGold().asString());
+        getGameScene().addUINode(textGold); // add to the scene graph
     }
 
     public void loadEnemies() {

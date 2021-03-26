@@ -13,9 +13,10 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import javafx.geometry.Point2D;
-//import uwu.openjfx.components.Enemy;
-import javafx.scene.shape.Circle;
-import uwu.openjfx.components.*;
+import uwu.openjfx.components.BossComponent;
+import uwu.openjfx.components.CoinComponent;
+import uwu.openjfx.components.EnemyComponent;
+import uwu.openjfx.components.PlayerComponent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,7 +29,8 @@ public class CreatureFactory implements EntityFactory {
     public Entity newPlayer(SpawnData data) {
         PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.DYNAMIC);
-        // physics.addGroundSensor(new HitBox("GROUND_SENSOR", new Point2D(16, 38), BoundingShape.box(6, 8)));
+        // physics.addGroundSensor(new HitBox("GROUND_SENSOR",
+        //         new Point2D(16, 38), BoundingShape.box(6, 8)));
 
         // this avoids player sticking to walls
         physics.setFixtureDef(new FixtureDef().friction(0.0f));
@@ -53,7 +55,10 @@ public class CreatureFactory implements EntityFactory {
         List<String> minionList = FXGL.geto("minionList");
         String minionFileName = minionList.get(FXGL.random(0, minionList.size() - 1));
         List<Integer> widthHeight = parseSizes(minionFileName);
-        EnemyComponent enemyComponent = new EnemyComponent(1, "creatures/minions/" + minionFileName, widthHeight.get(0), widthHeight.get(1));
+        EnemyComponent enemyComponent = new EnemyComponent(
+                1,
+                "creatures/minions/" + minionFileName,
+                widthHeight.get(0), widthHeight.get(1));
 
         // TODO: better to manually define bbox tailor to each minion
         List<Point2D> point2DList = Arrays.asList(
@@ -113,7 +118,9 @@ public class CreatureFactory implements EntityFactory {
         String bossFileName = "big_demon_96x108.png";
         List<Integer> widthHeight = parseSizes(bossFileName);
 
-        BossComponent bossComponent = new BossComponent(1, "creatures/boss/" + bossFileName, widthHeight.get(0), widthHeight.get(1));
+        BossComponent bossComponent = new BossComponent(
+                1, "creatures/boss/" + bossFileName,
+                widthHeight.get(0), widthHeight.get(1));
 
         // TODO: better to manually define bbox tailor to each minion
         List<Point2D> point2DList = Arrays.asList(
@@ -139,7 +146,7 @@ public class CreatureFactory implements EntityFactory {
                 .type(RoyalType.COIN)
                 .bbox(new HitBox(BoundingShape.circle(8)))
                 .with(new CollidableComponent(true))
-                .with(new CoinComponent(FXGL.random(1,6)))
+                .with(new CoinComponent(FXGL.random(1, 6)))
                 .build();
     }
 
@@ -155,11 +162,11 @@ public class CreatureFactory implements EntityFactory {
         }
         return  widthHeight;
     }
-//    @Spawns("ally")
-//    public Entity newAlly(SpawnData data) {
-//        return FXGL.entityBuilder(data)
-//                .view("lizard_m_idle_anim_f0_40x70.png")
-//                .with(new ProjectileComponent(new Point2D(-1, 0), 150))
-//                .build();
-//    }
+    // @Spawns("ally")
+    // public Entity newAlly(SpawnData data) {
+    //     return FXGL.entityBuilder(data)
+    //             .view("lizard_m_idle_anim_f0_40x70.png")
+    //             .with(new ProjectileComponent(new Point2D(-1, 0), 150))
+    //             .build();
+    // }
 }
