@@ -2,7 +2,6 @@ package uwu.openjfx.components;
 
 import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
@@ -15,7 +14,6 @@ import uwu.openjfx.weapons.MagicStaff_0;
 import uwu.openjfx.weapons.Weapon;
 
 import java.util.Timer;
-import static com.almasb.fxgl.dsl.FXGL.spawn;
 
 public class PlayerComponent extends HealthComponent {
 

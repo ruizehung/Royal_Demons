@@ -1,5 +1,6 @@
 package uwu.openjfx;
 
+import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.MenuItem;
@@ -89,8 +90,8 @@ public class MainApp extends GameApplication {
                 "0x72.itch.io/dungeontileset-ii",
                 "aekae13.itch.io/16x16-dungeon-walls-reconfig"
         ));
-//        settings.setDeveloperMenuEnabled(true);
-//        settings.setApplicationMode(ApplicationMode.DEVELOPER);
+        settings.setDeveloperMenuEnabled(true);
+        settings.setApplicationMode(ApplicationMode.DEVELOPER);
     }
 
 
@@ -224,6 +225,7 @@ public class MainApp extends GameApplication {
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerEnemyCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerAttackEnemyCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new EnemyAttackPlayerCollisionHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new ProjectileWallCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerTriggerCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerDoorCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerCoinCollisionHandler());

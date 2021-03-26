@@ -1,6 +1,7 @@
 package uwu.openjfx.collision;
 
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.dsl.components.ProjectileComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.components.IDComponent;
 import com.almasb.fxgl.physics.CollisionHandler;
@@ -16,9 +17,20 @@ public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
 
     @Override
     protected void onCollisionBegin(Entity weapon, Entity enemy) {
-        HealthComponent enemyHealth = enemy.getObject("enemyComponent");
-        enemyHealth.deductHealth();
-        if (!weapon.hasComponent(AttackThroughComponent.class)) weapon.removeFromWorld();
+        if (weapon.hasComponent(ProjectileComponent.class)) {
+            if (!weapon.getComponent(ProjectileComponent.class).isPaused()) {
+                HealthComponent enemyHealth = enemy.getObject("enemyComponent");
+                enemyHealth.deductHealth();
+                AttackThroughComponent playerWeaponAttackThrough = weapon.getComponent(AttackThroughComponent.class);
+                if (!playerWeaponAttackThrough.active) weapon.removeFromWorld();
+            }
+        } else {
+            HealthComponent enemyHealth = enemy.getObject("enemyComponent");
+            enemyHealth.deductHealth();
+            AttackThroughComponent playerWeaponAttackThrough = weapon.getComponent(AttackThroughComponent.class);
+            if (!playerWeaponAttackThrough.active) weapon.removeFromWorld();
+        }
+
         IDComponent idComponent = enemy.getComponent(IDComponent.class);
         Room curRoom = FXGL.geto("curRoom");
         curRoom.setEntityData(idComponent.getId(), "isAlive", 0);
