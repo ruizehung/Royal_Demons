@@ -60,7 +60,7 @@ public class CreatureFactory implements EntityFactory {
                 "creatures/minions/" + minionFileName,
                 widthHeight.get(0), widthHeight.get(1));
 
-        // TODO: better to manually define bbox tailor to each minion
+        // TODO__: better to manually define bbox tailor to each minion
         List<Point2D> point2DList = Arrays.asList(
                 new Point2D(3, 5),
                 new Point2D(widthHeight.get(0) - 3, 5),
@@ -91,7 +91,7 @@ public class CreatureFactory implements EntityFactory {
                 "creatures/miniBoss/" + miniBossFileName,
                 widthHeight.get(0), widthHeight.get(1));
 
-        // TODO: better to manually define bbox tailor to each minion
+        // TODO_: better to manually define bbox tailor to each minion
         List<Point2D> point2DList = Arrays.asList(
                 new Point2D(3, 5),
                 new Point2D(widthHeight.get(0) - 3, 5),
@@ -122,7 +122,7 @@ public class CreatureFactory implements EntityFactory {
                 1, "creatures/boss/" + bossFileName,
                 widthHeight.get(0), widthHeight.get(1));
 
-        // TODO: better to manually define bbox tailor to each minion
+        // TODO_: better to manually define bbox tailor to each minion
         List<Point2D> point2DList = Arrays.asList(
                 new Point2D(3, 5),
                 new Point2D(widthHeight.get(0) - 3, 5),

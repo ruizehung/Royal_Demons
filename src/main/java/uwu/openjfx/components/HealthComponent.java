@@ -1,15 +1,8 @@
 package uwu.openjfx.components;
 
-import com.almasb.fxgl.app.scene.MenuType;
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
-import com.almasb.fxgl.entity.components.IDComponent;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import uwu.openjfx.DieScreenMenu;
-import uwu.openjfx.MapGeneration.Room;
-import uwu.openjfx.RoyalType;
-
 import java.util.Timer;
 
 // Handles any altercations to health of creature
@@ -65,5 +58,5 @@ public abstract class HealthComponent extends Component {
         return playerHealth;
     }
 
-    abstract public void die();
+    public abstract void die();
 }

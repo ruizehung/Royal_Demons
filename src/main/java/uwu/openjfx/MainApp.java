@@ -1,6 +1,5 @@
 package uwu.openjfx;
 
-import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.MenuItem;
@@ -32,6 +31,7 @@ public class MainApp extends GameApplication {
     private GameMap gameMap;
     private List<String> minionList;
     private List<String> miniBossList;
+    private List<String> roomTypeList;
     private final Boolean developerCheat = true;
 
     // by Friday
@@ -71,7 +71,7 @@ public class MainApp extends GameApplication {
         settings.setSceneFactory(new MainMenuSceneFactory());
         settings.setGameMenuEnabled(true);
         settings.setEnabledMenuItems(EnumSet.of(MenuItem.EXTRA));
-        // TODO: give credits to all sources that we use
+        // TODO_: give credits to all sources that we use
         settings.getCredits().addAll(Arrays.asList(
                 "Asset by 0x72, aekae13 from itch.io",
                 "0x72.itch.io/dungeontileset-ii",
@@ -95,7 +95,7 @@ public class MainApp extends GameApplication {
             getInput().addAction(new KillAllEnemy("KillAll"), KeyCode.K);
             getInput().addAction(new TeleportToBossRoom("TeleportToBossRoom"), KeyCode.B);
         }
-        // TODO: refactor all these to input package
+        // TODO_: refactor all these to input package
         //region Movement
         getInput().addAction(new UserAction("Left") {
             @Override
@@ -178,7 +178,8 @@ public class MainApp extends GameApplication {
 
     @Override
     protected void initGame() {
-        loadEnemies();
+        loadRoomAsset();
+        loadEnemiesAsset();
         gameMap = new GameMap(40);
         set("gameMap", gameMap);
 
@@ -251,7 +252,7 @@ public class MainApp extends GameApplication {
         getGameScene().addUINode(textGold); // add to the scene graph
     }
 
-    public void loadEnemies() {
+    public void loadEnemiesAsset() {
         minionList = new ArrayList<>();
         File dir = new File("src/main/resources/assets/textures/creatures/minions");
         for (File file : dir.listFiles()) {
@@ -270,6 +271,18 @@ public class MainApp extends GameApplication {
         }
         set("miniBossList", miniBossList);
 
+    }
+
+    public void loadRoomAsset() {
+        roomTypeList = new ArrayList<>();
+        File dir = new File("src/main/resources/assets/levels/tmx");
+        for (File file : dir.listFiles()) {
+            if (file.getName().endsWith(".tmx") && !file.getName().equals("initialRoom.tmx")
+                    && !file.getName().equals("bossRoom.tmx")) {
+                roomTypeList.add(file.getName().replaceAll(".tmx", ""));
+            }
+        }
+        set("roomTypeList", roomTypeList);
     }
 
     public static void main(String[] args) {

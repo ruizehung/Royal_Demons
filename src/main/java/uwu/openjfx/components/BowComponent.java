@@ -9,7 +9,8 @@ import javafx.util.Duration;
 
 public class BowComponent extends Component {
     private AnimatedTexture texture;
-    private AnimationChannel animIdle, animAttack;
+    private AnimationChannel animIdle;
+    private AnimationChannel animAttack;
     private boolean destroyed;
 
     public BowComponent() {

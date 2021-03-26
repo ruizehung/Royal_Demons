@@ -25,25 +25,25 @@ public class PlayerDoorCollisionHandler extends CollisionHandler {
         Room newRoom;
         String spawnPosition = "north";
         switch (door.getString("direction")) {
-            case "north":
-                newRoom = curRoom.getNorthRoom();
-                spawnPosition = "south";
-                break;
-            case "east":
-                newRoom = curRoom.getEastRoom();
-                spawnPosition = "west";
-                break;
-            case "south":
-                newRoom = curRoom.getSouthRoom();
-                spawnPosition = "north";
-                break;
-            case "west":
-                newRoom = curRoom.getWestRoom();
-                spawnPosition = "east";
-                break;
-            default:
-                newRoom = curRoom;
-                System.err.println("Error getting new room!");
+        case "north":
+            newRoom = curRoom.getNorthRoom();
+            spawnPosition = "south";
+            break;
+        case "east":
+            newRoom = curRoom.getEastRoom();
+            spawnPosition = "west";
+            break;
+        case "south":
+            newRoom = curRoom.getSouthRoom();
+            spawnPosition = "north";
+            break;
+        case "west":
+            newRoom = curRoom.getWestRoom();
+            spawnPosition = "east";
+            break;
+        default:
+            newRoom = curRoom;
+            System.err.println("Error getting new room!");
         }
         GameMap gameMap = FXGL.geto("gameMap");
 
@@ -51,9 +51,9 @@ public class PlayerDoorCollisionHandler extends CollisionHandler {
             if (!newRoom.visited() && !curRoom.enemiesCleared()) {
                 pushNotification("Clear enemies before exploring new rooms!");
             } else {
-                final String spawnPosition_ = spawnPosition;
+                final String spawnPositionFinal = spawnPosition;
                 getGameScene().getViewport().fade(() -> {
-                    gameMap.loadRoom(newRoom, spawnPosition_);
+                    gameMap.loadRoom(newRoom, spawnPositionFinal);
                     getInput().setProcessInput(true);
                 });
                 return;

@@ -10,9 +10,9 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
 import uwu.openjfx.DieScreenMenu;
-import uwu.openjfx.weapons.Bow_0;
-import uwu.openjfx.weapons.GoldenSword_0;
-import uwu.openjfx.weapons.MagicStaff_0;
+import uwu.openjfx.weapons.Bow0;
+import uwu.openjfx.weapons.GoldenSword0;
+import uwu.openjfx.weapons.MagicStaff0;
 import uwu.openjfx.weapons.Weapon;
 
 import java.util.Timer;
@@ -39,7 +39,7 @@ public class PlayerComponent extends HealthComponent {
     private boolean ultimateActivated = false; // Player is using ultimate
     private boolean ultimateCD = false; // how long until Player can activate Ultimate again
 
-    //TODO: remove temp vars and put in char state class
+    // Todo: remove temp vars and put in char state class
     public static String playerName;
     public static String playerWeapon;
     public static String gameDifficulty;
@@ -52,13 +52,13 @@ public class PlayerComponent extends HealthComponent {
         if (currentWeapon == null) {
             switch (playerWeapon) {
             case "Sword":
-                currentWeapon = new GoldenSword_0();
+                currentWeapon = new GoldenSword0();
                 break;
             case "Bow":
-                currentWeapon = new Bow_0();
+                currentWeapon = new Bow0();
                 break;
             case "Wand":
-                currentWeapon = new MagicStaff_0();
+                currentWeapon = new MagicStaff0();
                 break;
             default:
             }
@@ -86,7 +86,8 @@ public class PlayerComponent extends HealthComponent {
     @Override
     public void onUpdate(double tpf) {
         // region Movement
-        if (!prepAttack) { // if Player has initiated an attack, then do not perform walk/idle animations
+        if (!prepAttack) {
+            // if Player has initiated an attack, then do not perform walk/idle animations
             if (physics.isMoving()) {
                 if (texture.getAnimationChannel() != animWalk) {
                     texture.loopAnimationChannel(animWalk);
@@ -162,7 +163,8 @@ public class PlayerComponent extends HealthComponent {
         texture.playAnimationChannel(animAutoAttack); // play attack animation
         prepAttack = true; // Player has initiated attack
         stop(); // stop moving
-        Timer t = new java.util.Timer(); // Player performs the actual attack after duration amount of milliseconds
+        // Player performs the actual attack after duration amount of milliseconds
+        Timer t = new java.util.Timer();
         t.schedule(
                 new java.util.TimerTask() {
                     @Override
@@ -176,7 +178,8 @@ public class PlayerComponent extends HealthComponent {
     }
 
     public boolean isAttacking() {
-        return prepAttack; // used in MainApp for LMB/RMB input, confirmation of whether or not Player is attacking
+        // used in MainApp for LMB/RMB input, confirmation of whether or not Player is attacking
+        return prepAttack;
     }
 
     private Weapon getCurrentWeapon() {

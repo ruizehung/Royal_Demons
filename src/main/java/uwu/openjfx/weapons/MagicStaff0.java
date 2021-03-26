@@ -10,7 +10,7 @@ import javafx.util.Duration;
 
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 
-public class MagicStaff_0 implements Weapon, AngleBehavior {
+public class MagicStaff0 implements Weapon, AngleBehavior {
 
     private AnimatedTexture texture;
     private AnimationChannel animAttack;
@@ -25,7 +25,7 @@ public class MagicStaff_0 implements Weapon, AngleBehavior {
     private int ultimateChargeDuration = 1500; // Milliseconds
     private boolean ultimateActivated;
 
-    public MagicStaff_0() {
+    public MagicStaff0() {
         animAttack = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
                 40, 55, Duration.seconds(.5), 8, 8);
         texture = new AnimatedTexture(animAttack);
@@ -34,7 +34,7 @@ public class MagicStaff_0 implements Weapon, AngleBehavior {
 
     @Override
     public void prepAttack(Entity player) {
-//        Entity gs = spawn("meleeSword", new SpawnData(0, 0).put("weapon", "gs0"));
+        // Entity gs = spawn("meleeSword", new SpawnData(0, 0).put("weapon", "gs0"));
     }
 
     @Override
@@ -44,8 +44,9 @@ public class MagicStaff_0 implements Weapon, AngleBehavior {
         frameWidth = !ultimateActivated ? 64 : 32;
         frameHeight = !ultimateActivated ? 64 : 32;
         texture.playAnimationChannel(animAttack);
-//        double centerToPath = Math.sqrt(Math.pow(frameWidth / 2, 2) + Math.pow(frameHeight / 2, 2));
-//        mouseCurrY -= centerToPath;
+        // double centerToPath = Math.sqrt(Math.pow(frameWidth / 2, 2)
+        //         + Math.pow(frameHeight / 2, 2));
+        // mouseCurrY -= centerToPath;
         if (this instanceof AngleBehavior) {
             ((AngleBehavior) this).calculateAnglePlayerRelative(player, mouseCurrX, mouseCurrY);
         }

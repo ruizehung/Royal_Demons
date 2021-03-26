@@ -3,9 +3,17 @@ package uwu.openjfx.components;
 import com.almasb.fxgl.entity.component.Component;
 
 public class AttackThroughComponent extends Component {
-    public boolean active;
+    private boolean active;
     public AttackThroughComponent(boolean active) {
         this.active = active;
     }
-    public AttackThroughComponent() {}
+    public AttackThroughComponent() { }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 }

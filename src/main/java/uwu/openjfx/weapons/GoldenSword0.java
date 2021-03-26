@@ -8,7 +8,7 @@ import javafx.util.Duration;
 
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 
-public class GoldenSword_0 implements Weapon {
+public class GoldenSword0 implements Weapon {
     private Entity meleeHitBox;
     private int attackDuration = 500; // Milliseconds
     private int ultimateChargeDuration = 1000; // Milliseconds
@@ -24,7 +24,8 @@ public class GoldenSword_0 implements Weapon {
         Entity gs = spawn("meleeSword",
                 new SpawnData(player.getX(),
                         player.getY()).
-                        put("weapon", !ultimateActivated ? "gold_sword0_slash_140x140" : "gold_sword0_ult_175x175").
+                        put("weapon", !ultimateActivated
+                                ? "gold_sword0_slash_140x140" : "gold_sword0_ult_175x175").
                         put("duration", getDuration(ultimateActivated)).
                         put("frameWidth", width).
                         put("frameHeight", height).
@@ -47,7 +48,8 @@ public class GoldenSword_0 implements Weapon {
         hitBoxHeight = !ultimateActivated ? 130 : 175;
         swordOffset = !ultimateActivated ? 22 : 0;
         meleeHitBox = spawn("meleeSwordHitBox",
-                new SpawnData(player.getX(), player.getY()).put("width", hitBoxWidth).put("height", hitBoxHeight));
+                new SpawnData(player.getX(), player.getY())
+                        .put("width", hitBoxWidth).put("height", hitBoxHeight));
         meleeHitBox.getTransformComponent().setAnchoredPosition(
                 new Point2D(
                         player.getX() - (hitBoxWidth / 2) + player.getWidth() / 2

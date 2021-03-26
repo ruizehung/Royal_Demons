@@ -29,7 +29,8 @@ public class StructureFactory implements EntityFactory {
     public Entity newDoor(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(RoyalType.DOOR)
-                .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
+                .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"),
+                        data.<Integer>get("height"))))
                 .with(new CollidableComponent(true))
                 .with(new PhysicsComponent())
                 .build();
@@ -39,7 +40,8 @@ public class StructureFactory implements EntityFactory {
     public Entity newTrapCover(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(RoyalType.TRAP)
-                .viewWithBBox(new Rectangle(data.<Integer>get("width"), data.<Integer>get("height"), Color.BLACK))
+                .viewWithBBox(new Rectangle(data.<Integer>get("width"),
+                        data.<Integer>get("height"), Color.BLACK))
                 .with(new TrapComponent())
                 .build();
     }
@@ -56,7 +58,8 @@ public class StructureFactory implements EntityFactory {
     public Entity newTrigger(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(RoyalType.TRAP_TRIGGER)
-                .viewWithBBox(new Rectangle(data.<Integer>get("width"), data.<Integer>get("height"), Color.TRANSPARENT))
+                .viewWithBBox(new Rectangle(data.<Integer>get("width"),
+                        data.<Integer>get("height"), Color.TRANSPARENT))
                 .with(new CollidableComponent(true))
                 .with(new TrapComponent())
                 .build();

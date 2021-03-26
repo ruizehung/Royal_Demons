@@ -311,17 +311,18 @@ public class MainMenu extends FXGLMenu {
         itemExit.setOnAction(event -> fireExit());
         box.add(itemExit);
 
+        /*
+        if (enabledItems.contains(MenuItem.SAVE_LOAD)) {
+            val itemSave = MenuButton("menu.save")
+            itemSave.setOnAction { fireSave() }
 
-//        if (enabledItems.contains(MenuItem.SAVE_LOAD)) {
-//            val itemSave = MenuButton("menu.save")
-//            itemSave.setOnAction { fireSave() }
-//
-//            val itemLoad = MenuButton("menu.load")
-//            itemLoad.setMenuContent({ createContentLoad() }, isCached = false)
-//
-//            box.add(itemSave)
-//            box.add(itemLoad)
-//        }
+            val itemLoad = MenuButton("menu.load")
+            itemLoad.setMenuContent({ createContentLoad() }, isCached = false)
+
+            box.add(itemSave)
+            box.add(itemLoad)
+        }
+         */
 
         return box;
     }

@@ -21,14 +21,20 @@ public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
             if (!weapon.getComponent(ProjectileComponent.class).isPaused()) {
                 HealthComponent enemyHealth = enemy.getObject("enemyComponent");
                 enemyHealth.deductHealth();
-                AttackThroughComponent playerWeaponAttackThrough = weapon.getComponent(AttackThroughComponent.class);
-                if (!playerWeaponAttackThrough.active) weapon.removeFromWorld();
+                AttackThroughComponent playerWeaponAttackThrough =
+                        weapon.getComponent(AttackThroughComponent.class);
+                if (!playerWeaponAttackThrough.isActive()) {
+                    weapon.removeFromWorld();
+                }
             }
         } else {
             HealthComponent enemyHealth = enemy.getObject("enemyComponent");
             enemyHealth.deductHealth();
-            AttackThroughComponent playerWeaponAttackThrough = weapon.getComponent(AttackThroughComponent.class);
-            if (!playerWeaponAttackThrough.active) weapon.removeFromWorld();
+            AttackThroughComponent playerWeaponAttackThrough =
+                    weapon.getComponent(AttackThroughComponent.class);
+            if (!playerWeaponAttackThrough.isActive()) {
+                weapon.removeFromWorld();
+            }
         }
 
         IDComponent idComponent = enemy.getComponent(IDComponent.class);

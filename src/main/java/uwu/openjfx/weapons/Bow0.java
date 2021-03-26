@@ -7,7 +7,7 @@ import javafx.geometry.Point2D;
 
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 
-public class Bow_0 implements Weapon, AngleBehavior {
+public class Bow0 implements Weapon, AngleBehavior {
 
     private Entity rangedHitBox;
     private int leftOffset;
@@ -75,7 +75,8 @@ public class Bow_0 implements Weapon, AngleBehavior {
     @Override
     public void calculateAnglePlayerRelative(Entity player, double mouseCurrX, double mouseCurrY) {
         double opposite = mouseCurrY - (player.getY() + 27.5);
-        double adjacent = mouseCurrX - (player.getScaleX() > 0 ? player.getX() + 20.0 : player.getX() - 15.0);
+        double adjacent = mouseCurrX - (player.getScaleX() > 0
+                ? player.getX() + 20.0 : player.getX() - 15.0);
         double angle = Math.atan2(opposite, adjacent);
         angle = Math.toDegrees(angle);
         dir = Vec2.fromAngle(angle);

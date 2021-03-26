@@ -48,13 +48,15 @@ public class ShowMapAction extends UserAction {
         Coordinate coordinate;
         // Identifying starting room
         coordinate = gameMap.getInitialRoom().getCoordinate();
-        Text startRoomText = (Text) vBoxes[coordinate.getX() + 50][50 - coordinate.getY()].getChildren().get(0);
+        Text startRoomText = (Text) vBoxes[coordinate.getX() + 50][50 - coordinate.getY()]
+                .getChildren().get(0);
         startRoomText.setText("S");
         startRoomText.setStyle("-fx-fill: red;");
 
         // Identifying boss room
         coordinate = gameMap.getBossRoom().getCoordinate();
-        Text bossRoomText = (Text) vBoxes[coordinate.getX() + 50][50 - coordinate.getY()].getChildren().get(0);
+        Text bossRoomText = (Text) vBoxes[coordinate.getX() + 50][50 - coordinate.getY()]
+                .getChildren().get(0);
         bossRoomText.setText("B");
         bossRoomText.setFill(gameMap.getBossRoom().visited() ? Color.RED : Color.BLACK);
         if (developerCheat) {

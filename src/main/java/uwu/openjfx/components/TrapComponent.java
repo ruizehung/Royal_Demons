@@ -10,10 +10,10 @@ public class TrapComponent extends Component {
     public void trigger() {
         final String action = getEntity().getProperties().getString("action");
         switch (action) {
-            case "remove":
-                getEntity().removeFromWorld();
-                break;
-            default:
+        case "remove":
+            getEntity().removeFromWorld();
+            break;
+        default:
         }
 
         Room curRoom = FXGL.geto("curRoom");
