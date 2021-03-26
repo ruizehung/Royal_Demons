@@ -242,20 +242,48 @@
   <object id="45" type="wall" x="822.031" y="568.001" width="10.2194" height="187.999"/>
  </objectgroup>
  <objectgroup id="4" name="doors &amp; spawns">
-  <object id="46" type="door" x="526.909" y="150.727" width="158.909" height="60.5455"/>
-  <object id="47" type="door" x="1610.55" y="454" width="61.8182" height="144"/>
-  <object id="49" type="door" x="1190.18" y="1544.55" width="176.545" height="49.6364"/>
-  <object id="50" type="door" x="210.364" y="1144" width="65.0909" height="205.455"/>
+  <object id="46" type="door" x="526.909" y="150.727" width="158.909" height="60.5455">
+   <properties>
+    <property name="direction" value="north"/>
+   </properties>
+  </object>
+  <object id="47" type="door" x="1610.55" y="454" width="61.8182" height="144">
+   <properties>
+    <property name="direction" value="east"/>
+   </properties>
+  </object>
+  <object id="49" type="door" x="1190.18" y="1544.55" width="176.545" height="49.6364">
+   <properties>
+    <property name="direction" value="south"/>
+   </properties>
+  </object>
+  <object id="50" type="door" x="210.364" y="1144" width="65.0909" height="205.455">
+   <properties>
+    <property name="direction" value="west"/>
+   </properties>
+  </object>
   <object id="51" type="point" x="311.25" y="1223.75">
+   <properties>
+    <property name="position" value="west"/>
+   </properties>
    <point/>
   </object>
   <object id="52" type="point" x="581.333" y="236.667">
+   <properties>
+    <property name="position" value="north"/>
+   </properties>
    <point/>
   </object>
   <object id="53" type="point" x="1572.67" y="506">
+   <properties>
+    <property name="position" value="east"/>
+   </properties>
    <point/>
   </object>
   <object id="54" type="point" x="1255.33" y="1456">
+   <properties>
+    <property name="position" value="south"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>
