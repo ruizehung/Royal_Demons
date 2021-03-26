@@ -18,6 +18,7 @@ public class MagicStaff_0 implements Weapon, AngleBehavior {
     private Vec2 dir;
     private int attackDuration = 1200; // Milliseconds
     private int ultimateChargeDuration = 1500; // Milliseconds
+    private boolean ultimateActivated;
 
     public MagicStaff_0() {
         animAttack = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
@@ -27,21 +28,21 @@ public class MagicStaff_0 implements Weapon, AngleBehavior {
     }
 
     @Override
-    public void attack(Entity player, boolean ultimateActivated, double mouseCurrX, double mouseCurrY) {
+    public void prepAttack(Entity player) {
+//        Entity gs = spawn("meleeSword", new SpawnData(0, 0).put("weapon", "gs0"));
+    }
+
+    @Override
+    public void attack(Entity player, double mouseCurrX, double mouseCurrY) {
         texture.playAnimationChannel(animAttack);
         if (this instanceof AngleBehavior) {
             ((AngleBehavior) this).calculateAnglePlayerRelative(player, mouseCurrX, mouseCurrY);
         }
-        if (!ultimateActivated) {
-            rangedHitBox = spawn("rangedMagic1HitBox",
-                    new SpawnData(
-                            player.getScaleX() > 0 ? player.getX() + 8.0 : player.getX() - 32,
-                            player.getY() + 3.5).put("dir", dir.toPoint2D()));
-        } else {
-            rangedHitBox = spawn("rangedMagicUltimateHitBox",
-                    new SpawnData(
-                            player.getScaleX() > 0 ? player.getX() + 24.0 : player.getX() - 16,
-                            player.getY() + 19.5).put("dir", dir.toPoint2D()));
+        rangedHitBox = spawn(!ultimateActivated ? "rangedMagic1HitBox" : "rangedMagicUltimateHitBox",
+                new SpawnData(
+                        player.getScaleX() > 0 ? player.getX() + 8.0 : player.getX() - 32,
+                        player.getY() + 3.5).put("dir", dir.toPoint2D()));
+        if (ultimateActivated) {
             rangedHitBox.setScaleX(2);
             rangedHitBox.setScaleY(2);
         }
@@ -49,8 +50,8 @@ public class MagicStaff_0 implements Weapon, AngleBehavior {
 
     @Override
     public void calculateAnglePlayerRelative(Entity player, double mouseCurrX, double mouseCurrY) {
-        double opposite = mouseCurrY - player.getY();
-        double adjacent = mouseCurrX - player.getX();
+        double opposite = mouseCurrY - (player.getY() + 3.5);
+        double adjacent = mouseCurrX - (player.getScaleX() > 0 ? player.getX() + 8.0 : player.getX() - 32);
         double angle = Math.atan2(opposite, adjacent);
         angle = Math.toDegrees(angle);
         dir = Vec2.fromAngle(angle);
@@ -58,6 +59,7 @@ public class MagicStaff_0 implements Weapon, AngleBehavior {
 
     @Override
     public int getDuration(boolean ultimateActivated) {
+        this.ultimateActivated = ultimateActivated;
         return ultimateActivated ? ultimateChargeDuration : attackDuration;
     }
 }

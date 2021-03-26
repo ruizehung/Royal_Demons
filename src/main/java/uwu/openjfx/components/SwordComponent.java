@@ -9,13 +9,28 @@ import javafx.util.Duration;
 
 public class SwordComponent extends Component {
     private AnimatedTexture texture;
-    private AnimationChannel animIdle, regSlash;
+    private AnimationChannel animIdle, animAttack;
+    private boolean destroyed;
+    public static int temp = 0;
 
     public SwordComponent() {
-        animIdle = new AnimationChannel(FXGL.image("weapon_golden_sword_32x32.png"), 1,
-                20, 44, Duration.seconds(1), 0, 0);
-        texture = new AnimatedTexture(animIdle);
-        texture.loop();
+
+    }
+
+    public SwordComponent(String weapon, int duration, int frameWidth, int frameHeight, int fpr) {
+        destroyed = false;
+        animAttack = new AnimationChannel(FXGL.image("./weapons/" + weapon + ".png"), fpr,
+                frameWidth, frameHeight, Duration.millis(duration), 0, fpr - 1);
+        texture = new AnimatedTexture(animAttack);
+        texture.playAnimationChannel(animAttack);
+        FXGL.getGameTimer().runAtInterval(() -> {
+            if (!destroyed) {
+                temp++;
+                System.out.println(temp);
+                getEntity().removeFromWorld();
+                destroyed = true;
+            }
+        }, Duration.millis(duration));
     }
 
     @Override
@@ -26,6 +41,6 @@ public class SwordComponent extends Component {
 
     @Override
     public void onUpdate(double tpf) {
-        texture.loopAnimationChannel(animIdle);
+
     }
 }
