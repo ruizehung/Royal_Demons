@@ -6,6 +6,7 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
+import javafx.geometry.Point2D;
 import javafx.util.Duration;
 
 import static com.almasb.fxgl.dsl.FXGL.spawn;
@@ -61,6 +62,8 @@ public class MagicStaff_0 implements Weapon, AngleBehavior {
                         put("rightOffset", rightOffset).
                         put("frameWidth", frameWidth).
                         put("frameHeight", frameHeight));
+//        rangedHitBox.setLocalAnchor(new Point2D(frameWidth / 2, frameHeight / 2));
+//        rangedHitBox.setAnchoredPosition(0, 0);
         if (ultimateActivated) {
             rangedHitBox.setScaleX(2);
             rangedHitBox.setScaleY(2);
