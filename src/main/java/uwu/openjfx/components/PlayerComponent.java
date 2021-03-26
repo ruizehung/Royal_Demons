@@ -34,6 +34,7 @@ public class PlayerComponent extends HealthComponent {
     private double currMouseX; // mouse input for x
     private double currMouseY; // mouse input for y
 
+    private boolean isPressingMovementKeys = false; // Player is moving with WASD / Arrow keys
     private boolean prepAttack = false; // Player has initiated attack charge/channel
     private boolean startAttack = false; // Player does the actual attack
     private boolean ultimateActivated = false; // Player is using ultimate
@@ -85,6 +86,10 @@ public class PlayerComponent extends HealthComponent {
 
     @Override
     public void onUpdate(double tpf) {
+        if (!isPressingMovementKeys) {
+            normalizeVelocityX();
+            normalizeVelocityY();
+        }
         // region Movement
         if (!prepAttack) {
             // if Player has initiated an attack, then do not perform walk/idle animations
@@ -119,6 +124,38 @@ public class PlayerComponent extends HealthComponent {
 
     // region Player Movement
     // As long as player has not initiated an attack, can move
+    private void normalizeVelocityX() {
+        if (physics.getVelocityX() != 0) {
+            if (physics.getVelocityX() > 0) {
+                physics.setVelocityX(physics.getVelocityX() - 1);
+                if (physics.getVelocityX() < 0) {
+                    physics.setVelocityX(0);
+                }
+            } else if (physics.getVelocityX() < 0) {
+                physics.setVelocityX(physics.getVelocityX() + 1);
+                if (physics.getVelocityX() > 0) {
+                    physics.setVelocityX(0);
+                }
+            }
+        }
+    }
+
+    private void normalizeVelocityY() {
+        if (physics.getVelocityY() != 0) {
+            if (physics.getVelocityY() > 0) {
+                physics.setVelocityY(physics.getVelocityY() - 1);
+                if (physics.getVelocityY() < 0) {
+                    physics.setVelocityY(0);
+                }
+            } else if (physics.getVelocityY() < 0) {
+                physics.setVelocityY(physics.getVelocityY() + 1);
+                if (physics.getVelocityY() > 0) {
+                    physics.setVelocityY(0);
+                }
+            }
+        }
+    }
+
     public void left() {
         if (!prepAttack) {
             getEntity().setScaleX(-1);
@@ -188,6 +225,10 @@ public class PlayerComponent extends HealthComponent {
 
     private void setCurrentWeapon(Weapon weapon) {
         currentWeapon = weapon;
+    }
+
+    public void setPressingMovementKeys(boolean moving) {
+        isPressingMovementKeys = moving;
     }
 
     // endregion
