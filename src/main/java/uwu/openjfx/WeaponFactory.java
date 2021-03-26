@@ -58,7 +58,7 @@ public class WeaponFactory implements EntityFactory {
         return FXGL.entityBuilder(data)
                 .type(RoyalType.PLAYERATTACK)
                 .viewWithBBox(hitBox)
-                .with(new AttackThroughComponent())
+                .with(new AttackThroughComponent(true))
                 .with(new CollidableComponent(true))
                 .build();
     }
