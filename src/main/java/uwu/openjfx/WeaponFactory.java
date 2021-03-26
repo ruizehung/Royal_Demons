@@ -12,91 +12,102 @@ import com.almasb.fxgl.physics.HitBox;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import uwu.openjfx.components.ArrowComponent;
 import uwu.openjfx.components.AttackThroughComponent;
+import uwu.openjfx.components.BowComponent;
 import uwu.openjfx.components.MagicComponent;
 import uwu.openjfx.components.SwordComponent;
 
 public class WeaponFactory implements EntityFactory {
-    
-    @Spawns("meleeSword1")
-    public Entity newMeleeSword1(SpawnData data) {
+
+    // region Animations
+    @Spawns("meleeSword")
+    public Entity newMeleeSword(SpawnData data) {
+        String weapon = data.get("weapon");
+        int duration = data.get("duration");
+        int frameWidth = data.get("frameWidth");
+        int frameHeight = data.get("frameHeight");
+        int fpr = data.get("fpr");
         return FXGL.entityBuilder(data)
-                .with(new SwordComponent())
+                .with(new SwordComponent(weapon, duration, frameWidth, frameHeight, fpr))
                 .type(RoyalType.TRAP_TRIGGER)
-                .viewWithBBox("weapon_golden_sword_32x32.png")
                 .build();
     }
 
-    @Spawns("meleeSword1HitBox")
+    @Spawns("rangedBow")
+    public Entity newRangedBow(SpawnData data) {
+        String weapon = data.get("weapon");
+        int duration = data.get("duration");
+        int frameWidth = data.get("frameWidth");
+        int frameHeight = data.get("frameHeight");
+        int fpr = data.get("fpr");
+        return FXGL.entityBuilder(data)
+                .with(new BowComponent(weapon, duration, frameWidth, frameHeight, fpr))
+                .type(RoyalType.TRAP_TRIGGER)
+                .build();
+    }
+    //endregion
+
+    // region Hitboxes
+    @Spawns("meleeSwordHitBox")
     public Entity newMeleeSword1HitBox(SpawnData data) {
-        Rectangle hitBox = new Rectangle(80, 110, Color.WHITE);
-        hitBox.setOpacity(0.5);
+        int rectWidth = data.get("width");
+        int rectHeight = data.get("height");
+        Rectangle hitBox = new Rectangle(rectWidth, rectHeight, Color.WHITE);
+        hitBox.setOpacity(.5);
         return FXGL.entityBuilder(data)
                 .type(RoyalType.PLAYERATTACK)
                 .viewWithBBox(hitBox)
+                .with(new AttackThroughComponent(true))
                 .with(new CollidableComponent(true))
                 .build();
     }
 
-    @Spawns("meleeUltimateHitBox")
-    public Entity newMeleeUltimateHitBox(SpawnData data) {
-        Rectangle hitBox = new Rectangle(175, 175, Color.ORANGE);
-        hitBox.setOpacity(0.5);
-        return FXGL.entityBuilder(data)
-                .type(RoyalType.PLAYERATTACK)
-                .with(new AttackThroughComponent())
-                .viewWithBBox(hitBox)
-                .with(new CollidableComponent(true))
-                .build();
-    }
-
-    @Spawns("rangedArrow1HitBox")
-    public Entity newRangedArrow1HitBox(SpawnData data) {
+    @Spawns("rangedArrowHitBox")
+    public Entity newRangedArrowHitBox(SpawnData data) {
+        int leftOffset = data.get("leftOffset");
+        int rightOffset = data.get("rightOffset");
+        int frameWidth = data.get("frameWidth");
+        int frameHeight = data.get("frameHeight");
         Point2D dir = data.get("dir");
+        int speed = data.get("speed");
+        boolean ultimateActive = data.get("ultimateActive");
         return FXGL.entityBuilder(data)
                 .type(RoyalType.PLAYERATTACK)
-                .viewWithBBox("arrow_temp.png")
+                .view("./weapons/bow/arrow.png")
+                .bbox(new HitBox(BoundingShape.polygon(
+                        new Point2D(leftOffset, leftOffset),
+                        new Point2D(frameWidth - rightOffset, leftOffset),
+                        new Point2D(frameWidth - rightOffset, frameHeight - leftOffset),
+                        new Point2D(leftOffset, frameHeight - leftOffset))))
+                .with(new ArrowComponent())
+                .with(new AttackThroughComponent(ultimateActive))
                 .with(new CollidableComponent(true))
-                .with(new ProjectileComponent(dir, 400))
+                .with(new ProjectileComponent(dir, speed))
                 .build();
     }
 
-    @Spawns("rangedBowUltimateHitBox")
-    public Entity newRangedUltimateHitBox(SpawnData data) {
-        Point2D dir = data.get("dir");
-        return FXGL.entityBuilder(data)
-                .type(RoyalType.PLAYERATTACK)
-                .viewWithBBox("arrow_temp.png")
-                .with(new AttackThroughComponent())
-                .with(new CollidableComponent(true))
-                .with(new ProjectileComponent(dir, 400))
-                .build();
-    }
-
-    @Spawns("rangedMagic1HitBox")
+    @Spawns("rangedMagicHitBox")
     public Entity newRangedMagic1HitBox(SpawnData data) {
+        int leftOffset = data.get("leftOffset");
+        int rightOffset = data.get("rightOffset");
+        int frameWidth = data.get("frameWidth");
+        int frameHeight = data.get("frameHeight");
         Point2D dir = data.get("dir");
+        int speed = data.get("speed");
+        boolean ultimateActive = data.get("ultimateActive");
+        String magicSpell = data.get("spell");
         return FXGL.entityBuilder(data)
                 .type(RoyalType.PLAYERATTACK)
-                .bbox(new HitBox(BoundingShape.polygon(new Point2D(0, 0), new Point2D(64, 0),
-                        new Point2D(64, 64), new Point2D(0, 64))))
-                .with(new MagicComponent("fireball"))
+                .bbox(new HitBox(BoundingShape.polygon(
+                        new Point2D(leftOffset, leftOffset),
+                        new Point2D(frameWidth - rightOffset, leftOffset),
+                        new Point2D(frameWidth - rightOffset, frameHeight - leftOffset),
+                        new Point2D(leftOffset, frameHeight - leftOffset))))
+                .with(new MagicComponent(magicSpell))
+                .with(new AttackThroughComponent(ultimateActive))
                 .with(new CollidableComponent(true))
-                .with(new ProjectileComponent(dir, 400))
-                .build();
-    }
-
-    @Spawns("rangedMagicUltimateHitBox")
-    public Entity newRangedMagicUltimateHitBox(SpawnData data) {
-        Point2D dir = data.get("dir");
-        return FXGL.entityBuilder(data)
-                .type(RoyalType.PLAYERATTACK)
-                .bbox(new HitBox(BoundingShape.polygon(new Point2D(0, 0), new Point2D(32, 0),
-                        new Point2D(32, 32), new Point2D(0, 32))))
-                .with(new MagicComponent("ultimate"))
-                .with(new AttackThroughComponent())
-                .with(new CollidableComponent(true))
-                .with(new ProjectileComponent(dir, 400))
+                .with(new ProjectileComponent(dir, speed))
                 .build();
     }
 
@@ -110,4 +121,5 @@ public class WeaponFactory implements EntityFactory {
                 .with(new CollidableComponent(true))
                 .build();
     }
+    // endregion
 }

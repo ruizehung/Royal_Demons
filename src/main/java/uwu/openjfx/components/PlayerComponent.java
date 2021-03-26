@@ -2,7 +2,6 @@ package uwu.openjfx.components;
 
 import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
@@ -17,7 +16,6 @@ import uwu.openjfx.weapons.MagicStaff_0;
 import uwu.openjfx.weapons.Weapon;
 
 import java.util.Timer;
-import static com.almasb.fxgl.dsl.FXGL.spawn;
 
 public class PlayerComponent extends HealthComponent {
 
@@ -31,7 +29,6 @@ public class PlayerComponent extends HealthComponent {
     private AnimationChannel animSwordUltimate1;
     private AnimationChannel animSwordUltimate2;
 
-    private Entity meleeSword1; // Player's sword TEMPORARY
     private Weapon currentWeapon; // Player's current weapon
 
     private double currMouseX; // mouse input for x
@@ -47,8 +44,8 @@ public class PlayerComponent extends HealthComponent {
     public static String playerWeapon;
     public static String gameDifficulty;
     public static int gold;
+
     public static IntegerProperty goldProperty;
-    private boolean removeThisLaterPlease = false;
 
     public PlayerComponent(int healthPoints) {
         super(healthPoints);
@@ -74,7 +71,7 @@ public class PlayerComponent extends HealthComponent {
         animWalk = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
                 40, 55, Duration.seconds(0.5), 4, 7);
         animAutoAttack = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
-                40, 55, Duration.seconds(currentWeapon.getDuration(ultimateActivated) / 1000f), 8, 8);
+                40, 55, Duration.millis(currentWeapon.getDuration(ultimateActivated) / 1000), 8, 8);
 
         texture = new AnimatedTexture(animIdle);
         texture.loop();
@@ -84,31 +81,10 @@ public class PlayerComponent extends HealthComponent {
     public void onAdded() {
         entity.getTransformComponent().setScaleOrigin(new Point2D(20, 25));
         entity.getViewComponent().addChild(texture);
-        // meleeSword1 = spawn("meleeSword1", getEntity().getX(), getEntity().getY() + 50);
     }
 
     @Override
     public void onUpdate(double tpf) {
-        // region REMOVE THIS LATER
-        if (!removeThisLaterPlease) {
-            meleeSword1 = spawn("meleeSword1", getEntity().getX(), getEntity().getY() + 50);
-            switch (playerWeapon) {
-            case "Sword":
-                currentWeapon = new GoldenSword_0();
-                break;
-            case "Bow":
-                currentWeapon = new Bow_0();
-                break;
-            case "Wand":
-                currentWeapon = new MagicStaff_0();
-                break;
-            default:
-            }
-            removeThisLaterPlease = true;
-        }
-        updateSwordPosition();
-        // endregion
-
         // region Movement
         if (!prepAttack) { // if Player has initiated an attack, then do not perform walk/idle animations
             if (physics.isMoving()) {
@@ -125,7 +101,7 @@ public class PlayerComponent extends HealthComponent {
 
         //region Player performs attack
         if (startAttack) { // Player performs the actual attack
-            currentWeapon.attack(getEntity(), ultimateActivated, currMouseX, currMouseY);
+            currentWeapon.attack(getEntity(), currMouseX, currMouseY);
             startAttack = false;
             prepAttack = false;
             ultimateActivated = false;
@@ -175,15 +151,6 @@ public class PlayerComponent extends HealthComponent {
     // endregion
 
     // region Player Attack functions
-    private void updateSwordPosition() { // TEMP
-        if (getEntity().getScaleX() > 0) {
-            meleeSword1.setPosition(getEntity().getX() - 25, getEntity().getY() + 25);
-            meleeSword1.setRotation(-100);
-        } else {
-            meleeSword1.setPosition(getEntity().getX() + 45, getEntity().getY() + 25);
-            meleeSword1.setRotation(100);
-        }
-    }
 
     public void autoAttack(boolean ultimateActivated) {
         this.ultimateActivated = ultimateActivated;
@@ -205,6 +172,7 @@ public class PlayerComponent extends HealthComponent {
                     }
                 }, currentWeapon.getDuration(ultimateActivated)
         );
+        currentWeapon.prepAttack(getEntity());
     }
 
     public boolean isAttacking() {

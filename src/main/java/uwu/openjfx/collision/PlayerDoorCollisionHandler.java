@@ -58,8 +58,12 @@ public class PlayerDoorCollisionHandler extends CollisionHandler {
                 });
                 return;
             }
-        } else if (curRoom.enemiesCleared()) {
-            pushNotification("Oops! No room there....");
+        } else {
+            if (curRoom.enemiesCleared()) {
+                pushNotification("Oops! No room there....");
+            } else {
+                pushNotification("Clear enemies before exploring new rooms!");
+            }
         }
         getInput().setProcessInput(true);
     }

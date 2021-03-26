@@ -7,18 +7,18 @@ import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
 
-public class SwordComponent extends Component {
+public class BowComponent extends Component {
     private AnimatedTexture texture;
     private AnimationChannel animIdle, animAttack;
     private boolean destroyed;
 
-    public SwordComponent() {
+    public BowComponent() {
 
     }
 
-    public SwordComponent(String weapon, int duration, int frameWidth, int frameHeight, int fpr) {
+    public BowComponent(String weapon, int duration, int frameWidth, int frameHeight, int fpr) {
         destroyed = false;
-        animAttack = new AnimationChannel(FXGL.image("./weapons/" + weapon + ".png"), fpr,
+        animAttack = new AnimationChannel(FXGL.image("./weapons/bow/" + weapon + ".png"), fpr,
                 frameWidth, frameHeight, Duration.millis(duration), 0, fpr - 1);
         texture = new AnimatedTexture(animAttack);
         texture.playAnimationChannel(animAttack);
