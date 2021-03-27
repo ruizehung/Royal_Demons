@@ -8,7 +8,7 @@ import javafx.geometry.Point2D;
 import javafx.util.Duration;
 
 /*
-    This class is responsible for ANY weapon animation
+    This class is responsible for ANY projectile animation
  */
 public class ProjectileAnimationComponent extends Component {
     private AnimatedTexture texture;
