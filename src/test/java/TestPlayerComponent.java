@@ -21,6 +21,4 @@ public class TestPlayerComponent {
         player.getComponent(PlayerComponent.class).deductHealth();
         assert (player.getComponent(PlayerComponent.class).isDeadTest());
     }
-
-
 }

@@ -27,7 +27,7 @@ public class DieScreenMenu extends FXGLMenu {
 
     public DieScreenMenu(MenuType type) {
         super(type);
-        content = createContentPane();
+        content = createContentPane(type);
         content.getChildren().add(createContent());
 
         content.setTranslateX(FXGL.getAppWidth() / 4.0);
@@ -53,8 +53,12 @@ public class DieScreenMenu extends FXGLMenu {
         animation.onUpdate(tpf);
     }
 
-    private VBox createContentPane() {
-        return new VBox(FXGL.texture("dissapointed_musaef.png"));
+    private VBox createContentPane(MenuType type) {
+        if (type == MenuType.GAME_MENU) {
+            return new VBox(FXGL.texture("dissapointed_musaev.png"));
+        } else {
+            return new VBox(FXGL.texture("proud_musaev_resize.png"));
+        }
     }
 
     private Parent createContent() {

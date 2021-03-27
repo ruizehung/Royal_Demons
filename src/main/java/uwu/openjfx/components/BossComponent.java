@@ -1,5 +1,9 @@
 package uwu.openjfx.components;
 
+import com.almasb.fxgl.app.scene.MenuType;
+import com.almasb.fxgl.dsl.FXGL;
+import uwu.openjfx.DieScreenMenu;
+
 public class BossComponent extends EnemyComponent {
 
     public BossComponent(int healthPoints, String type, int width, int height) {
@@ -9,6 +13,6 @@ public class BossComponent extends EnemyComponent {
     @Override
     public void die() {
         super.die();
-        System.out.println("Player wins!!! Show prof.'s pic : )");
+        FXGL.getSceneService().pushSubScene(new DieScreenMenu(MenuType.MAIN_MENU));
     }
 }
