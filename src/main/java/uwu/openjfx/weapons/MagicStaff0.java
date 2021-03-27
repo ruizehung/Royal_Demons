@@ -6,6 +6,7 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
+import javafx.geometry.Point2D;
 import javafx.util.Duration;
 
 import static com.almasb.fxgl.dsl.FXGL.spawn;
