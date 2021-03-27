@@ -38,8 +38,8 @@ public class PlayerComponent extends HealthComponent {
     private boolean startAttack = false; // Player does the actual attack
     private boolean ultimateActivated = false; // Player is using ultimate
     private boolean ultimateCD = false; // how long until Player can activate Ultimate again
+    private boolean deadTest = false;
 
-    // Todo: remove temp vars and put in char state class
     private static String playerName;
     private static String playerWeapon;
     private static String gameDifficulty;
@@ -289,6 +289,14 @@ public class PlayerComponent extends HealthComponent {
 
     @Override
     public void die() {
-        FXGL.getSceneService().pushSubScene(new DieScreenMenu(MenuType.GAME_MENU));
+        if (!MainApp.isIsTesting()) {
+            FXGL.getSceneService().pushSubScene(new DieScreenMenu(MenuType.GAME_MENU));
+        } else {
+            deadTest = true;
+        }
+    }
+
+    public boolean isDeadTest() {
+        return deadTest;
     }
 }
