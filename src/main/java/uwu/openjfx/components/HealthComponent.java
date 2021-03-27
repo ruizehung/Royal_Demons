@@ -5,7 +5,9 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import java.util.Timer;
 
-// Handles any altercations to health of creature
+/*
+    This class is responsible for handing any alterations to the health of a creature.
+ */
 public abstract class HealthComponent extends Component {
     private int healthPoints;
     private boolean isInvulnerable;

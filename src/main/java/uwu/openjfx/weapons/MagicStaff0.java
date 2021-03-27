@@ -8,10 +8,11 @@ import javafx.geometry.Point2D;
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 
 /*
-    This class is responsible for spawning the magic spell at a specific location relative to player
-    This class will calculate the angle relative to mouse-pressed location and fire the magic spell
+    This class is responsible for the following:
+    - Spawning the magic spell at a specific location relative to player
+    - Calculate the angle relative to mouse-pressed location and fire the magic spell
     towards this location.
-    This class will spawn the player-staff(wand) in the prepAttack() method, whose animation
+    - Spawn the player-staff(wand) in the prepAttack() method, whose animation
     will be handled in the WandComponent class.
  */
 public class MagicStaff0 implements Weapon, AngleBehavior {

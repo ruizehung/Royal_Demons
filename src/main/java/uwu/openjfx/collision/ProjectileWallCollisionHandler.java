@@ -8,6 +8,9 @@ import javafx.util.Duration;
 import uwu.openjfx.RoyalType;
 import uwu.openjfx.components.ProjectileAnimationComponent;
 
+/*
+    This class is responsible for when a projectile touches a wall.
+ */
 public class ProjectileWallCollisionHandler extends CollisionHandler {
 
     public ProjectileWallCollisionHandler() {

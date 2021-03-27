@@ -9,9 +9,9 @@ import javafx.util.Duration;
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 
 /*
-    This class is responsible for spawning the slash hitbox at a specific location
-    relative to player.
-    This class will spawn the player-sword in the prepAttack() method, whose animation
+    This class is responsible for the following:
+    - Spawning the slash hitbox at a specific location relative to player.
+    - Spawn the player-sword in the prepAttack() method, whose animation
     will be handled in the SwordComponent class.
  */
 public class GoldenSword0 implements Weapon {

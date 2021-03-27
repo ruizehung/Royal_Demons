@@ -9,7 +9,12 @@ import javafx.util.Duration;
 import uwu.openjfx.MainApp;
 
 /*
-    This class is responsible for ANY projectile animation
+    This class is responsible for ANY projectile animation.
+    It does the following:
+    - Finds an asset by its file name in the resources directory
+    - Takes into account its file informations (i.e dimensions, fpr, etc.)
+    - Takes in how long it should perform the animation per second
+    - Takes into account whether it is an arrow or magic spell (difference in collision with walls)
  */
 public class ProjectileAnimationComponent extends Component {
     private AnimatedTexture texture;

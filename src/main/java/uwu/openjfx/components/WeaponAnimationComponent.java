@@ -8,7 +8,12 @@ import javafx.geometry.Point2D;
 import javafx.util.Duration;
 
 /*
-    This class is responsible for ANY weapon animation
+    This class is responsible for ANY weapon animation.
+    It does the following:
+    - Finds an asset by its file name in the resources directory
+    - Takes into account its file informations (i.e dimensions, fpr, etc.)
+    - Takes in how long it should perform the animation per second
+    - Disappears shortly after attacking
  */
 public class WeaponAnimationComponent extends Component {
     private AnimatedTexture texture;

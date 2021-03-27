@@ -18,6 +18,11 @@ import uwu.openjfx.weapons.Weapon;
 
 import java.util.Timer;
 
+/*
+    This class is responsible for the following:
+    - Animation of the player: movement, idleness, attacking
+    - Being the caller for attacking, which in turn spawns the necessary weapon of type Weapon
+ */
 public class PlayerComponent extends HealthComponent {
 
     private PhysicsComponent physics;

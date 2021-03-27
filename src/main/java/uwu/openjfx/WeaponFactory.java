@@ -16,6 +16,12 @@ import uwu.openjfx.components.AttackMultipleComponent;
 import uwu.openjfx.components.ProjectileAnimationComponent;
 import uwu.openjfx.components.WeaponAnimationComponent;
 
+/*
+    This class is responsible for creating the following:
+    - weapon sprites
+    - attack hitboxes to collide with enemies
+    - projectiles
+ */
 public class WeaponFactory implements EntityFactory {
 
     // region Animations

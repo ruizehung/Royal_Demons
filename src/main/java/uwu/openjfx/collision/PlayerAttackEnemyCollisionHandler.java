@@ -7,6 +7,12 @@ import uwu.openjfx.RoyalType;
 import uwu.openjfx.components.AttackMultipleComponent;
 import uwu.openjfx.components.HealthComponent;
 
+/*
+    This class is responsible for when the hitbox of a player attack touches an enemy
+    - Weapon disappears on two conditions:
+    1.) if weapon is a projectile, is NOT paused, and does NOT attack multiple enemies
+    2.) if a weapon is NOT a projectile and does NOT attack multiple enemies
+ */
 public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
     public PlayerAttackEnemyCollisionHandler() {
         super(RoyalType.PLAYERATTACK, RoyalType.ENEMY);
@@ -16,12 +22,6 @@ public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
     public void onCollisionBegin(Entity weapon, Entity enemy) {
         HealthComponent enemyHealth = enemy.getObject("enemyComponent");
         enemyHealth.deductHealth();
-
-        /*
-            weapon disappears on two conditions:
-            1.) weapon is a projectile, is not paused, and does not attack multiple enemies
-            2.) weapon is not a projectile and does not attack multiple enemies
-         */
 
         if (((weapon.hasComponent(ProjectileComponent.class))
             && (weapon.hasComponent(AttackMultipleComponent.class))

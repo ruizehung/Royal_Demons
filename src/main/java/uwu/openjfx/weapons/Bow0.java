@@ -8,10 +8,11 @@ import javafx.geometry.Point2D;
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 
 /*
-    This class is responsible for spawning the arrow at a specific location relative to player.
-    This class will calculate the angle relative to mouse-pressed location and shoot the arrow
+    This class is responsible for the following:
+    - Spawning the arrow at a specific location relative to player.
+    - Calculate the angle relative to mouse-pressed location and shoot the arrow
     towards this location.
-    This class will spawn the player-bow in the prepAttack() method, whose animation
+    - Spawn the player-bow in the prepAttack() method, whose animation
     will be handled in the BowComponent class.
  */
 public class Bow0 implements Weapon, AngleBehavior {

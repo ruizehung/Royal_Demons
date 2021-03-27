@@ -16,6 +16,12 @@ import java.util.Timer;
 
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 
+/*
+    This class is responsible for the following:
+    - Enemy moves in the direction of player so long as player is within certain radius
+    - Enemy attacks player when player is within certain radius
+    - Enemy has an animation to go with whatever attack it's performing.
+ */
 public class EnemyComponent extends HealthComponent {
     private PhysicsComponent physics;
 

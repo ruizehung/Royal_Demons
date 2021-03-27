@@ -6,6 +6,9 @@ import uwu.openjfx.RoyalType;
 import uwu.openjfx.components.HealthComponent;
 import uwu.openjfx.components.PlayerComponent;
 
+/*
+    This class is responsible for handling player TOUCHING enemy collision.
+ */
 public class PlayerEnemyCollisionHandler extends CollisionHandler {
 
     public PlayerEnemyCollisionHandler() {

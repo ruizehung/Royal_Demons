@@ -6,6 +6,9 @@ import uwu.openjfx.RoyalType;
 import uwu.openjfx.components.HealthComponent;
 import uwu.openjfx.components.PlayerComponent;
 
+/*
+    This class is responsible for the hitbox of the enemy's attack touching the player.
+ */
 public class EnemyAttackPlayerCollisionHandler extends CollisionHandler  {
     public EnemyAttackPlayerCollisionHandler() {
         super(RoyalType.ENEMYATTACK, RoyalType.PLAYER);
