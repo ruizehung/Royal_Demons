@@ -4,7 +4,7 @@ import com.almasb.fxgl.dsl.components.ProjectileComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import uwu.openjfx.RoyalType;
-import uwu.openjfx.components.AttackThroughComponent;
+import uwu.openjfx.components.AttackMultipleComponent;
 import uwu.openjfx.components.HealthComponent;
 
 public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
@@ -14,24 +14,23 @@ public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
 
     @Override
     public void onCollisionBegin(Entity weapon, Entity enemy) {
-        if (weapon.hasComponent(ProjectileComponent.class)) {
-            if (!weapon.getComponent(ProjectileComponent.class).isPaused()) {
-                HealthComponent enemyHealth = enemy.getObject("enemyComponent");
-                enemyHealth.deductHealth();
-                AttackThroughComponent playerWeaponAttackThrough =
-                        weapon.getComponent(AttackThroughComponent.class);
-                if (!playerWeaponAttackThrough.isActive()) {
-                    weapon.removeFromWorld();
-                }
-            }
-        } else {
-            HealthComponent enemyHealth = enemy.getObject("enemyComponent");
-            enemyHealth.deductHealth();
-            AttackThroughComponent playerWeaponAttackThrough =
-                    weapon.getComponent(AttackThroughComponent.class);
-            if (!playerWeaponAttackThrough.isActive()) {
-                weapon.removeFromWorld();
-            }
+        HealthComponent enemyHealth = enemy.getObject("enemyComponent");
+        enemyHealth.deductHealth();
+
+        /*
+            weapon disappears on two conditions:
+            1.) weapon is a projectile, is not paused, and does not attack multiple enemies
+            2.) weapon is not a projectile and does not attack multiple enemies
+         */
+
+        if (((weapon.hasComponent(ProjectileComponent.class))
+            && (weapon.hasComponent(AttackMultipleComponent.class))
+            && (!weapon.getComponent(ProjectileComponent.class).isPaused())
+            && (!weapon.getComponent(AttackMultipleComponent.class).isActive()))
+            || ((!weapon.hasComponent(ProjectileComponent.class))
+            && (weapon.hasComponent(AttackMultipleComponent.class))
+            && (weapon.getComponent(AttackMultipleComponent.class).isPaused()))) {
+            weapon.removeFromWorld();
         }
     }
 }

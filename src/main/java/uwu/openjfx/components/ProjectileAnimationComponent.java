@@ -6,6 +6,7 @@ import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
+import uwu.openjfx.MainApp;
 
 /*
     This class is responsible for ANY projectile animation
@@ -26,11 +27,13 @@ public class ProjectileAnimationComponent extends Component {
         // therefore which animation
         // parameter duration: tells us how long the charge-up of the attack is
         // parameter fpr: frames per row
-        AnimationChannel animAttack = new AnimationChannel(
-                FXGL.image("./weapons/" + weapon + ".png"), fpr,
-                fw, fh, Duration.millis(duration), 0, fpr - 1);
-        texture = new AnimatedTexture(animAttack);
-        texture.loop();
+        if (!MainApp.isIsTesting()) {
+            AnimationChannel animAttack = new AnimationChannel(
+                    FXGL.image("./weapons/" + weapon + ".png"), fpr,
+                    fw, fh, Duration.millis(duration), 0, fpr - 1);
+            texture = new AnimatedTexture(animAttack);
+            texture.loop();
+        }
 
         this.isArrow = isArrow;
         this.isMagic = isMagic;
@@ -38,8 +41,10 @@ public class ProjectileAnimationComponent extends Component {
 
     @Override
     public void onAdded() {
-        entity.getTransformComponent().setScaleOrigin(new Point2D(0, 0));
-        entity.getViewComponent().addChild(texture);
+        if (!MainApp.isIsTesting()) {
+            entity.getTransformComponent().setScaleOrigin(new Point2D(0, 0));
+            entity.getViewComponent().addChild(texture);
+        }
     }
 
     public boolean getIsArrow() {

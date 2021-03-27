@@ -14,7 +14,7 @@ public class ProjectileWallCollisionHandler extends CollisionHandler {
         super(RoyalType.PLAYERATTACK, RoyalType.WALL);
     }
 
-    protected void onCollisionBegin(Entity weapon, Entity wall) {
+    public void onCollisionBegin(Entity weapon, Entity wall) {
         if (weapon.hasComponent(ProjectileAnimationComponent.class)) {
             ProjectileAnimationComponent projectileAnimationComponent =
                     weapon.getComponent(ProjectileAnimationComponent.class);

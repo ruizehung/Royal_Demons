@@ -12,7 +12,7 @@ import com.almasb.fxgl.physics.HitBox;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import uwu.openjfx.components.AttackThroughComponent;
+import uwu.openjfx.components.AttackMultipleComponent;
 import uwu.openjfx.components.ProjectileAnimationComponent;
 import uwu.openjfx.components.WeaponAnimationComponent;
 
@@ -56,7 +56,7 @@ public class WeaponFactory implements EntityFactory {
         return FXGL.entityBuilder(data)
                 .type(RoyalType.PLAYERATTACK)
                 .viewWithBBox(hitBox)
-                .with(new AttackThroughComponent(true))
+                .with(new AttackMultipleComponent(true))
                 .with(new CollidableComponent(true))
                 .build();
     }
@@ -85,7 +85,7 @@ public class WeaponFactory implements EntityFactory {
                         new Point2D(leftOffset, frameHeight - leftOffset))))
                 .with(new ProjectileAnimationComponent(
                         weapon, duration, frameWidth, frameHeight, fpr, isArrow, isMagic))
-                .with(new AttackThroughComponent(ultimateActive))
+                .with(new AttackMultipleComponent(ultimateActive))
                 .with(new CollidableComponent(true))
                 .with(new ProjectileComponent(dir, speed))
                 .build();
@@ -114,7 +114,7 @@ public class WeaponFactory implements EntityFactory {
                         new Point2D(leftOffset, frameHeight - leftOffset))))
                 .with(new ProjectileAnimationComponent(
                         weapon, duration, frameWidth, frameHeight, fpr, isArrow, isMagic))
-                .with(new AttackThroughComponent(ultimateActive))
+                .with(new AttackMultipleComponent(ultimateActive))
                 .with(new CollidableComponent(true))
                 .with(new ProjectileComponent(dir, speed))
                 .build();
