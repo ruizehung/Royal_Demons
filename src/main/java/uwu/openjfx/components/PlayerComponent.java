@@ -38,13 +38,16 @@ public class PlayerComponent extends HealthComponent {
     private double currMouseX; // mouse input for x
     private double currMouseY; // mouse input for y
 
+    private double speed = 170;
+    private boolean overDrive = false;
+    private double velocityDecrementer = 5;
     private boolean isPressingMovementKeys = false; // Player is moving with WASD / Arrow keys
     private boolean prepAttack = false; // Player has initiated attack charge/channel
     private boolean startAttack = false; // Player does the actual attack
     private boolean ultimateActivated = false; // Player is using ultimate
     private boolean ultimateCD = false; // how long until Player can activate Ultimate again
-    private boolean deadTest = false;
 
+    // Todo: remove temp vars and put in char state class
     private static String playerName;
     private static String playerWeapon;
     private static String gameDifficulty;
@@ -81,16 +84,16 @@ public class PlayerComponent extends HealthComponent {
 
         if (currentWeapon == null) {
             switch (playerWeapon) {
-            case "Sword":
-                currentWeapon = new GoldenSword0();
-                break;
-            case "Bow":
-                currentWeapon = new Bow0();
-                break;
-            case "Wand":
-                currentWeapon = new MagicStaff0();
-                break;
-            default:
+                case "Sword":
+                    currentWeapon = new GoldenSword0();
+                    break;
+                case "Bow":
+                    currentWeapon = new Bow0();
+                    break;
+                case "Wand":
+                    currentWeapon = new MagicStaff0();
+                    break;
+                default:
             }
         }
 
@@ -123,7 +126,7 @@ public class PlayerComponent extends HealthComponent {
 
     @Override
     public void onUpdate(double tpf) {
-        if (!isPressingMovementKeys) {
+        if (!isPressingMovementKeys || overDrive) {
             normalizeVelocityX();
             normalizeVelocityY();
         }
@@ -164,12 +167,12 @@ public class PlayerComponent extends HealthComponent {
     private void normalizeVelocityX() {
         if (physics.getVelocityX() != 0) {
             if (physics.getVelocityX() > 0) {
-                physics.setVelocityX(physics.getVelocityX() - 1);
+                physics.setVelocityX(physics.getVelocityX() - velocityDecrementer);
                 if (physics.getVelocityX() < 0) {
                     physics.setVelocityX(0);
                 }
             } else if (physics.getVelocityX() < 0) {
-                physics.setVelocityX(physics.getVelocityX() + 1);
+                physics.setVelocityX(physics.getVelocityX() + velocityDecrementer);
                 if (physics.getVelocityX() > 0) {
                     physics.setVelocityX(0);
                 }
@@ -180,12 +183,12 @@ public class PlayerComponent extends HealthComponent {
     private void normalizeVelocityY() {
         if (physics.getVelocityY() != 0) {
             if (physics.getVelocityY() > 0) {
-                physics.setVelocityY(physics.getVelocityY() - 1);
+                physics.setVelocityY(physics.getVelocityY() - velocityDecrementer);
                 if (physics.getVelocityY() < 0) {
                     physics.setVelocityY(0);
                 }
             } else if (physics.getVelocityY() < 0) {
-                physics.setVelocityY(physics.getVelocityY() + 1);
+                physics.setVelocityY(physics.getVelocityY() + velocityDecrementer);
                 if (physics.getVelocityY() > 0) {
                     physics.setVelocityY(0);
                 }
@@ -196,32 +199,36 @@ public class PlayerComponent extends HealthComponent {
     public void left() {
         if (!prepAttack) {
             getEntity().setScaleX(-1);
-            physics.setVelocityX(-170);
+            physics.setVelocityX(-speed);
         }
     }
 
     public void right() {
         if (!prepAttack) {
             getEntity().setScaleX(1);
-            physics.setVelocityX(170);
+            physics.setVelocityX(speed);
         }
     }
 
     public void up() {
         if (!prepAttack) {
-            physics.setVelocityY(-170);
+            physics.setVelocityY(-speed);
         }
     }
 
     public void down() {
         if (!prepAttack) {
-            physics.setVelocityY(170);
+            physics.setVelocityY(speed);
         }
     }
 
     public void stop() {
         physics.setVelocityX(0);
         physics.setVelocityY(0);
+    }
+
+    public void setOverDrive(boolean overDrive) {
+        this.overDrive = overDrive;
     }
     // endregion
 
@@ -249,6 +256,14 @@ public class PlayerComponent extends HealthComponent {
                 }, currentWeapon.getDuration(ultimateActivated)
         );
         currentWeapon.prepAttack(getEntity());
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public boolean isPressingMovementKeys() {
+        return isPressingMovementKeys;
     }
 
     public boolean isAttacking() {
@@ -294,14 +309,6 @@ public class PlayerComponent extends HealthComponent {
 
     @Override
     public void die() {
-        if (!MainApp.isIsTesting()) {
-            FXGL.getSceneService().pushSubScene(new DieScreenMenu(MenuType.GAME_MENU));
-        } else {
-            deadTest = true;
-        }
-    }
-
-    public boolean isDeadTest() {
-        return deadTest;
+        FXGL.getSceneService().pushSubScene(new DieScreenMenu(MenuType.GAME_MENU));
     }
 }

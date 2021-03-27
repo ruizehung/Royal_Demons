@@ -30,17 +30,28 @@ public class EnemyComponent extends HealthComponent {
     private int width;
     private int height;
 
+    private final double playerHitBoxOffsetX = 3; // player's hitbox own offset from top left
+    private final double playerHitBoxOffsetY = 15; // player's hitbox own offset from top left
+    private final double playerHitBoxWidth = 35; // width of player's hitbox from 3 to 38
+    private final double playerHitBoxHeight = 40; // height of player's hitbox from 15 to 55
+
     private AnimationChannel animIdle;
     private AnimationChannel animWalk;
     private AnimationChannel animMeleeAttack;
     private AnimationChannel animLunge1;
     private AnimationChannel animLunge2;
 
+    private boolean massEffect = true;
+    private boolean playerLeavesRadius = false;
+    private boolean collidingWithPlayer = false;
     private boolean prepAttack = false; // enemy begins attack charge
     private boolean startAttacking = false; // enemy does the attack animation / instantiate hitbox
-    private boolean shrinkDown = false; // for growing enemies
+    private boolean startShrink = false; // for growing enemies
     private boolean attackCD = false;
-    private int attackDuration = 900;
+    private int attackDuration = 900; // 900
+    private boolean overDrive = false;
+    private double velocityDecrementer = 10;
+    private double speed = 70;
 
     private double scaler = 1.0;
 
@@ -58,7 +69,7 @@ public class EnemyComponent extends HealthComponent {
             animWalk = new AnimationChannel(FXGL.image(assetName), 8,
                     width, height, Duration.seconds(0.5), 4, 7);
             animMeleeAttack = new AnimationChannel(FXGL.image(assetName), 8,
-                    width, height, Duration.seconds(attackDuration / 1000f), 4, 4);
+                    width, height, Duration.seconds(attackDuration / 1000), 4, 4);
 
             texture = new AnimatedTexture(animIdle);
 
@@ -84,22 +95,38 @@ public class EnemyComponent extends HealthComponent {
         Entity player = FXGL.geto("player");
         if (moveTimer.elapsed(Duration.seconds(1))) {
             if (getEntity().distance(player) < 100 && !attackCD) {
+                playerLeavesRadius = false;
                 autoAttack();
-                stop();
             } else if (getEntity().distance(player) < 300 && !prepAttack) {
-                // constantly signal other AI that player is clos
-                double xDir = (player.getX() + 20) - getEntity().getX() > 0 ? 1 : -1;
-                double yDir = (player.getY() + 27.5) - getEntity().getY() > 0 ? 1 : -1;
-                physics.setVelocityX(70 * xDir);
-                physics.setVelocityY(70 * yDir);
-                entity.setScaleX(xDir);
+                // constantly signal other AI that player is close
+                moveToPlayer(player.getX(), player.getY());
             } else {
                 stop();
             }
             moveTimer.capture();
         }
 
-        // If enemy is not charging up
+        double dist =
+                Math.max(Math.abs(player.getX() + playerHitBoxOffsetX + (playerHitBoxWidth / 2)
+                - getEntity().getX()),
+                Math.abs(player.getY() + playerHitBoxOffsetY + (playerHitBoxHeight / 2)
+                - getEntity().getY()));
+        if (dist > 100) {
+            playerLeavesRadius = true;
+        }
+
+        // if enemy has been pushed by player to a velocity greater than its limit
+        if (Math.abs(physics.getVelocityX()) > speed || Math.abs(physics.getVelocityY()) > speed) {
+            overDrive = true;
+        }
+
+        // if enemy is in overdrive
+        if (overDrive) {
+            normalizeVelocityX();
+            normalizeVelocityY();
+        }
+
+        // if enemy is not charging up
         if (!prepAttack) {
             if (physics.isMoving()) {
                 if (texture.getAnimationChannel() != animWalk) {
@@ -111,12 +138,10 @@ public class EnemyComponent extends HealthComponent {
                 }
             }
         } else {
+            normalizeVelocityX();
+            normalizeVelocityY();
             // Grow in size
-            entity.setScaleX(scaler * Math.signum(entity.getScaleX()));
-            entity.setScaleY(scaler * Math.signum(entity.getScaleY()));
-            if (scaler < 1.2) {
-                scaler += 0.005;
-            }
+            enlarge();
         }
         // Enemy does the actual attack, spawns hitbox and then shrinks
         if (startAttacking) {
@@ -124,22 +149,15 @@ public class EnemyComponent extends HealthComponent {
                     ? getEntity().getX()
                     : getEntity().getX() - 40, getEntity().getY() - 5);
             FXGL.getGameTimer().runAtInterval(meleeHitBox::removeFromWorld, Duration.seconds(.01));
-            shrinkDown = true;
+            startShrink = true;
             startAttacking = false;
             prepAttack = false;
             attackCD = true;
         }
 
         // Enemy shrinks
-        if (shrinkDown) {
-            entity.setScaleX(scaler * Math.signum(entity.getScaleX()));
-            entity.setScaleY(scaler * Math.signum(entity.getScaleY()));
-            if (scaler > 1) {
-                scaler -= 0.01;
-            } else {
-                scaler = 1;
-                shrinkDown = false;
-            }
+        if (startShrink) {
+            shrink();
         }
 
         // Enemy is on cooldown from attacking recently
@@ -151,13 +169,93 @@ public class EnemyComponent extends HealthComponent {
         }
     }
 
+    private void normalizeVelocityX() {
+        if (physics.getVelocityX() != 0) {
+            if (physics.getVelocityX() > 0) {
+                physics.setVelocityX(physics.getVelocityX() - velocityDecrementer);
+                if (physics.getVelocityX() < 0) {
+                    physics.setVelocityX(0);
+                    overDrive = false;
+                }
+            } else if (physics.getVelocityX() < 0) {
+                physics.setVelocityX(physics.getVelocityX() + velocityDecrementer);
+                if (physics.getVelocityX() > 0) {
+                    physics.setVelocityX(0);
+                    overDrive = false;
+                }
+            }
+        }
+    }
+
+    private void normalizeVelocityY() {
+        if (physics.getVelocityY() != 0) {
+            if (physics.getVelocityY() > 0) {
+                physics.setVelocityY(physics.getVelocityY() - velocityDecrementer);
+                if (physics.getVelocityY() < 0) {
+                    physics.setVelocityY(0);
+                    overDrive = false;
+                }
+            } else if (physics.getVelocityY() < 0) {
+                physics.setVelocityY(physics.getVelocityY() + velocityDecrementer);
+                if (physics.getVelocityY() > 0) {
+                    physics.setVelocityY(0);
+                    overDrive = false;
+                }
+            }
+        }
+    }
+
+    public boolean getPlayerLeavesRadius() {
+        return playerLeavesRadius;
+    }
+
+    public void setCollidingWithPlayer(boolean collidingWithPlayer) {
+        this.collidingWithPlayer = collidingWithPlayer;
+    }
+
+    public boolean getMassEffect() {
+        return massEffect;
+    }
+
+    private void moveToPlayer(double playerX, double playerY) {
+        double xDir = (playerX + playerHitBoxOffsetX + (playerHitBoxWidth / 2))
+                - getEntity().getX() > 0 ? 1 : -1;
+        double yDir = (playerY + playerHitBoxOffsetY + (playerHitBoxHeight / 2))
+                - getEntity().getY() > 0 ? 1 : -1;
+        physics.setVelocityX(speed * xDir);
+        physics.setVelocityY(speed * yDir);
+        entity.setScaleX(xDir);
+    }
+
+    private void enlarge() {
+        entity.setScaleX(scaler * Math.signum(entity.getScaleX()));
+        entity.setScaleY(scaler * Math.signum(entity.getScaleY()));
+        if (scaler < 1.2) {
+            scaler += 0.005;
+        }
+    }
+
+    private void shrink() {
+        entity.setScaleX(scaler * Math.signum(entity.getScaleX()));
+        entity.setScaleY(scaler * Math.signum(entity.getScaleY()));
+        if (scaler > 1) {
+            scaler -= 0.01;
+        } else {
+            scaler = 1;
+            startShrink = false;
+        }
+    }
+
     private void stop() {
-        physics.setVelocityX(0);
-        physics.setVelocityY(0);
+        if (!collidingWithPlayer) {
+            physics.setVelocityX(0);
+            physics.setVelocityY(0);
+        }
     }
 
     private void autoAttack() {
         prepAttack = true;
+        stop();
         texture.playAnimationChannel(animMeleeAttack);
         Timer t = new java.util.Timer();
         t.schedule(
