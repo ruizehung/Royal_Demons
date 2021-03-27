@@ -1,12 +1,17 @@
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.test.RunWithFX;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import uwu.openjfx.MainApp;
+import uwu.openjfx.collision.PlayerAttackEnemyCollisionHandler;
 import uwu.openjfx.collision.PlayerCoinCollisionHandler;
+import uwu.openjfx.components.AttackThroughComponent;
+import uwu.openjfx.components.BossComponent;
 import uwu.openjfx.components.CoinComponent;
 import uwu.openjfx.components.PlayerComponent;
 
-//@ExtendWith(RunWithFX.class)
+@ExtendWith(RunWithFX.class)
 public class MainAppTest {
 
     @BeforeEach
@@ -34,5 +39,24 @@ public class MainAppTest {
         handler.onCollisionBegin(player, coin);
 
         assert (PlayerComponent.getGold() == initialGold + coinValue);
+    }
+
+    // ray 2
+    @Test
+    void testBossGetHurt() {
+        Entity boss = new Entity();
+        BossComponent bossComponent = new BossComponent(1, "", 10, 20);
+        boss.addComponent(bossComponent);
+        boss.setProperty("enemyComponent", bossComponent);
+
+        Entity weapon = new Entity();
+        weapon.addComponent(new AttackThroughComponent(true));
+
+        assert !boss.getBoolean("isDead");
+
+        PlayerAttackEnemyCollisionHandler handler = new PlayerAttackEnemyCollisionHandler();
+        handler.onCollisionBegin(weapon, boss);
+
+        assert boss.getBoolean("isDead");
     }
 }

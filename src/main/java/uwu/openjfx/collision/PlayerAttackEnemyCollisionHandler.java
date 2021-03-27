@@ -13,7 +13,7 @@ public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
     }
 
     @Override
-    protected void onCollisionBegin(Entity weapon, Entity enemy) {
+    public void onCollisionBegin(Entity weapon, Entity enemy) {
         if (weapon.hasComponent(ProjectileComponent.class)) {
             if (!weapon.getComponent(ProjectileComponent.class).isPaused()) {
                 HealthComponent enemyHealth = enemy.getObject("enemyComponent");

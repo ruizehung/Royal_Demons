@@ -9,6 +9,7 @@ import com.almasb.fxgl.texture.AnimationChannel;
 import com.almasb.fxgl.time.LocalTimer;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
+import uwu.openjfx.MainApp;
 import uwu.openjfx.MapGeneration.Room;
 
 import java.util.Timer;
@@ -45,25 +46,31 @@ public class EnemyComponent extends HealthComponent {
         this.width = width;
         this.height = height;
 
-        animIdle = new AnimationChannel(FXGL.image(assetName), 8,
-                width, height, Duration.seconds(0.5), 0, 3);
-        animWalk = new AnimationChannel(FXGL.image(assetName), 8,
-                width, height, Duration.seconds(0.5), 4, 7);
-        animMeleeAttack = new AnimationChannel(FXGL.image(assetName), 8,
-                width, height, Duration.seconds(attackDuration / 1000f), 4, 4);
+        if (!MainApp.isIsTesting()) {
+            animIdle = new AnimationChannel(FXGL.image(assetName), 8,
+                    width, height, Duration.seconds(0.5), 0, 3);
+            animWalk = new AnimationChannel(FXGL.image(assetName), 8,
+                    width, height, Duration.seconds(0.5), 4, 7);
+            animMeleeAttack = new AnimationChannel(FXGL.image(assetName), 8,
+                    width, height, Duration.seconds(attackDuration / 1000f), 4, 4);
 
-        texture = new AnimatedTexture(animIdle);
+            texture = new AnimatedTexture(animIdle);
 
-        texture.loop();
+            texture.loop();
+        }
     }
 
     @Override
     public void onAdded() {
-        entity.getTransformComponent().setScaleOrigin(new Point2D(width / 2.0, height / 2.0));
-        entity.getViewComponent().addChild(texture);
+        if (!MainApp.isIsTesting()) {
+            entity.getTransformComponent().setScaleOrigin(new Point2D(width / 2.0, height / 2.0));
+            entity.getViewComponent().addChild(texture);
 
-        moveTimer = FXGL.newLocalTimer();
-        moveTimer.capture();
+            moveTimer = FXGL.newLocalTimer();
+            moveTimer.capture();
+        } else {
+            entity.setProperty("isDead", false);
+        }
     }
 
     @Override
@@ -160,6 +167,11 @@ public class EnemyComponent extends HealthComponent {
 
     @Override
     public void die() {
+        if (MainApp.isIsTesting()) {
+            entity.setProperty("isDead", true);
+            return;
+        }
+
         if (FXGL.random() < 0.5) {
             FXGL.spawn("coin", getEntity().getX(), getEntity().getY());
         }
