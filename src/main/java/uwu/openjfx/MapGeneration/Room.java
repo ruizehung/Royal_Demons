@@ -1,6 +1,7 @@
 package uwu.openjfx.MapGeneration;
 
 import com.almasb.fxgl.dsl.FXGL;
+import uwu.openjfx.MainApp;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,8 +29,10 @@ public class Room {
     public Room(Coordinate coordinate) {
         entitiesData = new HashMap<>();
         this.coordinate = coordinate;
-        List<String> roomTypeList = FXGL.geto("roomTypeList");
-        roomType = roomTypeList.get(FXGL.random(0, roomTypeList.size() - 1));
+        if (!MainApp.isIsTesting()) {
+            List<String> roomTypeList = FXGL.geto("roomTypeList");
+            roomType = roomTypeList.get(FXGL.random(0, roomTypeList.size() - 1));
+        }
     }
 
     public Room(Coordinate coordinate, int numAdjRooms) {

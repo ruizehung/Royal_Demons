@@ -1,4 +1,6 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
+import uwu.openjfx.MainApp;
 import uwu.openjfx.MapGeneration.GameMap;
 import uwu.openjfx.MapGeneration.Room;
 
@@ -9,20 +11,23 @@ import java.util.Set;
 
 public class MapGenerationTest {
 
-    private final int ROOMS_TO_GEN = 40;
+    private final int rooms = 40;
 
-    // ray 1
+    @BeforeEach
+    public void init() {
+        MainApp.setIsTesting(true);
+    }
+
     @RepeatedTest(500)
     void testBossRoomAtLeast6RoomsAway() {
-        GameMap gameMap = new GameMap(ROOMS_TO_GEN);
+        GameMap gameMap = new GameMap(rooms);
         assert (gameMap.getBossRoom().getDistFromInitRoom() > 6);
         gameMap = null;
     }
 
-    // ray 2
     @RepeatedTest(500)
     void testBossRoomReachable() {
-        GameMap gameMap = new GameMap(ROOMS_TO_GEN);
+        GameMap gameMap = new GameMap(rooms);
 
         Room initialRoom = gameMap.getInitialRoom();
         Room bossRoom = gameMap.getBossRoom();
@@ -53,10 +58,9 @@ public class MapGenerationTest {
         gameMap = null;
     }
 
-    // ray 3
     @RepeatedTest(500)
     void testInitialRoomHas4AdjRooms() {
-        GameMap gameMap = new GameMap(ROOMS_TO_GEN);
+        GameMap gameMap = new GameMap(rooms);
         assert (gameMap.getInitialRoom().getNumAdjRooms() == 4);
         assert (gameMap.getInitialRoom().getNorthRoom() != null);
         assert (gameMap.getInitialRoom().getEastRoom() != null);

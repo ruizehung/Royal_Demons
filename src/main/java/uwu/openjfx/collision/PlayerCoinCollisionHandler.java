@@ -12,10 +12,9 @@ public class PlayerCoinCollisionHandler extends CollisionHandler {
     }
 
     @Override
-    protected void onCollisionBegin(Entity player, Entity coin) {
+    public void onCollisionBegin(Entity player, Entity coin) {
         coin.removeFromWorld();
         player.getComponent(
                 PlayerComponent.class).addGold(coin.getComponent(CoinComponent.class).getValue());
-        // TODO_: player collect coins
     }
 }

@@ -10,6 +10,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
 import uwu.openjfx.DieScreenMenu;
+import uwu.openjfx.MainApp;
 import uwu.openjfx.weapons.Bow0;
 import uwu.openjfx.weapons.GoldenSword0;
 import uwu.openjfx.weapons.MagicStaff0;
@@ -41,15 +42,40 @@ public class PlayerComponent extends HealthComponent {
     private boolean ultimateCD = false; // how long until Player can activate Ultimate again
 
     // Todo: remove temp vars and put in char state class
-    public static String playerName;
-    public static String playerWeapon;
-    public static String gameDifficulty;
-    public static int gold;
+    private static String playerName;
+    private static String playerWeapon;
+    private static String gameDifficulty;
+    private static int gold;
 
-    public static IntegerProperty goldProperty;
+    private static IntegerProperty goldProperty;
+
+    public static String getPlayerName() {
+        return playerName;
+    }
+
+    public static void setPlayerName(String playerName) {
+        PlayerComponent.playerName = playerName;
+    }
+
+    public static String getPlayerWeapon() {
+        return playerWeapon;
+    }
+
+    public static void setPlayerWeapon(String playerWeapon) {
+        PlayerComponent.playerWeapon = playerWeapon;
+    }
+
+    public static String getGameDifficulty() {
+        return gameDifficulty;
+    }
+
+    public static void setGameDifficulty(String gameDifficulty) {
+        PlayerComponent.gameDifficulty = gameDifficulty;
+    }
 
     public PlayerComponent(int healthPoints) {
         super(healthPoints);
+
         if (currentWeapon == null) {
             switch (playerWeapon) {
             case "Sword":
@@ -64,24 +90,32 @@ public class PlayerComponent extends HealthComponent {
             default:
             }
         }
+
+        if (!MainApp.isIsTesting()) {
+            animIdle = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
+                    40, 55, Duration.seconds(0.5), 0, 3);
+            animWalk = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
+                    40, 55, Duration.seconds(0.5), 4, 7);
+            animAutoAttack = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
+                    40, 55, Duration.millis(currentWeapon.getDuration(ultimateActivated) / 1000f),
+                    8, 8);
+
+            texture = new AnimatedTexture(animIdle);
+            texture.loop();
+        }
+
         if (goldProperty == null) {
             goldProperty = new SimpleIntegerProperty(gold);
         }
-        animIdle = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
-                40, 55, Duration.seconds(0.5), 0, 3);
-        animWalk = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
-                40, 55, Duration.seconds(0.5), 4, 7);
-        animAutoAttack = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
-                40, 55, Duration.millis(currentWeapon.getDuration(ultimateActivated) / 1000), 8, 8);
 
-        texture = new AnimatedTexture(animIdle);
-        texture.loop();
     }
 
     @Override
     public void onAdded() {
-        entity.getTransformComponent().setScaleOrigin(new Point2D(20, 25));
-        entity.getViewComponent().addChild(texture);
+        if (!MainApp.isIsTesting()) {
+            entity.getTransformComponent().setScaleOrigin(new Point2D(20, 25));
+            entity.getViewComponent().addChild(texture);
+        }
     }
 
     @Override
@@ -243,7 +277,15 @@ public class PlayerComponent extends HealthComponent {
         goldProperty.set(PlayerComponent.gold);
     }
 
-    public IntegerProperty getGold() {
+    public static void setGold(int gold) {
+        PlayerComponent.gold = gold;
+    }
+
+    public static int getGold() {
+        return gold;
+    }
+
+    public IntegerProperty getGoldProperty() {
         return goldProperty;
     }
 
