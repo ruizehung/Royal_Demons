@@ -18,7 +18,7 @@ public class TestPlayerAttackEnemyCollisionHandler {
 
     // ray 2
     @Test
-    void testBossGetHurt() {
+    void testBossDies() {
         Entity boss = new Entity();
         BossComponent bossComponent = new BossComponent(1, "", 10, 20);
         boss.addComponent(bossComponent);
@@ -32,6 +32,23 @@ public class TestPlayerAttackEnemyCollisionHandler {
         handler.onCollisionBegin(weapon, boss);
 
         assert boss.getBoolean("isDead");
+    }
+
+    // james 2
+    @Test
+    void testBossGetHurt() {
+        Entity boss = new Entity();
+        BossComponent bossComponent = new BossComponent(1, "", 10, 20);
+        boss.addComponent(bossComponent);
+        boss.setProperty("enemyComponent", bossComponent);
+
+        Entity weapon = new Entity();
+
+        PlayerAttackEnemyCollisionHandler handler = new PlayerAttackEnemyCollisionHandler();
+        handler.onCollisionBegin(weapon, boss);
+
+        int origHealth = 2;
+        assert (bossComponent.getHealthPoints() < origHealth);
     }
 
     //alice 1
