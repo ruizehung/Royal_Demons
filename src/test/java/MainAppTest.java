@@ -121,9 +121,7 @@ public class MainAppTest {
         arrow.addComponent(new ProjectileComponent(new Point2D(0, 0), 0));
 
         // Create a wall
-        // Set its type to WALL so that its detected by collision
         Entity wall = new Entity();
-        wall.setType(RoyalType.WALL);
         ProjectileWallCollisionHandler handler = new ProjectileWallCollisionHandler();
         handler.onCollisionBegin(arrow, wall);
         assert (arrow.getComponent(ProjectileComponent.class).isPaused());
@@ -139,7 +137,6 @@ public class MainAppTest {
                 "", 0, 0, 0, 0, false, true));
 
         // Create a wall
-        // Set its type to WALL so that its detected by collision
         Entity wall = new Entity();
         ProjectileWallCollisionHandler handler = new ProjectileWallCollisionHandler();
         handler.onCollisionBegin(fireball, wall);
