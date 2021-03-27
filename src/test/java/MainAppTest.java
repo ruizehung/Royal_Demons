@@ -102,4 +102,5 @@ public class MainAppTest {
         int origHealth = 10;
         assert (myHealth.getHealthPoints() < origHealth);
     }
+    //hello
 }
