@@ -11,27 +11,31 @@ import javafx.util.Duration;
 
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 
+/*
+    This class is responsible for spawning the magic spell at a specific location relative to player.
+    This class will calculate the angle relative to mouse-pressed location and fire the magic spell
+    towards this location.
+    This class will spawn the player-staff(wand) in the prepAttack() method, whose animation
+    will be handled in the WandComponent class.
+ */
 public class MagicStaff0 implements Weapon, AngleBehavior {
 
-    private AnimatedTexture texture;
-    private AnimationChannel animAttack;
-    private Entity rangedHitBox;
-    private int leftOffset;
-    private int rightOffset;
-    private int frameWidth;
-    private int frameHeight;
-    private Vec2 dir;
-    private int speed = 400;
-    private int attackDuration = 1200; // Milliseconds
-    private int ultimateChargeDuration = 1500; // Milliseconds
+    private Entity rangedHitBox; // the magic spell (ultimate / nonultimate)
+    private int leftOffset; // side offset used to shrink the top/left/bot edges of hitbox
+    private int rightOffset; // right offset used to shrink the right edge of hitbox
+    private int frameWidth; // width of the original frame (32 / 64)
+    private int frameHeight; // height of original frame (32 / 64)
+    double playerHitBoxOffsetX = 3; // player's hitbox own offset from top left
+    double playerHitBoxOffsetY = 15; // player's hitbox own offset from top left
+    double playerHitBoxWidth = 35; // width of player's hitbox from 3 to 38
+    double playerHitBoxHeight = 40; // height of player's hitbox from 15 to 55
+    private double centerX; // the center of the hitbox
+    private double centerY; // the center of the hitbox
+    private Vec2 dir; // the direction with respect to mouse-pressed location
+    private int speed = 400; // speed at which magic spell goes
+    private int attackDuration = 1200; // charge-up time of attacking in milliseconds
+    private int ultimateChargeDuration = 1500; // charge-up time of attacking in milliseconds
     private boolean ultimateActivated;
-
-    public MagicStaff0() {
-        animAttack = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
-                40, 55, Duration.seconds(.5), 8, 8);
-        texture = new AnimatedTexture(animAttack);
-        texture.loop();
-    }
 
     @Override
     public void prepAttack(Entity player) {
@@ -40,29 +44,41 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
 
     @Override
     public void attack(Entity player, double mouseCurrX, double mouseCurrY) {
-        leftOffset = !ultimateActivated ? 20 : 10;
-        rightOffset = !ultimateActivated ? 30 : 15;
-        frameWidth = !ultimateActivated ? 64 : 32;
-        frameHeight = !ultimateActivated ? 64 : 32;
-        texture.playAnimationChannel(animAttack);
-        // double centerToPath = Math.sqrt(Math.pow(frameWidth / 2, 2)
-        //         + Math.pow(frameHeight / 2, 2));
-        // mouseCurrY -= centerToPath;
+        // Confirm goal is to shoot a projectile, then calculate angle
         if (this instanceof AngleBehavior) {
             ((AngleBehavior) this).calculateAnglePlayerRelative(player, mouseCurrX, mouseCurrY);
         }
+        leftOffset = !ultimateActivated ? 20 : 10;
+        rightOffset = !ultimateActivated ? 20 : 10;
+        frameWidth = !ultimateActivated ? 64 : 32;
+        frameHeight = !ultimateActivated ? 64 : 32;
+        centerX = ((double) (leftOffset + (frameWidth - rightOffset)) / 2);
+        centerY = ((double) (leftOffset + (frameHeight - leftOffset)) / 2);
+        if (player.getScaleX() == -1) {
+            centerX -= leftOffset;
+            centerY -= leftOffset;
+        }
         rangedHitBox = spawn("rangedMagicHitBox",
                 new SpawnData(
-                        player.getX() + 3 - (frameWidth / 2) + 38,
-                        player.getY() + 15 - (frameHeight / 2) + 20).
+                        player.getX(), player.getY()).
                         put("dir", dir.toPoint2D()).
                         put("speed", speed).
+                        put("weapon", !ultimateActivated ? "fireball_64x64" : "magic1_32x32").
+                        put("duration", 500).
+                        put("fpr", !ultimateActivated ? 60 : 30).
                         put("ultimateActive", ultimateActivated).
-                        put("spell", !ultimateActivated ? "fireball" : "ultimate").
                         put("leftOffset", leftOffset).
                         put("rightOffset", rightOffset).
                         put("frameWidth", frameWidth).
-                        put("frameHeight", frameHeight));
+                        put("frameHeight", frameHeight).
+                        put("isArrow", false).
+                        put("isMagic", true));
+
+        // Set the center of the hitbox to be at the player's "hands"
+        rangedHitBox.setAnchoredPosition(
+                (player.getX() + playerHitBoxOffsetX + (player.getScaleX() > 0 ? playerHitBoxWidth : 0)),
+                (player.getY() + playerHitBoxOffsetY + (playerHitBoxHeight / 2)),
+                new Point2D(centerX, centerY));
         if (ultimateActivated) {
             rangedHitBox.setScaleX(2);
             rangedHitBox.setScaleY(2);
@@ -71,8 +87,15 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
 
     @Override
     public void calculateAnglePlayerRelative(Entity player, double mouseCurrX, double mouseCurrY) {
-        double opposite = mouseCurrY - (player.getY() + 15 - (frameHeight / 2) + 20);
-        double adjacent = mouseCurrX - (player.getX() + 3 - (frameWidth / 2) + 38);
+        // adjacent is distance (x) from mouse to player's "hands"
+        // opposite is distance (y) from mouse to player's "hands"
+        // angle calculated with tangent
+        double adjacent = mouseCurrX
+                - (player.getX() + playerHitBoxOffsetX
+                        + (player.getScaleX() > 0 ? playerHitBoxWidth : 0));
+        double opposite = mouseCurrY
+                - (player.getY() + playerHitBoxOffsetY
+                        + (playerHitBoxHeight / 2));
         double angle = Math.atan2(opposite, adjacent);
         angle = Math.toDegrees(angle);
         dir = Vec2.fromAngle(angle);

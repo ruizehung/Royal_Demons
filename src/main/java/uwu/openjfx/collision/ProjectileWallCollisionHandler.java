@@ -6,8 +6,7 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import javafx.util.Duration;
 import uwu.openjfx.RoyalType;
-import uwu.openjfx.components.ArrowComponent;
-import uwu.openjfx.components.MagicComponent;
+import uwu.openjfx.components.ProjectileAnimationComponent;
 
 public class ProjectileWallCollisionHandler extends CollisionHandler {
 
@@ -16,15 +15,19 @@ public class ProjectileWallCollisionHandler extends CollisionHandler {
     }
 
     protected void onCollisionBegin(Entity weapon, Entity wall) {
-        if (weapon.hasComponent(ArrowComponent.class)) {
-            weapon.getComponent(ProjectileComponent.class).pause();
-        } else if (weapon.hasComponent(MagicComponent.class)) {
-            weapon.removeFromWorld();
+        if (weapon.hasComponent(ProjectileAnimationComponent.class)) {
+            ProjectileAnimationComponent projectileAnimationComponent =
+                    weapon.getComponent(ProjectileAnimationComponent.class);
+            if (projectileAnimationComponent.getIsArrow()) {
+                weapon.getComponent(ProjectileComponent.class).pause();
+            } else if (projectileAnimationComponent.getIsMagic()) {
+                weapon.removeFromWorld();
+            }
         }
     }
 
     protected void onCollision(Entity weapon, Entity wall) {
-        if (weapon.isActive()) {
+        if (weapon != null) {
             FXGL.getGameTimer().runAtInterval(() -> {
                 weapon.removeFromWorld();
             }, Duration.seconds(5));

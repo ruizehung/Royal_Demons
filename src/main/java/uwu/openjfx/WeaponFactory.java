@@ -12,11 +12,9 @@ import com.almasb.fxgl.physics.HitBox;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import uwu.openjfx.components.ArrowComponent;
 import uwu.openjfx.components.AttackThroughComponent;
-import uwu.openjfx.components.BowComponent;
-import uwu.openjfx.components.MagicComponent;
-import uwu.openjfx.components.SwordComponent;
+import uwu.openjfx.components.ProjectileAnimationComponent;
+import uwu.openjfx.components.WeaponAnimationComponent;
 
 public class WeaponFactory implements EntityFactory {
 
@@ -29,7 +27,7 @@ public class WeaponFactory implements EntityFactory {
         int frameHeight = data.get("frameHeight");
         int fpr = data.get("fpr");
         return FXGL.entityBuilder(data)
-                .with(new SwordComponent(weapon, duration, frameWidth, frameHeight, fpr))
+                .with(new WeaponAnimationComponent(weapon, duration, frameWidth, frameHeight, fpr))
                 .type(RoyalType.TRAP_TRIGGER)
                 .build();
     }
@@ -42,7 +40,7 @@ public class WeaponFactory implements EntityFactory {
         int frameHeight = data.get("frameHeight");
         int fpr = data.get("fpr");
         return FXGL.entityBuilder(data)
-                .with(new BowComponent(weapon, duration, frameWidth, frameHeight, fpr))
+                .with(new WeaponAnimationComponent(weapon, duration, frameWidth, frameHeight, fpr))
                 .type(RoyalType.TRAP_TRIGGER)
                 .build();
     }
@@ -72,15 +70,21 @@ public class WeaponFactory implements EntityFactory {
         Point2D dir = data.get("dir");
         int speed = data.get("speed");
         boolean ultimateActive = data.get("ultimateActive");
+        String weapon = data.get("weapon");
+        int duration = data.get("duration");
+        int fpr = data.get("fpr");
+        boolean isArrow = data.get("isArrow");
+        boolean isMagic = data.get("isMagic");
         return FXGL.entityBuilder(data)
                 .type(RoyalType.PLAYERATTACK)
-                .view("./weapons/bow/arrow.png")
+                .view("./weapons/arrow.png")
                 .bbox(new HitBox(BoundingShape.polygon(
                         new Point2D(leftOffset, leftOffset),
                         new Point2D(frameWidth - rightOffset, leftOffset),
                         new Point2D(frameWidth - rightOffset, frameHeight - leftOffset),
                         new Point2D(leftOffset, frameHeight - leftOffset))))
-                .with(new ArrowComponent())
+                .with(new ProjectileAnimationComponent(
+                        weapon, duration, frameWidth, frameHeight, fpr, isArrow, isMagic))
                 .with(new AttackThroughComponent(ultimateActive))
                 .with(new CollidableComponent(true))
                 .with(new ProjectileComponent(dir, speed))
@@ -88,7 +92,7 @@ public class WeaponFactory implements EntityFactory {
     }
 
     @Spawns("rangedMagicHitBox")
-    public Entity newRangedMagic1HitBox(SpawnData data) {
+    public Entity newRangedMagicHitBox(SpawnData data) {
         int leftOffset = data.get("leftOffset");
         int rightOffset = data.get("rightOffset");
         int frameWidth = data.get("frameWidth");
@@ -96,7 +100,11 @@ public class WeaponFactory implements EntityFactory {
         Point2D dir = data.get("dir");
         int speed = data.get("speed");
         boolean ultimateActive = data.get("ultimateActive");
-        String magicSpell = data.get("spell");
+        String weapon = data.get("weapon");
+        int duration = data.get("duration");
+        int fpr = data.get("fpr");
+        boolean isArrow = data.get("isArrow");
+        boolean isMagic = data.get("isMagic");
         return FXGL.entityBuilder(data)
                 .type(RoyalType.PLAYERATTACK)
                 .bbox(new HitBox(BoundingShape.polygon(
@@ -104,7 +112,8 @@ public class WeaponFactory implements EntityFactory {
                         new Point2D(frameWidth - rightOffset, leftOffset),
                         new Point2D(frameWidth - rightOffset, frameHeight - leftOffset),
                         new Point2D(leftOffset, frameHeight - leftOffset))))
-                .with(new MagicComponent(magicSpell))
+                .with(new ProjectileAnimationComponent(
+                        weapon, duration, frameWidth, frameHeight, fpr, isArrow, isMagic))
                 .with(new AttackThroughComponent(ultimateActive))
                 .with(new CollidableComponent(true))
                 .with(new ProjectileComponent(dir, speed))

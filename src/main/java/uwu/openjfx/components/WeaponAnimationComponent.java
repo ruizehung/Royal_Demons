@@ -7,26 +7,30 @@ import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
 
-public class BowComponent extends Component {
+/*
+    This class is responsible for ANY weapon animation
+ */
+public class WeaponAnimationComponent extends Component {
     private AnimatedTexture texture;
     private AnimationChannel animIdle;
     private AnimationChannel animAttack;
-    private boolean destroyed;
 
-    public BowComponent() {
-
+    public WeaponAnimationComponent() {
+        // Making sure there is a default constructor
     }
 
-    public BowComponent(String weapon, int duration, int frameWidth, int frameHeight, int fpr) {
-        destroyed = false;
-        animAttack = new AnimationChannel(FXGL.image("./weapons/bow/" + weapon + ".png"), fpr,
+    public WeaponAnimationComponent(String weapon, int duration, int frameWidth, int frameHeight, int fpr) {
+        // parameter weapon: tells us the specific weapon sprite we have in our files and therefore which animation
+        // parameter duration: tells us how long the charge-up of the attack is
+        // parameter fpr: frames per row
+        animAttack = new AnimationChannel(FXGL.image("./weapons/" + weapon + ".png"), fpr,
                 frameWidth, frameHeight, Duration.millis(duration), 0, fpr - 1);
         texture = new AnimatedTexture(animAttack);
         texture.playAnimationChannel(animAttack);
+        // Remove weapon after it has done its attack animation
         FXGL.getGameTimer().runAtInterval(() -> {
-            if (!destroyed) {
+            if (getEntity() != null) {
                 getEntity().removeFromWorld();
-                destroyed = true;
             }
         }, Duration.millis(duration));
     }
