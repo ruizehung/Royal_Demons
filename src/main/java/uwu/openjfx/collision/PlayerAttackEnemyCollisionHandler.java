@@ -12,6 +12,9 @@ import uwu.openjfx.components.HealthComponent;
     - Weapon disappears on two conditions:
     1.) if weapon is a projectile, is NOT paused, and does NOT attack multiple enemies
     2.) if a weapon is NOT a projectile and does NOT attack multiple enemies
+    - Enemy takes damage on two conditions:
+    1.) if weapon is a projectile and is NOT paused
+    2.) if weapon is NOT a projectile
  */
 public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
     public PlayerAttackEnemyCollisionHandler() {
@@ -20,9 +23,6 @@ public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
 
     @Override
     public void onCollisionBegin(Entity weapon, Entity enemy) {
-        HealthComponent enemyHealth = enemy.getObject("enemyComponent");
-        enemyHealth.deductHealth();
-
         if (((weapon.hasComponent(ProjectileComponent.class))
             && (weapon.hasComponent(AttackMultipleComponent.class))
             && (!weapon.getComponent(ProjectileComponent.class).isPaused())
@@ -31,6 +31,13 @@ public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
             && (weapon.hasComponent(AttackMultipleComponent.class))
             && (weapon.getComponent(AttackMultipleComponent.class).isPaused()))) {
             weapon.removeFromWorld();
+        }
+
+        if (((weapon.hasComponent(ProjectileComponent.class))
+            && (!weapon.getComponent(ProjectileComponent.class).isPaused()))
+            || (!weapon.hasComponent(ProjectileComponent.class))) {
+            HealthComponent enemyHealth = enemy.getObject("enemyComponent");
+            enemyHealth.deductHealth();
         }
     }
 }
