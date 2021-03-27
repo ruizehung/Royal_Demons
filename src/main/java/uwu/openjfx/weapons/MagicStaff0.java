@@ -13,7 +13,7 @@ import static com.almasb.fxgl.dsl.FXGL.spawn;
     - Calculate the angle relative to mouse-pressed location and fire the magic spell
     towards this location.
     - Spawn the player-staff(wand) in the prepAttack() method, whose animation
-    will be handled in the WandComponent class.
+    will be handled in the WeaponAnimationComponent class.
  */
 public class MagicStaff0 implements Weapon, AngleBehavior {
     private final double playerHitBoxOffsetX = 3; // player's hitbox own offset from top left

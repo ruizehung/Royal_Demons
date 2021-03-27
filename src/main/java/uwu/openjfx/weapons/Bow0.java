@@ -13,7 +13,7 @@ import static com.almasb.fxgl.dsl.FXGL.spawn;
     - Calculate the angle relative to mouse-pressed location and shoot the arrow
     towards this location.
     - Spawn the player-bow in the prepAttack() method, whose animation
-    will be handled in the BowComponent class.
+    will be handled in the WeaponAnimationComponent class.
  */
 public class Bow0 implements Weapon, AngleBehavior {
 
