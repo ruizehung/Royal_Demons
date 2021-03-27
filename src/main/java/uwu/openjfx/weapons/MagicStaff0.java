@@ -1,40 +1,25 @@
 package uwu.openjfx.weapons;
 
 import com.almasb.fxgl.core.math.Vec2;
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
-import com.almasb.fxgl.texture.AnimatedTexture;
-import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.geometry.Point2D;
-import javafx.util.Duration;
 
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 
 /*
-    This class is responsible for spawning the magic spell at a specific location relative to player.
+    This class is responsible for spawning the magic spell at a specific location relative to player
     This class will calculate the angle relative to mouse-pressed location and fire the magic spell
     towards this location.
     This class will spawn the player-staff(wand) in the prepAttack() method, whose animation
     will be handled in the WandComponent class.
  */
 public class MagicStaff0 implements Weapon, AngleBehavior {
-
-    private Entity rangedHitBox; // the magic spell (ultimate / nonultimate)
-    private int leftOffset; // side offset used to shrink the top/left/bot edges of hitbox
-    private int rightOffset; // right offset used to shrink the right edge of hitbox
-    private int frameWidth; // width of the original frame (32 / 64)
-    private int frameHeight; // height of original frame (32 / 64)
-    double playerHitBoxOffsetX = 3; // player's hitbox own offset from top left
-    double playerHitBoxOffsetY = 15; // player's hitbox own offset from top left
-    double playerHitBoxWidth = 35; // width of player's hitbox from 3 to 38
-    double playerHitBoxHeight = 40; // height of player's hitbox from 15 to 55
-    private double centerX; // the center of the hitbox
-    private double centerY; // the center of the hitbox
+    private final double playerHitBoxOffsetX = 3; // player's hitbox own offset from top left
+    private final double playerHitBoxOffsetY = 15; // player's hitbox own offset from top left
+    private final double playerHitBoxWidth = 35; // width of player's hitbox from 3 to 38
+    private final double playerHitBoxHeight = 40; // height of player's hitbox from 15 to 55
     private Vec2 dir; // the direction with respect to mouse-pressed location
-    private int speed = 400; // speed at which magic spell goes
-    private int attackDuration = 1200; // charge-up time of attacking in milliseconds
-    private int ultimateChargeDuration = 1500; // charge-up time of attacking in milliseconds
     private boolean ultimateActivated;
 
     @Override
@@ -44,21 +29,28 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
 
     @Override
     public void attack(Entity player, double mouseCurrX, double mouseCurrY) {
-        // Confirm goal is to shoot a projectile, then calculate angle
-        if (this instanceof AngleBehavior) {
-            ((AngleBehavior) this).calculateAnglePlayerRelative(player, mouseCurrX, mouseCurrY);
-        }
-        leftOffset = !ultimateActivated ? 20 : 10;
-        rightOffset = !ultimateActivated ? 20 : 10;
-        frameWidth = !ultimateActivated ? 64 : 32;
-        frameHeight = !ultimateActivated ? 64 : 32;
-        centerX = ((double) (leftOffset + (frameWidth - rightOffset)) / 2);
-        centerY = ((double) (leftOffset + (frameHeight - leftOffset)) / 2);
+        calculateAnglePlayerRelative(player, mouseCurrX, mouseCurrY);
+
+        // side offset used to shrink the top/left/bot edges of hitbox
+        int leftOffset = !ultimateActivated ? 20 : 10;
+        // right offset used to shrink the right edge of hitbox
+        int rightOffset = !ultimateActivated ? 20 : 10;
+        // width of the original frame (32 / 64)
+        int frameWidth = !ultimateActivated ? 64 : 32;
+        // height of original frame (32 / 64)
+        int frameHeight = !ultimateActivated ? 64 : 32;
+
+        // the center of the hitbox
+        double centerX = ((double) (leftOffset + (frameWidth - rightOffset)) / 2);
+        double centerY = ((double) (leftOffset + (frameHeight - leftOffset)) / 2);
         if (player.getScaleX() == -1) {
             centerX -= leftOffset;
             centerY -= leftOffset;
         }
-        rangedHitBox = spawn("rangedMagicHitBox",
+
+        int speed = 400; // speed at which magic spell goes
+
+        Entity rangedHitBox = spawn("rangedMagicHitBox",
                 new SpawnData(
                         player.getX(), player.getY()).
                         put("dir", dir.toPoint2D()).
@@ -76,7 +68,8 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
 
         // Set the center of the hitbox to be at the player's "hands"
         rangedHitBox.setAnchoredPosition(
-                (player.getX() + playerHitBoxOffsetX + (player.getScaleX() > 0 ? playerHitBoxWidth : 0)),
+                (player.getX() + playerHitBoxOffsetX + (player.getScaleX() > 0
+                        ? playerHitBoxWidth : 0)),
                 (player.getY() + playerHitBoxOffsetY + (playerHitBoxHeight / 2)),
                 new Point2D(centerX, centerY));
         if (ultimateActivated) {
@@ -103,6 +96,8 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
 
     @Override
     public int getDuration(boolean ultimateActivated) {
+        int attackDuration = 1200; // charge-up time of attacking in milliseconds
+        int ultimateChargeDuration = 1500; // charge-up time of attacking in milliseconds
         this.ultimateActivated = ultimateActivated;
         return ultimateActivated ? ultimateChargeDuration : attackDuration;
     }

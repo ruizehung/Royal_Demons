@@ -13,7 +13,6 @@ import javafx.util.Duration;
 public class ProjectileAnimationComponent extends Component {
     private AnimatedTexture texture;
     private AnimationChannel animIdle;
-    private AnimationChannel animAttack;
     private boolean isArrow;
     private boolean isMagic;
 
@@ -27,7 +26,8 @@ public class ProjectileAnimationComponent extends Component {
         // therefore which animation
         // parameter duration: tells us how long the charge-up of the attack is
         // parameter fpr: frames per row
-        animAttack = new AnimationChannel(FXGL.image("./weapons/" + weapon + ".png"), fpr,
+        AnimationChannel animAttack = new AnimationChannel(
+                FXGL.image("./weapons/" + weapon + ".png"), fpr,
                 fw, fh, Duration.millis(duration), 0, fpr - 1);
         texture = new AnimatedTexture(animAttack);
         texture.loop();

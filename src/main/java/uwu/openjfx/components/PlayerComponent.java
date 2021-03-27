@@ -27,8 +27,6 @@ public class PlayerComponent extends HealthComponent {
     private AnimationChannel animIdle;
     private AnimationChannel animWalk;
     private AnimationChannel animAutoAttack;
-    private AnimationChannel animSwordUltimate1;
-    private AnimationChannel animSwordUltimate2;
 
     private Weapon currentWeapon; // Player's current weapon
 

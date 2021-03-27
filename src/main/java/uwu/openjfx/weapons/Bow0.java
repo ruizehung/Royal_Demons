@@ -16,28 +16,20 @@ import static com.almasb.fxgl.dsl.FXGL.spawn;
  */
 public class Bow0 implements Weapon, AngleBehavior {
 
-    private Entity rangedHitBox; // the magic spell (ultimate / nonultimate)
-    private int leftOffset; // side offset used to shrink the top/left/bot edges of hitbox
-    private int rightOffset; // right offset used to shrink the right edge of hitbox
-    private int frameWidth; // width of the original frame (32 / 64)
-    private int frameHeight; // height of original frame (32 / 64)
-    double playerHitBoxOffsetX = 3; // player's hitbox own offset from top left
-    double playerHitBoxOffsetY = 15; // player's hitbox own offset from top left
-    double playerHitBoxWidth = 35; // width of player's hitbox from 3 to 38
-    double playerHitBoxHeight = 40; // height of player's hitbox from 15 to 55
-    private double centerX; // the center of the hitbox
-    private double centerY; // the center of the hitbox
+    private final double playerHitBoxOffsetX = 3; // player's hitbox own offset from top left
+    private final double playerHitBoxOffsetY = 15; // player's hitbox own offset from top left
+    private final double playerHitBoxWidth = 35; // width of player's hitbox from 3 to 38
+    private final double playerHitBoxHeight = 40; // height of player's hitbox from 15 to 55
     private Vec2 dir; // the direction with respect to mouse-pressed location
-    private int speed = 400; // speed at which magic spell goes
-    private int attackDuration = 800; // charge-up time of attacking in milliseconds
-    private int ultimateChargeDuration = 1000; // charge-up time of attacking in milliseconds
+
     private boolean ultimateActivated;
-    private double bowOffset = 10; // spawn bow offset with respect to player location
 
     @Override
     public void prepAttack(Entity player) {
         int width = 16; // width of bow
         int height = 32; // height of bow
+        double bowOffset = 10; // spawn bow offset with respect to player location
+
         Entity b = spawn("rangedBow",
                 new SpawnData(
                         player.getX(), player.getY()).
@@ -48,8 +40,9 @@ public class Bow0 implements Weapon, AngleBehavior {
                         put("fpr", !ultimateActivated ? 1 : 1));
         // Spawn bow at player's "hands"
         b.getTransformComponent().setAnchoredPosition(
-                new Point2D(player.getX() - (width / 2) + player.getWidth() / 2 + bowOffset,
-                        player.getY() - (height / 2) + player.getHeight() / 2));
+                new Point2D(player.getX()
+                        - ((double) width / 2) + player.getWidth() / 2 + bowOffset,
+                        player.getY() - ((double) height / 2) + player.getHeight() / 2));
         b.setZIndex(2000); // put bow on top of player (z = 1000)
         if (player.getScaleX() == 1) {
             b.setScaleX(2);
@@ -61,21 +54,29 @@ public class Bow0 implements Weapon, AngleBehavior {
 
     @Override
     public void attack(Entity player, double mouseCurrX, double mouseCurrY) {
-        // Confirm goal is to shoot a projectile, then calculate angle
-        if (this instanceof AngleBehavior) {
-            ((AngleBehavior) this).calculateAnglePlayerRelative(player, mouseCurrX, mouseCurrY);
-        }
-        leftOffset = !ultimateActivated ? 0 : 20;
-        rightOffset = !ultimateActivated ? 0 : 10;
-        frameWidth = !ultimateActivated ? 48 : 48;
-        frameHeight = !ultimateActivated ? 16 : 16;
-        centerX = ((double) (leftOffset + (frameWidth - rightOffset)) / 2);
-        centerY = ((double) (leftOffset + (frameHeight - leftOffset)) / 2);
+        calculateAnglePlayerRelative(player, mouseCurrX, mouseCurrY);
+
+        // side offset used to shrink the top/left/bot edges of hitbox
+        int leftOffset = !ultimateActivated ? 0 : 20;
+        // right offset used to shrink the right edge of hitbox
+        int rightOffset = !ultimateActivated ? 0 : 10;
+        // width of the original frame (32 / 64)
+        int frameWidth = !ultimateActivated ? 48 : 48;
+        // height of original frame (32 / 64)
+        int frameHeight = !ultimateActivated ? 16 : 16;
+
+        // center of the hitbox
+        double centerX = ((double) (leftOffset + (frameWidth - rightOffset)) / 2);
+        double centerY = ((double) (leftOffset + (frameHeight - leftOffset)) / 2);
+
         if (player.getScaleX() == -1) {
             centerX -= leftOffset;
             centerY -= leftOffset;
         }
-        rangedHitBox = spawn("rangedArrowHitBox",
+
+        int speed = 400; // speed at which magic spell goes
+
+        Entity rangedHitBox = spawn("rangedArrowHitBox",
                 new SpawnData(
                         player.getX(), player.getY()).
                         put("dir", dir.toPoint2D()).
@@ -92,7 +93,8 @@ public class Bow0 implements Weapon, AngleBehavior {
                         put("isMagic", false));
         // Set the center of the hitbox to be at the player's "hands"
         rangedHitBox.setAnchoredPosition(
-                (player.getX() + playerHitBoxOffsetX + (player.getScaleX() > 0 ? playerHitBoxWidth : 0)),
+                (player.getX() + playerHitBoxOffsetX + (player.getScaleX() > 0
+                        ? playerHitBoxWidth : 0)),
                 (player.getY() + playerHitBoxOffsetY + (playerHitBoxHeight / 2)),
                 new Point2D(centerX, centerY));
         if (ultimateActivated) {
@@ -106,11 +108,11 @@ public class Bow0 implements Weapon, AngleBehavior {
         // adjacent is distance (x) from mouse to player's "hands"
         // opposite is distance (y) from mouse to player's "hands"
         // angle calculated with tangent
-        double adjacent = mouseCurrX -
-                (player.getX() + playerHitBoxOffsetX
+        double adjacent = mouseCurrX
+                - (player.getX() + playerHitBoxOffsetX
                         + (player.getScaleX() > 0 ? playerHitBoxWidth : 0));
-        double opposite = mouseCurrY -
-                (player.getY() + playerHitBoxOffsetY
+        double opposite = mouseCurrY
+                - (player.getY() + playerHitBoxOffsetY
                         + (playerHitBoxHeight / 2));
         double angle = Math.atan2(opposite, adjacent);
         angle = Math.toDegrees(angle);
@@ -119,6 +121,8 @@ public class Bow0 implements Weapon, AngleBehavior {
 
     @Override
     public int getDuration(boolean ultimateActivated) {
+        int attackDuration = 800; // charge-up time of attacking in milliseconds
+        int ultimateChargeDuration = 1000; // charge-up time of attacking in milliseconds
         this.ultimateActivated = ultimateActivated;
         return ultimateActivated ? ultimateChargeDuration : attackDuration;
     }
