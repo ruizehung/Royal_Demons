@@ -15,6 +15,7 @@ public class TestPlayerComponent {
     // devan 1
     @Test
     void testPlayerDies() {
+        PlayerComponent.setPlayerWeapon("Sword");
         Entity player = new Entity();
         HealthComponent myHealth = new PlayerComponent(1);
         player.addComponent(myHealth);
