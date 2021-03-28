@@ -21,7 +21,7 @@ import uwu.openjfx.components.PlayerComponent;
     - player loses health when touching an enemy (if damage has not been taken recently)
  */
 public class PlayerEnemyCollisionHandler extends CollisionHandler {
-    private double velocityDecrementer = 1.1;
+    private double velocityNormalizeVal = 1.1;
     private boolean equilibriumX = false;
     private boolean equilibriumY = false;
     private EnemyComponent enemyComponent;
@@ -39,7 +39,7 @@ public class PlayerEnemyCollisionHandler extends CollisionHandler {
         // when colliding with an enemy for the first time, evaluate whether or not
         // player has left and returned, or has already pushed this Mass affected enemy prior.
         if ((enemyComponent.getPlayerLeavesRadius())) {
-            velocityDecrementer = 2; // reset velocityDecrementer
+            velocityNormalizeVal = 2; // reset velocityNormalizeVal
             equilibriumX = false;
             equilibriumY = false;
         }
@@ -67,15 +67,15 @@ public class PlayerEnemyCollisionHandler extends CollisionHandler {
                 if (!equilibriumX) {
                     enemyPhysics.setVelocityX(enemyPhysics.getVelocityX()
                             + (playerPhysics.getVelocityX() > 0
-                            ? -velocityDecrementer : velocityDecrementer));
-                    velocityDecrementer *= 1.1;
+                            ? -velocityNormalizeVal : velocityNormalizeVal));
+                    velocityNormalizeVal *= 1.1;
                 }
 
                 if (!equilibriumY) {
                     enemyPhysics.setVelocityY(enemyPhysics.getVelocityY()
                             + (playerPhysics.getVelocityY() > 0
-                            ? -velocityDecrementer : velocityDecrementer));
-                    velocityDecrementer *= 1.1;
+                            ? -velocityNormalizeVal : velocityNormalizeVal));
+                    velocityNormalizeVal *= 1.1;
                 }
 
             /*
