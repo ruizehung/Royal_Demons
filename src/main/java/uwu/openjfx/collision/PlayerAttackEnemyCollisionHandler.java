@@ -5,6 +5,7 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import uwu.openjfx.RoyalType;
 import uwu.openjfx.components.AttackMultipleComponent;
+import uwu.openjfx.components.EnemyComponent;
 import uwu.openjfx.components.HealthComponent;
 
 /*
@@ -38,6 +39,9 @@ public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
             || (!weapon.hasComponent(ProjectileComponent.class))) {
             HealthComponent enemyHealth = enemy.getObject("enemyComponent");
             enemyHealth.deductHealth();
+            if (enemy.hasComponent(EnemyComponent.class)) {
+                enemy.getComponent(EnemyComponent.class).knockBackFromPlayer();
+            }
         }
     }
 }

@@ -309,6 +309,8 @@ public class PlayerComponent extends HealthComponent {
 
     @Override
     public void die() {
-        FXGL.getSceneService().pushSubScene(new DieScreenMenu(MenuType.GAME_MENU));
+        if (!MainApp.isIsTesting()) {
+            FXGL.getSceneService().pushSubScene(new DieScreenMenu(MenuType.GAME_MENU));
+        }
     }
 }
