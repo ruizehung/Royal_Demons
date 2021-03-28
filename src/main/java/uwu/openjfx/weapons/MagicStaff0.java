@@ -47,7 +47,7 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
         double centerX = ((double) (leftOffset + (frameWidth - rightOffset)) / 2);
         double centerY = ((double) (topBottomOffset + (frameHeight - topBottomOffset)) / 2);
 
-        int speed = 60; // speed at which magic spell goes
+        int speed = 300; // speed at which magic spell goes
 
         /*
             Lines 52-67 will instantiate a brand new magic spell that will hold the
