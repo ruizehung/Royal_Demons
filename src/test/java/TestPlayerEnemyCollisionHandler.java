@@ -3,6 +3,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uwu.openjfx.MainApp;
 import uwu.openjfx.collision.PlayerEnemyCollisionHandler;
+import uwu.openjfx.components.EnemyComponent;
 import uwu.openjfx.components.HealthComponent;
 import uwu.openjfx.components.PlayerComponent;
 
@@ -22,6 +23,7 @@ public class TestPlayerEnemyCollisionHandler {
         player.addComponent(myHealth);
 
         Entity monster = new Entity();
+        monster.addComponent(new EnemyComponent(1, "", 10, 20));
 
         PlayerEnemyCollisionHandler handler = new PlayerEnemyCollisionHandler();
         handler.onCollision(player, monster);

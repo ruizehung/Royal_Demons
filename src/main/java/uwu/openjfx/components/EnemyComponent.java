@@ -35,20 +35,25 @@ public class EnemyComponent extends HealthComponent {
     private final double playerHitBoxWidth = 35; // width of player's hitbox from 3 to 38
     private final double playerHitBoxHeight = 40; // height of player's hitbox from 15 to 55
 
+    private double playerX;
+    private double playerY;
+
+    private double enemyX;
+    private double enemyY;
+
     private AnimationChannel animIdle;
     private AnimationChannel animWalk;
     private AnimationChannel animMeleeAttack;
-    private AnimationChannel animLunge1;
-    private AnimationChannel animLunge2;
 
     private boolean massEffect = true;
+    private boolean isStunned = false;
     private boolean playerLeavesRadius = false;
     private boolean collidingWithPlayer = false;
     private boolean prepAttack = false; // enemy begins attack charge
     private boolean startAttacking = false; // enemy does the attack animation / instantiate hitbox
     private boolean startShrink = false; // for growing enemies
     private boolean attackCD = false;
-    private int attackDuration = 900; // 900
+    private int attackDuration = 900;
     private boolean overDrive = false;
     private double velocityDecrementer = 10;
     private double speed = 70;
@@ -93,26 +98,30 @@ public class EnemyComponent extends HealthComponent {
     @Override
     public void onUpdate(double tpf) {
         Entity player = FXGL.geto("player");
-        if (moveTimer.elapsed(Duration.seconds(1))) {
-            if (getEntity().distance(player) < 100 && !attackCD) {
-                playerLeavesRadius = false;
-                autoAttack();
-            } else if (getEntity().distance(player) < 300 && !prepAttack) {
-                // constantly signal other AI that player is close
-                moveToPlayer(player.getX(), player.getY());
-            } else {
-                stop();
-            }
-            moveTimer.capture();
-        }
+        playerX = player.getX() + playerHitBoxOffsetX + (playerHitBoxWidth / 2);
+        playerY = player.getY() + playerHitBoxOffsetY + (playerHitBoxHeight / 2);
+        enemyX = entity.getX() + (width / 2);
+        enemyY = entity.getY() + (height / 2);
 
-        double dist =
-                Math.max(Math.abs(player.getX() + playerHitBoxOffsetX + (playerHitBoxWidth / 2)
-                - getEntity().getX()),
-                Math.abs(player.getY() + playerHitBoxOffsetY + (playerHitBoxHeight / 2)
-                - getEntity().getY()));
+        double dist = Math.max(
+                        Math.abs(playerX - enemyX),
+                        Math.abs(playerY - enemyY));
         if (dist > 100) {
             playerLeavesRadius = true;
+        }
+
+        if (moveTimer.elapsed(Duration.seconds(1))) {
+            if (!isStunned) {
+                if (dist < 100 && !attackCD) {
+                    playerLeavesRadius = false;
+                    autoAttack();
+                } else if (dist < 300 && !prepAttack ) {
+                    moveToPlayer();
+                } else {
+                    stop();
+                }
+            }
+            moveTimer.capture();
         }
 
         // if enemy has been pushed by player to a velocity greater than its limit
@@ -143,11 +152,12 @@ public class EnemyComponent extends HealthComponent {
             // Grow in size
             enlarge();
         }
+
         // Enemy does the actual attack, spawns hitbox and then shrinks
         if (startAttacking) {
             final Entity meleeHitBox = spawn("meleeEnemyAttack", getEntity().getScaleX() > 0
-                    ? getEntity().getX()
-                    : getEntity().getX() - 40, getEntity().getY() - 5);
+                    ? enemyX
+                    : enemyX - 40, enemyY - 5);
             FXGL.getGameTimer().runAtInterval(meleeHitBox::removeFromWorld, Duration.seconds(.01));
             startShrink = true;
             startAttacking = false;
@@ -166,6 +176,15 @@ public class EnemyComponent extends HealthComponent {
                 attackCD = false;
                 FXGL.getGameTimer().clear();
             }, Duration.seconds(2));
+        }
+
+        if (isStunned) {
+            normalizeVelocityX();
+            normalizeVelocityY();
+            FXGL.getGameTimer().runAtInterval(() -> {
+                isStunned = false;
+                FXGL.getGameTimer().clear();
+            }, Duration.seconds(.5));
         }
     }
 
@@ -217,11 +236,20 @@ public class EnemyComponent extends HealthComponent {
         return massEffect;
     }
 
-    private void moveToPlayer(double playerX, double playerY) {
-        double xDir = (playerX + playerHitBoxOffsetX + (playerHitBoxWidth / 2))
-                - getEntity().getX() > 0 ? 1 : -1;
-        double yDir = (playerY + playerHitBoxOffsetY + (playerHitBoxHeight / 2))
-                - getEntity().getY() > 0 ? 1 : -1;
+    public void knockBackFromPlayer() {
+        if (physics != null) {
+            double knockBackPower = 4.5;
+            isStunned = true;
+            double xDir = playerX - enemyX > 0 ? -1 : 1;
+            double yDir = playerY - enemyY > 0 ? -1 : 1;
+            physics.setVelocityX(speed * knockBackPower * xDir);
+            physics.setVelocityY(speed * knockBackPower * yDir);
+        }
+    }
+
+    private void moveToPlayer() {
+        double xDir = playerX - enemyX > 0 ? 1 : -1;
+        double yDir = playerY - enemyY > 0 ? 1 : -1;
         physics.setVelocityX(speed * xDir);
         physics.setVelocityY(speed * yDir);
         entity.setScaleX(xDir);
@@ -277,7 +305,7 @@ public class EnemyComponent extends HealthComponent {
         }
 
         if (FXGL.random() < 0.5) {
-            FXGL.spawn("coin", getEntity().getX(), getEntity().getY());
+            FXGL.spawn("coin", enemyX, enemyY);
         }
         getEntity().removeFromWorld();
         IDComponent idComponent = getEntity().getComponent(IDComponent.class);

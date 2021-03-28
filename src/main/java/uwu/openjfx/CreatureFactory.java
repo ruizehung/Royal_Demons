@@ -56,7 +56,7 @@ public class CreatureFactory implements EntityFactory {
         String minionFileName = minionList.get(FXGL.random(0, minionList.size() - 1));
         List<Integer> widthHeight = parseSizes(minionFileName);
         EnemyComponent enemyComponent = new EnemyComponent(
-                1,
+                2,
                 "creatures/minions/" + minionFileName,
                 widthHeight.get(0), widthHeight.get(1));
 
