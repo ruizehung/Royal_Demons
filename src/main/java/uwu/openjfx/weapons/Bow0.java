@@ -57,26 +57,28 @@ public class Bow0 implements Weapon, AngleBehavior {
     public void attack(Entity player, double mouseCurrX, double mouseCurrY) {
         calculateAnglePlayerRelative(player, mouseCurrX, mouseCurrY);
 
-        // side offset used to shrink the top/left/bot edges of hitbox
-        int leftOffset = !ultimateActivated ? 0 : 20;
+        // top offset used to shrink the top/bot edges of hitbox
+        int topBottomOffset = !ultimateActivated ? 5 : 5;
+        // left offset used to shrink the left edge of hitbox
+        int leftOffset = !ultimateActivated ? 20 : 20;
         // right offset used to shrink the right edge of hitbox
-        int rightOffset = !ultimateActivated ? 0 : 10;
+        int rightOffset = !ultimateActivated ? 12 : 12;
         // width of the original frame (32 / 64)
         int frameWidth = !ultimateActivated ? 48 : 48;
         // height of original frame (32 / 64)
         int frameHeight = !ultimateActivated ? 16 : 16;
 
-        // center of the hitbox
+        // the center of the NEW and MODIFIED hitbox
         double centerX = ((double) (leftOffset + (frameWidth - rightOffset)) / 2);
-        double centerY = ((double) (leftOffset + (frameHeight - leftOffset)) / 2);
+        double centerY = ((double) (topBottomOffset + (frameHeight - topBottomOffset)) / 2);
 
-        if (player.getScaleX() == -1) {
-            centerX -= leftOffset;
-            centerY -= leftOffset;
-        }
-
-        int speed = 400; // speed at which magic spell goes
-
+        int speed = 300; // speed at which magic spell goes
+        /*
+            Instantiate a brand new magic spell that will hold the
+            corresponding dimensions, components, and speed. It will temporarily
+            spawn the magic spell at the players ORIGINAL getX() and getY() excluding
+            its modified hitbox done in CreatureFactory.
+         */
         Entity rangedHitBox = spawn("rangedArrowHitBox",
                 new SpawnData(
                         player.getX(), player.getY()).
@@ -86,18 +88,34 @@ public class Bow0 implements Weapon, AngleBehavior {
                         put("duration", 500).
                         put("fpr", 1).
                         put("ultimateActive", ultimateActivated).
+                        put("topBotOffset", topBottomOffset).
                         put("leftOffset", leftOffset).
                         put("rightOffset", rightOffset).
                         put("frameWidth", frameWidth).
                         put("frameHeight", frameHeight).
                         put("isArrow", true).
                         put("isMagic", false));
-        // Set the center of the hitbox to be at the player's "hands"
+        /*
+            setLocalAnchor(...) will ensure that the anchor/pivot point of the
+            magic spell is located at the CENTER of the NEW hitbox.
+            setAnchoredPosition(...) will spawn the magic spell to the right
+            of the player if player is facing right, and left if the player is
+            facing left, and located at the player's "hands".
+            setRotationOrigin(...) will ensure that the rotation anchor/pivot
+            point of the magic spell is located at the CENTER of the NEW hitbox.
+            The arguments are offsets based off of the top-left point of the
+            ORIGINAL frameWidth x frameHeight frame. Therefore, we need to offset
+            centerX in the x-direction, and the center of the magic spell will
+            CONSISTENTLY be at its midpoint in the y-direction.
+         */
+        rangedHitBox.setLocalAnchor(new Point2D(centerX, centerY));
         rangedHitBox.setAnchoredPosition(
-                (player.getX() + playerHitBoxOffsetX + (player.getScaleX() > 0
-                        ? playerHitBoxWidth : 0)),
-                (player.getY() + playerHitBoxOffsetY + (playerHitBoxHeight / 2)),
-                new Point2D(centerX, centerY));
+                (player.getX() + playerHitBoxOffsetX
+                        + (player.getScaleX() > 0 ? playerHitBoxWidth : 0)), // right-left side
+                (player.getY() + playerHitBoxOffsetY
+                        + (playerHitBoxHeight / 2))); // midpoint player hitbox
+        rangedHitBox.getTransformComponent().setRotationOrigin(
+                new Point2D(centerX, ((double) (frameHeight)) / 2));
         if (ultimateActivated) {
             rangedHitBox.setScaleX(2);
             rangedHitBox.setScaleY(2);
@@ -111,10 +129,10 @@ public class Bow0 implements Weapon, AngleBehavior {
         // angle calculated with tangent
         double adjacent = mouseCurrX
                 - (player.getX() + playerHitBoxOffsetX
-                        + (player.getScaleX() > 0 ? playerHitBoxWidth : 0));
+                + (player.getScaleX() > 0 ? playerHitBoxWidth : 0));
         double opposite = mouseCurrY
                 - (player.getY() + playerHitBoxOffsetY
-                        + (playerHitBoxHeight / 2));
+                + (playerHitBoxHeight / 2));
         double angle = Math.atan2(opposite, adjacent);
         angle = Math.toDegrees(angle);
         dir = Vec2.fromAngle(angle);

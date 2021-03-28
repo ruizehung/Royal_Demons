@@ -18,6 +18,7 @@ import javafx.util.Duration;
 public class WeaponAnimationComponent extends Component {
     private AnimatedTexture texture;
     private AnimationChannel animIdle;
+    private double duration;
 
     public WeaponAnimationComponent() {
         // Making sure there is a default constructor
@@ -34,17 +35,23 @@ public class WeaponAnimationComponent extends Component {
                 frameWidth, frameHeight, Duration.millis(duration), 0, fpr - 1);
         texture = new AnimatedTexture(animAttack);
         texture.playAnimationChannel(animAttack);
-        // Remove weapon after it has done its attack animation
-        FXGL.getGameTimer().runAtInterval(() -> {
-            if (getEntity() != null) {
-                getEntity().removeFromWorld();
-            }
-        }, Duration.millis(duration));
+        this.duration = duration;
     }
 
     @Override
     public void onAdded() {
         entity.getTransformComponent().setScaleOrigin(new Point2D(0, 0));
         entity.getViewComponent().addChild(texture);
+    }
+
+    public void onUpdate(double tpf) {
+        // Remove weapon after it has done its attack animation
+        if (this != null && getEntity() != null) {
+            FXGL.getGameTimer().runAtInterval(() -> {
+                if (getEntity() != null) {
+                    getEntity().removeFromWorld();
+                }
+            }, Duration.millis(duration - 50));
+        }
     }
 }

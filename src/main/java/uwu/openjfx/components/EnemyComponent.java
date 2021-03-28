@@ -106,7 +106,7 @@ public class EnemyComponent extends HealthComponent {
         double dist = Math.max(
                         Math.abs(playerX - enemyX),
                         Math.abs(playerY - enemyY));
-        if (dist > 120) {
+        if (dist > 150) {
             playerLeavesRadius = true;
         }
 

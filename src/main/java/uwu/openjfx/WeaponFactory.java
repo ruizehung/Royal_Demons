@@ -69,6 +69,7 @@ public class WeaponFactory implements EntityFactory {
 
     @Spawns("rangedArrowHitBox")
     public Entity newRangedArrowHitBox(SpawnData data) {
+        int topBotOffset = data.get("topBotOffset");
         int leftOffset = data.get("leftOffset");
         int rightOffset = data.get("rightOffset");
         int frameWidth = data.get("frameWidth");
@@ -81,14 +82,21 @@ public class WeaponFactory implements EntityFactory {
         int fpr = data.get("fpr");
         boolean isArrow = data.get("isArrow");
         boolean isMagic = data.get("isMagic");
+
+        double widthHitBox = (frameWidth - rightOffset) - leftOffset;
+        double heightHitBox = (frameHeight - topBotOffset) - topBotOffset;
+        double newCenterXOffset = leftOffset;
+        double newCenterYOffset = topBotOffset;
         return FXGL.entityBuilder(data)
                 .type(RoyalType.PLAYERATTACK)
                 .view("./weapons/arrow.png")
-                .bbox(new HitBox(BoundingShape.polygon(
-                        new Point2D(leftOffset, leftOffset),
-                        new Point2D(frameWidth - rightOffset, leftOffset),
-                        new Point2D(frameWidth - rightOffset, frameHeight - leftOffset),
-                        new Point2D(leftOffset, frameHeight - leftOffset))))
+                .bbox(new HitBox(
+                        new Point2D(
+                                newCenterXOffset,
+                                newCenterYOffset),
+                        BoundingShape.box(
+                                widthHitBox,
+                                heightHitBox)))
                 .with(new ProjectileAnimationComponent(
                         weapon, duration, frameWidth, frameHeight, fpr, isArrow, isMagic))
                 .with(new AttackMultipleComponent(ultimateActive))
@@ -99,6 +107,7 @@ public class WeaponFactory implements EntityFactory {
 
     @Spawns("rangedMagicHitBox")
     public Entity newRangedMagicHitBox(SpawnData data) {
+        int topBotOffset = data.get("topBotOffset");
         int leftOffset = data.get("leftOffset");
         int rightOffset = data.get("rightOffset");
         int frameWidth = data.get("frameWidth");
@@ -111,13 +120,20 @@ public class WeaponFactory implements EntityFactory {
         int fpr = data.get("fpr");
         boolean isArrow = data.get("isArrow");
         boolean isMagic = data.get("isMagic");
+
+        double widthHitBox = (frameWidth - rightOffset) - leftOffset;
+        double heightHitBox = (frameHeight - topBotOffset) - topBotOffset;
+        double newCenterXOffset = leftOffset;
+        double newCenterYOffset = topBotOffset;
         return FXGL.entityBuilder(data)
                 .type(RoyalType.PLAYERATTACK)
-                .bbox(new HitBox(BoundingShape.polygon(
-                        new Point2D(leftOffset, leftOffset),
-                        new Point2D(frameWidth - rightOffset, leftOffset),
-                        new Point2D(frameWidth - rightOffset, frameHeight - leftOffset),
-                        new Point2D(leftOffset, frameHeight - leftOffset))))
+                .bbox(new HitBox(
+                        new Point2D(
+                                newCenterXOffset,
+                                newCenterYOffset),
+                        BoundingShape.box(
+                                widthHitBox,
+                                heightHitBox)))
                 .with(new ProjectileAnimationComponent(
                         weapon, duration, frameWidth, frameHeight, fpr, isArrow, isMagic))
                 .with(new AttackMultipleComponent(ultimateActive))
