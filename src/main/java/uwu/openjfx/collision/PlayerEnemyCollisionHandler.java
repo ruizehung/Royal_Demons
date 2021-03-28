@@ -19,8 +19,8 @@ import uwu.openjfx.components.PlayerComponent;
  */
 public class PlayerEnemyCollisionHandler extends CollisionHandler {
     private double velocityDecrementer = 1.1;
-    private boolean unstoppableX = false;
-    private boolean unstoppableY = false;
+    private boolean equilibriumX = false;
+    private boolean equilibriumY = false;
 
     public PlayerEnemyCollisionHandler() {
         super(RoyalType.PLAYER, RoyalType.ENEMY);
@@ -31,8 +31,8 @@ public class PlayerEnemyCollisionHandler extends CollisionHandler {
         // player has left and returned, or has already pushed this Mass affected enemy prior.
         if ((enemy.getComponent(EnemyComponent.class).getPlayerLeavesRadius())) {
             velocityDecrementer = 2; // reset velocityDecrementer
-            unstoppableX = false;
-            unstoppableY = false;
+            equilibriumX = false;
+            equilibriumY = false;
         }
     }
 
@@ -55,14 +55,14 @@ public class PlayerEnemyCollisionHandler extends CollisionHandler {
                 - If player is pushing down, then push up
                 - If player is pushing up, then push down
              */
-            if (!unstoppableX) {
+            if (!equilibriumX) {
                 enemyPhysics.setVelocityX(enemyPhysics.getVelocityX()
                     + (playerPhysics.getVelocityX() > 0
                     ? -velocityDecrementer : velocityDecrementer));
                 velocityDecrementer *= 1.1;
             }
 
-            if (!unstoppableY) {
+            if (!equilibriumY) {
                 enemyPhysics.setVelocityY(enemyPhysics.getVelocityY()
                         + (playerPhysics.getVelocityY() > 0
                         ? -velocityDecrementer : velocityDecrementer));
@@ -76,18 +76,18 @@ public class PlayerEnemyCollisionHandler extends CollisionHandler {
                 applying force to the enemy, therefore stop applying equal and opposite force.
              */
             if (((Math.abs(enemyPhysics.getVelocityX()) > Math.abs(playerComponent.getSpeed()))
-                || unstoppableX) && (playerComponent.isPressingMovementKeys())) {
+                || equilibriumX) && (playerComponent.isPressingMovementKeys())) {
                 enemyPhysics.setVelocityX(
                         -playerComponent.getSpeed() * Math.signum(enemyPhysics.getVelocityX()));
                 enemyComponent.setCollidingWithPlayer(true);
-                unstoppableX = true;
+                equilibriumX = true;
             }
             if (((Math.abs(enemyPhysics.getVelocityY()) > Math.abs(playerComponent.getSpeed()))
-                || unstoppableY) && (playerComponent.isPressingMovementKeys())) {
+                || equilibriumY) && (playerComponent.isPressingMovementKeys())) {
                 enemyPhysics.setVelocityY(
                         -playerComponent.getSpeed() * Math.signum(enemyPhysics.getVelocityY()));
                 enemyComponent.setCollidingWithPlayer(true);
-                unstoppableY = true;
+                equilibriumY = true;
             }
 
             /*
