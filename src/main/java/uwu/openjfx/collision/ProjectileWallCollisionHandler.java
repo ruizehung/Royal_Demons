@@ -31,7 +31,9 @@ public class ProjectileWallCollisionHandler extends CollisionHandler {
 
     protected void onCollision(Entity weapon, Entity wall) {
         if (weapon != null) {
+            System.out.println("ATEhatejn");
             FXGL.getGameTimer().runAtInterval(() -> {
+                System.out.println("Areh");
                 weapon.removeFromWorld();
             }, Duration.seconds(5));
         }

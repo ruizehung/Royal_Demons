@@ -39,7 +39,6 @@ public class PlayerEnemyCollisionHandler extends CollisionHandler {
         // when colliding with an enemy for the first time, evaluate whether or not
         // player has left and returned, or has already pushed this Mass affected enemy prior.
         if ((enemyComponent.getPlayerLeavesRadius())) {
-            System.out.println("Aerh");
             velocityDecrementer = 2; // reset velocityDecrementer
             equilibriumX = false;
             equilibriumY = false;
