@@ -11,21 +11,28 @@ import uwu.openjfx.components.PlayerComponent;
 
 /*
     This class is responsible for handling player TOUCHING enemy collision.
+    This class does the following:
+    - if an enemy is denoted to be taken under Mass Effect (mass matters), then
+    it will hold RESISTANCE to player pushing
+    - player pushing a resistant enemy will eventually be pushing essentially a brick wall
+    - player loses health when touching an enemy (if damage has not been taken recently)
  */
 public class PlayerEnemyCollisionHandler extends CollisionHandler {
     private double velocityDecrementer = 1.1;
-    private boolean unstoppableX = false;
-    private boolean unstoppableY = false;
+    private boolean equilibriumX = false;
+    private boolean equilibriumY = false;
 
     public PlayerEnemyCollisionHandler() {
         super(RoyalType.PLAYER, RoyalType.ENEMY);
     }
 
     protected void onCollisionBegin(Entity player, Entity enemy) {
+        // when colliding with an enemy for the first time, evaluate whether or not
+        // player has left and returned, or has already pushed this Mass affected enemy prior.
         if ((enemy.getComponent(EnemyComponent.class).getPlayerLeavesRadius())) {
-            velocityDecrementer = 2;
-            unstoppableX = false;
-            unstoppableY = false;
+            velocityDecrementer = 2; // reset velocityDecrementer
+            equilibriumX = false;
+            equilibriumY = false;
         }
     }
 
@@ -37,38 +44,58 @@ public class PlayerEnemyCollisionHandler extends CollisionHandler {
             playerHealth.deductHealth();
         }
 
-        if (enemy.hasComponent(EnemyComponent.class)
-            && enemy.getComponent(EnemyComponent.class).getMassEffect()) {
+        if (enemyComponent.getMassEffect()) {
             PhysicsComponent enemyPhysics = enemy.getComponent(PhysicsComponent.class);
             PhysicsComponent playerPhysics = player.getComponent(PhysicsComponent.class);
 
-            if (!unstoppableX) {
+            /*
+                If enemy is not unstoppable, then start slowly resisting the player's pushing.
+                - If player is pushing right, then push left
+                - If player is pushing left, then push right
+                - If player is pushing down, then push up
+                - If player is pushing up, then push down
+             */
+            if (!equilibriumX) {
                 enemyPhysics.setVelocityX(enemyPhysics.getVelocityX()
                     + (playerPhysics.getVelocityX() > 0
                     ? -velocityDecrementer : velocityDecrementer));
                 velocityDecrementer *= 1.1;
             }
 
-            if (!unstoppableY) {
+            if (!equilibriumY) {
                 enemyPhysics.setVelocityY(enemyPhysics.getVelocityY()
                         + (playerPhysics.getVelocityY() > 0
                         ? -velocityDecrementer : velocityDecrementer));
                 velocityDecrementer *= 1.1;
             }
 
+            /*
+                If enemy is pushing at the same magnitude as player, then equilibrium has been
+                achieved. Set enemy's velocity to be permanently equal with player's velocity
+                in the opposite direction. If player is not moving, then player is no longer
+                applying force to the enemy, therefore stop applying equal and opposite force.
+             */
             if (((Math.abs(enemyPhysics.getVelocityX()) > Math.abs(playerComponent.getSpeed()))
-                || unstoppableX) && (playerComponent.isPressingMovementKeys())) {
-                enemyPhysics.setVelocityX(-playerComponent.getSpeed() * Math.signum(enemyPhysics.getVelocityX()));
-                enemy.getComponent(EnemyComponent.class).setCollidingWithPlayer(true);
-                unstoppableX = true;
+                || equilibriumX) && (playerComponent.isPressingMovementKeys())) {
+                enemyPhysics.setVelocityX(
+                        -playerComponent.getSpeed() * Math.signum(enemyPhysics.getVelocityX()));
+                enemyComponent.setCollidingWithPlayer(true);
+                equilibriumX = true;
             }
             if (((Math.abs(enemyPhysics.getVelocityY()) > Math.abs(playerComponent.getSpeed()))
-                    || unstoppableY) && (playerComponent.isPressingMovementKeys())) {
-                enemyPhysics.setVelocityY(-playerComponent.getSpeed() * Math.signum(enemyPhysics.getVelocityY()));
-                enemy.getComponent(EnemyComponent.class).setCollidingWithPlayer(true);
-                unstoppableY = true;
+                || equilibriumY) && (playerComponent.isPressingMovementKeys())) {
+                enemyPhysics.setVelocityY(
+                        -playerComponent.getSpeed() * Math.signum(enemyPhysics.getVelocityY()));
+                enemyComponent.setCollidingWithPlayer(true);
+                equilibriumY = true;
             }
 
+            /*
+                If player is not moving up/down (only moving left/right), then enemy should
+                also not be moving up/down.
+                If player is not moving left/right (only moving up/down), then enemy should
+                also not be moving left/right.
+             */
             if (playerPhysics.getVelocityX() == 0) {
                 enemyPhysics.setVelocityX(0);
             }
