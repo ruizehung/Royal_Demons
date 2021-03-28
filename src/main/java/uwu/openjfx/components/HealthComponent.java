@@ -19,7 +19,7 @@ public abstract class HealthComponent extends Component {
     }
 
     public void deductHealth() {
-        // healthPoints--;
+        healthPoints--;
         playerHealth.set(healthPoints);
         if (healthPoints <= 0) { // die
             healthPoints = 0;
