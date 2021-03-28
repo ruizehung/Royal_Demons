@@ -31,9 +31,15 @@ public class PlayerEnemyCollisionHandler extends CollisionHandler {
     }
 
     protected void onCollisionBegin(Entity player, Entity enemy) {
+        if (enemy.hasComponent(EnemyComponent.class)) {
+            enemyComponent = enemy.getComponent(EnemyComponent.class);
+        } else {
+            enemyComponent = enemy.getComponent(BossComponent.class);
+        }
         // when colliding with an enemy for the first time, evaluate whether or not
         // player has left and returned, or has already pushed this Mass affected enemy prior.
-        if ((enemy.getComponent(EnemyComponent.class).getPlayerLeavesRadius())) {
+        if ((enemyComponent.getPlayerLeavesRadius())) {
+            System.out.println("Aerh");
             velocityDecrementer = 2; // reset velocityDecrementer
             equilibriumX = false;
             equilibriumY = false;
@@ -43,11 +49,6 @@ public class PlayerEnemyCollisionHandler extends CollisionHandler {
     public void onCollision(Entity player, Entity enemy) {
         PlayerComponent playerComponent = player.getComponent(PlayerComponent.class);
         HealthComponent playerHealth = playerComponent;
-        if (enemy.hasComponent(EnemyComponent.class)) {
-            enemyComponent = enemy.getComponent(EnemyComponent.class);
-        } else {
-            enemyComponent = enemy.getComponent(BossComponent.class);
-        }
         if (!playerHealth.getIsInvulnerable()) {
             playerHealth.deductHealth();
         }
