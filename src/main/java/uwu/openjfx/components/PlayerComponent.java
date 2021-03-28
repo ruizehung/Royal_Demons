@@ -318,9 +318,6 @@ public class PlayerComponent extends HealthComponent {
     }
 
     public boolean isDeadTest() {
-        if (!MainApp.isIsTesting()) {
-            FXGL.getSceneService().pushSubScene(new DieScreenMenu(MenuType.GAME_MENU));
-        }
         return deadTest;
     }
 }
