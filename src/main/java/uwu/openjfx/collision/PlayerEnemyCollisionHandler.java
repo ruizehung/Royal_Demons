@@ -1,10 +1,8 @@
 package uwu.openjfx.collision;
 
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.PhysicsComponent;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import uwu.openjfx.MainApp;
 import uwu.openjfx.RoyalType;
 import uwu.openjfx.components.BossComponent;
@@ -57,13 +55,13 @@ public class PlayerEnemyCollisionHandler extends CollisionHandler {
                 PhysicsComponent enemyPhysics = enemy.getComponent(PhysicsComponent.class);
                 PhysicsComponent playerPhysics = player.getComponent(PhysicsComponent.class);
 
-            /*
-                If enemy is not unstoppable, then start slowly resisting the player's pushing.
-                - If player is pushing right, then push left
-                - If player is pushing left, then push right
-                - If player is pushing down, then push up
-                - If player is pushing up, then push down
-             */
+                /*
+                    If enemy is not unstoppable, then start slowly resisting the player's pushing.
+                    - If player is pushing right, then push left
+                    - If player is pushing left, then push right
+                    - If player is pushing down, then push up
+                    - If player is pushing up, then push down
+                 */
                 if (!equilibriumX) {
                     enemyPhysics.setVelocityX(enemyPhysics.getVelocityX()
                             + (playerPhysics.getVelocityX() > 0
@@ -78,12 +76,12 @@ public class PlayerEnemyCollisionHandler extends CollisionHandler {
                     velocityNormalizeVal *= 1.1;
                 }
 
-            /*
-                If enemy is pushing at the same magnitude as player, then equilibrium has been
-                achieved. Set enemy's velocity to be permanently equal with player's velocity
-                in the opposite direction. If player is not moving, then player is no longer
-                applying force to the enemy, therefore stop applying equal and opposite force.
-             */
+                /*
+                    If enemy is pushing at the same magnitude as player, then equilibrium has been
+                    achieved. Set enemy's velocity to be permanently equal with player's velocity
+                    in the opposite direction. If player is not moving, then player is no longer
+                    applying force to the enemy, therefore stop applying equal and opposite force.
+                 */
                 if (((Math.abs(enemyPhysics.getVelocityX()) > Math.abs(playerComponent.getSpeed()))
                         || equilibriumX) && (playerComponent.isPressingMovementKeys())) {
                     enemyPhysics.setVelocityX(
@@ -99,12 +97,12 @@ public class PlayerEnemyCollisionHandler extends CollisionHandler {
                     equilibriumY = true;
                 }
 
-            /*
-                If player is not moving up/down (only moving left/right), then enemy should
-                also not be moving up/down.
-                If player is not moving left/right (only moving up/down), then enemy should
-                also not be moving left/right.
-             */
+                /*
+                    If player is not moving up/down (only moving left/right), then enemy should
+                    also not be moving up/down.
+                    If player is not moving left/right (only moving up/down), then enemy should
+                    also not be moving left/right.
+                 */
                 if (playerPhysics.getVelocityX() == 0) {
                     enemyPhysics.setVelocityX(0);
                 }

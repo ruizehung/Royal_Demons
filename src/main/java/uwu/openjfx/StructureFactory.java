@@ -45,6 +45,18 @@ public class StructureFactory implements EntityFactory {
                 .with(new TrapComponent())
                 .build();
     }
+
+    @Spawns("trap-black-wall")
+    public Entity newTrapWall(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(RoyalType.TRAP)
+                .viewWithBBox(new Rectangle(data.<Integer>get("width"),
+                        data.<Integer>get("height"), Color.BLACK))
+                .with(new PhysicsComponent())
+                .with(new TrapComponent())
+                .build();
+    }
+
     @Spawns("trap-tile")
     public Entity newTrapTile(SpawnData data) {
         return FXGL.entityBuilder(data)
@@ -69,6 +81,16 @@ public class StructureFactory implements EntityFactory {
     public Entity newPoint(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(RoyalType.POINT)
+                .build();
+    }
+
+    @Spawns("lever")
+    public Entity newLever(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(RoyalType.TRAP_TRIGGER)
+                .viewWithBBox("lever-left.png")
+                .with(new TrapComponent())
+                .with(new CollidableComponent(true))
                 .build();
     }
 

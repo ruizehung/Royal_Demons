@@ -85,16 +85,16 @@ public class PlayerComponent extends HealthComponent {
 
         if (currentWeapon == null) {
             switch (playerWeapon) {
-                case "Sword":
-                    currentWeapon = new GoldenSword0();
-                    break;
-                case "Bow":
-                    currentWeapon = new Bow0();
-                    break;
-                case "Wand":
-                    currentWeapon = new MagicStaff0();
-                    break;
-                default:
+            case "Sword":
+                currentWeapon = new GoldenSword0();
+                break;
+            case "Bow":
+                currentWeapon = new Bow0();
+                break;
+            case "Wand":
+                currentWeapon = new MagicStaff0();
+                break;
+            default:
             }
         }
 

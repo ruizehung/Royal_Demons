@@ -115,7 +115,7 @@ public class EnemyComponent extends HealthComponent {
                 if (dist < 100 && !attackCD) {
                     playerLeavesRadius = false;
                     autoAttack();
-                } else if (dist < 300 && !prepAttack ) {
+                } else if (dist < 300 && !prepAttack) {
                     moveToPlayer();
                 } else {
                     stop();

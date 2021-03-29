@@ -80,7 +80,7 @@ public class MainApp extends GameApplication {
 
     @Override
     protected void onPreInit() {
-        getSettings().setGlobalMusicVolume(0.25);
+        getSettings().setGlobalMusicVolume(developerCheat ? 0 : 0.25);
         loopBGM("MainMenu.mp3");
     }
 
