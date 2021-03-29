@@ -74,7 +74,7 @@ public class Bow0 implements Weapon, AngleBehavior {
 
         int speed = 300; // speed at which magic spell goes
         /*
-            Instantiate a brand new magic spell that will hold the
+            Instantiate a brand new arrow that will hold the
             corresponding dimensions, components, and speed. It will temporarily
             spawn the magic spell at the players ORIGINAL getX() and getY() excluding
             its modified hitbox done in CreatureFactory.
@@ -97,15 +97,15 @@ public class Bow0 implements Weapon, AngleBehavior {
                         put("isMagic", false));
         /*
             setLocalAnchor(...) will ensure that the anchor/pivot point of the
-            magic spell is located at the CENTER of the NEW hitbox.
-            setAnchoredPosition(...) will spawn the magic spell to the right
+            arrow is located at the CENTER of the NEW hitbox.
+            setAnchoredPosition(...) will spawn the arrow to the right
             of the player if player is facing right, and left if the player is
             facing left, and located at the player's "hands".
             setRotationOrigin(...) will ensure that the rotation anchor/pivot
-            point of the magic spell is located at the CENTER of the NEW hitbox.
+            point of the arrow is located at the CENTER of the NEW hitbox.
             The arguments are offsets based off of the top-left point of the
             ORIGINAL frameWidth x frameHeight frame. Therefore, we need to offset
-            centerX in the x-direction, and the center of the magic spell will
+            centerX in the x-direction, and the center of the arrow will
             CONSISTENTLY be at its midpoint in the y-direction.
          */
         rangedHitBox.setLocalAnchor(new Point2D(centerX, centerY));

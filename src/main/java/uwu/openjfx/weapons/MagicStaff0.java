@@ -50,7 +50,7 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
         int speed = 300; // speed at which magic spell goes
 
         /*
-            Lines 52-67 will instantiate a brand new magic spell that will hold the
+            Instantiate a brand new magic spell that will hold the
             corresponding dimensions, components, and speed. It will temporarily
             spawn the magic spell at the players ORIGINAL getX() and getY() excluding
             its modified hitbox done in CreatureFactory.
