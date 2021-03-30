@@ -30,7 +30,7 @@ public class GoldenSword0 implements Weapon {
                         put("duration", getDuration(ultimateActivated)).
                         put("frameWidth", width).
                         put("frameHeight", height).
-                        put("fpr", !ultimateActivated ? 6 : 6));
+                        put("fpr", !ultimateActivated ? 6 : 5));
         // Spawn the sword at player's "hands"
         gs.getTransformComponent().setAnchoredPosition(
                 new Point2D(player.getX() - ((double) width / 2) + player.getWidth() / 2,
