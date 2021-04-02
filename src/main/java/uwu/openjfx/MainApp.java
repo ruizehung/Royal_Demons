@@ -15,9 +15,7 @@ import javafx.scene.text.Text;
 import uwu.openjfx.MapGeneration.GameMap;
 import uwu.openjfx.collision.*;
 import uwu.openjfx.components.PlayerComponent;
-import uwu.openjfx.input.KillAllEnemy;
-import uwu.openjfx.input.ShowMapAction;
-import uwu.openjfx.input.TeleportToBossRoom;
+import uwu.openjfx.input.*;
 
 import java.io.File;
 import java.util.*;
@@ -32,13 +30,12 @@ public class MainApp extends GameApplication {
     private List<String> minionList;
     private List<String> miniBossList;
     private List<String> roomTypeList;
+    private Map<String, String> itemNameAssetMap;
     private final Boolean developerCheat = true;
     private static boolean isTesting = false;
 
     // Top priority : (
-    // Todo: show win screen
-    // Todo: 2 junit tests each per person
-    // Todo: Clarify robustness diagram
+
 
     // Tier 2 priority
     // Todo: Boss special attack??
@@ -174,6 +171,10 @@ public class MainApp extends GameApplication {
                 }
             }
         }, KeyCode.SPACE);
+
+        getInput().addAction(new PickItem("PickItem"), KeyCode.E);
+        getInput().addAction(new UseItem("UseItem"), KeyCode.F);
+
         // endregion
 
         getInput().addAction(new ShowMapAction("showMap"), KeyCode.M);
@@ -181,10 +182,18 @@ public class MainApp extends GameApplication {
 
     @Override
     protected void initGame() {
+        // Initialize Epressed to false. During the time player press E, this will
+        // become true
+        set("Epressed", false);
+        set("Fpressed", false);
+        set("developerCheat", developerCheat);
+
         loadRoomAsset();
         loadEnemiesAsset();
+        initItemsNameAssetMapping();
         gameMap = new GameMap(40);
         set("gameMap", gameMap);
+
 
         getGameWorld().addEntityFactory(new StructureFactory());
         getGameWorld().addEntityFactory(new CreatureFactory());
@@ -220,6 +229,8 @@ public class MainApp extends GameApplication {
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerTriggerCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerDoorCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerCoinCollisionHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new PlayerDroppedItemCollisionHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new PlayerChestCollisionHandler());
     }
 
     @Override
@@ -274,6 +285,14 @@ public class MainApp extends GameApplication {
         }
         set("miniBossList", miniBossList);
 
+    }
+
+    public void initItemsNameAssetMapping() {
+        itemNameAssetMap = new HashMap<>();
+        itemNameAssetMap.put("HealthPotion", "items/flask_big_red_32x32.png");
+        itemNameAssetMap.put("RagePotion", "items/flask_big_blue_32x32.png");
+        itemNameAssetMap.put("Heart", "items/ui_heart_full_32x32.png");
+        set("itemsNameAssetMap", itemNameAssetMap);
     }
 
     public void loadRoomAsset() {

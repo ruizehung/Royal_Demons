@@ -24,16 +24,20 @@ public class Room {
     // set different room type based on numb of adjacent rooms
     private String roomType;
     private Map<Integer, Map<String, Integer>> entitiesData;
+    private Map<Integer, Map<String, Integer>> droppedItemsData;
+    private Map<Integer, Map<String, Integer>> chestsData;
 
 
     public Room(Coordinate coordinate) {
         entitiesData = new HashMap<>();
+        droppedItemsData = new HashMap<>();
+        chestsData = new HashMap<>();
         this.coordinate = coordinate;
         if (!MainApp.isIsTesting()) {
             List<String> roomTypeList = FXGL.geto("roomTypeList");
             roomType = roomTypeList.get(FXGL.random(0, roomTypeList.size() - 1));
         }
-        // roomType = "60_60_4_door";
+        roomType = "60_60_4_door";
     }
 
     public Room(Coordinate coordinate, int numAdjRooms) {
@@ -66,6 +70,28 @@ public class Room {
             entitiesData.put(id, new HashMap<>());
         }
         entitiesData.get(id).put(propertyName, val);
+    }
+
+    public int getDroppedItemData(int id, String propertyName) {
+        return droppedItemsData.get(id).get(propertyName);
+    }
+
+    public void setDroppedItemData(int id, String propertyName, int val) {
+        if (droppedItemsData.get(id) == null) {
+            droppedItemsData.put(id, new HashMap<>());
+        }
+        droppedItemsData.get(id).put(propertyName, val);
+    }
+
+    public int getChestsData(int id, String propertyName) {
+        return chestsData.get(id).get(propertyName);
+    }
+
+    public void setChestData(int id, String propertyName, int val) {
+        if (chestsData.get(id) == null) {
+            chestsData.put(id, new HashMap<>());
+        }
+        chestsData.get(id).put(propertyName, val);
     }
 
     public Boolean enemiesCleared() {

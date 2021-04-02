@@ -8,6 +8,25 @@ import uwu.openjfx.MapGeneration.Room;
 
 
 public class TrapComponent extends Component {
+
+    private boolean needToPressUse;
+
+    public TrapComponent(boolean needToPressUse) {
+        this.needToPressUse = needToPressUse;
+    }
+
+    public TrapComponent() {
+        this(false);
+    }
+
+    public boolean needToPressUse() {
+        return needToPressUse;
+    }
+
+    public void setNeedToPressUse(boolean needToPressUse) {
+        this.needToPressUse = needToPressUse;
+    }
+
     public void trigger() {
         final String action = getEntity().getProperties().getString("action");
         switch (action) {

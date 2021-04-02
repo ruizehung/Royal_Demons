@@ -11,13 +11,28 @@ import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import uwu.openjfx.components.ChestComponent;
+import uwu.openjfx.components.ItemComponent;
 import uwu.openjfx.components.TrapComponent;
+
+import java.util.Map;
 
 public class StructureFactory implements EntityFactory {
     @Spawns("wall")
     public Entity newWall(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(RoyalType.WALL)
+                .bbox(new HitBox(BoundingShape.box(data.<Integer>get(
+                        "width"), data.<Integer>get("height"))))
+                .with(new PhysicsComponent())
+                .with(new CollidableComponent(true))
+                .build();
+    }
+
+    @Spawns("projectile-penetrable-wall")
+    public Entity newProjectilePenetrableWall(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(RoyalType.PPWall)
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get(
                         "width"), data.<Integer>get("height"))))
                 .with(new PhysicsComponent())
@@ -89,7 +104,30 @@ public class StructureFactory implements EntityFactory {
         return FXGL.entityBuilder(data)
                 .type(RoyalType.TRAP_TRIGGER)
                 .viewWithBBox("lever-left.png")
-                .with(new TrapComponent())
+                .with(new TrapComponent(true))
+                .with(new CollidableComponent(true))
+                .build();
+    }
+
+    @Spawns("itemOnFloor")
+    public Entity newItemFromMap(SpawnData data) {
+        String itemName = data.<String>get("name");
+        String assetName = ((Map<String, String>) FXGL.geto("itemsNameAssetMap"))
+                .get(itemName);
+        return FXGL.entityBuilder(data)
+                .type(RoyalType.DROPPEDITEM)
+                .viewWithBBox(assetName)
+                .with(new ItemComponent(itemName))
+                .with(new CollidableComponent(true))
+                .build();
+    }
+
+    @Spawns("chest")
+    public Entity newChest(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(RoyalType.CHEST)
+                .viewWithBBox("chest_empty_open_anim_f0_32x32.png")
+                .with(new ChestComponent())
                 .with(new CollidableComponent(true))
                 .build();
     }

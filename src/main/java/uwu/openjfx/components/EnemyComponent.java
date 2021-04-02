@@ -2,6 +2,7 @@ package uwu.openjfx.components;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.components.IDComponent;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
@@ -12,6 +13,8 @@ import javafx.util.Duration;
 import uwu.openjfx.MainApp;
 import uwu.openjfx.MapGeneration.Room;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 
 import static com.almasb.fxgl.dsl.FXGL.spawn;
@@ -61,6 +64,7 @@ public class EnemyComponent extends HealthComponent {
     private double scaler = 1.0;
 
     private LocalTimer moveTimer;
+    private List<String> itemsDropList = new ArrayList<>();
 
     public EnemyComponent(int healthPoints, String assetName, int width, int height) {
         super(healthPoints);
@@ -297,6 +301,10 @@ public class EnemyComponent extends HealthComponent {
         );
     }
 
+    public void addDroppedItem(String itemName) {
+        itemsDropList.add(itemName);
+    }
+
     @Override
     public void die() {
         if (MainApp.isIsTesting()) {
@@ -305,8 +313,17 @@ public class EnemyComponent extends HealthComponent {
         }
 
         if (FXGL.random() < 0.5) {
-            FXGL.spawn("coin", enemyX, enemyY);
+            FXGL.spawn("coin", getEntity().getX() + width / 2, getEntity().getY() + height / 2);
         }
+
+        if (itemsDropList.size() > 0) {
+            for (String itemName : itemsDropList) {
+                spawn("itemOnFloor",
+                        new SpawnData(getEntity().getX() + width / 2, getEntity().getY() + height / 2)
+                                        .put("name", itemName));
+            }
+        }
+
         getEntity().removeFromWorld();
         IDComponent idComponent = getEntity().getComponent(IDComponent.class);
         Room curRoom = FXGL.geto("curRoom");

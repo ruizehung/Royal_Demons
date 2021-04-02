@@ -16,13 +16,31 @@ public class PlayerTriggerCollisionHandler extends CollisionHandler {
 
     @Override
     protected void onCollisionBegin(Entity player, Entity trapTrigger) {
-        int trapGroupId = trapTrigger.getProperties().getInt("groupId");
-        List<Entity> traps = FXGL.getGameWorld().getEntitiesByType(RoyalType.TRAP);
-        for (Entity trap : traps) {
-            if (trap.getProperties().getInt("groupId") == trapGroupId) {
-                trap.getComponent(TrapComponent.class).trigger();
+        // for trap that you only need to collide with it
+        if (!trapTrigger.getComponent(TrapComponent.class).needToPressUse()) {
+            int trapGroupId = trapTrigger.getProperties().getInt("groupId");
+            List<Entity> traps = FXGL.getGameWorld().getEntitiesByType(RoyalType.TRAP);
+            for (Entity trap : traps) {
+                if (trap.getProperties().getInt("groupId") == trapGroupId) {
+                    trap.getComponent(TrapComponent.class).trigger();
+                }
             }
+            trapTrigger.getComponent(TrapComponent.class).trigger();
         }
-        trapTrigger.getComponent(TrapComponent.class).trigger();
+    }
+
+    @Override
+    protected void onCollision(Entity player, Entity trapTrigger) {
+        if (trapTrigger.getComponent(TrapComponent.class).needToPressUse()
+                && FXGL.getb("Fpressed")) {
+            int trapGroupId = trapTrigger.getProperties().getInt("groupId");
+            List<Entity> traps = FXGL.getGameWorld().getEntitiesByType(RoyalType.TRAP);
+            for (Entity trap : traps) {
+                if (trap.getProperties().getInt("groupId") == trapGroupId) {
+                    trap.getComponent(TrapComponent.class).trigger();
+                }
+            }
+            trapTrigger.getComponent(TrapComponent.class).trigger();
+        }
     }
 }

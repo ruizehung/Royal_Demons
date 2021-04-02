@@ -8,6 +8,7 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 import javafx.geometry.Point2D;
 import javafx.util.Pair;
 import uwu.openjfx.RoyalType;
+import uwu.openjfx.components.ChestComponent;
 import uwu.openjfx.components.TrapComponent;
 
 import java.util.*;
@@ -211,6 +212,31 @@ public class GameMap {
                     }
                 }
             }
+
+            if (entity.isType(RoyalType.DROPPEDITEM)) {
+                IDComponent idComponent = entity.getComponent(IDComponent.class);
+                if (!newRoom.visited()) {
+                    newRoom.setDroppedItemData(idComponent.getId(), "picked", 0);
+                } else {
+                    if (newRoom.getDroppedItemData(idComponent.getId(), "picked") == 1) {
+                        entity.removeFromWorld();
+                    }
+                }
+            }
+
+            if (entity.isType(RoyalType.CHEST)) {
+                IDComponent idComponent = entity.getComponent(IDComponent.class);
+                if (!newRoom.visited()) {
+                    newRoom.setChestData(idComponent.getId(), "opened", 0);
+                } else {
+                    if (newRoom.getChestsData(idComponent.getId(), "opened") == 1) {
+                        ChestComponent chestComponent = entity.getComponent(ChestComponent.class);
+                        chestComponent.setHasBeenOpened(true);
+                        chestComponent.changeToOpenedView();
+                    }
+                }
+            }
+
             Entity player = geto("player");
             if (player != null && entity.isType(RoyalType.POINT) && entity.getProperties()
                     .getString("position").equals(playerSpawnPosition)) {

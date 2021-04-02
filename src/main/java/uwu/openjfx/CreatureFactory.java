@@ -91,6 +91,8 @@ public class CreatureFactory implements EntityFactory {
                 "creatures/miniBoss/" + miniBossFileName,
                 widthHeight.get(0), widthHeight.get(1));
 
+        enemyComponent.addDroppedItem("Heart");
+
         // TODO_: better to manually define bbox tailor to each minion
         List<Point2D> point2DList = Arrays.asList(
                 new Point2D(3, 5),

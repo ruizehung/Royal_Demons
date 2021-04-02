@@ -1,5 +1,6 @@
 package uwu.openjfx.collision;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.PhysicsComponent;
@@ -51,9 +52,11 @@ public class PlayerEnemyCollisionHandler extends CollisionHandler {
 
     public void onCollision(Entity player, Entity enemy) {
         playerComponent = player.getComponent(PlayerComponent.class);
-        HealthComponent playerHealth = playerComponent;
-        if (!playerHealth.getIsInvulnerable()) {
-            playerHealth.deductHealth();
+        if (!FXGL.getb("developerCheat")) {
+            HealthComponent playerHealth = playerComponent;
+            if (!playerHealth.getIsInvulnerable()) {
+                playerHealth.deductHealth();
+            }
         }
 
         if (!MainApp.isIsTesting()) {
