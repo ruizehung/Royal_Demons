@@ -1,13 +1,11 @@
 package uwu.openjfx.weapons;
 
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.SpawnData;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
-
-import java.io.FileNotFoundException;
 
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 
@@ -20,7 +18,7 @@ import static com.almasb.fxgl.dsl.FXGL.spawn;
 public class GoldenSword0 implements Weapon {
     private Entity meleeHitBox; // slash hitbox to be spawned (ultimate / nonultimate)
     private boolean ultimateActivated;
-    private Image sprite = new Image("assets/textures/weapons/arrow_temp.png"); // weapon sprite
+    private Image sprite = new Image("assets/textures/ui/weapons/sword0_ui.png"); // weapon sprite
 
     @Override
     public void prepAttack(Entity player) {

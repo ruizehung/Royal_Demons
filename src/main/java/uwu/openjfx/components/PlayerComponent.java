@@ -32,7 +32,7 @@ public class PlayerComponent extends HealthComponent {
     private AnimationChannel animWalk;
     private AnimationChannel animAutoAttack;
 
-    private Weapon currentWeapon; // Player's current weapon
+    private static Weapon currentWeapon; // Player's current weapon
 
     private double currMouseX; // mouse input for x
     private double currMouseY; // mouse input for y
@@ -61,18 +61,20 @@ public class PlayerComponent extends HealthComponent {
         super(healthPoints);
 
         if (currentWeapon == null) {
+            Weapon weapon = new GoldenSword0();
             switch (playerWeapon) {
             case "Sword":
-                currentWeapon = new GoldenSword0();
+                weapon = new GoldenSword0();
                 break;
             case "Bow":
-                currentWeapon = new Bow0();
+                weapon = new Bow0();
                 break;
             case "Wand":
-                currentWeapon = new MagicStaff0();
+                weapon = new MagicStaff0();
                 break;
             default:
             }
+            setCurrentWeapon(weapon);
         }
 
         if (!MainApp.isIsTesting()) {
@@ -245,12 +247,13 @@ public class PlayerComponent extends HealthComponent {
         return prepAttack;
     }
 
-    private Weapon getCurrentWeapon() {
+    public static Weapon getCurrentWeapon() {
         return currentWeapon;
     }
 
-    private void setCurrentWeapon(Weapon weapon) {
+    public static void setCurrentWeapon(Weapon weapon) {
         currentWeapon = weapon;
+        UI.setWeaponProperty(currentWeapon.getWeaponSprite());
     }
 
     public void setPressingMovementKeys(boolean moving) {

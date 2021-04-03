@@ -4,11 +4,13 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.texture.Texture;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import uwu.openjfx.components.PlayerComponent;
-
 
 public class UI {
     private static Entity player;
@@ -16,6 +18,7 @@ public class UI {
     private static IntegerProperty goldProperty = new SimpleIntegerProperty();
     private static IntegerProperty healthPotProperty = new SimpleIntegerProperty();
     private static IntegerProperty ragePotProperty = new SimpleIntegerProperty();
+    private static ObjectProperty<Image> weaponProperty = new SimpleObjectProperty<>();
 
     public static void init(Entity player) {
         UI.player = player;
@@ -46,13 +49,23 @@ public class UI {
         textGold.setTranslateY(50);
         textGold.setStroke(Color.WHITE);
 
-        textGold.textProperty().bind(
-                UI.getGoldProperty().asString());
+        textGold.textProperty().bind(goldProperty.asString());
 
         // weapon
         Texture weaponBox = FXGL.getAssetLoader().loadTexture("ui/weapon_box_ui.png");
         weaponBox.setTranslateX(25);
         weaponBox.setTranslateY(FXGL.getAppHeight() - weaponBox.getHeight() - 25);
+
+        Texture weapon = new Texture(PlayerComponent.getCurrentWeapon().getWeaponSprite());
+        weapon.setRotate(45.0);
+        weapon.setScaleX(2);
+        weapon.setScaleY(2);
+        weapon.setTranslateX(
+                weaponBox.getTranslateX() + (weaponBox.getWidth() / 2) - weapon.getWidth() / 2);
+        weapon.setTranslateY(
+                weaponBox.getTranslateY() + (weaponBox.getWidth() / 2) - weapon.getHeight() / 2);
+
+        weapon.imageProperty().bind(weaponProperty);
 
 
         // Health pots
@@ -65,11 +78,13 @@ public class UI {
         healthPot.setTranslateY(healthPotBox.getTranslateY() + healthPotBox.getHeight() / 4.0);
 
         Text textHealthPot = FXGL.getUIFactoryService().newText("", 25);
-        textHealthPot.setTranslateX(healthPotBox.getTranslateX() + healthPotBox.getWidth() * 3 / 5.0);
-        textHealthPot.setTranslateY(healthPotBox.getTranslateY() + healthPotBox.getHeight() * 3 / 4.0);
+        textHealthPot.setTranslateX(
+                healthPotBox.getTranslateX() + healthPotBox.getWidth() * 3 / 5.0);
+        textHealthPot.setTranslateY(
+                healthPotBox.getTranslateY() + healthPotBox.getHeight() * 3 / 4.0);
         textHealthPot.setStroke(Color.RED);
 
-        textHealthPot.textProperty().bind(UI.getHealthPotProperty().asString());
+        textHealthPot.textProperty().bind(healthPotProperty.asString());
 
         // Rage pots
         Texture ragePotBox = FXGL.getAssetLoader().loadTexture("ui/pot_box_ui.png");
@@ -93,6 +108,7 @@ public class UI {
                 textGoldPrefix,
                 textGold,
                 weaponBox,
+                weapon,
                 healthPotBox,
                 healthPot,
                 textHealthPot,
@@ -124,6 +140,14 @@ public class UI {
 
     public static void setRagePotProperty(int ragePotProperty) {
         UI.ragePotProperty.set(ragePotProperty);
+    }
+
+    public static void setWeaponProperty(Image weaponProperty) {
+        UI.weaponProperty.set(weaponProperty);
+    }
+
+    public static ObjectProperty<Image> getWeaponProperty() {
+        return weaponProperty;
     }
 
     public static void addHealthPot() {

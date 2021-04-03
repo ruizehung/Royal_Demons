@@ -29,6 +29,7 @@ public class PlayerDroppedItemCollisionHandler extends CollisionHandler {
                 UI.addRagePot();
             } else {
                 List<String> weaponsList = FXGL.geto("weaponsList");
+                // todo: weapon interaction
             }
 
             // For items that is spawned by map (not from chest or monster), we don't

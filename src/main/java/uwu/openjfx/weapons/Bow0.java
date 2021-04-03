@@ -25,7 +25,7 @@ public class Bow0 implements Weapon, AngleBehavior {
     private Vec2 dir; // the direction with respect to mouse-pressed location
 
     private boolean ultimateActivated;
-    private Image sprite = new Image("assets/textures/weapons/arrow_temp.png"); // weapon sprite
+    private Image sprite = new Image("assets/textures/ui/weapons/bow0_ui.png"); // weapon sprite
 
     @Override
     public void prepAttack(Entity player) {

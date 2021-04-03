@@ -23,7 +23,7 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
     private final double playerHitBoxHeight = 40; // height of player's hitbox from 15 to 55
     private Vec2 dir; // the direction with respect to mouse-pressed location
     private boolean ultimateActivated;
-    private Image sprite = new Image("assets/textures/weapons/arrow_temp.png"); // weapon sprite
+    private Image sprite = new Image("assets/textures/ui/weapons/staff0_ui.png"); // weapon sprite
 
     @Override
     public void prepAttack(Entity player) {

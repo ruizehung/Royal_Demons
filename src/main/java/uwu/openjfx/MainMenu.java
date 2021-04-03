@@ -520,6 +520,7 @@ public class MainMenu extends FXGLMenu {
             e -> {
                 PlayerComponent.setPlayerWeapon(itemSword.getText());
                 itemSword.updateText(itemSword.getText());
+
             });
 
         MenuButton itemWand = new MenuButton("Wand");
