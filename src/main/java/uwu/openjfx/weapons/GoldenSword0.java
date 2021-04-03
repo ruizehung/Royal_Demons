@@ -20,17 +20,12 @@ import static com.almasb.fxgl.dsl.FXGL.spawn;
 public class GoldenSword0 implements Weapon {
     private Entity meleeHitBox; // slash hitbox to be spawned (ultimate / nonultimate)
     private boolean ultimateActivated;
-    private Image sprite;
+    private Image sprite = new Image("assets/textures/weapons/arrow_temp.png"); // weapon sprite
 
     @Override
     public void prepAttack(Entity player) {
         int width = !ultimateActivated ? 140 : 175; // width of the frame
         int height = !ultimateActivated ? 140 : 175; // height of the frame
-        try {
-            sprite = new Image("assets/textures/weapons/arrow_temp.png");
-        } catch (Exception fnf) {
-            fnf.printStackTrace();
-        }
         Entity gs = spawn("weapon",
                 new SpawnData(
                         player.getX(), player.getY()).
@@ -39,8 +34,7 @@ public class GoldenSword0 implements Weapon {
                         put("duration", getDuration(ultimateActivated)).
                         put("frameWidth", width).
                         put("frameHeight", height).
-                        put("fpr", !ultimateActivated ? 6 : 5).
-                        put("weaponSprite", sprite));
+                        put("fpr", !ultimateActivated ? 6 : 5));
         // Spawn the sword at player's "hands"
         gs.getTransformComponent().setAnchoredPosition(
                 new Point2D(player.getX() - ((double) width / 2) + player.getWidth() / 2,
@@ -85,5 +79,10 @@ public class GoldenSword0 implements Weapon {
         int ultimateChargeDuration = 1000; // charge-up time of attacking in milliseconds
         this.ultimateActivated = ultimateActivated;
         return ultimateActivated ? ultimateChargeDuration : attackDuration;
+    }
+
+    @Override
+    public Image getWeaponSprite() {
+        return sprite;
     }
 }

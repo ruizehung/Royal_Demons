@@ -1,6 +1,7 @@
 package uwu.openjfx.weapons;
 
 import com.almasb.fxgl.entity.Entity;
+import javafx.scene.image.Image;
 
 /*
     This interface creates a contract with another class whose responsibility is to do
@@ -13,4 +14,5 @@ public interface Weapon {
     void prepAttack(Entity player);
     void attack(Entity player, double mouseCurrX, double mouseCurrY);
     int getDuration(boolean ultimateActivated);
+    Image getWeaponSprite();
 }

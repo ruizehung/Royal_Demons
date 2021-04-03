@@ -34,7 +34,7 @@ public class MainApp extends GameApplication {
     private List<String> roomTypeList;
     private List<String> weaponsList;
     private Map<String, String> itemNameAssetMap;
-    private final Boolean developerCheat = true;
+    private final Boolean developerCheat = false;
     private static boolean isTesting = false;
 
     // Top priority : (

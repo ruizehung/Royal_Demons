@@ -33,10 +33,8 @@ public class WeaponFactory implements EntityFactory {
         int frameWidth = data.get("frameWidth");
         int frameHeight = data.get("frameHeight");
         int fpr = data.get("fpr");
-        Image weaponSprite = data.get("weaponSprite");
         return FXGL.entityBuilder(data)
-                .with(new WeaponAnimationComponent(weapon, duration,
-                    frameWidth, frameHeight, fpr, weaponSprite))
+                .with(new WeaponAnimationComponent(weapon, duration, frameWidth, frameHeight, fpr))
                 .type(RoyalType.TRAP_TRIGGER)
                 .build();
     }

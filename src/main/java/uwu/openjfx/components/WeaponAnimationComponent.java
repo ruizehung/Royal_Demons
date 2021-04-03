@@ -5,7 +5,6 @@ import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.geometry.Point2D;
-import javafx.scene.image.Image;
 import javafx.util.Duration;
 
 /*
@@ -20,21 +19,17 @@ public class WeaponAnimationComponent extends Component {
     private AnimatedTexture texture;
     private AnimationChannel animIdle;
     private double duration;
-    private Image weaponSprite;
 
     public WeaponAnimationComponent() {
         // Making sure there is a default constructor
     }
 
     public WeaponAnimationComponent(String weapon, int duration,
-                                    int frameWidth, int frameHeight, int fpr, Image sprite) {
+                                    int frameWidth, int frameHeight, int fpr) {
         // parameter weapon: tells us the specific weapon sprite we have in our files and
         // therefore which animation
         // parameter duration: tells us how long the charge-up of the attack is
         // parameter fpr: frames per row
-        // parameter sprite: the weapon's image
-        weaponSprite = sprite;
-        System.out.println("This is where the image was found: " + weaponSprite.getUrl());
         AnimationChannel animAttack = new AnimationChannel(
                 FXGL.image("./weapons/" + weapon + ".png"), fpr,
                 frameWidth, frameHeight, Duration.millis(duration), 0, fpr - 1);
@@ -58,9 +53,5 @@ public class WeaponAnimationComponent extends Component {
                 }
             }, Duration.millis(duration - 50));
         }
-    }
-
-    public Image getWeaponSprite() {
-        return weaponSprite;
     }
 }
