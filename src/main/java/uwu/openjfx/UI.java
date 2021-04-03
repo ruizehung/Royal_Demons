@@ -158,8 +158,12 @@ public class UI {
 
     public static void useHealthPot() {
         if (healthPotProperty.get() > 0) {
-            healthPotProperty.set(healthPotProperty.get() - 1);
-            player.getComponent(PlayerComponent.class).addHealth(3);
+            if (player.getComponent(PlayerComponent.class)
+                    .getHealthPoints() < player.getComponent(PlayerComponent.class)
+                    .getMaxHealthPoints()) {
+                healthPotProperty.set(healthPotProperty.get() - 1);
+                player.getComponent(PlayerComponent.class).addHealth(3);
+            }
         }
     }
 

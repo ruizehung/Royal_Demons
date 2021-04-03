@@ -62,6 +62,14 @@ public abstract class HealthComponent extends Component {
         this.healthPoints = healthPoints;
     }
 
+    public int getMaxHealthPoints() {
+        return maxHealthPoints;
+    }
+
+    public void setMaxHealthPoints(int maxHealthPoints) {
+        this.maxHealthPoints = maxHealthPoints;
+    }
+
     public boolean getIsInvulnerable() {
         return isInvulnerable;
     }
