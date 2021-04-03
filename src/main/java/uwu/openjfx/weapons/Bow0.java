@@ -25,18 +25,13 @@ public class Bow0 implements Weapon, AngleBehavior {
     private Vec2 dir; // the direction with respect to mouse-pressed location
 
     private boolean ultimateActivated;
-    private Image sprite; // sprite of current weapon
+    private Image sprite = new Image("assets/textures/weapons/arrow_temp.png"); // weapon sprite
 
     @Override
     public void prepAttack(Entity player) {
         int width = 16; // width of bow
         int height = 32; // height of bow
         double bowOffset = 10; // spawn bow offset with respect to player location
-        try { // get sprite of current weapon
-            sprite = new Image("assets/textures/weapons/arrow_temp.png");
-        } catch (Exception fnf) {
-            fnf.printStackTrace();
-        }
 
         Entity b = spawn("weapon",
                 new SpawnData(
@@ -152,5 +147,10 @@ public class Bow0 implements Weapon, AngleBehavior {
         int ultimateChargeDuration = 1000; // charge-up time of attacking in milliseconds
         this.ultimateActivated = ultimateActivated;
         return ultimateActivated ? ultimateChargeDuration : attackDuration;
+    }
+
+    @Override
+    public Image getWeaponSprite() {
+        return sprite;
     }
 }

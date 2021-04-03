@@ -4,6 +4,7 @@ import com.almasb.fxgl.core.math.Vec2;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
 
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 
@@ -22,6 +23,7 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
     private final double playerHitBoxHeight = 40; // height of player's hitbox from 15 to 55
     private Vec2 dir; // the direction with respect to mouse-pressed location
     private boolean ultimateActivated;
+    private Image sprite = new Image("assets/textures/weapons/arrow_temp.png"); // weapon sprite
 
     @Override
     public void prepAttack(Entity player) {
@@ -117,5 +119,10 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
         int ultimateChargeDuration = 1500; // charge-up time of attacking in milliseconds
         this.ultimateActivated = ultimateActivated;
         return ultimateActivated ? ultimateChargeDuration : attackDuration;
+    }
+
+    @Override
+    public Image getWeaponSprite() {
+        return sprite;
     }
 }
