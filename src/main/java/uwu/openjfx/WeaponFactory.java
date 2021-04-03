@@ -40,19 +40,6 @@ public class WeaponFactory implements EntityFactory {
                 .type(RoyalType.TRAP_TRIGGER)
                 .build();
     }
-
-//    @Spawns("rangedBow")
-//    public Entity newRangedBow(SpawnData data) {
-//        String weapon = data.get("weapon");
-//        int duration = data.get("duration");
-//        int frameWidth = data.get("frameWidth");
-//        int frameHeight = data.get("frameHeight");
-//        int fpr = data.get("fpr");
-//        return FXGL.entityBuilder(data)
-//                .with(new WeaponAnimationComponent(weapon, duration, frameWidth, frameHeight, fpr))
-//                .type(RoyalType.TRAP_TRIGGER)
-//                .build();
-//    }
     //endregion
 
     // region Hitboxes
