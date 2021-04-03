@@ -5,12 +5,11 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
 import uwu.openjfx.DieScreenMenu;
 import uwu.openjfx.MainApp;
+import uwu.openjfx.UI;
 import uwu.openjfx.weapons.Bow0;
 import uwu.openjfx.weapons.GoldenSword0;
 import uwu.openjfx.weapons.MagicStaff0;
@@ -48,37 +47,15 @@ public class PlayerComponent extends HealthComponent {
     private boolean ultimateCD = false; // how long until Player can activate Ultimate again
     private boolean deadTest = false; // test if Player is dead
 
-    // Todo: remove temp vars and put in char state class
+    // Todo: char state class?
     private static String playerName;
     private static String playerWeapon;
     private static String gameDifficulty;
+
+    // Todo: inventory-esque things, move?
     private static int gold;
-
-    private static IntegerProperty goldProperty;
-
-    public static String getPlayerName() {
-        return playerName;
-    }
-
-    public static void setPlayerName(String playerName) {
-        PlayerComponent.playerName = playerName;
-    }
-
-    public static String getPlayerWeapon() {
-        return playerWeapon;
-    }
-
-    public static void setPlayerWeapon(String playerWeapon) {
-        PlayerComponent.playerWeapon = playerWeapon;
-    }
-
-    public static String getGameDifficulty() {
-        return gameDifficulty;
-    }
-
-    public static void setGameDifficulty(String gameDifficulty) {
-        PlayerComponent.gameDifficulty = gameDifficulty;
-    }
+    private static int healthPotAmount;
+    private static int ragePotAmount;
 
     public PlayerComponent(int healthPoints) {
         super(healthPoints);
@@ -109,10 +86,6 @@ public class PlayerComponent extends HealthComponent {
 
             texture = new AnimatedTexture(animIdle);
             texture.loop();
-        }
-
-        if (goldProperty == null) {
-            goldProperty = new SimpleIntegerProperty(gold);
         }
 
     }
@@ -293,20 +266,42 @@ public class PlayerComponent extends HealthComponent {
 
     public void addGold(int gold) {
         PlayerComponent.gold += gold;
-        goldProperty.set(PlayerComponent.gold);
+        UI.getGoldProperty().set(PlayerComponent.gold);
     }
 
     public static void setGold(int gold) {
         PlayerComponent.gold = gold;
+        UI.getGoldProperty().set(PlayerComponent.gold);
     }
 
     public static int getGold() {
         return gold;
     }
 
-    public IntegerProperty getGoldProperty() {
-        return goldProperty;
+    public static String getPlayerName() {
+        return playerName;
     }
+
+    public static void setPlayerName(String playerName) {
+        PlayerComponent.playerName = playerName;
+    }
+
+    public static String getPlayerWeapon() {
+        return playerWeapon;
+    }
+
+    public static void setPlayerWeapon(String playerWeapon) {
+        PlayerComponent.playerWeapon = playerWeapon;
+    }
+
+    public static String getGameDifficulty() {
+        return gameDifficulty;
+    }
+
+    public static void setGameDifficulty(String gameDifficulty) {
+        PlayerComponent.gameDifficulty = gameDifficulty;
+    }
+
 
     @Override
     public void die() {

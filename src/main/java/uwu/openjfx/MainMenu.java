@@ -10,6 +10,7 @@ import com.almasb.fxgl.particle.ParticleEmitter;
 import com.almasb.fxgl.particle.ParticleEmitters;
 import com.almasb.fxgl.particle.ParticleSystem;
 import com.almasb.fxgl.texture.Texture;
+import com.almasb.fxgl.ui.FXGLScrollPane;
 import javafx.animation.FadeTransition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
@@ -274,6 +275,10 @@ public class MainMenu extends FXGLMenu {
         itemOptions.setChild(createOptionsMenu());
         box.add(itemOptions);
 
+        MenuButton itemExtra = new MenuButton("Extra");
+        itemExtra.setChild(createExtraMenu());
+        box.add(itemExtra);
+
         MenuButton itemExit = new MenuButton("Exit");
         itemExit.setOnAction(event -> fireExit());
         box.add(itemExit);
@@ -353,6 +358,83 @@ public class MainMenu extends FXGLMenu {
         return new MenuBox(itemAudio, btnRestore);
     }
 
+    private MenuBox createExtraMenu() {
+        MenuButton itemWho = new MenuButton("Who Are We?");
+        itemWho.setMenuContent(this::createContentWho, false);
+
+        MenuButton itemCredits = new MenuButton("Other Credits");
+        itemCredits.setMenuContent(this::createContentCredits, false);
+
+        return new MenuBox(itemWho, itemCredits);
+    }
+
+    private MenuContent createContentWho() {
+
+        FXGLScrollPane pane = new FXGLScrollPane();
+        pane.setPrefWidth(500.0);
+        pane.setPrefHeight(getAppHeight() / 2.0);
+        pane.setStyle("-fx-background:black;");
+
+        VBox vbox = new VBox();
+        vbox.setAlignment(Pos.CENTER_LEFT);
+        vbox.setPrefWidth(pane.getPrefWidth() - 15);
+
+        ArrayList<String> credits = new ArrayList<>(Arrays.asList(
+                "Alice Wang",
+                "",
+                "Devan Moses",
+                "",
+                "James Johnson",
+                "",
+                "Jason Ng",
+                "",
+                "Ray Hung"
+        ));
+
+        for (String credit : credits) {
+            vbox.getChildren().add(FXGL.getUIFactoryService().newText(credit));
+        }
+
+        pane.setContent(vbox);
+
+        return new MenuContent(pane);
+    }
+
+    private MenuContent createContentCredits() {
+
+        FXGLScrollPane pane = new FXGLScrollPane();
+        pane.setPrefWidth(500.0);
+        pane.setPrefHeight(getAppHeight() / 2.0);
+        pane.setStyle("-fx-background:black;");
+
+        VBox vbox = new VBox();
+        vbox.setAlignment(Pos.CENTER_LEFT);
+        vbox.setPrefWidth(pane.getPrefWidth() - 15);
+
+        ArrayList<String> credits = new ArrayList<>(Arrays.asList(
+                "Asset by 0x72, aekae13 from itch.io",
+                "",
+                "0x72.itch.io/dungeontileset-ii",
+                "",
+                "aekae13.itch.io/16x16-dungeon-walls-reconfig",
+                "",
+                "",
+                "Powered by FXGL " + FXGL.getVersion(),
+                "",
+                "Author: Almas Baimagambetov",
+                "",
+                "https://github.com/AlmasB/FXGL"
+        ));
+
+        for (String credit : credits) {
+            vbox.getChildren().add(FXGL.getUIFactoryService().newText(credit));
+        }
+
+        pane.setContent(vbox);
+
+        return new MenuContent(pane);
+    }
+
     private MenuBox createNewGameMenu() {
         MenuButton itemName = new MenuButton("Name");
         itemName.setMenuContent(this::createContentName, false);
@@ -387,7 +469,7 @@ public class MainMenu extends FXGLMenu {
     protected MenuContent createContentName() {
         MenuButton itemName = new MenuButton("Click me!");
         itemName.setOnAction(e -> FXGL.getDialogService().showInputBoxWithCancel(
-            "What is your name?",
+                "What is your name?",
             t -> {
                 return !(t == null || t.isEmpty()
                         || t.trim().isEmpty());

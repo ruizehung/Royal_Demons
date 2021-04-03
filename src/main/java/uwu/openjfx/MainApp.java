@@ -1,6 +1,5 @@
 package uwu.openjfx;
 
-import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.MenuItem;
@@ -12,7 +11,6 @@ import com.almasb.fxgl.input.virtual.VirtualButton;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import uwu.openjfx.MapGeneration.GameMap;
 import uwu.openjfx.collision.*;
 import uwu.openjfx.components.PlayerComponent;
@@ -34,7 +32,7 @@ public class MainApp extends GameApplication {
     private List<String> roomTypeList;
     private List<String> weaponsList;
     private Map<String, String> itemNameAssetMap;
-    private final Boolean developerCheat = true;
+    private final Boolean developerCheat = false;
     private static boolean isTesting = false;
 
     // Top priority : (
@@ -68,14 +66,8 @@ public class MainApp extends GameApplication {
         }
         settings.setGameMenuEnabled(true);
         settings.setEnabledMenuItems(EnumSet.of(MenuItem.EXTRA));
-        // TODO_: give credits to all sources that we use
-        settings.getCredits().addAll(Arrays.asList(
-                "Asset by 0x72, aekae13 from itch.io",
-                "0x72.itch.io/dungeontileset-ii",
-                "aekae13.itch.io/16x16-dungeon-walls-reconfig"
-        ));
-//         settings.setDeveloperMenuEnabled(true);
-//         settings.setApplicationMode(ApplicationMode.DEVELOPER);
+//        settings.setDeveloperMenuEnabled(true);
+//        settings.setApplicationMode(ApplicationMode.DEVELOPER);
     }
 
 
@@ -179,6 +171,8 @@ public class MainApp extends GameApplication {
 
         getInput().addAction(new PickItem("PickItem"), KeyCode.E);
         getInput().addAction(new UseItem("UseItem"), KeyCode.F);
+        getInput().addAction(new UseHealthPot("UseHealthPot"), KeyCode.DIGIT1);
+        getInput().addAction(new UseRagePot("UseRagePot"), KeyCode.DIGIT2);
 
         // endregion
 
@@ -244,35 +238,7 @@ public class MainApp extends GameApplication {
 
     @Override
     protected void initUI() {
-        Text textHealth = getUIFactoryService().newText("", 50);
-        textHealth.setTranslateX(100);
-        textHealth.setTranslateY(50);
-        textHealth.setStroke(Color.WHITE);
-
-        textHealth.textProperty().bind(
-                player.getComponent(PlayerComponent.class).getPlayerHealth().asString());
-        getGameScene().addUINode(textHealth); // add to the scene graph
-
-        Text textHealthPrefix = getUIFactoryService().newText("HP:", 50);
-        textHealthPrefix.setTranslateX(25);
-        textHealthPrefix.setTranslateY(50);
-        textHealthPrefix.setStroke(Color.RED);
-        getGameScene().addUINode(textHealthPrefix);
-
-        Text textGoldPrefix = getUIFactoryService().newText("GOLD:", 50);
-        textGoldPrefix.setTranslateX(getAppWidth() - 225);
-        textGoldPrefix.setTranslateY(50);
-        textGoldPrefix.setStroke(Color.GOLD);
-        getGameScene().addUINode(textGoldPrefix);
-
-        Text textGold = getUIFactoryService().newText("", 50);
-        textGold.setTranslateX(getAppWidth() - 100);
-        textGold.setTranslateY(50);
-        textGold.setStroke(Color.WHITE);
-
-        textGold.textProperty().bind(
-                player.getComponent(PlayerComponent.class).getGoldProperty().asString());
-        getGameScene().addUINode(textGold); // add to the scene graph
+        UI.init(player);
     }
 
     public void loadEnemiesAsset() {

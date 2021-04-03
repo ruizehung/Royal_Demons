@@ -10,11 +10,13 @@ import java.util.Timer;
  */
 public abstract class HealthComponent extends Component {
     private int healthPoints;
+    private int maxHealthPoints;
     private boolean isInvulnerable;
     private IntegerProperty playerHealth;
 
     public HealthComponent(int healthPoints) {
         this.healthPoints = healthPoints;
+        this.maxHealthPoints = healthPoints;
         this.playerHealth = new SimpleIntegerProperty(healthPoints);
     }
 
@@ -28,6 +30,14 @@ public abstract class HealthComponent extends Component {
             isInvulnerable = true;
             invulnerability();
         }
+    }
+
+    public void addHealth(int health) {
+        healthPoints += health;
+        if (healthPoints > maxHealthPoints) { // die
+            healthPoints = maxHealthPoints;
+        }
+        playerHealth.set(healthPoints);
     }
 
     private void invulnerability() {
