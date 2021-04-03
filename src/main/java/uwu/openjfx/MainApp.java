@@ -34,7 +34,7 @@ public class MainApp extends GameApplication {
     private List<String> roomTypeList;
     private List<String> weaponsList;
     private Map<String, String> itemNameAssetMap;
-    private final Boolean developerCheat = true;
+    private final Boolean developerCheat = false;
     private static boolean isTesting = false;
 
     // Top priority : (
@@ -84,6 +84,18 @@ public class MainApp extends GameApplication {
     protected void onPreInit() {
         getSettings().setGlobalMusicVolume(developerCheat ? 0 : 0.25);
         loopBGM("MainMenu.mp3");
+    }
+
+    @Override
+    protected void onUpdate(double tpf) {
+        if (PlayerComponent.getPlayerWeapon().equals("Sword")) {
+            List<Entity> hitboxes = FXGL.getGameWorld().getEntitiesByType(RoyalType.PLAYERATTACK);
+            for (Entity hitbox: hitboxes) {
+                if (hitbox != null && hitbox.isActive()) {
+                    hitbox.removeFromWorld();
+                }
+            }
+        }
     }
 
     @Override

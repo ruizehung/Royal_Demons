@@ -13,6 +13,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import uwu.openjfx.components.AttackMultipleComponent;
+import uwu.openjfx.components.AutoRemoveComponent;
 import uwu.openjfx.components.ProjectileAnimationComponent;
 import uwu.openjfx.components.WeaponAnimationComponent;
 
@@ -34,7 +35,6 @@ public class WeaponFactory implements EntityFactory {
         int fpr = data.get("fpr");
         return FXGL.entityBuilder(data)
                 .with(new WeaponAnimationComponent(weapon, duration, frameWidth, frameHeight, fpr))
-                .type(RoyalType.TRAP_TRIGGER)
                 .build();
     }
 
@@ -47,7 +47,6 @@ public class WeaponFactory implements EntityFactory {
         int fpr = data.get("fpr");
         return FXGL.entityBuilder(data)
                 .with(new WeaponAnimationComponent(weapon, duration, frameWidth, frameHeight, fpr))
-                .type(RoyalType.TRAP_TRIGGER)
                 .build();
     }
     //endregion
