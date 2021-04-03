@@ -4,6 +4,7 @@ import com.almasb.fxgl.core.math.Vec2;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
 
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 
@@ -24,21 +25,28 @@ public class Bow0 implements Weapon, AngleBehavior {
     private Vec2 dir; // the direction with respect to mouse-pressed location
 
     private boolean ultimateActivated;
+    private Image sprite; // sprite of current weapon
 
     @Override
     public void prepAttack(Entity player) {
         int width = 16; // width of bow
         int height = 32; // height of bow
         double bowOffset = 10; // spawn bow offset with respect to player location
+        try { // get sprite of current weapon
+            sprite = new Image("assets/textures/weapons/arrow_temp.png");
+        } catch (Exception fnf) {
+            fnf.printStackTrace();
+        }
 
-        Entity b = spawn("rangedBow",
+        Entity b = spawn("weapon",
                 new SpawnData(
                         player.getX(), player.getY()).
-                        put("weapon", !ultimateActivated ? "bow0_reg_16x32" : "bow0_reg_16x32").
+                        put("weaponFile", !ultimateActivated ? "bow0_reg_16x32" : "bow0_reg_16x32").
                         put("duration", getDuration(ultimateActivated)).
                         put("frameWidth", width).
                         put("frameHeight", height).
-                        put("fpr", !ultimateActivated ? 1 : 1));
+                        put("fpr", !ultimateActivated ? 1 : 1).
+                        put("weaponSprite", sprite));
         // Spawn bow at player's "hands"
         b.getTransformComponent().setAnchoredPosition(
                 new Point2D(player.getX()
