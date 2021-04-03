@@ -10,6 +10,7 @@ import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import uwu.openjfx.components.AttackMultipleComponent;
@@ -25,28 +26,17 @@ import uwu.openjfx.components.WeaponAnimationComponent;
 public class WeaponFactory implements EntityFactory {
 
     // region Animations
-    @Spawns("meleeSword")
-    public Entity newMeleeSword(SpawnData data) {
-        String weapon = data.get("weapon");
+    @Spawns("weapon")
+    public Entity newWeapon(SpawnData data) {
+        String weapon = data.get("weaponFile");
         int duration = data.get("duration");
         int frameWidth = data.get("frameWidth");
         int frameHeight = data.get("frameHeight");
         int fpr = data.get("fpr");
+        Image weaponSprite = data.get("weaponSprite");
         return FXGL.entityBuilder(data)
-                .with(new WeaponAnimationComponent(weapon, duration, frameWidth, frameHeight, fpr))
-                .type(RoyalType.TRAP_TRIGGER)
-                .build();
-    }
-
-    @Spawns("rangedBow")
-    public Entity newRangedBow(SpawnData data) {
-        String weapon = data.get("weapon");
-        int duration = data.get("duration");
-        int frameWidth = data.get("frameWidth");
-        int frameHeight = data.get("frameHeight");
-        int fpr = data.get("fpr");
-        return FXGL.entityBuilder(data)
-                .with(new WeaponAnimationComponent(weapon, duration, frameWidth, frameHeight, fpr))
+                .with(new WeaponAnimationComponent(weapon, duration,
+                    frameWidth, frameHeight, fpr, weaponSprite))
                 .type(RoyalType.TRAP_TRIGGER)
                 .build();
     }
