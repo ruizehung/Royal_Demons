@@ -66,24 +66,28 @@ public class EnemyComponent extends HealthComponent {
     private LocalTimer moveTimer;
     private List<String> itemsDropList = new ArrayList<>();
 
-    public EnemyComponent(int healthPoints, String assetName, int width, int height) {
+    public EnemyComponent(int healthPoints, String assetName, int width, int height, int frames) {
         super(healthPoints);
         this.type = assetName;
         this.width = width;
         this.height = height;
 
         if (!MainApp.isIsTesting()) {
-            animIdle = new AnimationChannel(FXGL.image(assetName), 8,
-                    width, height, Duration.seconds(0.5), 0, 3);
-            animWalk = new AnimationChannel(FXGL.image(assetName), 8,
-                    width, height, Duration.seconds(0.5), 4, 7);
-            animMeleeAttack = new AnimationChannel(FXGL.image(assetName), 8,
-                    width, height, Duration.seconds(attackDuration / 1000), 4, 4);
+            animIdle = new AnimationChannel(FXGL.image(assetName), frames,
+                    width, height, Duration.seconds(0.5), 0, frames / 2 - 1);
+            animWalk = new AnimationChannel(FXGL.image(assetName), frames,
+                    width, height, Duration.seconds(0.5), frames / 2, frames - 1);
+            animMeleeAttack = new AnimationChannel(FXGL.image(assetName), frames,
+                    width, height, Duration.seconds(attackDuration / 1000), frames / 2, frames / 2);
 
             texture = new AnimatedTexture(animIdle);
 
             texture.loop();
         }
+    }
+
+    public EnemyComponent(int healthPoints, String assetName, int width, int height) {
+        this(healthPoints, assetName, width, height, 8);
     }
 
     @Override

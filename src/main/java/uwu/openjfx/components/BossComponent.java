@@ -7,8 +7,8 @@ import uwu.openjfx.MainApp;
 
 public class BossComponent extends EnemyComponent {
 
-    public BossComponent(int healthPoints, String type, int width, int height) {
-        super(healthPoints, type, width, height);
+    public BossComponent(int healthPoints, String type, int width, int height, int frames) {
+        super(healthPoints, type, width, height, frames);
     }
 
     @Override

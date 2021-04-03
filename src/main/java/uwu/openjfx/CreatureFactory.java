@@ -149,12 +149,12 @@ public class CreatureFactory implements EntityFactory {
         physics.setBodyType(BodyType.DYNAMIC);
         physics.setFixtureDef(new FixtureDef().friction(1.0f));
 
-        String bossFileName = "big_demon_96x108.png";
+        String bossFileName = "Golem_168x105.png";
         List<Integer> widthHeight = parseSizes(bossFileName);
 
         BossComponent bossComponent = new BossComponent(
                 1, "creatures/boss/" + bossFileName,
-                widthHeight.get(0), widthHeight.get(1));
+                widthHeight.get(0), widthHeight.get(1), 12);
 
         // TODO_: better to manually define bbox tailor to each minion
         List<Point2D> point2DList = Arrays.asList(
