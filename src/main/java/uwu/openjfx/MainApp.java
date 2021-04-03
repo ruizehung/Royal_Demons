@@ -1,5 +1,6 @@
 package uwu.openjfx;
 
+import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.MenuItem;
@@ -27,9 +28,11 @@ public class MainApp extends GameApplication {
 
     private Entity player;
     private GameMap gameMap;
-    private List<String> minionList;
+    private List<String> normalMinionList;
+    private List<String> forestMinionList;
     private List<String> miniBossList;
     private List<String> roomTypeList;
+    private List<String> weaponsList;
     private Map<String, String> itemNameAssetMap;
     private final Boolean developerCheat = true;
     private static boolean isTesting = false;
@@ -60,7 +63,9 @@ public class MainApp extends GameApplication {
         settings.setAppIcon("skelet_idle_anim_f0_32x32.png");
         settings.setFontUI("ThaleahFat.ttf");
         settings.setMainMenuEnabled(true);
-        settings.setSceneFactory(new MainMenuSceneFactory());
+        if (!developerCheat) {
+            settings.setSceneFactory(new MainMenuSceneFactory());
+        }
         settings.setGameMenuEnabled(true);
         settings.setEnabledMenuItems(EnumSet.of(MenuItem.EXTRA));
         // TODO_: give credits to all sources that we use
@@ -69,8 +74,8 @@ public class MainApp extends GameApplication {
                 "0x72.itch.io/dungeontileset-ii",
                 "aekae13.itch.io/16x16-dungeon-walls-reconfig"
         ));
-        // settings.setDeveloperMenuEnabled(true);
-        // settings.setApplicationMode(ApplicationMode.DEVELOPER);
+//         settings.setDeveloperMenuEnabled(true);
+//         settings.setApplicationMode(ApplicationMode.DEVELOPER);
     }
 
 
@@ -182,6 +187,10 @@ public class MainApp extends GameApplication {
 
     @Override
     protected void initGame() {
+        if (developerCheat) {
+            PlayerComponent.setPlayerWeapon("Sword");
+            PlayerComponent.setGold(1000);
+        }
         // Initialize Epressed to false. During the time player press E, this will
         // become true
         set("Epressed", false);
@@ -190,7 +199,7 @@ public class MainApp extends GameApplication {
 
         loadRoomAsset();
         loadEnemiesAsset();
-        initItemsNameAssetMapping();
+        initItemsNameAssetMappingAndWeaponsList();
         gameMap = new GameMap(40);
         set("gameMap", gameMap);
 
@@ -267,14 +276,23 @@ public class MainApp extends GameApplication {
     }
 
     public void loadEnemiesAsset() {
-        minionList = new ArrayList<>();
-        File dir = new File("src/main/resources/assets/textures/creatures/minions");
+        normalMinionList = new ArrayList<>();
+        File dir = new File("src/main/resources/assets/textures/creatures/minions/normal");
         for (File file : dir.listFiles()) {
             if (file.getName().endsWith(".png")) {
-                minionList.add(file.getName());
+                normalMinionList.add(file.getName());
             }
         }
-        set("minionList", minionList);
+        set("normalMinionList", normalMinionList);
+
+        forestMinionList = new ArrayList<>();
+        dir = new File("src/main/resources/assets/textures/creatures/minions/forest");
+        for (File file : dir.listFiles()) {
+            if (file.getName().endsWith(".png")) {
+                forestMinionList.add(file.getName());
+            }
+        }
+        set("forestMinionList", forestMinionList);
 
         miniBossList = new ArrayList<>();
         dir = new File("src/main/resources/assets/textures/creatures/miniBoss");
@@ -287,11 +305,24 @@ public class MainApp extends GameApplication {
 
     }
 
-    public void initItemsNameAssetMapping() {
+    public void initItemsNameAssetMappingAndWeaponsList() {
         itemNameAssetMap = new HashMap<>();
-        itemNameAssetMap.put("HealthPotion", "items/flask_big_red_32x32.png");
-        itemNameAssetMap.put("RagePotion", "items/flask_big_blue_32x32.png");
+        itemNameAssetMap.put("HealthPotion", "items/healthPotion.png");
+        itemNameAssetMap.put("RagePotion", "items/ragePotion.png");
         itemNameAssetMap.put("Heart", "items/ui_heart_full_32x32.png");
+
+
+        weaponsList = new ArrayList<>();
+        File dir = new File("src/main/resources/assets/textures/items/weapons");
+        for (File file : dir.listFiles()) {
+            if (file.getName().endsWith(".png")) {
+                weaponsList.add(file.getName().replace("_32x32.png", ""));
+                itemNameAssetMap.put(file.getName().replace("_32x32.png", ""),
+                        "items/weapons/" + file.getName());
+            }
+        }
+
+        set("weaponsList", weaponsList);
         set("itemsNameAssetMap", itemNameAssetMap);
     }
 

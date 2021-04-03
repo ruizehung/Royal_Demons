@@ -198,19 +198,22 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="6" name="Object Layer 1">
+ <objectgroup id="6" name="Object Layer 1" locked="1">
   <object id="177" name="Item" type="itemOnFloor" x="863.993" y="159.442" width="32" height="32">
    <properties>
+    <property name="isWeapon" type="bool" value="false"/>
     <property name="name" value="HealthPotion"/>
    </properties>
   </object>
   <object id="178" name="Item" type="itemOnFloor" x="1664" y="863.355" width="32" height="32">
    <properties>
+    <property name="isWeapon" type="bool" value="false"/>
     <property name="name" value="RagePotion"/>
    </properties>
   </object>
   <object id="179" name="Item" type="itemOnFloor" x="1664.54" y="799.339" width="32" height="32">
    <properties>
+    <property name="isWeapon" type="bool" value="false"/>
     <property name="name" value="HealthPotion"/>
    </properties>
   </object>
@@ -220,7 +223,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="5" name="Object Layer 3" locked="1">
+ <objectgroup id="5" name="Object Layer 3">
   <object id="1" type="wall" x="815.712" y="221.418" width="7.66465" height="65.9024"/>
   <object id="2" type="wall" x="872.364" y="218.513" width="7.66465" height="69.3873"/>
   <object id="3" type="wall" x="33.7014" y="117.596" width="281.891" height="21.5115"/>
@@ -269,7 +272,7 @@
   <object id="47" type="wall" x="567.93" y="381.516" width="6.41114" height="44.7734"/>
   <object id="48" type="wall" x="674.655" y="385.149" width="6.41114" height="37.345"/>
   <object id="49" type="wall" x="705.913" y="383.838" width="6.41114" height="38.6559"/>
-  <object id="50" type="wall" x="674.868" y="379.102" width="36.33" height="23.0632"/>
+  <object id="50" type="wall" x="674.868" y="382.451" width="36.33" height="19.714"/>
   <object id="51" type="wall" x="792.097" y="411.709" width="6.41114" height="163.513"/>
   <object id="52" type="wall" x="707.365" y="570.81" width="90.3513" height="12.3634"/>
   <object id="54" type="wall" x="515.907" y="469.353" width="22.9336" height="28.9641"/>

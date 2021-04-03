@@ -52,18 +52,50 @@ public class CreatureFactory implements EntityFactory {
         physics.setBodyType(BodyType.DYNAMIC);
         physics.setFixtureDef(new FixtureDef().friction(1.0f));
 
-        List<String> minionList = FXGL.geto("minionList");
+        List<String> minionList = FXGL.geto("normalMinionList");
         String minionFileName = minionList.get(FXGL.random(0, minionList.size() - 1));
         List<Integer> widthHeight = parseSizes(minionFileName);
         EnemyComponent enemyComponent = new EnemyComponent(
                 2,
-                "creatures/minions/" + minionFileName,
+                "creatures/minions/normal/" + minionFileName,
                 widthHeight.get(0), widthHeight.get(1));
 
         // TODO__: better to manually define bbox tailor to each minion
         List<Point2D> point2DList = Arrays.asList(
                 new Point2D(3, 5),
                 new Point2D(widthHeight.get(0) - 3, 5),
+                new Point2D(widthHeight.get(0) - 3, widthHeight.get(1) - 2),
+                new Point2D(3, widthHeight.get(1) - 2)
+        );
+
+        return FXGL.entityBuilder(data)
+                .type(RoyalType.ENEMY)
+                .bbox(new HitBox(BoundingShape.polygon(point2DList)))
+                .with(physics)
+                .with(new CollidableComponent(true))
+                .with(enemyComponent)
+                .with("enemyComponent", enemyComponent)
+                .build();
+    }
+
+    @Spawns("forestMinion")
+    public Entity newForestMinion(SpawnData data) {
+        PhysicsComponent physics = new PhysicsComponent();
+        physics.setBodyType(BodyType.DYNAMIC);
+        physics.setFixtureDef(new FixtureDef().friction(1.0f));
+
+        List<String> minionList = FXGL.geto("forestMinionList");
+        String minionFileName = minionList.get(FXGL.random(0, minionList.size() - 1));
+        List<Integer> widthHeight = parseSizes(minionFileName);
+        EnemyComponent enemyComponent = new EnemyComponent(
+                2,
+                "creatures/minions/forest/" + minionFileName,
+                widthHeight.get(0), widthHeight.get(1));
+        int startingY = minionFileName.startsWith("Ent") ? 3 : 10;
+        // TODO__: better to manually define bbox tailor to each minion
+        List<Point2D> point2DList = Arrays.asList(
+                new Point2D(3, startingY),
+                new Point2D(widthHeight.get(0) - 3, startingY),
                 new Point2D(widthHeight.get(0) - 3, widthHeight.get(1) - 2),
                 new Point2D(3, widthHeight.get(1) - 2)
         );

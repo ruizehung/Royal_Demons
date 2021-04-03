@@ -15,7 +15,7 @@ public class PlayerChestCollisionHandler extends CollisionHandler {
 
     @Override
     protected void onCollision(Entity player, Entity chest) {
-        ChestComponent chestComponent = chest.getComponent(ChestComponent.class);
+        ChestComponent chestComponent = chest.getObject("chestComponent");
         if (FXGL.getb("Fpressed") && !chestComponent.isOpened()) {
             chestComponent.open();
         }

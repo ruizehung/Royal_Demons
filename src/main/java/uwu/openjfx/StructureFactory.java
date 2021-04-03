@@ -9,10 +9,12 @@ import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
+import javafx.beans.property.BooleanProperty;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import uwu.openjfx.components.ChestComponent;
 import uwu.openjfx.components.ItemComponent;
+import uwu.openjfx.components.MimicChestComponent;
 import uwu.openjfx.components.TrapComponent;
 
 import java.util.Map;
@@ -114,9 +116,13 @@ public class StructureFactory implements EntityFactory {
         String itemName = data.<String>get("name");
         String assetName = ((Map<String, String>) FXGL.geto("itemsNameAssetMap"))
                 .get(itemName);
+
+        int degree = data.<Boolean>get("isWeapon") ? 80 : 0;
+
         return FXGL.entityBuilder(data)
                 .type(RoyalType.DROPPEDITEM)
                 .viewWithBBox(assetName)
+                .rotate(degree)
                 .with(new ItemComponent(itemName))
                 .with(new CollidableComponent(true))
                 .build();
@@ -124,11 +130,25 @@ public class StructureFactory implements EntityFactory {
 
     @Spawns("chest")
     public Entity newChest(SpawnData data) {
+        ChestComponent chestComponent = new ChestComponent();
         return FXGL.entityBuilder(data)
                 .type(RoyalType.CHEST)
                 .viewWithBBox("chest_empty_open_anim_f0_32x32.png")
-                .with(new ChestComponent())
+                .with(chestComponent)
                 .with(new CollidableComponent(true))
+                .with("chestComponent", chestComponent)
+                .build();
+    }
+
+    @Spawns("mimicChest")
+    public Entity newMimicChest(SpawnData data) {
+        MimicChestComponent mimicChestComponent = new MimicChestComponent();
+        return FXGL.entityBuilder(data)
+                .type(RoyalType.CHEST)
+                .viewWithBBox("chest_empty_open_anim_f0_32x32.png")
+                .with(mimicChestComponent)
+                .with(new CollidableComponent(true))
+                .with("chestComponent", mimicChestComponent)
                 .build();
     }
 

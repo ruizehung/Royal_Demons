@@ -192,6 +192,7 @@ public class GameMap {
     public void loadRoom(Room newRoom, String playerSpawnPosition) {
         Level curLevel = setLevelFromMap("tmx/" + newRoom.getRoomType() + ".tmx");
         for (Entity entity : curLevel.getEntities()) {
+
             if (entity.isType(RoyalType.ENEMY)) {
                 IDComponent idComponent = entity.getComponent(IDComponent.class);
                 if (!newRoom.visited()) {
@@ -202,6 +203,7 @@ public class GameMap {
                     }
                 }
             }
+
             if (entity.isType(RoyalType.TRAP) || entity.isType(RoyalType.TRAP_TRIGGER)) {
                 IDComponent idComponent = entity.getComponent(IDComponent.class);
                 if (!newRoom.visited()) {
@@ -230,7 +232,7 @@ public class GameMap {
                     newRoom.setChestData(idComponent.getId(), "opened", 0);
                 } else {
                     if (newRoom.getChestsData(idComponent.getId(), "opened") == 1) {
-                        ChestComponent chestComponent = entity.getComponent(ChestComponent.class);
+                        ChestComponent chestComponent = entity.getObject("chestComponent");
                         chestComponent.setHasBeenOpened(true);
                         chestComponent.changeToOpenedView();
                     }

@@ -320,7 +320,7 @@ public class EnemyComponent extends HealthComponent {
             for (String itemName : itemsDropList) {
                 spawn("itemOnFloor",
                         new SpawnData(getEntity().getX() + width / 2, getEntity().getY() + height / 2)
-                                        .put("name", itemName));
+                                        .put("name", itemName).put("isWeapon", false));
             }
         }
 
