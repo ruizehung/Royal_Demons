@@ -75,7 +75,7 @@ public class UI {
 
         Texture healthPot = FXGL.getAssetLoader().loadTexture("ui/health_potion_ui.png");
         healthPot.setTranslateX(healthPotBox.getTranslateX() + healthPotBox.getWidth() / 4.0);
-        healthPot.setTranslateY(healthPotBox.getTranslateY() + healthPotBox.getHeight() / 4.0);
+        healthPot.setTranslateY(healthPotBox.getTranslateY() + healthPotBox.getHeight() / 4.0 - 2);
 
         Text textHealthPot = FXGL.getUIFactoryService().newText("", 25);
         textHealthPot.setTranslateX(
@@ -93,7 +93,7 @@ public class UI {
 
         Texture ragePot = FXGL.getAssetLoader().loadTexture("ui/rage_potion_ui.png");
         ragePot.setTranslateX(ragePotBox.getTranslateX() + ragePotBox.getWidth() / 4.0);
-        ragePot.setTranslateY(ragePotBox.getTranslateY() + ragePotBox.getHeight() / 4.0);
+        ragePot.setTranslateY(ragePotBox.getTranslateY() + ragePotBox.getHeight() / 4.0 - 2);
 
         Text textRagePot = FXGL.getUIFactoryService().newText("", 25);
         textRagePot.setTranslateX(ragePotBox.getTranslateX() + ragePotBox.getWidth() * 3 / 5.0);
