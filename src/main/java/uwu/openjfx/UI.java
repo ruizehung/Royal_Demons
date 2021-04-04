@@ -58,8 +58,6 @@ public class UI {
 
         Texture weapon = new Texture(PlayerComponent.getCurrentWeapon().getWeaponSprite());
         weapon.setRotate(45.0);
-        weapon.setScaleX(2);
-        weapon.setScaleY(2);
         weapon.setTranslateX(
                 weaponBox.getTranslateX() + (weaponBox.getWidth() / 2) - weapon.getWidth() / 2);
         weapon.setTranslateY(
