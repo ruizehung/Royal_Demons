@@ -1,12 +1,15 @@
 package uwu.openjfx.collision;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.ProjectileComponent;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.components.IDComponent;
 import com.almasb.fxgl.physics.CollisionHandler;
+import uwu.openjfx.MapGeneration.Room;
 import uwu.openjfx.RoyalType;
 import uwu.openjfx.components.AttackMultipleComponent;
 import uwu.openjfx.components.EnemyComponent;
-import uwu.openjfx.components.HealthComponent;
+import uwu.openjfx.components.LifeBehavior;
 
 /*
     This class is responsible for when the hitbox of a player attack touches an enemy
@@ -37,10 +40,14 @@ public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
         if (((weapon.hasComponent(ProjectileComponent.class))
             && (!weapon.getComponent(ProjectileComponent.class).isPaused()))
             || (!weapon.hasComponent(ProjectileComponent.class))) {
-            HealthComponent enemyHealth = enemy.getObject("enemyComponent");
-            enemyHealth.deductHealth();
-            if (enemy.hasComponent(EnemyComponent.class)) {
-                enemy.getComponent(EnemyComponent.class).knockBackFromPlayer();
+            EnemyComponent enemyComponent = enemy.getObject("enemyComponent");
+            LifeBehavior enemyLife = enemyComponent.getLife();
+            enemyLife.setXY(enemy.getX(), enemy.getY());
+            enemyLife.deductHealth(1);
+            if (enemyLife.dead()) {
+                enemyComponent.removeFromWorld();
+            } else {
+                enemyComponent.knockBackFromPlayer();
             }
         }
     }

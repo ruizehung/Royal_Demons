@@ -4,7 +4,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import uwu.openjfx.RoyalType;
-import uwu.openjfx.components.HealthComponent;
+import uwu.openjfx.components.LifeBehavior;
 import uwu.openjfx.components.PlayerComponent;
 
 /*
@@ -17,11 +17,10 @@ public class EnemyAttackPlayerCollisionHandler extends CollisionHandler  {
 
     @Override
     public void onCollisionBegin(Entity enemy, Entity player) {
-        if (!FXGL.getb("developerCheat")) {
-            HealthComponent playerHealth = player.getComponent(PlayerComponent.class);
-            if (!playerHealth.getIsInvulnerable()) {
-                playerHealth.deductHealth();
-            }
+        PlayerComponent playerComponent = player.getComponent(PlayerComponent.class);
+        LifeBehavior playerLife = playerComponent.getLife();
+        if (!playerLife.isInvulnerable()) {
+            playerLife.deductHealth(1);
         }
     }
 }

@@ -9,6 +9,7 @@ import uwu.openjfx.MapGeneration.Room;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 
@@ -28,8 +29,23 @@ public class ChestComponent extends Component {
             itemsList.add("RagePotion");
         }
 
-        List<String> weaponsList = FXGL.geto("weaponsList");
-        weaponName = weaponsList.get(FXGL.random(0, weaponsList.size() - 1));
+        weaponName = pickAWeaponRandomly();
+    }
+
+    private String pickAWeaponRandomly() {
+        String weaponName = null;
+
+        Set<String> weaponsSet = FXGL.geto("weaponsSet");
+        int item = FXGL.random(0, weaponsSet.size() - 1); // In real life, the Random object should be rather more shared than this
+        int i = 0;
+        for(String weapon : weaponsSet) {
+            if (i == item) {
+                weaponName = weapon;
+                break;
+            }
+            ++i;
+        }
+        return weaponName;
     }
 
     public boolean isOpened() {

@@ -13,10 +13,7 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import javafx.geometry.Point2D;
-import uwu.openjfx.components.BossComponent;
-import uwu.openjfx.components.CoinComponent;
-import uwu.openjfx.components.EnemyComponent;
-import uwu.openjfx.components.PlayerComponent;
+import uwu.openjfx.components.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -91,8 +88,11 @@ public class CreatureFactory implements EntityFactory {
                 2,
                 "creatures/minions/forest/" + minionFileName,
                 widthHeight.get(0), widthHeight.get(1));
+
+        // Ent has too much empty space at top
         int startingY = minionFileName.startsWith("Ent") ? 3 : 10;
-        // TODO__: better to manually define bbox tailor to each minion
+
+        // Todo: better to manually define bbox tailor to each minion
         List<Point2D> point2DList = Arrays.asList(
                 new Point2D(3, startingY),
                 new Point2D(widthHeight.get(0) - 3, startingY),
@@ -119,11 +119,14 @@ public class CreatureFactory implements EntityFactory {
         List<String> minionList = FXGL.geto("miniBossList");
         String miniBossFileName = minionList.get(FXGL.random(0, minionList.size() - 1));
         List<Integer> widthHeight = parseSizes(miniBossFileName);
+
+        // Todo: I shouldn't be instantiating DropItemAndCoinWhenDie directly
+        DropItemAndCoinWhenDie dieBehavior = new DropItemAndCoinWhenDie(widthHeight.get(0), widthHeight.get(1), 0, 0);
         EnemyComponent enemyComponent = new EnemyComponent(1,
                 "creatures/miniBoss/" + miniBossFileName,
                 widthHeight.get(0), widthHeight.get(1));
-
-        enemyComponent.addDroppedItem("Heart");
+        dieBehavior.addDropItem("Heart");
+        enemyComponent.getLife().setDieBehavior(dieBehavior);
 
         // TODO_: better to manually define bbox tailor to each minion
         List<Point2D> point2DList = Arrays.asList(
@@ -196,6 +199,7 @@ public class CreatureFactory implements EntityFactory {
         }
         return  widthHeight;
     }
+
     // @Spawns("ally")
     // public Entity newAlly(SpawnData data) {
     //     return FXGL.entityBuilder(data)

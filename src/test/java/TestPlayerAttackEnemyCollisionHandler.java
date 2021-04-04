@@ -20,25 +20,26 @@ public class TestPlayerAttackEnemyCollisionHandler {
     @Test
     void testBossDies() {
         Entity boss = new Entity();
-        BossComponent bossComponent = new BossComponent(1, "", 10, 20);
+        BossComponent bossComponent = new BossComponent(1, "", 0, 0, 0);
         boss.addComponent(bossComponent);
         boss.setProperty("enemyComponent", bossComponent);
 
         Entity weapon = new Entity();
 
-        assert !boss.getBoolean("isDead");
+        assert !bossComponent.getLife().dead();
 
         PlayerAttackEnemyCollisionHandler handler = new PlayerAttackEnemyCollisionHandler();
         handler.onCollisionBegin(weapon, boss);
 
-        assert boss.getBoolean("isDead");
+        assert bossComponent.getLife().dead();
     }
 
     // james 2
     @Test
     void testBossGetHurt() {
+        int origHealth = 5;
         Entity boss = new Entity();
-        BossComponent bossComponent = new BossComponent(1, "", 10, 20);
+        BossComponent bossComponent = new BossComponent(origHealth, "", 0, 0, 0);
         boss.addComponent(bossComponent);
         boss.setProperty("enemyComponent", bossComponent);
 
@@ -47,8 +48,7 @@ public class TestPlayerAttackEnemyCollisionHandler {
         PlayerAttackEnemyCollisionHandler handler = new PlayerAttackEnemyCollisionHandler();
         handler.onCollisionBegin(weapon, boss);
 
-        int origHealth = 2;
-        assert (bossComponent.getHealthPoints() < origHealth);
+        assert (bossComponent.getLife().getHealthPoints() < origHealth);
     }
 
     //alice 1
@@ -67,15 +67,16 @@ public class TestPlayerAttackEnemyCollisionHandler {
         PlayerAttackEnemyCollisionHandler handler = new PlayerAttackEnemyCollisionHandler();
         handler.onCollisionBegin(weapon, monster);
 
-        assert monster.getBoolean("isDead");
+        assert enemyComponent.getLife().dead();
     }
 
     // devan 2
     @Test
     void testMinionGetsHurt() {
+        int origHealth = 5;
         Entity monster = new Entity();
         EnemyComponent enemyComponent = new EnemyComponent(
-                2, "", 10, 20);
+                origHealth, "", 10, 20);
         monster.addComponent(enemyComponent);
         monster.setProperty("enemyComponent", enemyComponent);
 
@@ -84,7 +85,6 @@ public class TestPlayerAttackEnemyCollisionHandler {
         PlayerAttackEnemyCollisionHandler handler = new PlayerAttackEnemyCollisionHandler();
         handler.onCollisionBegin(weapon, monster);
 
-        int origHealth = 2;
-        assert (enemyComponent.getHealthPoints() < origHealth);
+        assert enemyComponent.getLife().getHealthPoints() < origHealth;
     }
 }

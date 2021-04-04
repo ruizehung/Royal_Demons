@@ -3,6 +3,7 @@ package uwu.openjfx.components;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
+import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.entity.components.IDComponent;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
@@ -13,6 +14,7 @@ import javafx.util.Duration;
 import uwu.openjfx.MainApp;
 import uwu.openjfx.MapGeneration.Room;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -25,7 +27,7 @@ import static com.almasb.fxgl.dsl.FXGL.spawn;
     - Enemy attacks player when player is within certain radius
     - Enemy has an animation to go with whatever attack it's performing.
  */
-public class EnemyComponent extends HealthComponent {
+public class EnemyComponent extends Component implements HasLife {
     private PhysicsComponent physics;
 
     private String type;
@@ -64,10 +66,13 @@ public class EnemyComponent extends HealthComponent {
     private double scaler = 1.0;
 
     private LocalTimer moveTimer;
-    private List<String> itemsDropList = new ArrayList<>();
+    private Life life;
 
-    public EnemyComponent(int healthPoints, String assetName, int width, int height, int frames) {
-        super(healthPoints);
+    public EnemyComponent(int maxHealthPoints, String assetName, int width, int height, int frames) {
+        life = new Life(maxHealthPoints, maxHealthPoints);
+        // default to drop coins
+        life.setDieBehavior(new DropItemAndCoinWhenDie(width, height, 1, 5));
+
         this.type = assetName;
         this.width = width;
         this.height = height;
@@ -305,32 +310,25 @@ public class EnemyComponent extends HealthComponent {
         );
     }
 
+    // Todo: This is bad design
+    /*
     public void addDroppedItem(String itemName) {
-        itemsDropList.add(itemName);
+        DropItemAndCoinWhenDie dropItemAndCoinWhenDie = (DropItemAndCoinWhenDie) life.getDieBehavior();
+        dropItemAndCoinWhenDie.getItemsDropList().add(itemName);
     }
+     */
 
     @Override
-    public void die() {
-        if (MainApp.isIsTesting()) {
-            entity.setProperty("isDead", true);
-            return;
-        }
+    public LifeBehavior getLife() {
+        return life;
+    }
 
-        if (FXGL.random() < 0.5) {
-            FXGL.spawn("coin", getEntity().getX() + width / 2, getEntity().getY() + height / 2);
+    public void removeFromWorld() {
+        if (!MainApp.isIsTesting()) {
+            getEntity().removeFromWorld();
+            IDComponent idComponent = getEntity().getComponent(IDComponent.class);
+            Room curRoom = FXGL.geto("curRoom");
+            curRoom.setEntityData(idComponent.getId(), "isAlive", 0);
         }
-
-        if (itemsDropList.size() > 0) {
-            for (String itemName : itemsDropList) {
-                spawn("itemOnFloor",
-                        new SpawnData(getEntity().getX() + width / 2, getEntity().getY() + height / 2)
-                                        .put("name", itemName).put("isWeapon", false));
-            }
-        }
-
-        getEntity().removeFromWorld();
-        IDComponent idComponent = getEntity().getComponent(IDComponent.class);
-        Room curRoom = FXGL.geto("curRoom");
-        curRoom.setEntityData(idComponent.getId(), "isAlive", 0);
     }
 }

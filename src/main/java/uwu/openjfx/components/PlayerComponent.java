@@ -1,7 +1,7 @@
 package uwu.openjfx.components;
 
-import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
@@ -9,7 +9,6 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
-import uwu.openjfx.DieScreenMenu;
 import uwu.openjfx.MainApp;
 import uwu.openjfx.weapons.Bow0;
 import uwu.openjfx.weapons.GoldenSword0;
@@ -23,7 +22,7 @@ import java.util.Timer;
     - Animation of the player: movement, idleness, attacking
     - Being the caller for attacking, which in turn spawns the necessary weapon of type Weapon
  */
-public class PlayerComponent extends HealthComponent {
+public class PlayerComponent extends Component implements HasLife {
 
     private PhysicsComponent physics;
 
@@ -54,6 +53,8 @@ public class PlayerComponent extends HealthComponent {
     private static String gameDifficulty;
     private static int gold;
 
+    private LifeBehavior life;
+
     private static IntegerProperty goldProperty;
 
     public static String getPlayerName() {
@@ -80,8 +81,8 @@ public class PlayerComponent extends HealthComponent {
         PlayerComponent.gameDifficulty = gameDifficulty;
     }
 
-    public PlayerComponent(int healthPoints) {
-        super(healthPoints);
+    public PlayerComponent(int maxHealthPoints) {
+        life = new Life(maxHealthPoints, maxHealthPoints, new GameOverWhenDie());
 
         if (currentWeapon == null) {
             switch (playerWeapon) {
@@ -308,16 +309,14 @@ public class PlayerComponent extends HealthComponent {
         return goldProperty;
     }
 
-    @Override
-    public void die() {
-        if (!MainApp.isIsTesting()) {
-            FXGL.getSceneService().pushSubScene(new DieScreenMenu(MenuType.GAME_MENU));
-        } else {
-            deadTest = true;
-        }
-    }
+//    @Override
+//    public void deductHealth(int point) {
+//        life.setXY(getEntity().getX(), getEntity().getY());
+//        life.deductHealth(point);
+//    }
 
-    public boolean isDeadTest() {
-        return deadTest;
+    @Override
+    public LifeBehavior getLife() {
+        return life;
     }
 }

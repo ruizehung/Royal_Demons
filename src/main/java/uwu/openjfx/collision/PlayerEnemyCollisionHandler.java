@@ -8,7 +8,6 @@ import uwu.openjfx.MainApp;
 import uwu.openjfx.RoyalType;
 import uwu.openjfx.components.BossComponent;
 import uwu.openjfx.components.EnemyComponent;
-import uwu.openjfx.components.HealthComponent;
 import uwu.openjfx.components.PlayerComponent;
 
 /*
@@ -52,11 +51,8 @@ public class PlayerEnemyCollisionHandler extends CollisionHandler {
 
     public void onCollision(Entity player, Entity enemy) {
         playerComponent = player.getComponent(PlayerComponent.class);
-        if (!FXGL.getb("developerCheat")) {
-            HealthComponent playerHealth = playerComponent;
-            if (!playerHealth.getIsInvulnerable()) {
-                playerHealth.deductHealth();
-            }
+        if (!playerComponent.getLife().isInvulnerable()) {
+            playerComponent.getLife().deductHealth(1);
         }
 
         if (!MainApp.isIsTesting()) {

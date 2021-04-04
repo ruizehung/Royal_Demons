@@ -17,7 +17,9 @@ import uwu.openjfx.components.ItemComponent;
 import uwu.openjfx.components.MimicChestComponent;
 import uwu.openjfx.components.TrapComponent;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class StructureFactory implements EntityFactory {
     @Spawns("wall")
@@ -117,7 +119,8 @@ public class StructureFactory implements EntityFactory {
         String assetName = ((Map<String, String>) FXGL.geto("itemsNameAssetMap"))
                 .get(itemName);
 
-        int degree = data.<Boolean>get("isWeapon") ? 80 : 0;
+        Set<String> weaponsSet = FXGL.geto("weaponsSet");
+        int degree = weaponsSet.contains(data.<String>get("name")) ? 80 : 0;
 
         return FXGL.entityBuilder(data)
                 .type(RoyalType.DROPPEDITEM)

@@ -1,6 +1,5 @@
 package uwu.openjfx;
 
-import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.MenuItem;
@@ -32,7 +31,7 @@ public class MainApp extends GameApplication {
     private List<String> forestMinionList;
     private List<String> miniBossList;
     private List<String> roomTypeList;
-    private List<String> weaponsList;
+    private Set<String> weaponsSet;
     private Map<String, String> itemNameAssetMap;
     private final Boolean developerCheat = true;
     private static boolean isTesting = false;
@@ -225,7 +224,9 @@ public class MainApp extends GameApplication {
         loopBGM("evil4.mp3");
         player = spawn("player", 0, 0);
         set("player", player);
-
+        if (developerCheat) {
+            player.getComponent(PlayerComponent.class).getLife().setHealthPoints(99999);
+        }
         gameMap.loadRoom(gameMap.getInitialRoom(), "center");
 
         Viewport viewport = getGameScene().getViewport();
@@ -262,7 +263,8 @@ public class MainApp extends GameApplication {
         textHealth.setStroke(Color.WHITE);
 
         textHealth.textProperty().bind(
-                player.getComponent(PlayerComponent.class).getPlayerHealth().asString());
+                player.getComponent(PlayerComponent.class).getLife()
+                        .getHealthIntegerProperty().asString());
         getGameScene().addUINode(textHealth); // add to the scene graph
 
         Text textHealthPrefix = getUIFactoryService().newText("HP:", 50);
@@ -324,17 +326,17 @@ public class MainApp extends GameApplication {
         itemNameAssetMap.put("Heart", "items/ui_heart_full_32x32.png");
 
 
-        weaponsList = new ArrayList<>();
+        weaponsSet = new HashSet<>();
         File dir = new File("src/main/resources/assets/textures/items/weapons");
         for (File file : dir.listFiles()) {
             if (file.getName().endsWith(".png")) {
-                weaponsList.add(file.getName().replace("_32x32.png", ""));
+                weaponsSet.add(file.getName().replace("_32x32.png", ""));
                 itemNameAssetMap.put(file.getName().replace("_32x32.png", ""),
                         "items/weapons/" + file.getName());
             }
         }
 
-        set("weaponsList", weaponsList);
+        set("weaponsSet", weaponsSet);
         set("itemsNameAssetMap", itemNameAssetMap);
     }
 

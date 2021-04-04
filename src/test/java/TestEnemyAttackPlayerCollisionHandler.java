@@ -3,7 +3,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uwu.openjfx.MainApp;
 import uwu.openjfx.collision.EnemyAttackPlayerCollisionHandler;
-import uwu.openjfx.components.HealthComponent;
 import uwu.openjfx.components.PlayerComponent;
 
 public class TestEnemyAttackPlayerCollisionHandler {
@@ -16,17 +15,18 @@ public class TestEnemyAttackPlayerCollisionHandler {
     //alice 2
     @Test
     void testPlayerGetsHurt() {
+        int origHealth = 10;
         PlayerComponent.setPlayerWeapon("Sword");
         Entity player = new Entity();
-        HealthComponent myHealth = new PlayerComponent(10);
-        player.addComponent(myHealth);
+        PlayerComponent playerComponent = new PlayerComponent(origHealth);
+        player.addComponent(playerComponent);
 
         Entity monster = new Entity();
 
         EnemyAttackPlayerCollisionHandler handler = new EnemyAttackPlayerCollisionHandler();
         handler.onCollisionBegin(monster, player);
 
-        int origHealth = 10;
-        assert (myHealth.getHealthPoints() < origHealth);
+
+        assert playerComponent.getLife().getHealthPoints() < origHealth;
     }
 }
