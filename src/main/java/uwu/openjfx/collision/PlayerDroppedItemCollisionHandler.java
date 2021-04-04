@@ -6,8 +6,7 @@ import com.almasb.fxgl.entity.components.IDComponent;
 import com.almasb.fxgl.physics.CollisionHandler;
 import uwu.openjfx.MapGeneration.Room;
 import uwu.openjfx.RoyalType;
-import uwu.openjfx.components.items.Item;
-import uwu.openjfx.components.items.Usable;
+import uwu.openjfx.items.Item;
 
 import java.util.Map;
 

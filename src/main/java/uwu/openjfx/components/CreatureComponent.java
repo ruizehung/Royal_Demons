@@ -3,6 +3,8 @@ package uwu.openjfx.components;
 import com.almasb.fxgl.entity.component.Component;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import uwu.openjfx.creatureLifeCycle.DieBehavior;
+import uwu.openjfx.creatureLifeCycle.LifeBehavior;
 
 import java.util.Timer;
 

@@ -1,5 +1,7 @@
 package uwu.openjfx.components;
 
+import uwu.openjfx.creatureLifeCycle.PlayerWinWhenDie;
+
 // Todo: add more boss behavior here
 public class BossComponent extends EnemyComponent {
 

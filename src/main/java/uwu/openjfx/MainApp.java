@@ -15,9 +15,8 @@ import javafx.scene.text.Text;
 import uwu.openjfx.MapGeneration.GameMap;
 import uwu.openjfx.collision.*;
 import uwu.openjfx.components.PlayerComponent;
-import uwu.openjfx.components.items.Heart;
-import uwu.openjfx.components.items.Item;
-import uwu.openjfx.components.items.Usable;
+import uwu.openjfx.items.Heart;
+import uwu.openjfx.items.Item;
 import uwu.openjfx.input.*;
 
 import java.io.File;

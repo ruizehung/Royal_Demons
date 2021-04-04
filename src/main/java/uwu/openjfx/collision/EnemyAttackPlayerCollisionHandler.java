@@ -1,10 +1,8 @@
 package uwu.openjfx.collision;
 
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import uwu.openjfx.RoyalType;
-import uwu.openjfx.components.LifeBehavior;
 import uwu.openjfx.components.PlayerComponent;
 
 /*

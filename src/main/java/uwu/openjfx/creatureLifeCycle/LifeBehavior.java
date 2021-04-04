@@ -1,4 +1,4 @@
-package uwu.openjfx.components;
+package uwu.openjfx.creatureLifeCycle;
 
 import javafx.beans.property.IntegerProperty;
 

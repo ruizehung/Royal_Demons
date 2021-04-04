@@ -14,6 +14,8 @@ import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import javafx.geometry.Point2D;
 import uwu.openjfx.components.*;
+import uwu.openjfx.creatureLifeCycle.DropCoinWhenDie;
+import uwu.openjfx.creatureLifeCycle.DropItemWhenDie;
 
 import java.util.ArrayList;
 import java.util.Arrays;

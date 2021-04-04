@@ -1,4 +1,4 @@
-package uwu.openjfx.components.items;
+package uwu.openjfx.items;
 
 import com.almasb.fxgl.entity.Entity;
 

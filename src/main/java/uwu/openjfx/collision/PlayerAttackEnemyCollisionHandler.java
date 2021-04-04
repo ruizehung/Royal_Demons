@@ -6,7 +6,6 @@ import com.almasb.fxgl.physics.CollisionHandler;
 import uwu.openjfx.RoyalType;
 import uwu.openjfx.components.AttackMultipleComponent;
 import uwu.openjfx.components.EnemyComponent;
-import uwu.openjfx.components.LifeBehavior;
 
 /*
     This class is responsible for when the hitbox of a player attack touches an enemy

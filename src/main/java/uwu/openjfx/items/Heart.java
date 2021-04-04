@@ -1,4 +1,4 @@
-package uwu.openjfx.components.items;
+package uwu.openjfx.items;
 
 public class Heart extends Item {
 
