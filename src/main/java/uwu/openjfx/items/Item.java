@@ -2,8 +2,8 @@ package uwu.openjfx.items;
 
 
 import com.almasb.fxgl.entity.Entity;
-import uwu.openjfx.components.Behavior;
-import uwu.openjfx.components.DoNothing;
+import uwu.openjfx.behaviors.Behavior;
+import uwu.openjfx.behaviors.DoNothing;
 
 public class Item implements Usable, PickupBehavior {
     private String name;

@@ -1,4 +1,4 @@
-package uwu.openjfx.components;
+package uwu.openjfx.behaviors;
 
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;

@@ -1,4 +1,4 @@
-package uwu.openjfx.components;
+package uwu.openjfx.behaviors;
 
 import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;

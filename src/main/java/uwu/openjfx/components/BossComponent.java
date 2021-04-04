@@ -1,5 +1,7 @@
 package uwu.openjfx.components;
 
+import uwu.openjfx.behaviors.WinWhenDie;
+
 // Todo: add more boss behavior here
 public class BossComponent extends EnemyComponent {
 

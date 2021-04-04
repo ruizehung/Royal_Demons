@@ -1,4 +1,4 @@
-package uwu.openjfx.components;
+package uwu.openjfx.behaviors;
 
 import javafx.beans.property.IntegerProperty;
 

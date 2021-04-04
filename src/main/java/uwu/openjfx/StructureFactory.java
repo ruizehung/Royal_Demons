@@ -11,6 +11,8 @@ import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import uwu.openjfx.behaviors.DropItemComponent;
+import uwu.openjfx.behaviors.SpawnMinions;
 import uwu.openjfx.components.*;
 
 import java.util.Map;

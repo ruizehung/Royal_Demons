@@ -5,7 +5,6 @@ import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import uwu.openjfx.MainApp;
 import uwu.openjfx.RoyalType;
-import uwu.openjfx.components.BossComponent;
 import uwu.openjfx.components.EnemyComponent;
 import uwu.openjfx.components.PlayerComponent;
 

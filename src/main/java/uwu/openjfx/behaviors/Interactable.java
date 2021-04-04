@@ -1,4 +1,4 @@
-package uwu.openjfx.components;
+package uwu.openjfx.behaviors;
 
 public interface Interactable {
     void interact();

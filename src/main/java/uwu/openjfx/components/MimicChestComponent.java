@@ -2,10 +2,8 @@ package uwu.openjfx.components;
 
 
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.components.IDComponent;
 import javafx.scene.image.ImageView;
-import uwu.openjfx.MapGeneration.Room;
+import uwu.openjfx.behaviors.CanOnlyInteractOnce;
 
 public class MimicChestComponent extends CanOnlyInteractOnce {
 

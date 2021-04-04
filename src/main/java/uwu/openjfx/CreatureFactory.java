@@ -14,8 +14,8 @@ import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import javafx.geometry.Point2D;
 import uwu.openjfx.components.*;
-import uwu.openjfx.components.DropCoinBehavior;
-import uwu.openjfx.components.DropItemComponent;
+import uwu.openjfx.behaviors.DropCoinBehavior;
+import uwu.openjfx.behaviors.DropItemComponent;
 
 import java.util.ArrayList;
 import java.util.Arrays;

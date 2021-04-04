@@ -3,6 +3,9 @@ package uwu.openjfx.components;
 import com.almasb.fxgl.entity.component.Component;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import uwu.openjfx.behaviors.Behavior;
+import uwu.openjfx.behaviors.DoNothing;
+import uwu.openjfx.behaviors.HasLife;
 
 import java.util.Timer;
 

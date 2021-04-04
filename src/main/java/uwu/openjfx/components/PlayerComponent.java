@@ -9,6 +9,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
 import uwu.openjfx.MainApp;
+import uwu.openjfx.behaviors.GameOverWhenDie;
 import uwu.openjfx.weapons.Bow0;
 import uwu.openjfx.weapons.GoldenSword0;
 import uwu.openjfx.weapons.MagicStaff0;

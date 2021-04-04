@@ -1,8 +1,10 @@
 package uwu.openjfx.components;
 
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.entity.component.ComponentHelper;
 import javafx.scene.image.ImageView;
+import uwu.openjfx.behaviors.CanOnlyInteractOnce;
+import uwu.openjfx.behaviors.DropItemComponent;
+import uwu.openjfx.behaviors.Interactable;
 
 import java.util.Set;
 

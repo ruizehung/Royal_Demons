@@ -1,6 +1,6 @@
 package uwu.openjfx.items;
 
-import uwu.openjfx.components.IncreaseMaxHealth;
+import uwu.openjfx.behaviors.IncreaseMaxHealth;
 
 public class Heart extends Item {
 

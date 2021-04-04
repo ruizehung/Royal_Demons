@@ -1,4 +1,4 @@
-package uwu.openjfx.components;
+package uwu.openjfx.behaviors;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;

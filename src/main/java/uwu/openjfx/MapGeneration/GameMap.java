@@ -8,8 +8,7 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 import javafx.geometry.Point2D;
 import javafx.util.Pair;
 import uwu.openjfx.RoyalType;
-import uwu.openjfx.components.CanOnlyInteractOnce;
-import uwu.openjfx.components.ChestComponent;
+import uwu.openjfx.behaviors.CanOnlyInteractOnce;
 import uwu.openjfx.components.TrapComponent;
 
 import java.util.*;
