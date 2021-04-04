@@ -1,35 +1,34 @@
 package uwu.openjfx.components;
 
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.entity.SpawnData;
-import com.almasb.fxgl.entity.component.Component;
-import com.almasb.fxgl.entity.components.IDComponent;
+import com.almasb.fxgl.entity.component.ComponentHelper;
 import javafx.scene.image.ImageView;
-import uwu.openjfx.MapGeneration.Room;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
-import static com.almasb.fxgl.dsl.FXGL.spawn;
+public class ChestComponent extends CanOnlyInteractOnce implements Interactable {
+    private DropItemComponent dropItemComponent;
 
-public class ChestComponent extends Component {
-    private List<String> itemsList = new ArrayList<>(3);
-    private String weaponName = null;
-    private boolean hasBeenOpened = false;
+    @Override
+    public void onAdded() {
+        super.setBehavior(dropItemComponent);
 
-    public ChestComponent() {
         double temp = FXGL.random();
         if (temp < 0.33) {
-            itemsList.add("HealthPotion");
-            itemsList.add("RagePotion");
+            dropItemComponent.addDropItem("HealthPotion");
+            dropItemComponent.addDropItem("RagePotion");
         }  else if (temp < 0.66) {
-            itemsList.add("HealthPotion");
+            dropItemComponent.addDropItem("HealthPotion");
         } else {
-            itemsList.add("RagePotion");
+            dropItemComponent.addDropItem("RagePotion");
         }
+        dropItemComponent.addDropItem(pickAWeaponRandomly());
+    }
 
-        weaponName = pickAWeaponRandomly();
+    @Override
+    public void interact() {
+        super.interact();
+        changeToOpenedView();
     }
 
     private String pickAWeaponRandomly() {
@@ -48,41 +47,7 @@ public class ChestComponent extends Component {
         return weaponName;
     }
 
-    public boolean isOpened() {
-        return hasBeenOpened;
-    }
-
-    public void setHasBeenOpened(boolean hasBeenOpened) {
-        this.hasBeenOpened = hasBeenOpened;
-    }
-
-    public void open() {
-        changeToOpenedView();
-        dropItems();
-    }
-
-    private void dropItems() {
-        if (!hasBeenOpened) {
-            changeToOpenedView();
-            for (String itemName : itemsList) {
-                spawn("itemOnFloor",
-                        new SpawnData(getEntity().getX() + FXGL.random(-32, 32),
-                                getEntity().getY() + FXGL.random(-32, 32))
-                                .put("name", itemName)
-                                .put("isWeapon", false));
-            }
-            spawn("itemOnFloor",
-                    new SpawnData(getEntity().getX() + FXGL.random(-32, 32),
-                            getEntity().getY() + FXGL.random(-32, 32))
-                            .put("name", weaponName)
-                            .put("isWeapon", true));
-            hasBeenOpened = true;
-            IDComponent idComponent = getEntity().getComponent(IDComponent.class);
-            Room curRoom = FXGL.geto("curRoom");
-            curRoom.setChestData(idComponent.getId(), "opened", 1);
-        }
-    }
-
+    // Todo: To be refactored
     public void changeToOpenedView() {
         getEntity().getViewComponent().clearChildren();
         getEntity().getViewComponent().addChild(new ImageView(FXGL.image(
@@ -90,4 +55,9 @@ public class ChestComponent extends Component {
         )));
     }
 
+    @Override
+    public void disable() {
+        setInteractedBefore(true);
+        changeToOpenedView();
+    }
 }

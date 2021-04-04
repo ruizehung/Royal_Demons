@@ -3,20 +3,18 @@ package uwu.openjfx.components;
 import com.almasb.fxgl.entity.component.Component;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import uwu.openjfx.creatureLifeCycle.DieBehavior;
-import uwu.openjfx.creatureLifeCycle.LifeBehavior;
 
 import java.util.Timer;
 
-public class CreatureComponent extends Component implements LifeBehavior {
+public class CreatureComponent extends Component implements HasLife {
 
     private int healthPoints;
     private int maxHealthPoints;
     private boolean isInvulnerable;
     private IntegerProperty playerHealthIntegerProperty;
-    private DieBehavior dieBehavior;
+    private Behavior dieBehavior;
 
-    public CreatureComponent(int healthPoints, int maxHealthPoints, DieBehavior dieBehavior) {
+    public CreatureComponent(int healthPoints, int maxHealthPoints, Behavior dieBehavior) {
         this.healthPoints = healthPoints;
         this.maxHealthPoints = maxHealthPoints;
         this.playerHealthIntegerProperty = new SimpleIntegerProperty(healthPoints);
@@ -24,7 +22,7 @@ public class CreatureComponent extends Component implements LifeBehavior {
     }
 
     public CreatureComponent(int healthPoints, int maxHealthPoints) {
-        this(healthPoints, maxHealthPoints, null);
+        this(healthPoints, maxHealthPoints, new DoNothing());
     }
 
     @Override
@@ -82,12 +80,12 @@ public class CreatureComponent extends Component implements LifeBehavior {
     }
 
     @Override
-    public void setDieBehavior(DieBehavior dieBehavior) {
+    public void setDieBehavior(Behavior dieBehavior) {
         this.dieBehavior = dieBehavior;
     }
 
     @Override
-    public DieBehavior getDieBehavior() {
+    public Behavior getDieBehavior() {
         return dieBehavior;
     }
 
@@ -108,9 +106,7 @@ public class CreatureComponent extends Component implements LifeBehavior {
 
     @Override
     public void die() {
-        if (dieBehavior != null) {
-            dieBehavior.die(getEntity().getX(), getEntity().getY());
-        }
+        dieBehavior.act(getEntity());
     }
     
 }

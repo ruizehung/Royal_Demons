@@ -1,8 +1,8 @@
-package uwu.openjfx.creatureLifeCycle;
+package uwu.openjfx.components;
 
 import javafx.beans.property.IntegerProperty;
 
-public interface LifeBehavior {
+public interface HasLife {
     void increaseHealth(int point);
 
     void deductHealth(int point);
@@ -19,9 +19,9 @@ public interface LifeBehavior {
 
     void setMaxHealthPoints(int maxHealthPoints);
 
-    void setDieBehavior(DieBehavior dieBehavior);
+    void setDieBehavior(Behavior dieBehavior);
 
-    DieBehavior getDieBehavior();
+    Behavior getDieBehavior();
 
     boolean dead();
 

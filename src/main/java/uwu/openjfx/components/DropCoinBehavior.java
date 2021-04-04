@@ -1,19 +1,17 @@
-package uwu.openjfx.creatureLifeCycle;
+package uwu.openjfx.components;
 
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.entity.Entity;
 
-public class DropCoinWhenDie implements DieBehavior {
+
+public class DropCoinBehavior implements Behavior {
     private int minCoinAmount;
     private int maxCoinAmount;
-    private int entityWidth;
-    private int entityHeight;
 
     // currently minMinimumCoinAmount and maxMinimumCoinAmount do not matter
-    public DropCoinWhenDie(int minCoinAmount, int maxCoinAmount, int entityWidth, int entityHeight) {
+    public DropCoinBehavior(int minCoinAmount, int maxCoinAmount) {
         this.minCoinAmount = minCoinAmount;
         this.maxCoinAmount = maxCoinAmount;
-        this.entityWidth = entityWidth;
-        this.entityHeight = entityHeight;
     }
 
     public int getMinCoinAmount() {
@@ -33,9 +31,10 @@ public class DropCoinWhenDie implements DieBehavior {
     }
 
     @Override
-    public void die(double x, double y) {
+    public void act(Entity entity) {
         if (FXGL.random() < 0.5 && minCoinAmount > 0) {
-            FXGL.spawn("coin", x + entityWidth / 2, y + entityHeight / 2);
+            FXGL.spawn("coin", entity.getX() + entity.getWidth() / 2,
+                    entity.getY() + entity.getHeight() / 2);
         }
     }
 }

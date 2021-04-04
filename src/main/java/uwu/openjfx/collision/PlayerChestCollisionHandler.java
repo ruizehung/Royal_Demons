@@ -4,6 +4,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import uwu.openjfx.RoyalType;
+import uwu.openjfx.components.CanOnlyInteractOnce;
 import uwu.openjfx.components.ChestComponent;
 
 public class PlayerChestCollisionHandler extends CollisionHandler {
@@ -15,9 +16,9 @@ public class PlayerChestCollisionHandler extends CollisionHandler {
 
     @Override
     protected void onCollision(Entity player, Entity chest) {
-        ChestComponent chestComponent = chest.getObject("chestComponent");
-        if (FXGL.getb("Fpressed") && !chestComponent.isOpened()) {
-            chestComponent.open();
+        CanOnlyInteractOnce chestComponent = chest.getObject("chestComponent");
+        if (FXGL.getb("Fpressed") && !chestComponent.hasInteractedBefore()) {
+            chestComponent.interact();
         }
     }
 }

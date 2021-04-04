@@ -7,31 +7,23 @@ import com.almasb.fxgl.entity.components.IDComponent;
 import javafx.scene.image.ImageView;
 import uwu.openjfx.MapGeneration.Room;
 
-public class MimicChestComponent extends ChestComponent {
+public class MimicChestComponent extends CanOnlyInteractOnce {
 
     public MimicChestComponent() {
     }
 
     @Override
-    public void open() {
-        if (!super.isOpened()) {
-            super.setHasBeenOpened(true);
-            Room curRoom = FXGL.geto("curRoom");
-            for (int i = 0; i < 3; ++i) {
-                Entity enemy = FXGL.spawn("minion", getEntity().getX() + FXGL.random(-96, 96),
-                        getEntity().getY() + FXGL.random(-96, 96));
-                IDComponent idComponent = new IDComponent("enemy", 5000 + i);
-                enemy.addComponent(idComponent);
-                curRoom.setEntityData(idComponent.getId(), "isAlive", 1);
-            }
-
-            IDComponent idComponent = getEntity().getComponent(IDComponent.class);
-            curRoom.setChestData(idComponent.getId(), "opened", 1);
-        }
+    public void interact() {
+        super.interact();
         changeToOpenedView();
     }
 
     @Override
+    public void disable() {
+        setInteractedBefore(true);
+        changeToOpenedView();
+    }
+
     public void changeToOpenedView() {
         getEntity().getViewComponent().clearChildren();
         getEntity().getViewComponent().addChild(new ImageView(FXGL.image(

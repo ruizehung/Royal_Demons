@@ -26,7 +26,7 @@ public class PlayerDroppedItemCollisionHandler extends CollisionHandler {
             if (itemNameObjMap.containsKey(itemName)) {
                 itemObj = itemNameObjMap.get(itemName);
                 itemObj.onPickUp(player);
-                // Todo: add itemObj to inventory ...
+                // Todo: add itemObj to inventory ?
             }
 
             itemEntity.removeFromWorld();

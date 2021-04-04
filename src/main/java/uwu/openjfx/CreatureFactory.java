@@ -14,8 +14,8 @@ import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import javafx.geometry.Point2D;
 import uwu.openjfx.components.*;
-import uwu.openjfx.creatureLifeCycle.DropCoinWhenDie;
-import uwu.openjfx.creatureLifeCycle.DropItemWhenDie;
+import uwu.openjfx.components.DropCoinBehavior;
+import uwu.openjfx.components.DropItemComponent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,7 +61,8 @@ public class CreatureFactory implements EntityFactory {
                 2,
                 "creatures/minions/normal/" + minionFileName,
                 widthHeight.get(0), widthHeight.get(1));
-        enemyComponent.setDieBehavior(new DropCoinWhenDie(1, 5, widthHeight.get(0), widthHeight.get(1)));
+
+        enemyComponent.setDieBehavior(new DropCoinBehavior(1, 5));
 
         // TODO__: better to manually define bbox tailor to each minion
         List<Point2D> point2DList = Arrays.asList(
@@ -94,7 +95,7 @@ public class CreatureFactory implements EntityFactory {
                 2,
                 "creatures/minions/forest/" + minionFileName,
                 widthHeight.get(0), widthHeight.get(1));
-        enemyComponent.setDieBehavior(new DropCoinWhenDie(1, 5, widthHeight.get(0), widthHeight.get(1)));
+        enemyComponent.setDieBehavior(new DropCoinBehavior(1, 5));
 
         // Ent has too much empty space at top
         int startingY = minionFileName.startsWith("Ent") ? 3 : 10;
@@ -127,11 +128,10 @@ public class CreatureFactory implements EntityFactory {
         String miniBossFileName = minionList.get(FXGL.random(0, minionList.size() - 1));
         List<Integer> widthHeight = parseSizes(miniBossFileName);
 
-        DropItemWhenDie dropItemWhenDie = new DropItemWhenDie(widthHeight.get(0), widthHeight.get(1));
+        DropItemComponent dropItemWhenDie = new DropItemComponent(Arrays.asList("Heart"));
         EnemyComponent enemyComponent = new EnemyComponent(1,
                 "creatures/miniBoss/" + miniBossFileName,
                 widthHeight.get(0), widthHeight.get(1));
-        dropItemWhenDie.addDropItem("Heart");
         enemyComponent.setDieBehavior(dropItemWhenDie);
 
         // TODO_: better to manually define bbox tailor to each minion
@@ -148,6 +148,7 @@ public class CreatureFactory implements EntityFactory {
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .with(enemyComponent)
+                .with(dropItemWhenDie)
                 .with("CreatureComponent", enemyComponent)
                 .build();
     }

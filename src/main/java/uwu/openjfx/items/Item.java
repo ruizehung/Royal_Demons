@@ -2,50 +2,55 @@ package uwu.openjfx.items;
 
 
 import com.almasb.fxgl.entity.Entity;
+import uwu.openjfx.components.Behavior;
+import uwu.openjfx.components.DoNothing;
 
 public class Item implements Usable, PickupBehavior {
     private String name;
-    private Usable useBehavior;
-    private PickupBehavior pickupBehavior;
+    private Behavior useBehavior;
+    private Behavior pickupBehavior;
+    private boolean canBeUsed;
 
-    public Item(String name) {
+    public Item(String name, boolean canBeUsed) {
         this.name = name;
-        this.useBehavior = new CannotUse();
-        this.pickupBehavior = new DoNothingOnPickup();
+        this.canBeUsed = canBeUsed;
+        this.useBehavior = new DoNothing();
+        this.pickupBehavior = new DoNothing();
     }
 
     public String getName() {
         return name;
     }
 
-    public Usable getUseBehavior() {
+    public Behavior getUseBehavior() {
         return useBehavior;
     }
 
-    public void setUseBehavior(Usable useBehavior) {
+    public void setUseBehavior(Behavior useBehavior) {
         this.useBehavior = useBehavior;
     }
 
-    public PickupBehavior getPickupBehavior() {
+    public Behavior getPickupBehavior() {
         return pickupBehavior;
     }
 
-    public void setPickupBehavior(PickupBehavior pickupBehavior) {
+    public void setPickupBehavior(Behavior pickupBehavior) {
         this.pickupBehavior = pickupBehavior;
     }
 
     public boolean isUsable() {
-        return useBehavior.isUsable();
+        return canBeUsed;
     }
 
+    @Override
     public void use(Entity entity) {
-        if (useBehavior.isUsable()) {
-            useBehavior.use(entity);
+        if (canBeUsed) {
+            useBehavior.act(entity);
         }
     }
 
     @Override
     public void onPickUp(Entity entity) {
-        pickupBehavior.onPickUp(entity);
+        pickupBehavior.act(entity);
     }
 }
