@@ -27,6 +27,6 @@ public class TestEnemyAttackPlayerCollisionHandler {
         handler.onCollisionBegin(monster, player);
 
 
-        assert playerComponent.getLife().getHealthPoints() < origHealth;
+        assert playerComponent.getHealthPoints() < origHealth;
     }
 }

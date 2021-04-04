@@ -25,6 +25,6 @@ public interface LifeBehavior {
 
     boolean dead();
 
-    void setXY(double x, double y);
+    void die();
 
 }

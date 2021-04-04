@@ -32,6 +32,8 @@ public class CreatureFactory implements EntityFactory {
         // this avoids player sticking to walls
         physics.setFixtureDef(new FixtureDef().friction(0.0f));
 
+        PlayerComponent playerComponent = new PlayerComponent(10);
+
         return FXGL.entityBuilder(data)
                 .type(RoyalType.PLAYER)
                 .bbox(new HitBox(BoundingShape.polygon(new Point2D(3, 15), new Point2D(38, 15),
@@ -39,7 +41,8 @@ public class CreatureFactory implements EntityFactory {
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .with(new IrremovableComponent())
-                .with(new PlayerComponent(10))
+                .with(playerComponent)
+                .with("CreatureComponent", playerComponent)
                 .build();
     }
 
@@ -56,6 +59,7 @@ public class CreatureFactory implements EntityFactory {
                 2,
                 "creatures/minions/normal/" + minionFileName,
                 widthHeight.get(0), widthHeight.get(1));
+        enemyComponent.setDieBehavior(new DropCoinWhenDie(1, 5, widthHeight.get(0), widthHeight.get(1)));
 
         // TODO__: better to manually define bbox tailor to each minion
         List<Point2D> point2DList = Arrays.asList(
@@ -71,7 +75,7 @@ public class CreatureFactory implements EntityFactory {
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .with(enemyComponent)
-                .with("enemyComponent", enemyComponent)
+                .with("CreatureComponent", enemyComponent)
                 .build();
     }
 
@@ -88,6 +92,7 @@ public class CreatureFactory implements EntityFactory {
                 2,
                 "creatures/minions/forest/" + minionFileName,
                 widthHeight.get(0), widthHeight.get(1));
+        enemyComponent.setDieBehavior(new DropCoinWhenDie(1, 5, widthHeight.get(0), widthHeight.get(1)));
 
         // Ent has too much empty space at top
         int startingY = minionFileName.startsWith("Ent") ? 3 : 10;
@@ -106,7 +111,7 @@ public class CreatureFactory implements EntityFactory {
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .with(enemyComponent)
-                .with("enemyComponent", enemyComponent)
+                .with("CreatureComponent", enemyComponent)
                 .build();
     }
 
@@ -120,13 +125,12 @@ public class CreatureFactory implements EntityFactory {
         String miniBossFileName = minionList.get(FXGL.random(0, minionList.size() - 1));
         List<Integer> widthHeight = parseSizes(miniBossFileName);
 
-        // Todo: I shouldn't be instantiating DropItemAndCoinWhenDie directly
-        DropItemAndCoinWhenDie dieBehavior = new DropItemAndCoinWhenDie(widthHeight.get(0), widthHeight.get(1), 0, 0);
+        DropItemWhenDie dropItemWhenDie = new DropItemWhenDie(widthHeight.get(0), widthHeight.get(1));
         EnemyComponent enemyComponent = new EnemyComponent(1,
                 "creatures/miniBoss/" + miniBossFileName,
                 widthHeight.get(0), widthHeight.get(1));
-        dieBehavior.addDropItem("Heart");
-        enemyComponent.getLife().setDieBehavior(dieBehavior);
+        dropItemWhenDie.addDropItem("Heart");
+        enemyComponent.setDieBehavior(dropItemWhenDie);
 
         // TODO_: better to manually define bbox tailor to each minion
         List<Point2D> point2DList = Arrays.asList(
@@ -142,7 +146,7 @@ public class CreatureFactory implements EntityFactory {
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .with(enemyComponent)
-                .with("enemyComponent", enemyComponent)
+                .with("CreatureComponent", enemyComponent)
                 .build();
     }
 
@@ -173,7 +177,7 @@ public class CreatureFactory implements EntityFactory {
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .with(bossComponent)
-                .with("enemyComponent", bossComponent)
+                .with("CreatureComponent", bossComponent)
                 .build();
     }
 

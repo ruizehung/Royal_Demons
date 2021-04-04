@@ -22,16 +22,16 @@ public class TestPlayerAttackEnemyCollisionHandler {
         Entity boss = new Entity();
         BossComponent bossComponent = new BossComponent(1, "", 0, 0, 0);
         boss.addComponent(bossComponent);
-        boss.setProperty("enemyComponent", bossComponent);
+        boss.setProperty("CreatureComponent", bossComponent);
 
         Entity weapon = new Entity();
 
-        assert !bossComponent.getLife().dead();
+        assert !bossComponent.dead();
 
         PlayerAttackEnemyCollisionHandler handler = new PlayerAttackEnemyCollisionHandler();
         handler.onCollisionBegin(weapon, boss);
 
-        assert bossComponent.getLife().dead();
+        assert bossComponent.dead();
     }
 
     // james 2
@@ -41,14 +41,14 @@ public class TestPlayerAttackEnemyCollisionHandler {
         Entity boss = new Entity();
         BossComponent bossComponent = new BossComponent(origHealth, "", 0, 0, 0);
         boss.addComponent(bossComponent);
-        boss.setProperty("enemyComponent", bossComponent);
+        boss.setProperty("CreatureComponent", bossComponent);
 
         Entity weapon = new Entity();
 
         PlayerAttackEnemyCollisionHandler handler = new PlayerAttackEnemyCollisionHandler();
         handler.onCollisionBegin(weapon, boss);
 
-        assert (bossComponent.getLife().getHealthPoints() < origHealth);
+        assert (bossComponent.getHealthPoints() < origHealth);
     }
 
     //alice 1
@@ -58,7 +58,7 @@ public class TestPlayerAttackEnemyCollisionHandler {
         EnemyComponent enemyComponent = new EnemyComponent(
                 1, "", 10, 20);
         monster.addComponent(enemyComponent);
-        monster.setProperty("enemyComponent", enemyComponent);
+        monster.setProperty("CreatureComponent", enemyComponent);
 
         Entity weapon = new Entity();
 
@@ -67,7 +67,7 @@ public class TestPlayerAttackEnemyCollisionHandler {
         PlayerAttackEnemyCollisionHandler handler = new PlayerAttackEnemyCollisionHandler();
         handler.onCollisionBegin(weapon, monster);
 
-        assert enemyComponent.getLife().dead();
+        assert enemyComponent.dead();
     }
 
     // devan 2
@@ -78,13 +78,13 @@ public class TestPlayerAttackEnemyCollisionHandler {
         EnemyComponent enemyComponent = new EnemyComponent(
                 origHealth, "", 10, 20);
         monster.addComponent(enemyComponent);
-        monster.setProperty("enemyComponent", enemyComponent);
+        monster.setProperty("CreatureComponent", enemyComponent);
 
         Entity weapon = new Entity();
 
         PlayerAttackEnemyCollisionHandler handler = new PlayerAttackEnemyCollisionHandler();
         handler.onCollisionBegin(weapon, monster);
 
-        assert enemyComponent.getLife().getHealthPoints() < origHealth;
+        assert enemyComponent.getHealthPoints() < origHealth;
     }
 }

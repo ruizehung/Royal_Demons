@@ -9,15 +9,12 @@ import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
-import javafx.beans.property.BooleanProperty;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import uwu.openjfx.components.ChestComponent;
-import uwu.openjfx.components.ItemComponent;
 import uwu.openjfx.components.MimicChestComponent;
 import uwu.openjfx.components.TrapComponent;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -126,7 +123,7 @@ public class StructureFactory implements EntityFactory {
                 .type(RoyalType.DROPPEDITEM)
                 .viewWithBBox(assetName)
                 .rotate(degree)
-                .with(new ItemComponent(itemName))
+                .with("name", itemName)
                 .with(new CollidableComponent(true))
                 .build();
     }

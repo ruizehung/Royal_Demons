@@ -27,7 +27,7 @@ import static com.almasb.fxgl.dsl.FXGL.spawn;
     - Enemy attacks player when player is within certain radius
     - Enemy has an animation to go with whatever attack it's performing.
  */
-public class EnemyComponent extends Component implements HasLife {
+public class EnemyComponent extends CreatureComponent {
     private PhysicsComponent physics;
 
     private String type;
@@ -66,12 +66,9 @@ public class EnemyComponent extends Component implements HasLife {
     private double scaler = 1.0;
 
     private LocalTimer moveTimer;
-    private Life life;
 
     public EnemyComponent(int maxHealthPoints, String assetName, int width, int height, int frames) {
-        life = new Life(maxHealthPoints, maxHealthPoints);
-        // default to drop coins
-        life.setDieBehavior(new DropItemAndCoinWhenDie(width, height, 1, 5));
+        super(maxHealthPoints, maxHealthPoints);
 
         this.type = assetName;
         this.width = width;
@@ -310,20 +307,9 @@ public class EnemyComponent extends Component implements HasLife {
         );
     }
 
-    // Todo: This is bad design
-    /*
-    public void addDroppedItem(String itemName) {
-        DropItemAndCoinWhenDie dropItemAndCoinWhenDie = (DropItemAndCoinWhenDie) life.getDieBehavior();
-        dropItemAndCoinWhenDie.getItemsDropList().add(itemName);
-    }
-     */
-
     @Override
-    public LifeBehavior getLife() {
-        return life;
-    }
-
-    public void removeFromWorld() {
+    public void die() {
+        super.die();
         if (!MainApp.isIsTesting()) {
             getEntity().removeFromWorld();
             IDComponent idComponent = getEntity().getComponent(IDComponent.class);

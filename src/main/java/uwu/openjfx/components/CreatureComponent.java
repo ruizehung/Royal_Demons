@@ -1,29 +1,27 @@
 package uwu.openjfx.components;
 
+import com.almasb.fxgl.entity.component.Component;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+
 import java.util.Timer;
 
-/*
-    This class is responsible for handing any alterations to the health of a creature.
- */
-public class Life implements LifeBehavior {
+public class CreatureComponent extends Component implements LifeBehavior {
+
     private int healthPoints;
     private int maxHealthPoints;
     private boolean isInvulnerable;
     private IntegerProperty playerHealthIntegerProperty;
     private DieBehavior dieBehavior;
-    private double entityX = -Double.MAX_VALUE;
-    private double entityY = -Double.MAX_VALUE;
 
-    public Life(int healthPoints, int maxHealthPoints, DieBehavior dieBehavior) {
+    public CreatureComponent(int healthPoints, int maxHealthPoints, DieBehavior dieBehavior) {
         this.healthPoints = healthPoints;
         this.maxHealthPoints = maxHealthPoints;
         this.playerHealthIntegerProperty = new SimpleIntegerProperty(healthPoints);
         setDieBehavior(dieBehavior);
     }
 
-    public Life(int healthPoints, int maxHealthPoints) {
+    public CreatureComponent(int healthPoints, int maxHealthPoints) {
         this(healthPoints, maxHealthPoints, null);
     }
 
@@ -107,12 +105,10 @@ public class Life implements LifeBehavior {
     }
 
     @Override
-    public void setXY(double x, double y) {
-        this.entityX = x;
-        this.entityY = y;
-    }
-
     public void die() {
-        dieBehavior.die(entityX, entityY);
+        if (dieBehavior != null) {
+            dieBehavior.die(getEntity().getX(), getEntity().getY());
+        }
     }
+    
 }

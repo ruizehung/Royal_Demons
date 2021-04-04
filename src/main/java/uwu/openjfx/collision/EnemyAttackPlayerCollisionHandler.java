@@ -18,9 +18,8 @@ public class EnemyAttackPlayerCollisionHandler extends CollisionHandler  {
     @Override
     public void onCollisionBegin(Entity enemy, Entity player) {
         PlayerComponent playerComponent = player.getComponent(PlayerComponent.class);
-        LifeBehavior playerLife = playerComponent.getLife();
-        if (!playerLife.isInvulnerable()) {
-            playerLife.deductHealth(1);
+        if (!playerComponent.isInvulnerable()) {
+            playerComponent.deductHealth(1);
         }
     }
 }

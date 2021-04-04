@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import uwu.openjfx.MainApp;
 import uwu.openjfx.collision.PlayerEnemyCollisionHandler;
 import uwu.openjfx.components.EnemyComponent;
-import uwu.openjfx.components.Life;
 import uwu.openjfx.components.PlayerComponent;
 
 public class TestPlayerEnemyCollisionHandler {
@@ -30,6 +29,6 @@ public class TestPlayerEnemyCollisionHandler {
         PlayerEnemyCollisionHandler handler = new PlayerEnemyCollisionHandler();
         handler.onCollision(player, monster);
 
-        assert (playerComponent.getLife().getHealthPoints() < origHealth);
+        assert (playerComponent.getHealthPoints() < origHealth);
     }
 }

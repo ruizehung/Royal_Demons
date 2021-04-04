@@ -1,6 +1,5 @@
 package uwu.openjfx.collision;
 
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.PhysicsComponent;
@@ -32,11 +31,7 @@ public class PlayerEnemyCollisionHandler extends CollisionHandler {
     }
 
     protected void onCollisionBegin(Entity player, Entity enemy) {
-        if (enemy.hasComponent(EnemyComponent.class)) {
-            enemyComponent = enemy.getComponent(EnemyComponent.class);
-        } else {
-            enemyComponent = enemy.getComponent(BossComponent.class);
-        }
+        enemyComponent = enemy.getObject("CreatureComponent");
 
         /*
             When colliding with an enemy for the first time, evaluate whether or not
@@ -51,15 +46,14 @@ public class PlayerEnemyCollisionHandler extends CollisionHandler {
 
     public void onCollision(Entity player, Entity enemy) {
         playerComponent = player.getComponent(PlayerComponent.class);
-        if (!playerComponent.getLife().isInvulnerable()) {
-            playerComponent.getLife().deductHealth(1);
+        if (!playerComponent.isInvulnerable()) {
+            playerComponent.deductHealth(1);
         }
 
         if (!MainApp.isIsTesting()) {
             if (enemyComponent.getMassEffect()) {
                 playerPhysics = player.getComponent(PhysicsComponent.class);
                 enemyPhysics = enemy.getComponent(PhysicsComponent.class);
-
                 reachEquilibrium();
                 stabilizeEquilibrium();
             }

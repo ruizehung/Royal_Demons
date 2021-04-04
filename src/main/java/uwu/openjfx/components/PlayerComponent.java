@@ -1,7 +1,6 @@
 package uwu.openjfx.components;
 
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
@@ -22,7 +21,7 @@ import java.util.Timer;
     - Animation of the player: movement, idleness, attacking
     - Being the caller for attacking, which in turn spawns the necessary weapon of type Weapon
  */
-public class PlayerComponent extends Component implements HasLife {
+public class PlayerComponent extends CreatureComponent {
 
     private PhysicsComponent physics;
 
@@ -53,8 +52,6 @@ public class PlayerComponent extends Component implements HasLife {
     private static String gameDifficulty;
     private static int gold;
 
-    private LifeBehavior life;
-
     private static IntegerProperty goldProperty;
 
     public static String getPlayerName() {
@@ -82,7 +79,7 @@ public class PlayerComponent extends Component implements HasLife {
     }
 
     public PlayerComponent(int maxHealthPoints) {
-        life = new Life(maxHealthPoints, maxHealthPoints, new GameOverWhenDie());
+        super(maxHealthPoints, maxHealthPoints, new GameOverWhenDie());
 
         if (currentWeapon == null) {
             switch (playerWeapon) {
@@ -307,16 +304,5 @@ public class PlayerComponent extends Component implements HasLife {
 
     public IntegerProperty getGoldProperty() {
         return goldProperty;
-    }
-
-//    @Override
-//    public void deductHealth(int point) {
-//        life.setXY(getEntity().getX(), getEntity().getY());
-//        life.deductHealth(point);
-//    }
-
-    @Override
-    public LifeBehavior getLife() {
-        return life;
     }
 }

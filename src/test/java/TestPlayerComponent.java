@@ -2,7 +2,6 @@ import com.almasb.fxgl.entity.Entity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uwu.openjfx.MainApp;
-import uwu.openjfx.components.Life;
 import uwu.openjfx.components.PlayerComponent;
 
 public class TestPlayerComponent {
@@ -19,7 +18,7 @@ public class TestPlayerComponent {
         Entity player = new Entity();
         PlayerComponent playerComponent = new PlayerComponent(1);
         player.addComponent(playerComponent);
-        playerComponent.getLife().deductHealth(Integer.MAX_VALUE);
-        assert playerComponent.getLife().dead();
+        playerComponent.deductHealth(Integer.MAX_VALUE);
+        assert playerComponent.dead();
     }
 }

@@ -15,6 +15,9 @@ import javafx.scene.text.Text;
 import uwu.openjfx.MapGeneration.GameMap;
 import uwu.openjfx.collision.*;
 import uwu.openjfx.components.PlayerComponent;
+import uwu.openjfx.components.items.Heart;
+import uwu.openjfx.components.items.Item;
+import uwu.openjfx.components.items.Usable;
 import uwu.openjfx.input.*;
 
 import java.io.File;
@@ -33,6 +36,7 @@ public class MainApp extends GameApplication {
     private List<String> roomTypeList;
     private Set<String> weaponsSet;
     private Map<String, String> itemNameAssetMap;
+    private Map<String, Item> itemNameObjMap;
     private final Boolean developerCheat = true;
     private static boolean isTesting = false;
 
@@ -225,8 +229,9 @@ public class MainApp extends GameApplication {
         player = spawn("player", 0, 0);
         set("player", player);
         if (developerCheat) {
-            player.getComponent(PlayerComponent.class).getLife().setHealthPoints(99999);
+            player.getComponent(PlayerComponent.class).setHealthPoints(200);
         }
+
         gameMap.loadRoom(gameMap.getInitialRoom(), "center");
 
         Viewport viewport = getGameScene().getViewport();
@@ -263,8 +268,7 @@ public class MainApp extends GameApplication {
         textHealth.setStroke(Color.WHITE);
 
         textHealth.textProperty().bind(
-                player.getComponent(PlayerComponent.class).getLife()
-                        .getHealthIntegerProperty().asString());
+                player.getComponent(PlayerComponent.class).getHealthIntegerProperty().asString());
         getGameScene().addUINode(textHealth); // add to the scene graph
 
         Text textHealthPrefix = getUIFactoryService().newText("HP:", 50);
@@ -325,6 +329,9 @@ public class MainApp extends GameApplication {
         itemNameAssetMap.put("RagePotion", "items/ragePotion.png");
         itemNameAssetMap.put("Heart", "items/ui_heart_full_32x32.png");
 
+        itemNameObjMap = new HashMap<>();
+        itemNameObjMap.put("Heart", new Heart("Heart", 3));
+
 
         weaponsSet = new HashSet<>();
         File dir = new File("src/main/resources/assets/textures/items/weapons");
@@ -338,6 +345,7 @@ public class MainApp extends GameApplication {
 
         set("weaponsSet", weaponsSet);
         set("itemsNameAssetMap", itemNameAssetMap);
+        set("itemNameObjMap", itemNameObjMap);
     }
 
     public void loadRoomAsset() {
