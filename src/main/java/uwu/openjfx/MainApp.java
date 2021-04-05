@@ -8,6 +8,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.input.virtual.VirtualButton;
+import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
@@ -179,6 +180,8 @@ public class MainApp extends GameApplication {
         getInput().addAction(new UserAction("LMB") {
             @Override
             protected void onActionBegin() {
+                Point2D cursorPointInUI = getInput().getMousePositionUI();
+                System.out.println(cursorPointInUI);
                 if (!player.getComponent(PlayerComponent.class).isAttacking()) {
                     player.getComponent(PlayerComponent.class).setMousePosition(
                             FXGL.getInput().getMousePositionWorld().getX(),
@@ -205,6 +208,8 @@ public class MainApp extends GameApplication {
         // endregion
 
         getInput().addAction(new ShowMapAction("showMap"), KeyCode.M);
+        getInput().addAction(new ShowInventoryAction("showInventory"), KeyCode.I);
+
     }
 
     @Override
