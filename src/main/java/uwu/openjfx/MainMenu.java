@@ -47,19 +47,16 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.random;
 
 public class MainMenu extends FXGLMenu {
 
-    private ParticleSystem particleSystem = new ParticleSystem();
-
-    private ObjectProperty<Color> titleColor = new SimpleObjectProperty<>();
-    private double t = 0.0;
-
     private final Pane menuRoot = new Pane();
     private final Pane menuContentRoot = new Pane();
-
     private final MenuContent emptyMenuContent = new MenuContent();
+    private final MenuBox menu;
+    private final ArrayList<Animation<?>> animations = new ArrayList<>();
+    private ParticleSystem particleSystem = new ParticleSystem();
 
     //private PressAnyKeyState pressAnyKeyState = new PressAnyKeyState();
-
-    private final MenuBox menu;
+    private ObjectProperty<Color> titleColor = new SimpleObjectProperty<>();
+    private double t = 0.0;
 
     public MainMenu(@NotNull MenuType type) {
         super(type);
@@ -115,7 +112,14 @@ public class MainMenu extends FXGLMenu {
         menuContentRoot.getChildren().add(emptyMenuContent);
     }
 
-    private final ArrayList<Animation<?>> animations = new ArrayList<>();
+    public static void resetToMainMenu() {
+        FXGL.getGameController().gotoMainMenu();
+        FXGL.getAudioPlayer().stopAllMusic();
+        loopBGM("MainMenu.mp3");
+        PlayerComponent.setPlayerName(null);
+        PlayerComponent.setPlayerWeapon(null);
+        PlayerComponent.setGameDifficulty(null);
+    }
 
     @Override
     public void onCreate() {
@@ -327,15 +331,6 @@ public class MainMenu extends FXGLMenu {
         return box;
     }
 
-    public static void resetToMainMenu() {
-        FXGL.getGameController().gotoMainMenu();
-        FXGL.getAudioPlayer().stopAllMusic();
-        loopBGM("MainMenu.mp3");
-        PlayerComponent.setPlayerName(null);
-        PlayerComponent.setPlayerWeapon(null);
-        PlayerComponent.setGameDifficulty(null);
-    }
-
     private MenuBox createOptionsMenu() {
         MenuButton itemAudio = new MenuButton("Volume");
         itemAudio.setMenuContent(this::createContentAudio, false);
@@ -387,15 +382,15 @@ public class MainMenu extends FXGLMenu {
     protected MenuContent createContentName() {
         MenuButton itemName = new MenuButton("Click me!");
         itemName.setOnAction(e -> FXGL.getDialogService().showInputBoxWithCancel(
-            "What is your name?",
-            t -> {
-                return !(t == null || t.isEmpty()
-                        || t.trim().isEmpty());
-            },
-            s -> {
-                PlayerComponent.setPlayerName(s);
-                itemName.updateText(PlayerComponent.getPlayerName());
-            }));
+                "What is your name?",
+                t -> {
+                    return !(t == null || t.isEmpty()
+                            || t.trim().isEmpty());
+                },
+                s -> {
+                    PlayerComponent.setPlayerName(s);
+                    itemName.updateText(PlayerComponent.getPlayerName());
+                }));
 
         HBox hboxName = new HBox(15.0, itemName);
 
@@ -407,27 +402,27 @@ public class MainMenu extends FXGLMenu {
     protected MenuContent createContentDifficulty() {
         MenuButton itemEasy = new MenuButton("Easy");
         itemEasy.setOnAction(
-            e -> {
-                PlayerComponent.setGameDifficulty(itemEasy.getText());
-                PlayerComponent.setGold(1000);
-                itemEasy.updateText(itemEasy.getText());
-            });
+                e -> {
+                    PlayerComponent.setGameDifficulty(itemEasy.getText());
+                    PlayerComponent.setGold(1000);
+                    itemEasy.updateText(itemEasy.getText());
+                });
 
         MenuButton itemMedium = new MenuButton("Medium");
         itemMedium.setOnAction(
-            e -> {
-                PlayerComponent.setGameDifficulty(itemMedium.getText());
-                PlayerComponent.setGold(800);
-                itemMedium.updateText(itemMedium.getText());
-            });
+                e -> {
+                    PlayerComponent.setGameDifficulty(itemMedium.getText());
+                    PlayerComponent.setGold(800);
+                    itemMedium.updateText(itemMedium.getText());
+                });
 
         MenuButton itemHard = new MenuButton("Hard");
         itemHard.setOnAction(
-            e -> {
-                PlayerComponent.setGameDifficulty(itemHard.getText());
-                PlayerComponent.setGold(600);
-                itemHard.updateText(itemHard.getText());
-            });
+                e -> {
+                    PlayerComponent.setGameDifficulty(itemHard.getText());
+                    PlayerComponent.setGold(600);
+                    itemHard.updateText(itemHard.getText());
+                });
 
         return new MenuContent(itemEasy, itemMedium, itemHard);
     }
@@ -435,24 +430,24 @@ public class MainMenu extends FXGLMenu {
     protected MenuContent createContentWeapon() {
         MenuButton itemSword = new MenuButton("Sword");
         itemSword.setOnAction(
-            e -> {
-                PlayerComponent.setPlayerWeapon(itemSword.getText());
-                itemSword.updateText(itemSword.getText());
-            });
+                e -> {
+                    PlayerComponent.setPlayerWeapon(itemSword.getText());
+                    itemSword.updateText(itemSword.getText());
+                });
 
         MenuButton itemWand = new MenuButton("Wand");
         itemWand.setOnAction(
-            e -> {
-                PlayerComponent.setPlayerWeapon(itemWand.getText());
-                itemWand.updateText(itemWand.getText());
-            });
+                e -> {
+                    PlayerComponent.setPlayerWeapon(itemWand.getText());
+                    itemWand.updateText(itemWand.getText());
+                });
 
         MenuButton itemBow = new MenuButton("Bow");
         itemBow.setOnAction(
-            e -> {
-                PlayerComponent.setPlayerWeapon(itemBow.getText());
-                itemBow.updateText(itemBow.getText());
-            });
+                e -> {
+                    PlayerComponent.setPlayerWeapon(itemBow.getText());
+                    itemBow.updateText(itemBow.getText());
+                });
 
         return new MenuContent(itemSword, itemWand, itemBow);
     }
@@ -499,14 +494,14 @@ public class MainMenu extends FXGLMenu {
 
         private final double layoutHeight = 6.0 * getChildren().size();
 
-        public double getLayoutHeight() {
-            return layoutHeight;
-        }
-
         public MenuBox(MenuButton... items) {
             for (MenuButton item : items) {
                 getChildren().add(item);
             }
+        }
+
+        public double getLayoutHeight() {
+            return layoutHeight;
         }
 
         public void add(MenuButton item) {
@@ -579,12 +574,10 @@ public class MainMenu extends FXGLMenu {
     }
 
     private class MenuButton extends Pane {
+        private final Button btn;
         private MenuBox parent;
         private MenuContent cachedContent;
         private String text;
-
-        private final Button btn;
-
         private boolean isAnimating = false;
 
         public MenuButton(String stringKey) {
@@ -647,6 +640,7 @@ public class MainMenu extends FXGLMenu {
             text = newText;
             btn.setText(text);
         }
+
         public String getText() {
             return text;
         }

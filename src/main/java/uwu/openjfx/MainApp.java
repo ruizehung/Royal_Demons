@@ -15,6 +15,10 @@ import javafx.scene.text.Text;
 import uwu.openjfx.MapGeneration.GameMap;
 import uwu.openjfx.collision.*;
 import uwu.openjfx.components.PlayerComponent;
+import uwu.openjfx.events.InteractEvent;
+import uwu.openjfx.events.InteractEventHandler;
+import uwu.openjfx.events.PickupEvent;
+import uwu.openjfx.events.PickupEventHandler;
 import uwu.openjfx.items.Heart;
 import uwu.openjfx.items.Item;
 import uwu.openjfx.input.*;
@@ -237,6 +241,10 @@ public class MainApp extends GameApplication {
         viewport.setBounds(-32 * 5, -getAppHeight(), 32 * 70, 32 * 70);
         viewport.bindToEntity(player, getAppWidth() / 2.0, getAppHeight() / 2.0);
         viewport.setLazy(true);
+
+        getEventBus().addEventHandler(PickupEvent.ANY, new PickupEventHandler());
+        getEventBus().addEventHandler(InteractEvent.ANY, new InteractEventHandler());
+
     }
 
     @Override
@@ -244,6 +252,7 @@ public class MainApp extends GameApplication {
         vars.put("pixelsMoved", 0);
         vars.put("developerCheat", developerCheat);
     }
+
 
     @Override
     protected void initPhysics() {
@@ -257,6 +266,7 @@ public class MainApp extends GameApplication {
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerCoinCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerDroppedItemCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerChestCollisionHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new PlayerNPCCollisionHandler());
     }
 
     @Override

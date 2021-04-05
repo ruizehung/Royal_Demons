@@ -13,6 +13,7 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import javafx.geometry.Point2D;
+import uwu.openjfx.behaviors.Interactable;
 import uwu.openjfx.components.*;
 import uwu.openjfx.behaviors.DropCoinBehavior;
 import uwu.openjfx.behaviors.DropItemComponent;
@@ -207,11 +208,16 @@ public class CreatureFactory implements EntityFactory {
         return  widthHeight;
     }
 
-    // @Spawns("ally")
-    // public Entity newAlly(SpawnData data) {
-    //     return FXGL.entityBuilder(data)
-    //             .view("lizard_m_idle_anim_f0_40x70.png")
-    //             .with(new ProjectileComponent(new Point2D(-1, 0), 150))
-    //             .build();
-    // }
+     @Spawns("initialRoomNPC")
+     public Entity newInitialRoomNPC(SpawnData data) {
+         InitialNPCComponent initialNPCComponent = new InitialNPCComponent();
+         return FXGL.entityBuilder(data)
+                 .type(RoyalType.NPC)
+                 .bbox(new HitBox(BoundingShape.polygon(new Point2D(3, 15), new Point2D(38, 15),
+                         new Point2D(38, 55), new Point2D(3, 55))))
+                 .with(new CollidableComponent(true))
+                 .with(initialNPCComponent)
+                 .with("Interactable", initialNPCComponent)
+                 .build();
+     }
 }

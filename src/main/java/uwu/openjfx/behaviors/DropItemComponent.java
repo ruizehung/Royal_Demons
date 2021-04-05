@@ -1,5 +1,6 @@
 package uwu.openjfx.behaviors;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.component.Component;
@@ -34,8 +35,8 @@ public class DropItemComponent extends Component implements Behavior {
         if (itemsList.size() > 0) {
             for (String itemName : itemsList) {
                 spawn("itemOnFloor",
-                        new SpawnData(entity.getX() + entity.getWidth() / 2 + 16,
-                                entity.getY() + entity.getHeight() / 2 + 16)
+                        new SpawnData(entity.getX() + entity.getWidth() / 2 + 16 + FXGL.random(-32, 32),
+                                entity.getY() + entity.getHeight() / 2 + 16 + FXGL.random(-32, 32))
                                 .put("name", itemName));
             }
         }
