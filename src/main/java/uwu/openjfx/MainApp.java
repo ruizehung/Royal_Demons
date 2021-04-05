@@ -180,8 +180,6 @@ public class MainApp extends GameApplication {
         getInput().addAction(new UserAction("LMB") {
             @Override
             protected void onActionBegin() {
-                Point2D cursorPointInUI = getInput().getMousePositionUI();
-                System.out.println(cursorPointInUI);
                 if (!player.getComponent(PlayerComponent.class).isAttacking()) {
                     player.getComponent(PlayerComponent.class).setMousePosition(
                             FXGL.getInput().getMousePositionWorld().getX(),
@@ -241,6 +239,7 @@ public class MainApp extends GameApplication {
         player = spawn("player", 0, 0);
         set("player", player);
         playerComponent = player.getComponent(PlayerComponent.class);
+        set("playerComponent", playerComponent);
         if (developerCheat) {
             player.getComponent(PlayerComponent.class).setHealthPoints(200);
         }

@@ -141,7 +141,7 @@
     <property name="name" value="HealthPotion"/>
    </properties>
   </object>
-  <object id="42" name="NPC" type="initialRoomNPC" x="537.164" y="226.941">
+  <object id="42" name="Wizard" type="initialRoomNPC" x="537.164" y="226.941">
    <point/>
   </object>
  </objectgroup>
