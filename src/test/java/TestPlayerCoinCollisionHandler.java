@@ -1,11 +1,5 @@
-import com.almasb.fxgl.entity.Entity;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import uwu.openjfx.MainApp;
-import uwu.openjfx.collision.PlayerCoinCollisionHandler;
-import uwu.openjfx.components.CoinComponent;
-import uwu.openjfx.components.PlayerComponent;
-import uwu.openjfx.events.PickupEventHandler;
 
 public class TestPlayerCoinCollisionHandler {
 

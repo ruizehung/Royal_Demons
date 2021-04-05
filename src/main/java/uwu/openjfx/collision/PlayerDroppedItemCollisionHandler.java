@@ -19,7 +19,7 @@ public class PlayerDroppedItemCollisionHandler extends CollisionHandler {
     protected void onCollision(Entity player, Entity itemEntity) {
         if (FXGL.getb("Epressed")) {
             String itemName = itemEntity.getString("name");
-            System.out.println("Player picked up " + itemName);
+            System.out.println("Player picks up" + itemName);
 
             Item itemObj;
             Map<String, Item> itemNameObjMap = FXGL.geto("itemNameObjMap");
@@ -32,7 +32,7 @@ public class PlayerDroppedItemCollisionHandler extends CollisionHandler {
             itemEntity.removeFromWorld();
 
             // For items that is spawned by map (not from chest or monster), we don't
-            // want it to be respawned each time palyer enter this room
+            // want it to be respawned each time player enter this room
             try {
                 IDComponent idComponent = itemEntity.getComponent(IDComponent.class);
                 Room curRoom = FXGL.geto("curRoom");

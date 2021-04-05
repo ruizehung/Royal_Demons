@@ -6,7 +6,6 @@ import com.almasb.fxgl.physics.CollisionHandler;
 import uwu.openjfx.RoyalType;
 import uwu.openjfx.components.CoinComponent;
 import uwu.openjfx.components.PlayerComponent;
-import uwu.openjfx.events.PickupEvent;
 
 public class PlayerCoinCollisionHandler extends CollisionHandler {
     public PlayerCoinCollisionHandler() {
@@ -15,6 +14,9 @@ public class PlayerCoinCollisionHandler extends CollisionHandler {
 
     @Override
     public void onCollisionBegin(Entity player, Entity coin) {
-        FXGL.getEventBus().fireEvent(new PickupEvent(PickupEvent.COIN, coin));
+        PlayerComponent playerComponent = FXGL.geto("playerComponent");
+        CoinComponent coinComponent = coin.getComponent(CoinComponent.class);
+        playerComponent.addGold(coinComponent.getValue());
+        coin.removeFromWorld();
     }
 }
