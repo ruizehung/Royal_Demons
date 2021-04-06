@@ -14,6 +14,8 @@ import uwu.openjfx.weapons.GoldenSword0;
 import uwu.openjfx.weapons.MagicStaff0;
 import uwu.openjfx.weapons.Weapon;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 
 /*
@@ -32,6 +34,7 @@ public class PlayerComponent extends CreatureComponent {
     private AnimationChannel animAutoAttack;
 
     private static Weapon currentWeapon; // Player's current weapon
+    private static List<Weapon> weaponInventoryList = new ArrayList<>();
 
     private double currMouseX; // mouse input for x
     private double currMouseY; // mouse input for y
@@ -44,7 +47,6 @@ public class PlayerComponent extends CreatureComponent {
     private boolean startAttack = false; // Player does the actual attack
     private boolean ultimateActivated = false; // Player is using ultimate
     private boolean ultimateCD = false; // how long until Player can activate Ultimate again
-    private boolean deadTest = false; // test if Player is dead
 
     // Todo: char state class?
     private static String playerName;
@@ -73,6 +75,7 @@ public class PlayerComponent extends CreatureComponent {
                 break;
             default:
             }
+            weaponInventoryList.add(weapon);
             setCurrentWeapon(weapon);
         }
 
@@ -303,4 +306,18 @@ public class PlayerComponent extends CreatureComponent {
     public static void setGameDifficulty(String gameDifficulty) {
         PlayerComponent.gameDifficulty = gameDifficulty;
     }
+
+    public static List<Weapon> getWeaponInventoryList() {
+        return weaponInventoryList;
+    }
+
+    public static void addWeaponToInventory(Weapon weapon) {
+        for (Weapon playerWeapon: weaponInventoryList) {
+            if (playerWeapon.getName().equals(weapon.getName())) {
+                return;
+            }
+        }
+        weaponInventoryList.add(weapon);
+    }
+
 }

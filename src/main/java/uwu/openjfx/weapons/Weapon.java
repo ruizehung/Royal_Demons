@@ -1,6 +1,7 @@
 package uwu.openjfx.weapons;
 
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.texture.Texture;
 import javafx.scene.image.Image;
 
 /*
@@ -15,4 +16,7 @@ public interface Weapon {
     void attack(Entity player, double mouseCurrX, double mouseCurrY);
     int getDuration(boolean ultimateActivated);
     Image getWeaponSprite();
+    String getWeaponIconPath();
+    String getName();
+    String getDescription();
 }

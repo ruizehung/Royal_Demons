@@ -38,8 +38,8 @@ public class MainApp extends GameApplication {
     private List<String> roomTypeList;
     private Set<String> weaponsSet;
     private Map<String, String> itemNameAssetMap;
-    private final Boolean developerCheat = true;
     private Map<String, Item> itemNameObjMap;
+    private final Boolean developerCheat = true;
     private static boolean isTesting = false;
 
     // Top priority : (
@@ -237,6 +237,7 @@ public class MainApp extends GameApplication {
         set("playerComponent", playerComponent);
         if (developerCheat) {
             player.getComponent(PlayerComponent.class).setHealthPoints(200);
+            player.getComponent(PlayerComponent.class).setMaxHealthPoints(999);
         }
 
         gameMap.loadRoom(gameMap.getInitialRoom(), "center");
@@ -302,6 +303,7 @@ public class MainApp extends GameApplication {
 
         textGold.textProperty().bind(UI.getGoldProperty().asString());
         getGameScene().addUINode(textGold); // add to the scene graph
+
     }
 
     public void loadEnemiesAsset() {
@@ -345,12 +347,12 @@ public class MainApp extends GameApplication {
 
 
         weaponsSet = new HashSet<>();
-        File dir = new File("src/main/resources/assets/textures/items/weapons");
+        File dir = new File("src/main/resources/assets/textures/ui/inventory/");
         for (File file : dir.listFiles()) {
             if (file.getName().endsWith(".png")) {
-                weaponsSet.add(file.getName().replace("_32x32.png", ""));
-                itemNameAssetMap.put(file.getName().replace("_32x32.png", ""),
-                        "items/weapons/" + file.getName());
+                weaponsSet.add(file.getName().replace(".png", ""));
+                itemNameAssetMap.put(file.getName().replace(".png", ""),
+                        "ui/inventory/" + file.getName());
             }
         }
 

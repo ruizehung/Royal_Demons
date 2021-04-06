@@ -2,6 +2,8 @@ package uwu.openjfx.input;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.physics.PhysicsComponent;
+import com.almasb.fxgl.texture.Texture;
 import javafx.collections.ObservableMap;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -14,19 +16,26 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import org.jetbrains.annotations.NotNull;
+import uwu.openjfx.components.PlayerComponent;
+import uwu.openjfx.weapons.Weapon;
+
+import java.util.List;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getAssetLoader;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getUIFactoryService;
 
 public class ShowInventoryAction extends UserAction {
-
-    private BorderPane inventory = new BorderPane();
-    private BorderPane itemInfoPane = new BorderPane();
-    GridPane inventoryGrid = new GridPane();
-    private Text itemInfoTitle = FXGL.getUIFactoryService().newText("");
-
     public ShowInventoryAction(@NotNull String name) {
         super(name);
+    }
+
+    @Override
+    protected void onActionBegin() {
+        BorderPane inventory = new BorderPane();
+        BorderPane itemInfoPane = new BorderPane();
+        GridPane inventoryGrid = new GridPane();
+        Text itemInfoTitle = FXGL.getUIFactoryService().newText("");
+
         HBox title = new HBox(FXGL.getUIFactoryService().newText("Inventory", 30));
         title.setAlignment(Pos.TOP_CENTER);
         Insets insets = new Insets(0, 0, 70, 0);
@@ -37,10 +46,8 @@ public class ShowInventoryAction extends UserAction {
         itemInfoPane.setPrefWidth(100);
         itemInfoPane.setPrefHeight(200);
         itemInfoPane.setTop(itemInfoTitle);
-    }
 
-    @Override
-    protected void onActionBegin() {
+
         inventoryGrid.setHgap(3);
         inventoryGrid.setVgap(3);
 
@@ -51,25 +58,53 @@ public class ShowInventoryAction extends UserAction {
 
         String cssLayout = "-fx-border-color: white; -fx-border-insets: 5; -fx-border-width: 3;";
 
-        EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
+        EventHandler<MouseEvent> showInfo = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-                ObservableMap obm = ((BorderPane) e.getSource()).getProperties();
-                System.out.println(obm.get("item") + "got clicked!");
+                BorderPane slot = (BorderPane) e.getSource();
+                if (slot.getCenter() == null) {
+                    return;
+                }
 
-                itemInfoTitle.setText((String) obm.get("item"));
-                Text text = FXGL.getUIFactoryService().newText("some description ....");
+                ObservableMap obm = slot.getProperties();
+                Weapon selectedWeapon = (Weapon) obm.get("item");
+                itemInfoTitle.setText(selectedWeapon.getName());
+                Text text = FXGL.getUIFactoryService().newText(selectedWeapon.getDescription());
                 text.setWrappingWidth(120);
 
-                VBox vBox = new VBox(getAssetLoader()
-                        .loadTexture("weapon_golden_sword_32x32.png"), text);
-                vBox.setAlignment(Pos.TOP_CENTER);
-                vBox.setSpacing(10);
-                itemInfoPane.setCenter(vBox);
-                itemInfoPane.setBottom(FXGL.getUIFactoryService().newButton("Drop"));
+                Texture weaponIcon = getAssetLoader().loadTexture(selectedWeapon.getWeaponIconPath());
+                VBox descriptionAndIcon = new VBox(weaponIcon, text);
+                descriptionAndIcon.setAlignment(Pos.TOP_CENTER);
+                descriptionAndIcon.setSpacing(10);
+                itemInfoPane.setCenter(descriptionAndIcon);
+
+                Button select = FXGL.getUIFactoryService().newButton("Select");
+                Button drop = FXGL.getUIFactoryService().newButton("Drop");
+                VBox buttons = new VBox(select, drop);
+
+                select.setOnMouseClicked((event) -> {
+                    if (!PlayerComponent.getCurrentWeapon().getName()
+                            .equals(selectedWeapon.getName())){
+                        PlayerComponent.setCurrentWeapon(selectedWeapon);
+                    }
+                });
+
+                drop.setOnMouseClicked((event) -> {
+                    if (!PlayerComponent.getCurrentWeapon().getName()
+                            .equals(selectedWeapon.getName())){
+                        PlayerComponent.getWeaponInventoryList().remove(selectedWeapon);
+                        slot.setCenter(null);
+                        slot.getProperties().remove("item");
+                        itemInfoTitle.setText("");
+                        descriptionAndIcon.getChildren().clear();
+                        itemInfoPane.setBottom(null);
+                    }
+                });
+                itemInfoPane.setBottom(buttons);
             }
         };
 
+        List<Weapon> playerWeaponList = PlayerComponent.getWeaponInventoryList();
 
         for (int r = 0; r < rows; ++r) {
             for (int c = 0; c < cols; ++c) {
@@ -77,18 +112,24 @@ public class ShowInventoryAction extends UserAction {
                 borderPanes[r][c].setStyle(cssLayout);
                 borderPanes[r][c].setPrefWidth(96);
                 borderPanes[r][c].setPrefHeight(96);
-
-                borderPanes[r][c].setCenter(getAssetLoader()
-                        .loadTexture("weapon_golden_sword_32x32.png"));
-                borderPanes[r][c].getProperties().put("item", "golden_sword");
-
+                if (r * rows + c < playerWeaponList.size()) {
+                    borderPanes[r][c].setCenter(getAssetLoader()
+                            .loadTexture(playerWeaponList.get(r * rows + c)
+                                    .getWeaponIconPath()));
+                    borderPanes[r][c].getProperties()
+                            .put("item", playerWeaponList.get(r * rows + c));
+                    borderPanes[r][c].addEventFilter(MouseEvent.MOUSE_CLICKED, showInfo);
+                }
+                /*
                 Text count = FXGL.getUIFactoryService().newText("0");
                 HBox hBox = new HBox(count);
                 hBox.setAlignment(Pos.BOTTOM_RIGHT);
                 borderPanes[r][c].setBottom(hBox);
-                inventoryGrid.add(borderPanes[r][c], c, r);
-                borderPanes[r][c].addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
+                 */
 
+                inventoryGrid.add(borderPanes[r][c], c, r);
+
+                /*
                 borderPanes[r][c].hoverProperty().addListener((observable, oldValue, newValue) -> {
                     if (newValue) {
                         System.out.println("on hover");
@@ -96,11 +137,11 @@ public class ShowInventoryAction extends UserAction {
                         System.out.println("finish hover");
                     }
                 });
+                 */
             }
         }
 
         inventoryGrid.setAlignment(Pos.CENTER);
-
 
         Button btnClose = getUIFactoryService().newButton("Close");
         btnClose.setPrefWidth(300);

@@ -1,8 +1,10 @@
 package uwu.openjfx.weapons;
 
 import com.almasb.fxgl.core.math.Vec2;
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
+import com.almasb.fxgl.texture.Texture;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 
@@ -24,6 +26,9 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
     private Vec2 dir; // the direction with respect to mouse-pressed location
     private boolean ultimateActivated;
     private Image sprite = new Image("assets/textures/ui/weapons/staff0_ui.png"); // weapon sprite
+    private String inventoryIconPath = "ui/inventory/nature_staff.png";
+    private String name = "Nature Staff";
+
 
     @Override
     public void prepAttack(Entity player) {
@@ -125,4 +130,20 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
     public Image getWeaponSprite() {
         return sprite;
     }
+
+    @Override
+    public String getWeaponIconPath() {
+        return inventoryIconPath;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getDescription() {
+        return "Some description";
+    }
+
 }

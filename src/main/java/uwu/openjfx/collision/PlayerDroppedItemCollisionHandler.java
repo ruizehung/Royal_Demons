@@ -7,11 +7,13 @@ import com.almasb.fxgl.physics.CollisionHandler;
 import uwu.openjfx.MapGeneration.Room;
 import uwu.openjfx.RoyalType;
 import uwu.openjfx.UI;
+import uwu.openjfx.components.PlayerComponent;
 import uwu.openjfx.items.Item;
+import uwu.openjfx.weapons.Bow0;
+import uwu.openjfx.weapons.GoldenSword0;
+import uwu.openjfx.weapons.MagicStaff0;
 
 import java.util.Map;
-
-import java.util.List;
 
 public class PlayerDroppedItemCollisionHandler extends CollisionHandler {
     public PlayerDroppedItemCollisionHandler() {
@@ -22,7 +24,7 @@ public class PlayerDroppedItemCollisionHandler extends CollisionHandler {
     protected void onCollision(Entity player, Entity itemEntity) {
         if (FXGL.getb("Epressed")) {
             String itemName = itemEntity.getString("name");
-            System.out.println("Player picks up" + itemName);
+            System.out.println("Player picks up " + itemName);
 
             // add things to inventory
             if (itemName.equals("HealthPotion")) {
@@ -31,8 +33,18 @@ public class PlayerDroppedItemCollisionHandler extends CollisionHandler {
             if (itemName.equals("RagePotion")) {
                 UI.addRagePot();
             } else {
-                // List<String> weaponsList = FXGL.geto("weaponsList");
-                // todo: weapon interaction
+                switch (itemName) {
+                case "golden_sword":
+                    PlayerComponent.addWeaponToInventory(new GoldenSword0());
+                    break;
+                case "nature_staff":
+                    PlayerComponent.addWeaponToInventory(new MagicStaff0());
+                    break;
+                case "bow":
+                    PlayerComponent.addWeaponToInventory(new Bow0());
+                    break;
+                default:
+                }
             }
 
             // handle onPickup

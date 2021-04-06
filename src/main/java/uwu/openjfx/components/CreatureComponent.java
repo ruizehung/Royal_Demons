@@ -30,7 +30,7 @@ public class CreatureComponent extends Component implements HasLife {
 
     @Override
     public void increaseHealth(int point) {
-        this.healthPoints = Math.max(this.healthPoints + point, maxHealthPoints);
+        this.healthPoints = Math.min(this.healthPoints + point, maxHealthPoints);
         playerHealthIntegerProperty.set(healthPoints);
     }
 
