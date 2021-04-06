@@ -6,7 +6,6 @@ import com.almasb.fxgl.physics.CollisionHandler;
 import uwu.openjfx.RoyalType;
 import uwu.openjfx.components.AttackMultipleComponent;
 import uwu.openjfx.components.EnemyComponent;
-import uwu.openjfx.components.HealthComponent;
 
 /*
     This class is responsible for when the hitbox of a player attack touches an enemy
@@ -37,11 +36,9 @@ public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
         if (((weapon.hasComponent(ProjectileComponent.class))
             && (!weapon.getComponent(ProjectileComponent.class).isPaused()))
             || (!weapon.hasComponent(ProjectileComponent.class))) {
-            HealthComponent enemyHealth = enemy.getObject("enemyComponent");
-            enemyHealth.deductHealth();
-            if (enemy.hasComponent(EnemyComponent.class)) {
-                enemy.getComponent(EnemyComponent.class).knockBackFromPlayer();
-            }
+            EnemyComponent enemyComponent = enemy.getObject("CreatureComponent");
+            enemyComponent.knockBackFromPlayer();
+            enemyComponent.deductHealth(1);
         }
     }
 }

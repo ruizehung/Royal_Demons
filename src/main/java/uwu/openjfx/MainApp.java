@@ -11,10 +11,15 @@ import com.almasb.fxgl.input.virtual.VirtualButton;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import uwu.openjfx.MapGeneration.GameMap;
+import uwu.openjfx.behaviors.Interactable;
 import uwu.openjfx.collision.*;
 import uwu.openjfx.components.PlayerComponent;
+import uwu.openjfx.events.InteractEvent;
 import uwu.openjfx.input.*;
+import uwu.openjfx.items.Heart;
+import uwu.openjfx.items.Item;
 
 import java.io.File;
 import java.util.*;
@@ -25,14 +30,16 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 public class MainApp extends GameApplication {
 
     private Entity player;
+    private PlayerComponent playerComponent;
     private GameMap gameMap;
     private List<String> normalMinionList;
     private List<String> forestMinionList;
     private List<String> miniBossList;
     private List<String> roomTypeList;
-    private List<String> weaponsList;
+    private Set<String> weaponsSet;
     private Map<String, String> itemNameAssetMap;
-    private final Boolean developerCheat = false;
+    private final Boolean developerCheat = true;
+    private Map<String, Item> itemNameObjMap;
     private static boolean isTesting = false;
 
     // Top priority : (
@@ -71,11 +78,28 @@ public class MainApp extends GameApplication {
     }
 
 
-
     @Override
     protected void onPreInit() {
         getSettings().setGlobalMusicVolume(developerCheat ? 0 : 0.25);
         loopBGM("MainMenu.mp3");
+
+        getEventBus().addEventHandler(InteractEvent.ANY, event -> {
+            Interactable interactable = event.getEntity().getObject("Interactable");
+            interactable.interact();
+        });
+    }
+
+
+    @Override
+    protected void onUpdate(double tpf) {
+        if (PlayerComponent.getPlayerWeapon().equals("Sword")) {
+            List<Entity> hitboxes = FXGL.getGameWorld().getEntitiesByType(RoyalType.PLAYERATTACK);
+            for (Entity hitbox : hitboxes) {
+                if (hitbox != null && hitbox.isActive()) {
+                    hitbox.removeFromWorld();
+                }
+            }
+        }
     }
 
     @Override
@@ -177,6 +201,8 @@ public class MainApp extends GameApplication {
         // endregion
 
         getInput().addAction(new ShowMapAction("showMap"), KeyCode.M);
+        getInput().addAction(new ShowInventoryAction("showInventory"), KeyCode.I);
+
     }
 
     @Override
@@ -207,6 +233,11 @@ public class MainApp extends GameApplication {
         loopBGM("evil4.mp3");
         player = spawn("player", 0, 0);
         set("player", player);
+        playerComponent = player.getComponent(PlayerComponent.class);
+        set("playerComponent", playerComponent);
+        if (developerCheat) {
+            player.getComponent(PlayerComponent.class).setHealthPoints(200);
+        }
 
         gameMap.loadRoom(gameMap.getInitialRoom(), "center");
 
@@ -214,6 +245,7 @@ public class MainApp extends GameApplication {
         viewport.setBounds(-32 * 5, -getAppHeight(), 32 * 70, 32 * 70);
         viewport.bindToEntity(player, getAppWidth() / 2.0, getAppHeight() / 2.0);
         viewport.setLazy(true);
+
     }
 
     @Override
@@ -221,6 +253,7 @@ public class MainApp extends GameApplication {
         vars.put("pixelsMoved", 0);
         vars.put("developerCheat", developerCheat);
     }
+
 
     @Override
     protected void initPhysics() {
@@ -234,11 +267,41 @@ public class MainApp extends GameApplication {
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerCoinCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerDroppedItemCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerChestCollisionHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new PlayerNPCCollisionHandler());
     }
 
     @Override
     protected void initUI() {
         UI.init(player);
+
+        Text textHealth = getUIFactoryService().newText("", 50);
+        textHealth.setTranslateX(100);
+        textHealth.setTranslateY(50);
+        textHealth.setStroke(Color.WHITE);
+
+        textHealth.textProperty().bind(
+                player.getComponent(PlayerComponent.class).getHealthIntegerProperty().asString());
+        getGameScene().addUINode(textHealth); // add to the scene graph
+
+        Text textHealthPrefix = getUIFactoryService().newText("HP:", 50);
+        textHealthPrefix.setTranslateX(25);
+        textHealthPrefix.setTranslateY(50);
+        textHealthPrefix.setStroke(Color.RED);
+        getGameScene().addUINode(textHealthPrefix);
+
+        Text textGoldPrefix = getUIFactoryService().newText("GOLD:", 50);
+        textGoldPrefix.setTranslateX(getAppWidth() - 225);
+        textGoldPrefix.setTranslateY(50);
+        textGoldPrefix.setStroke(Color.GOLD);
+        getGameScene().addUINode(textGoldPrefix);
+
+        Text textGold = getUIFactoryService().newText("", 50);
+        textGold.setTranslateX(getAppWidth() - 100);
+        textGold.setTranslateY(50);
+        textGold.setStroke(Color.WHITE);
+
+        textGold.textProperty().bind(UI.getGoldProperty().asString());
+        getGameScene().addUINode(textGold); // add to the scene graph
     }
 
     public void loadEnemiesAsset() {
@@ -277,19 +340,23 @@ public class MainApp extends GameApplication {
         itemNameAssetMap.put("RagePotion", "items/ragePotion.png");
         itemNameAssetMap.put("Heart", "items/ui_heart_full_32x32.png");
 
+        itemNameObjMap = new HashMap<>();
+        itemNameObjMap.put("Heart", new Heart("Heart", 3));
 
-        weaponsList = new ArrayList<>();
+
+        weaponsSet = new HashSet<>();
         File dir = new File("src/main/resources/assets/textures/items/weapons");
         for (File file : dir.listFiles()) {
             if (file.getName().endsWith(".png")) {
-                weaponsList.add(file.getName().replace("_32x32.png", ""));
+                weaponsSet.add(file.getName().replace("_32x32.png", ""));
                 itemNameAssetMap.put(file.getName().replace("_32x32.png", ""),
                         "items/weapons/" + file.getName());
             }
         }
 
-        set("weaponsList", weaponsList);
+        set("weaponsSet", weaponsSet);
         set("itemsNameAssetMap", itemNameAssetMap);
+        set("itemNameObjMap", itemNameObjMap);
     }
 
     public void loadRoomAsset() {

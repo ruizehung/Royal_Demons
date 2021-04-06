@@ -9,15 +9,14 @@ import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
-import javafx.beans.property.BooleanProperty;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import uwu.openjfx.components.ChestComponent;
-import uwu.openjfx.components.ItemComponent;
-import uwu.openjfx.components.MimicChestComponent;
-import uwu.openjfx.components.TrapComponent;
+import uwu.openjfx.behaviors.DropItemComponent;
+import uwu.openjfx.behaviors.SpawnMinions;
+import uwu.openjfx.components.*;
 
 import java.util.Map;
+import java.util.Set;
 
 public class StructureFactory implements EntityFactory {
     @Spawns("wall")
@@ -117,13 +116,14 @@ public class StructureFactory implements EntityFactory {
         String assetName = ((Map<String, String>) FXGL.geto("itemsNameAssetMap"))
                 .get(itemName);
 
-        int degree = data.<Boolean>get("isWeapon") ? 80 : 0;
+        Set<String> weaponsSet = FXGL.geto("weaponsSet");
+        int degree = weaponsSet.contains(data.<String>get("name")) ? 80 : 0;
 
         return FXGL.entityBuilder(data)
                 .type(RoyalType.DROPPEDITEM)
                 .viewWithBBox(assetName)
                 .rotate(degree)
-                .with(new ItemComponent(itemName))
+                .with("name", itemName)
                 .with(new CollidableComponent(true))
                 .build();
     }
@@ -134,6 +134,7 @@ public class StructureFactory implements EntityFactory {
         return FXGL.entityBuilder(data)
                 .type(RoyalType.CHEST)
                 .viewWithBBox("chest_empty_open_anim_f0_32x32.png")
+                .with(new DropItemComponent())
                 .with(chestComponent)
                 .with(new CollidableComponent(true))
                 .with("chestComponent", chestComponent)
@@ -143,6 +144,8 @@ public class StructureFactory implements EntityFactory {
     @Spawns("mimicChest")
     public Entity newMimicChest(SpawnData data) {
         MimicChestComponent mimicChestComponent = new MimicChestComponent();
+        mimicChestComponent.setBehavior(new SpawnMinions(3, "minion"));
+
         return FXGL.entityBuilder(data)
                 .type(RoyalType.CHEST)
                 .viewWithBBox("chest_empty_open_anim_f0_32x32.png")

@@ -35,7 +35,7 @@ public class UI {
         textHealth.setStroke(Color.WHITE);
 
         textHealth.textProperty().bind(
-                player.getComponent(PlayerComponent.class).getPlayerHealth().asString());
+                player.getComponent(PlayerComponent.class).getHealthIntegerProperty().asString());
 
         // GOLD:
         Text textGoldPrefix = FXGL.getUIFactoryService().newText("GOLD:", 50);
@@ -160,7 +160,7 @@ public class UI {
                     .getHealthPoints() < player.getComponent(PlayerComponent.class)
                     .getMaxHealthPoints()) {
                 healthPotProperty.set(healthPotProperty.get() - 1);
-                player.getComponent(PlayerComponent.class).addHealth(3);
+                player.getComponent(PlayerComponent.class).increaseHealth(3);
             }
         }
     }

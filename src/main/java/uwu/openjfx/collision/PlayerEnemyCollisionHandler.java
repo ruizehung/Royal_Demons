@@ -1,14 +1,11 @@
 package uwu.openjfx.collision;
 
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import uwu.openjfx.MainApp;
 import uwu.openjfx.RoyalType;
-import uwu.openjfx.components.BossComponent;
 import uwu.openjfx.components.EnemyComponent;
-import uwu.openjfx.components.HealthComponent;
 import uwu.openjfx.components.PlayerComponent;
 
 /*
@@ -33,11 +30,7 @@ public class PlayerEnemyCollisionHandler extends CollisionHandler {
     }
 
     protected void onCollisionBegin(Entity player, Entity enemy) {
-        if (enemy.hasComponent(EnemyComponent.class)) {
-            enemyComponent = enemy.getComponent(EnemyComponent.class);
-        } else {
-            enemyComponent = enemy.getComponent(BossComponent.class);
-        }
+        enemyComponent = enemy.getObject("CreatureComponent");
 
         /*
             When colliding with an enemy for the first time, evaluate whether or not
@@ -52,18 +45,14 @@ public class PlayerEnemyCollisionHandler extends CollisionHandler {
 
     public void onCollision(Entity player, Entity enemy) {
         playerComponent = player.getComponent(PlayerComponent.class);
-        if (!FXGL.getb("developerCheat")) {
-            HealthComponent playerHealth = playerComponent;
-            if (!playerHealth.getIsInvulnerable()) {
-                playerHealth.deductHealth();
-            }
+        if (!playerComponent.isInvulnerable()) {
+            playerComponent.deductHealth(1);
         }
 
         if (!MainApp.isIsTesting()) {
             if (enemyComponent.getMassEffect()) {
                 playerPhysics = player.getComponent(PhysicsComponent.class);
                 enemyPhysics = enemy.getComponent(PhysicsComponent.class);
-
                 reachEquilibrium();
                 stabilizeEquilibrium();
             }

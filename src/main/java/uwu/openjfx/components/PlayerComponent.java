@@ -1,15 +1,14 @@
 package uwu.openjfx.components;
 
-import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
-import uwu.openjfx.DieScreenMenu;
 import uwu.openjfx.MainApp;
 import uwu.openjfx.UI;
+import uwu.openjfx.behaviors.GameOverWhenDie;
 import uwu.openjfx.weapons.Bow0;
 import uwu.openjfx.weapons.GoldenSword0;
 import uwu.openjfx.weapons.MagicStaff0;
@@ -22,7 +21,7 @@ import java.util.Timer;
     - Animation of the player: movement, idleness, attacking
     - Being the caller for attacking, which in turn spawns the necessary weapon of type Weapon
  */
-public class PlayerComponent extends HealthComponent {
+public class PlayerComponent extends CreatureComponent {
 
     private PhysicsComponent physics;
 
@@ -57,8 +56,8 @@ public class PlayerComponent extends HealthComponent {
     private static int healthPotAmount;
     private static int ragePotAmount;
 
-    public PlayerComponent(int healthPoints) {
-        super(healthPoints);
+    public PlayerComponent(int maxHealthPoints) {
+        super(maxHealthPoints, maxHealthPoints, new GameOverWhenDie());
 
         if (currentWeapon == null) {
             Weapon weapon = new GoldenSword0();
@@ -303,19 +302,5 @@ public class PlayerComponent extends HealthComponent {
 
     public static void setGameDifficulty(String gameDifficulty) {
         PlayerComponent.gameDifficulty = gameDifficulty;
-    }
-
-
-    @Override
-    public void die() {
-        if (!MainApp.isIsTesting()) {
-            FXGL.getSceneService().pushSubScene(new DieScreenMenu(MenuType.GAME_MENU));
-        } else {
-            deadTest = true;
-        }
-    }
-
-    public boolean isDeadTest() {
-        return deadTest;
     }
 }

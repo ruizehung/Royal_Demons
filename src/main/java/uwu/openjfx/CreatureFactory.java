@@ -13,10 +13,9 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import javafx.geometry.Point2D;
-import uwu.openjfx.components.BossComponent;
-import uwu.openjfx.components.CoinComponent;
-import uwu.openjfx.components.EnemyComponent;
-import uwu.openjfx.components.PlayerComponent;
+import uwu.openjfx.behaviors.DropCoinBehavior;
+import uwu.openjfx.behaviors.DropItemComponent;
+import uwu.openjfx.components.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,6 +34,8 @@ public class CreatureFactory implements EntityFactory {
         // this avoids player sticking to walls
         physics.setFixtureDef(new FixtureDef().friction(0.0f));
 
+        PlayerComponent playerComponent = new PlayerComponent(10);
+
         return FXGL.entityBuilder(data)
                 .type(RoyalType.PLAYER)
                 .bbox(new HitBox(BoundingShape.polygon(new Point2D(3, 15), new Point2D(38, 15),
@@ -42,7 +43,8 @@ public class CreatureFactory implements EntityFactory {
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .with(new IrremovableComponent())
-                .with(new PlayerComponent(10))
+                .with(playerComponent)
+                .with("CreatureComponent", playerComponent)
                 .build();
     }
 
@@ -60,6 +62,8 @@ public class CreatureFactory implements EntityFactory {
                 "creatures/minions/normal/" + minionFileName,
                 widthHeight.get(0), widthHeight.get(1));
 
+        enemyComponent.setDieBehavior(new DropCoinBehavior(1, 5));
+
         // TODO__: better to manually define bbox tailor to each minion
         List<Point2D> point2DList = Arrays.asList(
                 new Point2D(3, 5),
@@ -74,7 +78,7 @@ public class CreatureFactory implements EntityFactory {
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .with(enemyComponent)
-                .with("enemyComponent", enemyComponent)
+                .with("CreatureComponent", enemyComponent)
                 .build();
     }
 
@@ -91,8 +95,12 @@ public class CreatureFactory implements EntityFactory {
                 2,
                 "creatures/minions/forest/" + minionFileName,
                 widthHeight.get(0), widthHeight.get(1));
+        enemyComponent.setDieBehavior(new DropCoinBehavior(1, 5));
+
+        // Ent has too much empty space at top
         int startingY = minionFileName.startsWith("Ent") ? 3 : 10;
-        // TODO__: better to manually define bbox tailor to each minion
+
+        // Todo: better to manually define bbox tailor to each minion
         List<Point2D> point2DList = Arrays.asList(
                 new Point2D(3, startingY),
                 new Point2D(widthHeight.get(0) - 3, startingY),
@@ -106,7 +114,7 @@ public class CreatureFactory implements EntityFactory {
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .with(enemyComponent)
-                .with("enemyComponent", enemyComponent)
+                .with("CreatureComponent", enemyComponent)
                 .build();
     }
 
@@ -119,11 +127,12 @@ public class CreatureFactory implements EntityFactory {
         List<String> minionList = FXGL.geto("miniBossList");
         String miniBossFileName = minionList.get(FXGL.random(0, minionList.size() - 1));
         List<Integer> widthHeight = parseSizes(miniBossFileName);
+
+        DropItemComponent dropItemWhenDie = new DropItemComponent(Arrays.asList("Heart"));
         EnemyComponent enemyComponent = new EnemyComponent(1,
                 "creatures/miniBoss/" + miniBossFileName,
                 widthHeight.get(0), widthHeight.get(1));
-
-        enemyComponent.addDroppedItem("Heart");
+        enemyComponent.setDieBehavior(dropItemWhenDie);
 
         // TODO_: better to manually define bbox tailor to each minion
         List<Point2D> point2DList = Arrays.asList(
@@ -139,7 +148,8 @@ public class CreatureFactory implements EntityFactory {
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .with(enemyComponent)
-                .with("enemyComponent", enemyComponent)
+                .with(dropItemWhenDie)
+                .with("CreatureComponent", enemyComponent)
                 .build();
     }
 
@@ -149,12 +159,12 @@ public class CreatureFactory implements EntityFactory {
         physics.setBodyType(BodyType.DYNAMIC);
         physics.setFixtureDef(new FixtureDef().friction(1.0f));
 
-        String bossFileName = "big_demon_96x108.png";
+        String bossFileName = "Golem_168x105.png";
         List<Integer> widthHeight = parseSizes(bossFileName);
 
         BossComponent bossComponent = new BossComponent(
                 1, "creatures/boss/" + bossFileName,
-                widthHeight.get(0), widthHeight.get(1));
+                widthHeight.get(0), widthHeight.get(1), 12);
 
         // TODO_: better to manually define bbox tailor to each minion
         List<Point2D> point2DList = Arrays.asList(
@@ -170,7 +180,7 @@ public class CreatureFactory implements EntityFactory {
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .with(bossComponent)
-                .with("enemyComponent", bossComponent)
+                .with("CreatureComponent", bossComponent)
                 .build();
     }
 
@@ -194,13 +204,32 @@ public class CreatureFactory implements EntityFactory {
         for (String size : sizes) {
             widthHeight.add(Integer.parseInt(size));
         }
-        return  widthHeight;
+        return widthHeight;
     }
-    // @Spawns("ally")
-    // public Entity newAlly(SpawnData data) {
-    //     return FXGL.entityBuilder(data)
-    //             .view("lizard_m_idle_anim_f0_40x70.png")
-    //             .with(new ProjectileComponent(new Point2D(-1, 0), 150))
-    //             .build();
-    // }
+
+    @Spawns("initialRoomNPC")
+    public Entity newInitialRoomNPC(SpawnData data) {
+        InitialNPCComponent initialNPCComponent = new InitialNPCComponent();
+        return FXGL.entityBuilder(data)
+                .type(RoyalType.NPC)
+                .bbox(new HitBox(BoundingShape.polygon(new Point2D(3, 15), new Point2D(38, 15),
+                        new Point2D(38, 55), new Point2D(3, 55))))
+                .with(new CollidableComponent(true))
+                .with(initialNPCComponent)
+                .with("Interactable", initialNPCComponent)
+                .build();
+    }
+
+    @Spawns("Green_F_Elf")
+    public Entity newGreen_F_Elf(SpawnData data) {
+        GreenFElfComponent greenFElfComponent = new GreenFElfComponent();
+        return FXGL.entityBuilder(data)
+                .type(RoyalType.NPC)
+                .bbox(new HitBox(BoundingShape.polygon(new Point2D(3, 15), new Point2D(38, 15),
+                        new Point2D(38, 55), new Point2D(3, 55))))
+                .with(new CollidableComponent(true))
+                .with(greenFElfComponent)
+                .with("Interactable", greenFElfComponent)
+                .build();
+    }
 }

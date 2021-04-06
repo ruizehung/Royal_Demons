@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import uwu.openjfx.MainApp;
 import uwu.openjfx.collision.PlayerEnemyCollisionHandler;
 import uwu.openjfx.components.EnemyComponent;
-import uwu.openjfx.components.HealthComponent;
 import uwu.openjfx.components.PlayerComponent;
 
 public class TestPlayerEnemyCollisionHandler {
@@ -17,18 +16,19 @@ public class TestPlayerEnemyCollisionHandler {
     //james 1
     @Test
     void testEnemyRunsIntoPlayer() {
+        int origHealth = 10;
+
         PlayerComponent.setPlayerWeapon("Sword");
         Entity player = new Entity();
-        HealthComponent myHealth = new PlayerComponent(10);
-        player.addComponent(myHealth);
+        PlayerComponent playerComponent = new PlayerComponent(10);
+        player.addComponent(playerComponent);
 
         Entity monster = new Entity();
-        monster.addComponent(new EnemyComponent(1, "", 10, 20));
+        monster.addComponent(new EnemyComponent(origHealth, "", 10, 20));
 
         PlayerEnemyCollisionHandler handler = new PlayerEnemyCollisionHandler();
         handler.onCollision(player, monster);
 
-        int origHealth = 10;
-        assert (myHealth.getHealthPoints() < origHealth);
+        assert (playerComponent.getHealthPoints() < origHealth);
     }
 }

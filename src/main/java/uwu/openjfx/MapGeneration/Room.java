@@ -37,7 +37,6 @@ public class Room {
             List<String> roomTypeList = FXGL.geto("roomTypeList");
             roomType = roomTypeList.get(FXGL.random(0, roomTypeList.size() - 1));
         }
-
     }
 
     public Room(Coordinate coordinate, int numAdjRooms) {

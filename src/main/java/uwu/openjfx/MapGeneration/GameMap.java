@@ -8,7 +8,7 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 import javafx.geometry.Point2D;
 import javafx.util.Pair;
 import uwu.openjfx.RoyalType;
-import uwu.openjfx.components.ChestComponent;
+import uwu.openjfx.behaviors.CanOnlyInteractOnce;
 import uwu.openjfx.components.TrapComponent;
 
 import java.util.*;
@@ -229,12 +229,11 @@ public class GameMap {
             if (entity.isType(RoyalType.CHEST)) {
                 IDComponent idComponent = entity.getComponent(IDComponent.class);
                 if (!newRoom.visited()) {
-                    newRoom.setChestData(idComponent.getId(), "opened", 0);
+                    newRoom.setChestData(idComponent.getId(), "hasInteracted", 0);
                 } else {
-                    if (newRoom.getChestsData(idComponent.getId(), "opened") == 1) {
-                        ChestComponent chestComponent = entity.getObject("chestComponent");
-                        chestComponent.setHasBeenOpened(true);
-                        chestComponent.changeToOpenedView();
+                    if (newRoom.getChestsData(idComponent.getId(), "hasInteracted") == 1) {
+                        CanOnlyInteractOnce chestComponent = entity.getObject("chestComponent");
+                        chestComponent.disable();
                     }
                 }
             }

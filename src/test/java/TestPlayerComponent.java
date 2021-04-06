@@ -2,7 +2,6 @@ import com.almasb.fxgl.entity.Entity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uwu.openjfx.MainApp;
-import uwu.openjfx.components.HealthComponent;
 import uwu.openjfx.components.PlayerComponent;
 
 public class TestPlayerComponent {
@@ -17,9 +16,9 @@ public class TestPlayerComponent {
     void testPlayerDies() {
         PlayerComponent.setPlayerWeapon("Sword");
         Entity player = new Entity();
-        HealthComponent myHealth = new PlayerComponent(1);
-        player.addComponent(myHealth);
-        player.getComponent(PlayerComponent.class).deductHealth();
-        assert (player.getComponent(PlayerComponent.class).isDeadTest());
+        PlayerComponent playerComponent = new PlayerComponent(1);
+        player.addComponent(playerComponent);
+        playerComponent.deductHealth(Integer.MAX_VALUE);
+        assert playerComponent.dead();
     }
 }

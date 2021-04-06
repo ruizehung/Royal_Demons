@@ -5,7 +5,8 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import org.jetbrains.annotations.NotNull;
 import uwu.openjfx.RoyalType;
-import uwu.openjfx.components.HealthComponent;
+import uwu.openjfx.components.CreatureComponent;
+import uwu.openjfx.components.EnemyComponent;
 
 import java.util.List;
 
@@ -19,8 +20,8 @@ public class KillAllEnemy extends UserAction {
     protected void onActionBegin() {
         List<Entity> enemies = FXGL.getGameWorld().getEntitiesByType(RoyalType.ENEMY);
         for (Entity enemy: enemies) {
-            HealthComponent enemyHealth = enemy.getObject("enemyComponent");
-            enemyHealth.die();
+            CreatureComponent creatureComponent = enemy.getObject("CreatureComponent");
+            creatureComponent.die();
         }
     }
 }

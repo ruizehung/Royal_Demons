@@ -3,6 +3,7 @@ package uwu.openjfx.components;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
+import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.entity.components.IDComponent;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
@@ -13,6 +14,7 @@ import javafx.util.Duration;
 import uwu.openjfx.MainApp;
 import uwu.openjfx.MapGeneration.Room;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -25,7 +27,7 @@ import static com.almasb.fxgl.dsl.FXGL.spawn;
     - Enemy attacks player when player is within certain radius
     - Enemy has an animation to go with whatever attack it's performing.
  */
-public class EnemyComponent extends HealthComponent {
+public class EnemyComponent extends CreatureComponent {
     private PhysicsComponent physics;
 
     private String type;
@@ -64,26 +66,30 @@ public class EnemyComponent extends HealthComponent {
     private double scaler = 1.0;
 
     private LocalTimer moveTimer;
-    private List<String> itemsDropList = new ArrayList<>();
 
-    public EnemyComponent(int healthPoints, String assetName, int width, int height) {
-        super(healthPoints);
+    public EnemyComponent(int maxHealthPoints, String assetName, int width, int height, int frames) {
+        super(maxHealthPoints, maxHealthPoints);
+
         this.type = assetName;
         this.width = width;
         this.height = height;
 
         if (!MainApp.isIsTesting()) {
-            animIdle = new AnimationChannel(FXGL.image(assetName), 8,
-                    width, height, Duration.seconds(0.5), 0, 3);
-            animWalk = new AnimationChannel(FXGL.image(assetName), 8,
-                    width, height, Duration.seconds(0.5), 4, 7);
-            animMeleeAttack = new AnimationChannel(FXGL.image(assetName), 8,
-                    width, height, Duration.seconds(attackDuration / 1000), 4, 4);
+            animIdle = new AnimationChannel(FXGL.image(assetName), frames,
+                    width, height, Duration.seconds(0.5), 0, frames / 2 - 1);
+            animWalk = new AnimationChannel(FXGL.image(assetName), frames,
+                    width, height, Duration.seconds(0.5), frames / 2, frames - 1);
+            animMeleeAttack = new AnimationChannel(FXGL.image(assetName), frames,
+                    width, height, Duration.seconds(attackDuration / 1000), frames / 2, frames / 2);
 
             texture = new AnimatedTexture(animIdle);
 
             texture.loop();
         }
+    }
+
+    public EnemyComponent(int healthPoints, String assetName, int width, int height) {
+        this(healthPoints, assetName, width, height, 8);
     }
 
     @Override
@@ -301,32 +307,14 @@ public class EnemyComponent extends HealthComponent {
         );
     }
 
-    public void addDroppedItem(String itemName) {
-        itemsDropList.add(itemName);
-    }
-
     @Override
     public void die() {
-        if (MainApp.isIsTesting()) {
-            entity.setProperty("isDead", true);
-            return;
+        super.die();
+        if (!MainApp.isIsTesting()) {
+            getEntity().removeFromWorld();
+            IDComponent idComponent = getEntity().getComponent(IDComponent.class);
+            Room curRoom = FXGL.geto("curRoom");
+            curRoom.setEntityData(idComponent.getId(), "isAlive", 0);
         }
-
-        if (FXGL.random() < 0.5) {
-            FXGL.spawn("coin", getEntity().getX() + width / 2, getEntity().getY() + height / 2);
-        }
-
-        if (itemsDropList.size() > 0) {
-            for (String itemName : itemsDropList) {
-                spawn("itemOnFloor",
-                        new SpawnData(getEntity().getX() + width / 2, getEntity().getY() + height / 2)
-                                        .put("name", itemName).put("isWeapon", false));
-            }
-        }
-
-        getEntity().removeFromWorld();
-        IDComponent idComponent = getEntity().getComponent(IDComponent.class);
-        Room curRoom = FXGL.geto("curRoom");
-        curRoom.setEntityData(idComponent.getId(), "isAlive", 0);
     }
 }
