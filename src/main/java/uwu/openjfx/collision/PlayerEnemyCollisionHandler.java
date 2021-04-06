@@ -89,9 +89,11 @@ public class PlayerEnemyCollisionHandler extends CollisionHandler {
          */
         if (playerPhysics.getVelocityX() == 0) {
             enemyPhysics.setVelocityX(0);
+            velocityNormalizeVal = 1.1;
         }
         if (playerPhysics.getVelocityY() == 0) {
             enemyPhysics.setVelocityY(0);
+            velocityNormalizeVal = 1.1;
         }
     }
 
