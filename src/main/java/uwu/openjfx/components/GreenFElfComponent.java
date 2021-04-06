@@ -40,7 +40,7 @@ public class GreenFElfComponent extends Component implements Interactable {
     public void interact() {
         String s = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tincidunt euismod arcu sit amet maximus. Ut dignissim eleifend enim sit amet maximus. Curabitur tempor sem nunc, et semper est pellentesque a. Donec at feugiat erat. Donec ultrices libero diam, ac suscipit elit varius elementum. Proin tempor lacus a felis vestibulum egestas. Phasellus pellentesque tincidunt nunc, eu vehicula massa convallis ut. Donec gravida felis sit amet purus accumsan, nec dapibus sem suscipit. Nulla ornare condimentum nisi, ac molestie ipsum maximus placerat. Pellentesque tincidunt nisi ante, eget tempor urna imperdiet id.";
         Text text = FXGL.getUIFactoryService().newText(s);
-        text.setWrappingWidth(300);
+        text.setWrappingWidth(450);
         VBox content = new VBox(
                 FXGL.getAssetLoader().loadTexture("creatures/ally/elf_f.png"),
                 text
