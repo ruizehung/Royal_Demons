@@ -62,25 +62,24 @@ public class PlayerComponent extends CreatureComponent {
     public PlayerComponent(int maxHealthPoints) {
         super(maxHealthPoints, maxHealthPoints, new GameOverWhenDie());
 
-        if (currentWeapon == null) {
-            Weapon weapon = new GoldenSword0();
-            switch (playerWeapon) {
-            case "Sword":
-                weapon = new GoldenSword0();
-                break;
-            case "Bow":
-                weapon = new Bow0();
-                break;
-            case "Wand":
-                weapon = new MagicStaff0();
-                break;
-            default:
-            }
-            weaponInventoryList.add(weapon);
-            setCurrentWeapon(weapon);
-        }
-
         if (!MainApp.isIsTesting()) {
+            if (currentWeapon == null) {
+                Weapon weapon = new GoldenSword0();
+                switch (playerWeapon) {
+                    case "Sword":
+                        weapon = new GoldenSword0();
+                        break;
+                    case "Bow":
+                        weapon = new Bow0();
+                        break;
+                    case "Wand":
+                        weapon = new MagicStaff0();
+                        break;
+                    default:
+                }
+                weaponInventoryList.add(weapon);
+                setCurrentWeapon(weapon);
+            }
             animIdle = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
                     40, 55, Duration.seconds(0.5), 0, 3);
             animWalk = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,

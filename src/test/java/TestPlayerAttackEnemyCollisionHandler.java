@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import uwu.openjfx.MainApp;
 import uwu.openjfx.collision.PlayerAttackEnemyCollisionHandler;
+import uwu.openjfx.components.AttackDamageComponent;
 import uwu.openjfx.components.BossComponent;
 import uwu.openjfx.components.EnemyComponent;
 
@@ -25,7 +26,9 @@ public class TestPlayerAttackEnemyCollisionHandler {
         boss.setProperty("CreatureComponent", bossComponent);
 
         Entity weapon = new Entity();
-
+        weapon.addComponent(new AttackDamageComponent(false, Double.MAX_VALUE));
+        boss.getComponent(bossComponent.getClass()).setBlockProbability(0);
+        boss.getComponent(bossComponent.getClass()).setArmorStat(1);
         assert !bossComponent.dead();
 
         PlayerAttackEnemyCollisionHandler handler = new PlayerAttackEnemyCollisionHandler();
@@ -44,6 +47,9 @@ public class TestPlayerAttackEnemyCollisionHandler {
         boss.setProperty("CreatureComponent", bossComponent);
 
         Entity weapon = new Entity();
+        weapon.addComponent(new AttackDamageComponent(false, Double.MAX_VALUE));
+        boss.getComponent(bossComponent.getClass()).setBlockProbability(0);
+        boss.getComponent(bossComponent.getClass()).setArmorStat(1);
 
         PlayerAttackEnemyCollisionHandler handler = new PlayerAttackEnemyCollisionHandler();
         handler.onCollisionBegin(weapon, boss);
@@ -61,6 +67,9 @@ public class TestPlayerAttackEnemyCollisionHandler {
         monster.setProperty("CreatureComponent", enemyComponent);
 
         Entity weapon = new Entity();
+        weapon.addComponent(new AttackDamageComponent(false, Double.MAX_VALUE));
+        enemyComponent.setBlockProbability(0);
+        enemyComponent.setArmorStat(1);
 
         assert !monster.getBoolean("isDead");
 
@@ -81,6 +90,9 @@ public class TestPlayerAttackEnemyCollisionHandler {
         monster.setProperty("CreatureComponent", enemyComponent);
 
         Entity weapon = new Entity();
+        weapon.addComponent(new AttackDamageComponent(false, Double.MAX_VALUE));
+        enemyComponent.setBlockProbability(0);
+        enemyComponent.setArmorStat(1);
 
         PlayerAttackEnemyCollisionHandler handler = new PlayerAttackEnemyCollisionHandler();
         handler.onCollisionBegin(weapon, monster);
