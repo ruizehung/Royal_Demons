@@ -32,7 +32,7 @@ public class WeaponAnimationComponent extends Component {
         // parameter fpr: frames per row
         AnimationChannel animAttack = new AnimationChannel(
                 FXGL.image("./weapons/" + weapon + ".png"), fpr,
-                frameWidth, frameHeight, Duration.millis(duration), 0, fpr - 1);
+                frameWidth, frameHeight, Duration.millis(duration), 0, fpr);
         texture = new AnimatedTexture(animAttack);
         texture.playAnimationChannel(animAttack);
         this.duration = duration;
@@ -42,16 +42,5 @@ public class WeaponAnimationComponent extends Component {
     public void onAdded() {
         entity.getTransformComponent().setScaleOrigin(new Point2D(0, 0));
         entity.getViewComponent().addChild(texture);
-    }
-
-    public void onUpdate(double tpf) {
-        // Remove weapon after it has done its attack animation
-        if (this != null && getEntity() != null) {
-            FXGL.getGameTimer().runAtInterval(() -> {
-                if (getEntity() != null) {
-                    getEntity().removeFromWorld();
-                }
-            }, Duration.millis(duration - 50));
-        }
     }
 }
