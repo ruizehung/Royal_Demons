@@ -1,9 +1,8 @@
 package uwu.openjfx.components;
 
+import com.almasb.fxgl.core.math.Vec2;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.SpawnData;
-import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.entity.components.IDComponent;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
@@ -13,10 +12,6 @@ import javafx.geometry.Point2D;
 import javafx.util.Duration;
 import uwu.openjfx.MainApp;
 import uwu.openjfx.MapGeneration.Room;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 
 import static com.almasb.fxgl.dsl.FXGL.spawn;
@@ -248,12 +243,16 @@ public class EnemyComponent extends CreatureComponent {
 
     public void knockBackFromPlayer() {
         if (physics != null) {
-            double knockBackPower = 4.5;
             isStunned = true;
-            double xDir = playerX - enemyX > 0 ? -1 : 1;
-            double yDir = playerY - enemyY > 0 ? -1 : 1;
-            physics.setVelocityX(speed * knockBackPower * xDir);
-            physics.setVelocityY(speed * knockBackPower * yDir);
+            double knockBackPower = 400;
+            double adjacent = (getEntity().getX() + width / 2) - playerX;
+            double opposite = (getEntity().getY() + height / 2) - playerY;
+            double angle = Math.atan2(opposite, adjacent);
+            angle = Math.toDegrees(angle);
+            Vec2 dir = Vec2.fromAngle(angle);
+            double xPow = dir.toPoint2D().getX() * knockBackPower;
+            double yPow = dir.toPoint2D().getY() * knockBackPower;
+            physics.setLinearVelocity(new Point2D(xPow, yPow));
         }
     }
 
