@@ -53,8 +53,10 @@ public class PlayerEnemyCollisionHandler extends CollisionHandler {
             if (enemyComponent.getMassEffect()) {
                 playerPhysics = player.getComponent(PhysicsComponent.class);
                 enemyPhysics = enemy.getComponent(PhysicsComponent.class);
-                reachEquilibrium();
-                stabilizeEquilibrium();
+                if (playerComponent.isPressingMovementKeys()) {
+                    reachEquilibrium();
+                    stabilizeEquilibrium();
+                }
             }
         }
     }
@@ -89,11 +91,9 @@ public class PlayerEnemyCollisionHandler extends CollisionHandler {
          */
         if (playerPhysics.getVelocityX() == 0) {
             enemyPhysics.setVelocityX(0);
-            velocityNormalizeVal = 1.1;
         }
         if (playerPhysics.getVelocityY() == 0) {
             enemyPhysics.setVelocityY(0);
-            velocityNormalizeVal = 1.1;
         }
     }
 
@@ -104,15 +104,15 @@ public class PlayerEnemyCollisionHandler extends CollisionHandler {
             in the opposite direction. If player is not moving, then player is no longer
             applying force to the enemy, therefore stop applying equal and opposite force.
          */
-        if (((Math.abs(enemyPhysics.getVelocityX()) > Math.abs(playerComponent.getSpeed()))
-                || equilibriumX) && (playerComponent.isPressingMovementKeys())) {
+        if ((Math.abs(enemyPhysics.getVelocityX()) > Math.abs(playerComponent.getSpeed()))
+                || equilibriumX) {
             enemyPhysics.setVelocityX(
                     -playerComponent.getSpeed() * Math.signum(enemyPhysics.getVelocityX()));
             enemyComponent.setCollidingWithPlayer(true);
             equilibriumX = true;
         }
-        if (((Math.abs(enemyPhysics.getVelocityY()) > Math.abs(playerComponent.getSpeed()))
-                || equilibriumY) && (playerComponent.isPressingMovementKeys())) {
+        if ((Math.abs(enemyPhysics.getVelocityY()) > Math.abs(playerComponent.getSpeed()))
+                || equilibriumY) {
             enemyPhysics.setVelocityY(
                     -playerComponent.getSpeed() * Math.signum(enemyPhysics.getVelocityY()));
             enemyComponent.setCollidingWithPlayer(true);
