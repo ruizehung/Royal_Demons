@@ -58,7 +58,7 @@ public class CreatureFactory implements EntityFactory {
         String minionFileName = minionList.get(FXGL.random(0, minionList.size() - 1));
         List<Integer> widthHeight = parseSizes(minionFileName);
         EnemyComponent enemyComponent = new EnemyComponent(
-                2,
+                100,
                 "creatures/minions/normal/" + minionFileName,
                 widthHeight.get(0), widthHeight.get(1));
 
@@ -92,7 +92,7 @@ public class CreatureFactory implements EntityFactory {
         String minionFileName = minionList.get(FXGL.random(0, minionList.size() - 1));
         List<Integer> widthHeight = parseSizes(minionFileName);
         EnemyComponent enemyComponent = new EnemyComponent(
-                2,
+                100,
                 "creatures/minions/forest/" + minionFileName,
                 widthHeight.get(0), widthHeight.get(1));
         enemyComponent.setDieBehavior(new DropCoinBehavior(1, 5));
@@ -129,7 +129,7 @@ public class CreatureFactory implements EntityFactory {
         List<Integer> widthHeight = parseSizes(miniBossFileName);
 
         DropItemComponent dropItemWhenDie = new DropItemComponent(Arrays.asList("Heart"));
-        EnemyComponent enemyComponent = new EnemyComponent(1,
+        EnemyComponent enemyComponent = new EnemyComponent(100,
                 "creatures/miniBoss/" + miniBossFileName,
                 widthHeight.get(0), widthHeight.get(1));
         enemyComponent.setDieBehavior(dropItemWhenDie);
@@ -163,7 +163,7 @@ public class CreatureFactory implements EntityFactory {
         List<Integer> widthHeight = parseSizes(bossFileName);
 
         BossComponent bossComponent = new BossComponent(
-                1, "creatures/boss/" + bossFileName,
+                100, "creatures/boss/" + bossFileName,
                 widthHeight.get(0), widthHeight.get(1), 12);
 
         // TODO_: better to manually define bbox tailor to each minion

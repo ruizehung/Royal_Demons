@@ -10,10 +10,9 @@ import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import javafx.geometry.Point2D;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import uwu.openjfx.components.AttackMultipleComponent;
+import uwu.openjfx.components.AttackDamageComponent;
 import uwu.openjfx.components.ProjectileAnimationComponent;
 import uwu.openjfx.components.WeaponAnimationComponent;
 
@@ -45,12 +44,13 @@ public class WeaponFactory implements EntityFactory {
     public Entity newMeleeSword1HitBox(SpawnData data) {
         int rectWidth = data.get("width");
         int rectHeight = data.get("height");
-        Rectangle hitBox = new Rectangle(rectWidth, rectHeight, Color.WHITE);
-        hitBox.setOpacity(.5);
+        double attackDamage = data.get("damage");
+        Rectangle hitBox = new Rectangle(rectWidth, rectHeight, Color.TRANSPARENT);
+        //hitBox.setOpacity(.5);
         return FXGL.entityBuilder(data)
                 .type(RoyalType.PLAYERATTACK)
                 .viewWithBBox(hitBox)
-                .with(new AttackMultipleComponent(true))
+                .with(new AttackDamageComponent(true, attackDamage))
                 .with(new CollidableComponent(true))
                 .build();
     }
@@ -70,6 +70,7 @@ public class WeaponFactory implements EntityFactory {
         int fpr = data.get("fpr");
         boolean isArrow = data.get("isArrow");
         boolean isMagic = data.get("isMagic");
+        double attackDamage = data.get("damage");
 
         double widthHitBox = (frameWidth - rightOffset) - leftOffset;
         double heightHitBox = (frameHeight - topBotOffset) - topBotOffset;
@@ -87,7 +88,7 @@ public class WeaponFactory implements EntityFactory {
                                 heightHitBox)))
                 .with(new ProjectileAnimationComponent(
                         weapon, duration, frameWidth, frameHeight, fpr, isArrow, isMagic))
-                .with(new AttackMultipleComponent(ultimateActive))
+                .with(new AttackDamageComponent(ultimateActive, attackDamage))
                 .with(new CollidableComponent(true))
                 .with(new ProjectileComponent(dir, speed))
                 .build();
@@ -108,6 +109,7 @@ public class WeaponFactory implements EntityFactory {
         int fpr = data.get("fpr");
         boolean isArrow = data.get("isArrow");
         boolean isMagic = data.get("isMagic");
+        double attackDamage = data.get("damage");
 
         double widthHitBox = (frameWidth - rightOffset) - leftOffset;
         double heightHitBox = (frameHeight - topBotOffset) - topBotOffset;
@@ -124,7 +126,7 @@ public class WeaponFactory implements EntityFactory {
                                 heightHitBox)))
                 .with(new ProjectileAnimationComponent(
                         weapon, duration, frameWidth, frameHeight, fpr, isArrow, isMagic))
-                .with(new AttackMultipleComponent(ultimateActive))
+                .with(new AttackDamageComponent(ultimateActive, attackDamage))
                 .with(new CollidableComponent(true))
                 .with(new ProjectileComponent(dir, speed))
                 .build();

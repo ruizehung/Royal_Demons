@@ -19,7 +19,7 @@ public class GoldenSword0 implements Weapon {
     private Image sprite = new Image("assets/textures/ui/weapons/sword0_ui.png"); // weapon sprite
     private String name = "Golden Sword";
     private String inventoryIconPath = "ui/inventory/golden_sword.png";
-
+    private double attackDamage = 50;
 
     @Override
     public void prepAttack(Entity player) {
@@ -57,7 +57,8 @@ public class GoldenSword0 implements Weapon {
         swordOffset = !ultimateActivated ? 22 : 0;
         meleeHitBox = spawn("meleeSwordHitBox",
                 new SpawnData(player.getX(), player.getY())
-                        .put("width", hitBoxWidth).put("height", hitBoxHeight));
+                        .put("width", hitBoxWidth).put("height", hitBoxHeight).
+                        put("damage", attackDamage));
         // Spawn hitbox on top of player and apply offset
         meleeHitBox.getTransformComponent().setAnchoredPosition(
                 new Point2D(

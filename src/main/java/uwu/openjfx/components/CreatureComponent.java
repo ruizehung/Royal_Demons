@@ -35,16 +35,32 @@ public class CreatureComponent extends Component implements HasLife {
     }
 
     @Override
-    public void deductHealth(int point) {
-        healthPoints -= point;
-        if (healthPoints <= 0) { // die
-            healthPoints = 0;
-            die();
-        } else {
-            isInvulnerable = true;
-            invulnerability();
+    public void deductHealth(double point, double attackPower, double blockProb, double armor) {
+        /*
+            point: raw damage to be dealt
+            attackPower: 1.0 means deal raw damage, 3.0 means deal triple times raw damage
+            blockProb: % chance of being damaged (0% means never block, 100% means always block)
+            armor: 1.0 means get hit full force, 2.0 means get hit by half the force
+         */
+        if (armor > 0) { // cannot divide by 0
+            int blockRand = (int) (Math.random() * 101);
+            if (blockRand < blockProb) {
+                System.out.println("BLOCKED");
+                return;
+            }
+            healthPoints -= (point * attackPower) / armor;
+            if (this instanceof EnemyComponent) {
+                System.out.println(healthPoints);
+            }
+            if (healthPoints <= 0) { // die
+                healthPoints = 0;
+                die();
+            } else {
+                isInvulnerable = true;
+                invulnerability();
+            }
+            playerHealthIntegerProperty.set(healthPoints);
         }
-        playerHealthIntegerProperty.set(healthPoints);
     }
 
     private void invulnerability() {
