@@ -26,7 +26,7 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
     private Image sprite = new Image("assets/textures/ui/weapons/staff0_ui.png"); // weapon sprite
     private String inventoryIconPath = "ui/inventory/nature_staff.png";
     private String name = "Nature Staff";
-
+    private double attackDamage = 75;
 
     @Override
     public void prepAttack(Entity player) {
@@ -76,8 +76,8 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
                         put("frameWidth", frameWidth).
                         put("frameHeight", frameHeight).
                         put("isArrow", false).
-                        put("isMagic", true));
-
+                        put("isMagic", true).
+                        put("damage", attackDamage));
         /*
             setLocalAnchor(...) will ensure that the anchor/pivot point of the
             magic spell is located at the CENTER of the NEW hitbox.
@@ -118,8 +118,8 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
 
     @Override
     public int getDuration(boolean ultimateActivated) {
-        int attackDuration = 900; // charge-up time of attacking in milliseconds
-        int ultimateChargeDuration = 1500; // charge-up time of attacking in milliseconds
+        int attackDuration = 700; // charge-up time of attacking in milliseconds
+        int ultimateChargeDuration = 1000; // charge-up time of attacking in milliseconds
         this.ultimateActivated = ultimateActivated;
         return ultimateActivated ? ultimateChargeDuration : attackDuration;
     }

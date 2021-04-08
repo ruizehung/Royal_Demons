@@ -4,8 +4,9 @@ import com.almasb.fxgl.dsl.components.ProjectileComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import uwu.openjfx.RoyalType;
-import uwu.openjfx.components.AttackMultipleComponent;
+import uwu.openjfx.components.AttackDamageComponent;
 import uwu.openjfx.components.EnemyComponent;
+import uwu.openjfx.components.PlayerComponent;
 
 /*
     This class is responsible for when the hitbox of a player attack touches an enemy
@@ -24,12 +25,12 @@ public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
     @Override
     public void onCollisionBegin(Entity weapon, Entity enemy) {
         if (((weapon.hasComponent(ProjectileComponent.class))
-            && (weapon.hasComponent(AttackMultipleComponent.class))
+            && (weapon.hasComponent(AttackDamageComponent.class))
             && (!weapon.getComponent(ProjectileComponent.class).isPaused())
-            && (!weapon.getComponent(AttackMultipleComponent.class).isActive()))
+            && (!weapon.getComponent(AttackDamageComponent.class).isActive()))
             || ((!weapon.hasComponent(ProjectileComponent.class))
-            && (weapon.hasComponent(AttackMultipleComponent.class))
-            && (weapon.getComponent(AttackMultipleComponent.class).isPaused()))) {
+            && (weapon.hasComponent(AttackDamageComponent.class))
+            && (weapon.getComponent(AttackDamageComponent.class).isPaused()))) {
             weapon.removeFromWorld();
         }
 
@@ -38,7 +39,11 @@ public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
             || (!weapon.hasComponent(ProjectileComponent.class))) {
             EnemyComponent enemyComponent = enemy.getObject("CreatureComponent");
             enemyComponent.knockBackFromPlayer();
-            enemyComponent.deductHealth(1);
+            enemyComponent.deductHealth(
+                weapon.getComponent(AttackDamageComponent.class).getAttackDamage(),
+                PlayerComponent.getAttackPower(),
+                enemyComponent.getBlockProbability(),
+                enemyComponent.getArmorStat());
         }
     }
 }

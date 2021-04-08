@@ -28,6 +28,7 @@ public class Bow0 implements Weapon, AngleBehavior {
     private Image sprite = new Image("assets/textures/ui/weapons/bow0_ui.png"); // weapon sprite
     private String inventoryIconPath = "ui/inventory/bow.png";
     private String name = "Buwu";
+    private double attackDamage = 60;
 
     @Override
     public void prepAttack(Entity player) {
@@ -99,7 +100,8 @@ public class Bow0 implements Weapon, AngleBehavior {
                         put("frameWidth", frameWidth).
                         put("frameHeight", frameHeight).
                         put("isArrow", true).
-                        put("isMagic", false));
+                        put("isMagic", false).
+                        put("damage", attackDamage));
         /*
             setLocalAnchor(...) will ensure that the anchor/pivot point of the
             arrow is located at the CENTER of the NEW hitbox.

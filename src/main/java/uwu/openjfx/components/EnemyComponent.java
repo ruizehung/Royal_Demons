@@ -57,6 +57,8 @@ public class EnemyComponent extends CreatureComponent {
     private boolean overDrive = false;
     private double velocityDecrementer = 10;
     private double speed = 70;
+    private double blockProbability = 20;
+    private double armorStat = 3.5;
 
     private double scaler = 1.0;
 
@@ -254,6 +256,22 @@ public class EnemyComponent extends CreatureComponent {
             double yPow = dir.toPoint2D().getY() * knockBackPower;
             physics.setLinearVelocity(new Point2D(xPow, yPow));
         }
+    }
+
+    public double getBlockProbability() {
+        return blockProbability;
+    }
+
+    public void setBlockProbability(double blockProbability) {
+        this.blockProbability = blockProbability;
+    }
+
+    public double getArmorStat() {
+        return armorStat;
+    }
+
+    public void setArmorStat(double armorStat) {
+        this.armorStat = armorStat;
     }
 
     private void moveToPlayer() {
