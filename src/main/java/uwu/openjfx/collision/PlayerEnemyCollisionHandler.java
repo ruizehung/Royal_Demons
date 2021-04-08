@@ -3,6 +3,7 @@ package uwu.openjfx.collision;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.PhysicsComponent;
+import javafx.geometry.Point2D;
 import uwu.openjfx.MainApp;
 import uwu.openjfx.RoyalType;
 import uwu.openjfx.components.EnemyComponent;

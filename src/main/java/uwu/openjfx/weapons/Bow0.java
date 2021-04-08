@@ -1,10 +1,8 @@
 package uwu.openjfx.weapons;
 
 import com.almasb.fxgl.core.math.Vec2;
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
-import com.almasb.fxgl.texture.Texture;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 
