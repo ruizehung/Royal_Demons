@@ -64,12 +64,6 @@ public class GoldenSword0 implements Weapon {
                         player.getX() - ((double) hitBoxWidth / 2) + player.getWidth() / 2
                                 + (player.getScaleX() > 0 ? swordOffset : -swordOffset),
                         player.getY() - ((double) hitBoxHeight / 2) + player.getHeight() / 2));
-        // Delete the hitbox after attacking
-//        FXGL.getGameTimer().runAtInterval(() -> {
-//            if (meleeHitBox.isActive()) {
-//                meleeHitBox.removeFromWorld();
-//            }
-//        }, Duration.seconds(.1));
     }
 
     @Override
@@ -99,6 +93,4 @@ public class GoldenSword0 implements Weapon {
     public String getDescription() {
         return "Some description";
     }
-
-
 }
