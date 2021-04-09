@@ -5,8 +5,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import uwu.openjfx.MainApp;
 import uwu.openjfx.UI;
+import uwu.openjfx.behaviors.DropItemComponent;
 import uwu.openjfx.collision.PlayerDroppedItemCollisionHandler;
 import uwu.openjfx.components.PlayerComponent;
+import uwu.openjfx.weapons.Bow0;
+import uwu.openjfx.weapons.GoldenSword0;
 import uwu.openjfx.items.Heart;
 import uwu.openjfx.items.Item;
 
@@ -51,6 +54,39 @@ public class TestPlayerDroppedItemCollisionHandler {
 
         assert UI.ragePotProperty().get() == 1;
     }
+
+    // alice 3
+    @Test
+    void testSwordPickUp() {
+        Entity sword = new Entity();
+        sword.setProperty("name", "golden_sword");
+
+        PlayerComponent.setPlayerWeapon("bow");
+        Entity player = new Entity();
+        PlayerComponent playerComponent = new PlayerComponent(10);
+        player.addComponent(playerComponent);
+
+        PlayerDroppedItemCollisionHandler handler = new PlayerDroppedItemCollisionHandler();
+        handler.onCollision(player, sword);
+
+        assert PlayerComponent.getWeaponInventoryList().contains(new GoldenSword0());
+    }
+
+    //alice 4
+    @Test
+    void testBowPickUp() {
+        Entity bow = new Entity();
+        bow.setProperty("name", "bow");
+
+        PlayerComponent.setPlayerWeapon("golden_sword");
+        Entity player = new Entity();
+        PlayerComponent playerComponent = new PlayerComponent(10);
+        player.addComponent(playerComponent);
+
+        PlayerDroppedItemCollisionHandler handler = new PlayerDroppedItemCollisionHandler();
+        handler.onCollision(player, bow);
+
+        assert PlayerComponent.getWeaponInventoryList().contains(new Bow0());
 
     // Ray 4
     @Test

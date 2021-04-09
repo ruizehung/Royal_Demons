@@ -31,6 +31,11 @@ public class Bow0 implements Weapon, AngleBehavior {
     private double attackDamage = 60;
 
     @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Bow0;
+    }
+
+    @Override
     public void prepAttack(Entity player) {
         int width = 23; // width of bow
         int height = 57; // height of bow

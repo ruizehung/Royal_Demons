@@ -22,6 +22,11 @@ public class GoldenSword0 implements Weapon {
     private double attackDamage = 50;
 
     @Override
+    public boolean equals(Object obj) {
+        return obj instanceof GoldenSword0;
+    }
+
+    @Override
     public void prepAttack(Entity player) {
         int width = !ultimateActivated ? 140 : 175; // width of the frame
         int height = !ultimateActivated ? 140 : 175; // height of the frame
