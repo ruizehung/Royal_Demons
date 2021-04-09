@@ -58,7 +58,7 @@ public class EnemyComponent extends CreatureComponent {
     private double velocityDecrementer = 10;
     private double speed = 70;
     private double blockProbability = 20;
-    private double armorStat = 3.5;
+    private double armorStat = 2.5;
 
     private double scaler = 1.0;
 
