@@ -1,7 +1,6 @@
 package uwu.openjfx.weapons;
 
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.texture.Texture;
 import javafx.scene.image.Image;
 
 /*

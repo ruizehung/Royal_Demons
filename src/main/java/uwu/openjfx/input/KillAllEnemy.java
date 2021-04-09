@@ -6,7 +6,6 @@ import com.almasb.fxgl.input.UserAction;
 import org.jetbrains.annotations.NotNull;
 import uwu.openjfx.RoyalType;
 import uwu.openjfx.components.CreatureComponent;
-import uwu.openjfx.components.EnemyComponent;
 
 import java.util.List;
 

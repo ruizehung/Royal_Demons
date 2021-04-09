@@ -2,7 +2,6 @@ package uwu.openjfx.input;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.input.UserAction;
-import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.Texture;
 import javafx.collections.ObservableMap;
 import javafx.event.EventHandler;
@@ -72,7 +71,8 @@ public class ShowInventoryAction extends UserAction {
                 Text text = FXGL.getUIFactoryService().newText(selectedWeapon.getDescription());
                 text.setWrappingWidth(120);
 
-                Texture weaponIcon = getAssetLoader().loadTexture(selectedWeapon.getWeaponIconPath());
+                Texture weaponIcon = getAssetLoader().loadTexture(selectedWeapon.
+                    getWeaponIconPath());
                 VBox descriptionAndIcon = new VBox(weaponIcon, text);
                 descriptionAndIcon.setAlignment(Pos.TOP_CENTER);
                 descriptionAndIcon.setSpacing(10);
@@ -84,14 +84,14 @@ public class ShowInventoryAction extends UserAction {
 
                 select.setOnMouseClicked((event) -> {
                     if (!PlayerComponent.getCurrentWeapon().getName()
-                            .equals(selectedWeapon.getName())){
+                            .equals(selectedWeapon.getName())) {
                         PlayerComponent.setCurrentWeapon(selectedWeapon);
                     }
                 });
 
                 drop.setOnMouseClicked((event) -> {
                     if (!PlayerComponent.getCurrentWeapon().getName()
-                            .equals(selectedWeapon.getName())){
+                            .equals(selectedWeapon.getName())) {
                         PlayerComponent.getWeaponInventoryList().remove(selectedWeapon);
                         slot.setCenter(null);
                         slot.getProperties().remove("item");

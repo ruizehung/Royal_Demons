@@ -484,27 +484,27 @@ public class MainMenu extends FXGLMenu {
     protected MenuContent createContentDifficulty() {
         MenuButton itemEasy = new MenuButton("Easy");
         itemEasy.setOnAction(
-                e -> {
-                    PlayerComponent.setGameDifficulty(itemEasy.getText());
-                    PlayerComponent.setGold(1000);
-                    itemEasy.updateText(itemEasy.getText());
-                });
+            e -> {
+                PlayerComponent.setGameDifficulty(itemEasy.getText());
+                PlayerComponent.setGold(1000);
+                itemEasy.updateText(itemEasy.getText());
+            });
 
         MenuButton itemMedium = new MenuButton("Medium");
         itemMedium.setOnAction(
-                e -> {
-                    PlayerComponent.setGameDifficulty(itemMedium.getText());
-                    PlayerComponent.setGold(800);
-                    itemMedium.updateText(itemMedium.getText());
-                });
+            e -> {
+                PlayerComponent.setGameDifficulty(itemMedium.getText());
+                PlayerComponent.setGold(800);
+                itemMedium.updateText(itemMedium.getText());
+            });
 
         MenuButton itemHard = new MenuButton("Hard");
         itemHard.setOnAction(
-                e -> {
-                    PlayerComponent.setGameDifficulty(itemHard.getText());
-                    PlayerComponent.setGold(600);
-                    itemHard.updateText(itemHard.getText());
-                });
+            e -> {
+                PlayerComponent.setGameDifficulty(itemHard.getText());
+                PlayerComponent.setGold(600);
+                itemHard.updateText(itemHard.getText());
+            });
 
         return new MenuContent(itemEasy, itemMedium, itemHard);
     }
@@ -520,17 +520,17 @@ public class MainMenu extends FXGLMenu {
 
         MenuButton itemWand = new MenuButton("Wand");
         itemWand.setOnAction(
-                e -> {
-                    PlayerComponent.setPlayerWeapon(itemWand.getText());
-                    itemWand.updateText(itemWand.getText());
-                });
+            e -> {
+                PlayerComponent.setPlayerWeapon(itemWand.getText());
+                itemWand.updateText(itemWand.getText());
+            });
 
         MenuButton itemBow = new MenuButton("Bow");
         itemBow.setOnAction(
-                e -> {
-                    PlayerComponent.setPlayerWeapon(itemBow.getText());
-                    itemBow.updateText(itemBow.getText());
-                });
+            e -> {
+                PlayerComponent.setPlayerWeapon(itemBow.getText());
+                itemBow.updateText(itemBow.getText());
+            });
 
         return new MenuContent(itemSword, itemWand, itemBow);
     }

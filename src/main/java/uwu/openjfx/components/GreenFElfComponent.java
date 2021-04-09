@@ -21,8 +21,8 @@ public class GreenFElfComponent extends Component implements Interactable {
     public GreenFElfComponent() {
         this.width = 37;
         this.height = 39;
-        animIdle = new AnimationChannel(FXGL.image("creatures/ally/elf_f_green_37x39.png"), 8,
-                width, height, Duration.seconds(0.5), 0, 3);
+        animIdle = new AnimationChannel(FXGL.image("creatures/ally/elf_f_green_37x39.png"),
+            8, width, height, Duration.seconds(0.5), 0, 3);
 
         texture = new AnimatedTexture(animIdle);
 
@@ -38,7 +38,15 @@ public class GreenFElfComponent extends Component implements Interactable {
 
     @Override
     public void interact() {
-        String s = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tincidunt euismod arcu sit amet maximus. Ut dignissim eleifend enim sit amet maximus. Curabitur tempor sem nunc, et semper est pellentesque a. Donec at feugiat erat. Donec ultrices libero diam, ac suscipit elit varius elementum. Proin tempor lacus a felis vestibulum egestas. Phasellus pellentesque tincidunt nunc, eu vehicula massa convallis ut. Donec gravida felis sit amet purus accumsan, nec dapibus sem suscipit. Nulla ornare condimentum nisi, ac molestie ipsum maximus placerat. Pellentesque tincidunt nisi ante, eget tempor urna imperdiet id.";
+        String s = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas "
+            + "tincidunt euismod arcu sit amet maximus. Ut dignissim eleifend enim sit "
+            + "amet maximus. Curabitur tempor sem nunc, et semper est pellentesque a. "
+            + "Donec at feugiat erat. Donec ultrices libero diam, ac suscipit elit varius "
+            + "elementum. Proin tempor lacus a felis vestibulum egestas. Phasellus "
+            + "pellentesque tincidunt nunc, eu vehicula massa convallis ut. Donec "
+            + "gravida felis sit amet purus accumsan, nec dapibus sem suscipit. Nulla "
+            + "ornare condimentum nisi, ac molestie ipsum maximus placerat. Pellentesque "
+            + "tincidunt nisi ante, eget tempor urna imperdiet id.";
         Text text = FXGL.getUIFactoryService().newText(s);
         text.setWrappingWidth(450);
         VBox content = new VBox(

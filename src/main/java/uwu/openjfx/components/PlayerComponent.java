@@ -66,16 +66,16 @@ public class PlayerComponent extends CreatureComponent {
             if (currentWeapon == null) {
                 Weapon weapon = new GoldenSword0();
                 switch (playerWeapon) {
-                    case "Sword":
-                        weapon = new GoldenSword0();
-                        break;
-                    case "Bow":
-                        weapon = new Bow0();
-                        break;
-                    case "Wand":
-                        weapon = new MagicStaff0();
-                        break;
-                    default:
+                case "Sword":
+                    weapon = new GoldenSword0();
+                    break;
+                case "Bow":
+                    weapon = new Bow0();
+                    break;
+                case "Wand":
+                    weapon = new MagicStaff0();
+                    break;
+                default:
                 }
                 weaponInventoryList.add(weapon);
                 setCurrentWeapon(weapon);

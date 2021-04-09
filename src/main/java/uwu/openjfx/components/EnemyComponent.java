@@ -64,8 +64,8 @@ public class EnemyComponent extends CreatureComponent {
 
     private LocalTimer moveTimer;
 
-    public EnemyComponent(int maxHealthPoints, String assetName, int width, int height, int frames) {
-        super(maxHealthPoints, maxHealthPoints);
+    public EnemyComponent(int maxHP, String assetName, int width, int height, int frames) {
+        super(maxHP, maxHP);
 
         this.type = assetName;
         this.width = width;
@@ -77,7 +77,8 @@ public class EnemyComponent extends CreatureComponent {
             animWalk = new AnimationChannel(FXGL.image(assetName), frames,
                     width, height, Duration.seconds(0.5), frames / 2, frames - 1);
             animMeleeAttack = new AnimationChannel(FXGL.image(assetName), frames,
-                    width, height, Duration.seconds(attackDuration / 1000), frames / 2, frames / 2);
+                    width, height, Duration.seconds(attackDuration / 1000), frames / 2,
+                frames / 2);
 
             texture = new AnimatedTexture(animIdle);
 
@@ -92,7 +93,8 @@ public class EnemyComponent extends CreatureComponent {
     @Override
     public void onAdded() {
         if (!MainApp.isIsTesting()) {
-            entity.getTransformComponent().setScaleOrigin(new Point2D(width / 2.0, height / 2.0));
+            entity.getTransformComponent().setScaleOrigin(
+                new Point2D(width / 2.0, height / 2.0));
             entity.getViewComponent().addChild(texture);
 
             moveTimer = FXGL.newLocalTimer();
@@ -162,7 +164,8 @@ public class EnemyComponent extends CreatureComponent {
 
         // Enemy does the actual attack, spawns hitbox and then shrinks
         if (startAttacking) {
-            final Entity meleeHitBox = spawn("meleeEnemyAttack", getEntity().getScaleX() > 0
+            final Entity meleeHitBox = spawn("meleeEnemyAttack",
+                getEntity().getScaleX() > 0
                     ? enemyX
                     : enemyX - 40, enemyY - 5);
             FXGL.getGameTimer().runAtInterval(meleeHitBox::removeFromWorld, Duration.seconds(.01));

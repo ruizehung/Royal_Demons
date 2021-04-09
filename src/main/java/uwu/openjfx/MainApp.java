@@ -73,8 +73,8 @@ public class MainApp extends GameApplication {
         }
         settings.setGameMenuEnabled(true);
         settings.setEnabledMenuItems(EnumSet.of(MenuItem.EXTRA));
-//        settings.setDeveloperMenuEnabled(true);
-//        settings.setApplicationMode(ApplicationMode.DEVELOPER);
+        // settings.setDeveloperMenuEnabled(true);
+        // settings.setApplicationMode(ApplicationMode.DEVELOPER);
     }
 
 

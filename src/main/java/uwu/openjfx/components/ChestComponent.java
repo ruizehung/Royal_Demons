@@ -37,9 +37,10 @@ public class ChestComponent extends CanOnlyInteractOnce implements Interactable 
         String weaponName = null;
 
         Set<String> weaponsSet = FXGL.geto("weaponsSet");
-        int item = FXGL.random(0, weaponsSet.size() - 1); // In real life, the Random object should be rather more shared than this
+        int item = FXGL.random(0, weaponsSet.size() - 1);
+        // In real life, the Random object should be rather more shared than this
         int i = 0;
-        for(String weapon : weaponsSet) {
+        for (String weapon : weaponsSet) {
             if (i == item) {
                 weaponName = weapon;
                 break;
