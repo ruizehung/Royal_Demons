@@ -267,6 +267,7 @@ public class MainApp extends GameApplication {
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerAttackEnemyCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new EnemyAttackPlayerCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new ProjectileWallCollisionHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new ProjectileDoorCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerTriggerCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerDoorCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerCoinCollisionHandler());
