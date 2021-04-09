@@ -4,6 +4,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.components.IDComponent;
 import com.almasb.fxgl.physics.CollisionHandler;
+import uwu.openjfx.MainApp;
 import uwu.openjfx.MapGeneration.Room;
 import uwu.openjfx.RoyalType;
 import uwu.openjfx.UI;
@@ -21,8 +22,8 @@ public class PlayerDroppedItemCollisionHandler extends CollisionHandler {
     }
 
     @Override
-    protected void onCollision(Entity player, Entity itemEntity) {
-        if (FXGL.getb("Epressed")) {
+    public void onCollision(Entity player, Entity itemEntity) {
+        if (MainApp.isIsTesting() || FXGL.getb("Epressed")) {
             String itemName = itemEntity.getString("name");
             System.out.println("Player picks up " + itemName);
 
@@ -47,26 +48,29 @@ public class PlayerDroppedItemCollisionHandler extends CollisionHandler {
                 }
             }
 
-            // handle onPickup
-            Item itemObj;
-            Map<String, Item> itemNameObjMap = FXGL.geto("itemNameObjMap");
-            if (itemNameObjMap.containsKey(itemName)) {
-                itemObj = itemNameObjMap.get(itemName);
-                itemObj.onPickUp(player);
-                // Todo: add itemObj to inventory ?
+            if(!MainApp.isIsTesting()) {
+                // handle onPickup
+                Item itemObj;
+                Map<String, Item> itemNameObjMap = FXGL.geto("itemNameObjMap");
+                if (itemNameObjMap.containsKey(itemName)) {
+                    itemObj = itemNameObjMap.get(itemName);
+                    itemObj.onPickUp(player);
+                    // Todo: add itemObj to inventory ?
+                }
+
+                itemEntity.removeFromWorld();
+
+                // For items that is spawned by map (not from chest or monster), we don't
+                // want it to be respawned each time player enter this room
+                try {
+                    IDComponent idComponent = itemEntity.getComponent(IDComponent.class);
+                    Room curRoom = FXGL.geto("curRoom");
+                    curRoom.setDroppedItemData(idComponent.getId(), "picked", 1);
+                } catch (Exception e) {
+                    // do nothing
+                }
             }
 
-            itemEntity.removeFromWorld();
-
-            // For items that is spawned by map (not from chest or monster), we don't
-            // want it to be respawned each time player enter this room
-            try {
-                IDComponent idComponent = itemEntity.getComponent(IDComponent.class);
-                Room curRoom = FXGL.geto("curRoom");
-                curRoom.setDroppedItemData(idComponent.getId(), "picked", 1);
-            } catch (Exception e) {
-                // do nothing
-            }
         }
     }
 }
