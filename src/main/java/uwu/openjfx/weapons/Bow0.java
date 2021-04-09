@@ -34,28 +34,29 @@ public class Bow0 implements Weapon, AngleBehavior {
     public void prepAttack(Entity player) {
         int width = 23; // width of bow
         int height = 57; // height of bow
-        double bowOffset = 30; // spawn bow offset with respect to player location
+        double bowOffsetX = 5; // spawn bow offset with respect to x player location
+        double bowOffsetY = 0; // spawn bow offset with respect to y player location
 
         Entity b = spawn("weapon",
-                new SpawnData(
-                        player.getX(), player.getY()).
-                        put("weaponFile", !ultimateActivated ? "bow0_reg_16x32" : "bow0_reg_16x32").
-                        put("duration", getDuration(ultimateActivated)).
-                        put("frameWidth", width).
-                        put("frameHeight", height).
-                        put("fpr", !ultimateActivated ? 1 : 1).
-                        put("weaponSprite", sprite));
+            new SpawnData(
+                player.getX(), player.getY()).
+                put("weaponFile", !ultimateActivated ? "bow0_reg_16x32" : "bow0_reg_16x32").
+                put("duration", getDuration(ultimateActivated)).
+                put("frameWidth", width).
+                put("frameHeight", height).
+                put("fpr", !ultimateActivated ? 1 : 1).
+                put("weaponSprite", sprite));
         // Spawn bow at player's "hands"
         b.getTransformComponent().setAnchoredPosition(
-                new Point2D(player.getX()
-                        - ((double) width / 2) + player.getWidth() / 2 + bowOffset,
-                        player.getY() - ((double) height / 2) + player.getHeight() / 2));
+            new Point2D(
+                (player.getX() + playerHitBoxOffsetX + (playerHitBoxWidth / 2)) + bowOffsetX,
+                (player.getY() + bowOffsetY)));
         b.setZIndex(2000); // put bow on top of player (z = 1000)
         if (player.getScaleX() == 1) {
             b.setScaleX(1);
         } else {
             b.setScaleX(-1);
-            b.translateX(-(bowOffset + 10)); // smooth reflection over middle axis rel. to player
+            b.translateX(-(2 * bowOffsetX)); // smooth reflection over middle axis rel. to player
         }
     }
 
@@ -86,22 +87,22 @@ public class Bow0 implements Weapon, AngleBehavior {
             its modified hitbox done in CreatureFactory.
          */
         Entity rangedHitBox = spawn("rangedArrowHitBox",
-                new SpawnData(
-                        player.getX(), player.getY()).
-                        put("dir", dir.toPoint2D()).
-                        put("speed", speed).
-                        put("weapon", "arrow").
-                        put("duration", 500).
-                        put("fpr", 1).
-                        put("ultimateActive", ultimateActivated).
-                        put("topBotOffset", topBottomOffset).
-                        put("leftOffset", leftOffset).
-                        put("rightOffset", rightOffset).
-                        put("frameWidth", frameWidth).
-                        put("frameHeight", frameHeight).
-                        put("isArrow", true).
-                        put("isMagic", false).
-                        put("damage", attackDamage));
+            new SpawnData(
+                player.getX(), player.getY()).
+                put("dir", dir.toPoint2D()).
+                put("speed", speed).
+                put("weapon", "arrow").
+                put("duration", 500).
+                put("fpr", 1).
+                put("ultimateActive", ultimateActivated).
+                put("topBotOffset", topBottomOffset).
+                put("leftOffset", leftOffset).
+                put("rightOffset", rightOffset).
+                put("frameWidth", frameWidth).
+                put("frameHeight", frameHeight).
+                put("isArrow", true).
+                put("isMagic", false).
+                put("damage", attackDamage));
         /*
             setLocalAnchor(...) will ensure that the anchor/pivot point of the
             arrow is located at the CENTER of the NEW hitbox.
@@ -117,12 +118,12 @@ public class Bow0 implements Weapon, AngleBehavior {
          */
         rangedHitBox.setLocalAnchor(new Point2D(centerX, centerY));
         rangedHitBox.setAnchoredPosition(
-                (player.getX() + playerHitBoxOffsetX
-                        + (player.getScaleX() > 0 ? playerHitBoxWidth : 0)), // right-left side
-                (player.getY() + playerHitBoxOffsetY
-                        + (playerHitBoxHeight / 2))); // midpoint player hitbox
+            (player.getX() + playerHitBoxOffsetX
+                + (player.getScaleX() > 0 ? playerHitBoxWidth : 0)), // right-left side
+            (player.getY() + playerHitBoxOffsetY
+                + (playerHitBoxHeight / 2))); // midpoint player hitbox
         rangedHitBox.getTransformComponent().setRotationOrigin(
-                new Point2D(centerX, ((double) (frameHeight)) / 2));
+            new Point2D(centerX, ((double) (frameHeight)) / 2));
         if (ultimateActivated) {
             rangedHitBox.setScaleX(2);
             rangedHitBox.setScaleY(2);
@@ -135,11 +136,11 @@ public class Bow0 implements Weapon, AngleBehavior {
         // opposite is distance (y) from mouse to player's "hands"
         // angle calculated with tangent
         double adjacent = mouseCurrX
-                - (player.getX() + playerHitBoxOffsetX
-                + (player.getScaleX() > 0 ? playerHitBoxWidth : 0));
+            - (player.getX() + playerHitBoxOffsetX
+            + (player.getScaleX() > 0 ? playerHitBoxWidth : 0));
         double opposite = mouseCurrY
-                - (player.getY() + playerHitBoxOffsetY
-                + (playerHitBoxHeight / 2));
+            - (player.getY() + playerHitBoxOffsetY
+            + (playerHitBoxHeight / 2));
         double angle = Math.atan2(opposite, adjacent);
         angle = Math.toDegrees(angle);
         dir = Vec2.fromAngle(angle);
