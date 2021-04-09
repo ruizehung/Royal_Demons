@@ -1,5 +1,10 @@
+import com.almasb.fxgl.entity.Entity;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uwu.openjfx.MainApp;
+import uwu.openjfx.collision.PlayerCoinCollisionHandler;
+import uwu.openjfx.components.CoinComponent;
+import uwu.openjfx.components.PlayerComponent;
 
 public class TestPlayerCoinCollisionHandler {
 
@@ -9,7 +14,7 @@ public class TestPlayerCoinCollisionHandler {
     }
 
     // ray 1
-    /*
+
     @Test
     void testPlayerPickGold() {
         int initialGold = 1000;
@@ -19,7 +24,9 @@ public class TestPlayerCoinCollisionHandler {
         PlayerComponent.setGold(initialGold);
 
         Entity player = new Entity();
-        player.addComponent(new PlayerComponent(1));
+        PlayerComponent playerComponent = new PlayerComponent(1);
+        player.addComponent(playerComponent);
+        player.setProperty("CreatureComponent", playerComponent);
 
         Entity coin = new Entity();
         coin.addComponent(new CoinComponent(coinValue));
@@ -29,5 +36,5 @@ public class TestPlayerCoinCollisionHandler {
 
         assert (PlayerComponent.getGold() == initialGold + coinValue);
     }
-     */
+
 }

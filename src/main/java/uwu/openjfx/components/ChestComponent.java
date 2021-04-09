@@ -2,6 +2,7 @@ package uwu.openjfx.components;
 
 import com.almasb.fxgl.dsl.FXGL;
 import javafx.scene.image.ImageView;
+import uwu.openjfx.MainApp;
 import uwu.openjfx.behaviors.CanOnlyInteractOnce;
 import uwu.openjfx.behaviors.DropItemComponent;
 import uwu.openjfx.behaviors.Interactable;
@@ -30,22 +31,25 @@ public class ChestComponent extends CanOnlyInteractOnce implements Interactable 
     @Override
     public void interact() {
         super.interact();
-        changeToOpenedView();
+        if (!MainApp.isIsTesting()) {
+            changeToOpenedView();
+        }
     }
 
     private String pickAWeaponRandomly() {
         String weaponName = null;
-
-        Set<String> weaponsSet = FXGL.geto("weaponsSet");
-        int item = FXGL.random(0, weaponsSet.size() - 1);
-        // In real life, the Random object should be rather more shared than this
-        int i = 0;
-        for (String weapon : weaponsSet) {
-            if (i == item) {
-                weaponName = weapon;
-                break;
+        if (!MainApp.isIsTesting()) {
+            Set<String> weaponsSet = FXGL.geto("weaponsSet");
+            int item = FXGL.random(0, weaponsSet.size() - 1);
+            // In real life, the Random object should be rather more shared than this
+            int i = 0;
+            for (String weapon : weaponsSet) {
+                if (i == item) {
+                    weaponName = weapon;
+                    break;
+                }
+                ++i;
             }
-            ++i;
         }
         return weaponName;
     }
