@@ -182,7 +182,7 @@
   <object id="38" type="wall" x="615.122" y="110.917" width="19.274" height="12.0211">
    <ellipse/>
   </object>
-  <object id="39" name="Green_F_Elf" type="Green_F_Elf" x="577.289" y="722.14">
+  <object id="39" name="GreenFElf" type="GreenFElf" x="577.289" y="722.14">
    <point/>
   </object>
   <object id="40" name="Spawn" type="point" x="480.017" y="98.3295">

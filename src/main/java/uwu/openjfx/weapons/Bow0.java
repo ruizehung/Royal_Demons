@@ -55,7 +55,7 @@ public class Bow0 implements Weapon, AngleBehavior {
             b.setScaleX(1);
         } else {
             b.setScaleX(-1);
-            b.translateX(-(bowOffset + 10)); // smooth reflection over middle axis relative to player
+            b.translateX(-(bowOffset + 10)); // smooth reflection over middle axis rel. to player
         }
     }
 

@@ -63,7 +63,7 @@ public class TestPlayerDroppedItemCollisionHandler {
         player.addComponent(playerComponent);
         player.setProperty("CreatureComponent", playerComponent);
 
-        Item heart = new Heart("Heart",3);
+        Item heart = new Heart("Heart", 3);
         heart.onPickUp(player);
 
         assert playerComponent.getMaxHealthPoints() == initialMaxHealth + 3;

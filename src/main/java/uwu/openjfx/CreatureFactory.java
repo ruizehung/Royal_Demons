@@ -220,8 +220,8 @@ public class CreatureFactory implements EntityFactory {
                 .build();
     }
 
-    @Spawns("Green_F_Elf")
-    public Entity newGreen_F_Elf(SpawnData data) {
+    @Spawns("GreenFElf")
+    public Entity newGreenFElf(SpawnData data) {
         GreenFElfComponent greenFElfComponent = new GreenFElfComponent();
         return FXGL.entityBuilder(data)
                 .type(RoyalType.NPC)
