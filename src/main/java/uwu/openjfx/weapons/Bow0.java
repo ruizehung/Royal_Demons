@@ -32,9 +32,9 @@ public class Bow0 implements Weapon, AngleBehavior {
 
     @Override
     public void prepAttack(Entity player) {
-        int width = 16; // width of bow
-        int height = 32; // height of bow
-        double bowOffset = 10; // spawn bow offset with respect to player location
+        int width = 23; // width of bow
+        int height = 57; // height of bow
+        double bowOffset = 30; // spawn bow offset with respect to player location
 
         Entity b = spawn("weapon",
                 new SpawnData(
@@ -52,10 +52,10 @@ public class Bow0 implements Weapon, AngleBehavior {
                         player.getY() - ((double) height / 2) + player.getHeight() / 2));
         b.setZIndex(2000); // put bow on top of player (z = 1000)
         if (player.getScaleX() == 1) {
-            b.setScaleX(2);
+            b.setScaleX(1);
         } else {
-            b.setScaleX(-2);
-            b.translateX(-bowOffset); // smooth reflection over middle axis relative to player
+            b.setScaleX(-1);
+            b.translateX(-(bowOffset + 10)); // smooth reflection over middle axis relative to player
         }
     }
 
