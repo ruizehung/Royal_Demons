@@ -3,6 +3,7 @@ package uwu.openjfx.behaviors;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.entity.components.IDComponent;
+import uwu.openjfx.MainApp;
 import uwu.openjfx.MapGeneration.Room;
 
 public abstract class CanOnlyInteractOnce extends Component implements Interactable {
@@ -24,11 +25,13 @@ public abstract class CanOnlyInteractOnce extends Component implements Interacta
     }
 
     public void interact() {
-        behavior.act(getEntity());
         hasInteractedBefore = true;
-        IDComponent idComponent = entity.getComponent(IDComponent.class);
-        Room curRoom = FXGL.geto("curRoom");
-        curRoom.setChestData(idComponent.getId(), "hasInteracted", 1);
+        if (!MainApp.isIsTesting()) {
+            behavior.act(getEntity());
+            IDComponent idComponent = entity.getComponent(IDComponent.class);
+            Room curRoom = FXGL.geto("curRoom");
+            curRoom.setChestData(idComponent.getId(), "hasInteracted", 1);
+        }
     }
 
     @Override

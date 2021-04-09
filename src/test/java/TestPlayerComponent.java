@@ -14,7 +14,7 @@ public class TestPlayerComponent {
     // devan 1
     @Test
     void testPlayerDies() {
-        PlayerComponent.setPlayerWeapon("Sword");
+
         Entity player = new Entity();
         PlayerComponent playerComponent = new PlayerComponent(1);
         player.addComponent(playerComponent);

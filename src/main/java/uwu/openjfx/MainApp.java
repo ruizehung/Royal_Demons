@@ -20,6 +20,8 @@ import uwu.openjfx.events.InteractEvent;
 import uwu.openjfx.input.*;
 import uwu.openjfx.items.Heart;
 import uwu.openjfx.items.Item;
+import uwu.openjfx.weapons.GoldenSword0;
+import uwu.openjfx.weapons.Weapon;
 
 import java.io.File;
 import java.util.*;
@@ -92,7 +94,7 @@ public class MainApp extends GameApplication {
 
     @Override
     protected void onUpdate(double tpf) {
-        if (PlayerComponent.getPlayerWeapon().equals("Sword")) {
+        if (PlayerComponent.getCurrentWeapon().isMeleeAttack()) {
             List<Entity> hitboxes = FXGL.getGameWorld().getEntitiesByType(RoyalType.PLAYERATTACK);
             for (Entity hitbox : hitboxes) {
                 if (hitbox != null && hitbox.isActive()) {
@@ -208,7 +210,9 @@ public class MainApp extends GameApplication {
     @Override
     protected void initGame() {
         if (developerCheat) {
-            PlayerComponent.setPlayerWeapon("Sword");
+            GoldenSword0 goldenSword0 = new GoldenSword0();
+            PlayerComponent.setCurrentWeapon(goldenSword0);
+            PlayerComponent.getWeaponInventoryList().add(goldenSword0);
             PlayerComponent.setGold(1000);
         }
         // Initialize Epressed to false. During the time player press E, this will
@@ -263,6 +267,7 @@ public class MainApp extends GameApplication {
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerAttackEnemyCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new EnemyAttackPlayerCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new ProjectileWallCollisionHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new ProjectileDoorCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerTriggerCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerDoorCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerCoinCollisionHandler());

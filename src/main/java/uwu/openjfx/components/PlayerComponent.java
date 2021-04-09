@@ -9,9 +9,6 @@ import javafx.util.Duration;
 import uwu.openjfx.MainApp;
 import uwu.openjfx.UI;
 import uwu.openjfx.behaviors.GameOverWhenDie;
-import uwu.openjfx.weapons.Bow0;
-import uwu.openjfx.weapons.GoldenSword0;
-import uwu.openjfx.weapons.MagicStaff0;
 import uwu.openjfx.weapons.Weapon;
 
 import java.util.ArrayList;
@@ -51,7 +48,6 @@ public class PlayerComponent extends CreatureComponent {
 
     // Todo: char state class?
     private static String playerName;
-    private static String playerWeapon;
     private static String gameDifficulty;
 
     // Todo: inventory-esque things, move?
@@ -63,23 +59,6 @@ public class PlayerComponent extends CreatureComponent {
         super(maxHealthPoints, maxHealthPoints, new GameOverWhenDie());
 
         if (!MainApp.isIsTesting()) {
-            if (currentWeapon == null) {
-                Weapon weapon = new GoldenSword0();
-                switch (playerWeapon) {
-                case "Sword":
-                    weapon = new GoldenSword0();
-                    break;
-                case "Bow":
-                    weapon = new Bow0();
-                    break;
-                case "Wand":
-                    weapon = new MagicStaff0();
-                    break;
-                default:
-                }
-                weaponInventoryList.add(weapon);
-                setCurrentWeapon(weapon);
-            }
             animIdle = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
                     40, 55, Duration.seconds(0.5), 0, 3);
             animWalk = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
@@ -93,6 +72,7 @@ public class PlayerComponent extends CreatureComponent {
         }
 
     }
+
 
     @Override
     public void onAdded() {
@@ -299,14 +279,6 @@ public class PlayerComponent extends CreatureComponent {
         PlayerComponent.playerName = playerName;
     }
 
-    public static String getPlayerWeapon() {
-        return playerWeapon;
-    }
-
-    public static void setPlayerWeapon(String playerWeapon) {
-        PlayerComponent.playerWeapon = playerWeapon;
-    }
-
     public static String getGameDifficulty() {
         return gameDifficulty;
     }
@@ -320,7 +292,7 @@ public class PlayerComponent extends CreatureComponent {
     }
 
     public static void addWeaponToInventory(Weapon weapon) {
-        for (Weapon playerWeapon: weaponInventoryList) {
+        for (Weapon playerWeapon : weaponInventoryList) {
             if (playerWeapon.getName().equals(weapon.getName())) {
                 return;
             }

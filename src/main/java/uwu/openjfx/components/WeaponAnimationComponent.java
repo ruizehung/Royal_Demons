@@ -31,10 +31,17 @@ public class WeaponAnimationComponent extends Component {
         // parameter duration: tells us how long the charge-up of the attack is
         // parameter fpr: frames per row
         AnimationChannel animAttack = new AnimationChannel(
-                FXGL.image("./weapons/" + weapon + ".png"), fpr,
-                frameWidth, frameHeight, Duration.millis(duration), 0, fpr);
+            FXGL.image("./weapons/" + weapon + ".png"), fpr,
+            frameWidth, frameHeight, Duration.millis(duration), 0, fpr - 1);
+        AnimationChannel idle = new AnimationChannel(
+            FXGL.image("./weapons/" + weapon + ".png"), fpr,
+            frameWidth, frameHeight, Duration.millis(duration), fpr, fpr);
         texture = new AnimatedTexture(animAttack);
         texture.playAnimationChannel(animAttack);
+        texture.setOnCycleFinished(() -> {
+            texture.set(new AnimatedTexture(idle));
+            texture.playAnimationChannel(idle);
+        });
         this.duration = duration;
     }
 

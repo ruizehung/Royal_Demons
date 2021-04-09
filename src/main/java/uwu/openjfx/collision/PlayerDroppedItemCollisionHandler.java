@@ -48,7 +48,7 @@ public class PlayerDroppedItemCollisionHandler extends CollisionHandler {
                 }
             }
 
-            if(!MainApp.isIsTesting()) {
+            if (!MainApp.isIsTesting()) {
                 // handle onPickup
                 Item itemObj;
                 Map<String, Item> itemNameObjMap = FXGL.geto("itemNameObjMap");

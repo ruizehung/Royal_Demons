@@ -18,7 +18,6 @@ public class TestPlayerEnemyCollisionHandler {
     void testEnemyRunsIntoPlayer() {
         int origHealth = 10;
 
-        PlayerComponent.setPlayerWeapon("Sword");
         Entity player = new Entity();
         PlayerComponent playerComponent = new PlayerComponent(10);
         player.addComponent(playerComponent);
