@@ -61,7 +61,6 @@ public class TestPlayerDroppedItemCollisionHandler {
         Entity sword = new Entity();
         sword.setProperty("name", "golden_sword");
 
-        PlayerComponent.setPlayerWeapon("bow");
         Entity player = new Entity();
         PlayerComponent playerComponent = new PlayerComponent(10);
         player.addComponent(playerComponent);
@@ -78,7 +77,6 @@ public class TestPlayerDroppedItemCollisionHandler {
         Entity bow = new Entity();
         bow.setProperty("name", "bow");
 
-        PlayerComponent.setPlayerWeapon("golden_sword");
         Entity player = new Entity();
         PlayerComponent playerComponent = new PlayerComponent(10);
         player.addComponent(playerComponent);
@@ -87,6 +85,7 @@ public class TestPlayerDroppedItemCollisionHandler {
         handler.onCollision(player, bow);
 
         assert PlayerComponent.getWeaponInventoryList().contains(new Bow0());
+    }
 
     // Ray 4
     @Test
