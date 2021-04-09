@@ -45,7 +45,7 @@ public class WeaponFactory implements EntityFactory {
         int rectWidth = data.get("width");
         int rectHeight = data.get("height");
         double attackDamage = data.get("damage");
-        Rectangle hitBox = new Rectangle(rectWidth, rectHeight, Color.TRANSPARENT);
+        Rectangle hitBox = new Rectangle(rectWidth, rectHeight, Color.WHITE);
         //hitBox.setOpacity(.5);
         return FXGL.entityBuilder(data)
                 .type(RoyalType.PLAYERATTACK)

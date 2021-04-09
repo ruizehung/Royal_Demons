@@ -40,7 +40,7 @@ public class GameMap {
         directions.add(new Pair(new Pair(-1, 0), "West"));
 
         this.numOfRooms = numOfRooms;
-        finalBossDist = random.nextInt(3) + 7;
+        finalBossDist = 7;
         generateRooms();
 
         initialRoom.setRoomType("initialRoom");

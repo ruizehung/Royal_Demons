@@ -102,6 +102,6 @@ public class GoldenSword0 implements Weapon {
 
     @Override
     public boolean isMeleeAttack() {
-        return false;
+        return true;
     }
 }
