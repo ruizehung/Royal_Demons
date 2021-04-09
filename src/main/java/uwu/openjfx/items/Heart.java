@@ -4,8 +4,8 @@ import uwu.openjfx.behaviors.IncreaseMaxHealth;
 
 public class Heart extends Item {
 
-    public Heart(String name, int healPoints) {
+    public Heart(String name, int maxHealthIncreased) {
         super(name, false);
-        setPickupBehavior(new IncreaseMaxHealth(healPoints));
+        setPickupBehavior(new IncreaseMaxHealth(maxHealthIncreased));
     }
 }

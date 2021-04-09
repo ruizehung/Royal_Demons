@@ -7,6 +7,8 @@ import uwu.openjfx.MainApp;
 import uwu.openjfx.UI;
 import uwu.openjfx.collision.PlayerDroppedItemCollisionHandler;
 import uwu.openjfx.components.PlayerComponent;
+import uwu.openjfx.items.Heart;
+import uwu.openjfx.items.Item;
 
 @ExtendWith(RunWithFX.class)
 public class TestPlayerDroppedItemCollisionHandler {
@@ -50,4 +52,20 @@ public class TestPlayerDroppedItemCollisionHandler {
         assert UI.ragePotProperty().get() == 1;
     }
 
+    // Ray 4
+    @Test
+    void testHeartPickUp() {
+        int initialMaxHealth = 10;
+
+        PlayerComponent.setPlayerWeapon("Sword");
+        Entity player = new Entity();
+        PlayerComponent playerComponent = new PlayerComponent(initialMaxHealth);
+        player.addComponent(playerComponent);
+        player.setProperty("CreatureComponent", playerComponent);
+
+        Item heart = new Heart("Heart",3);
+        heart.onPickUp(player);
+
+        assert playerComponent.getMaxHealthPoints() == initialMaxHealth + 3;
+    }
 }

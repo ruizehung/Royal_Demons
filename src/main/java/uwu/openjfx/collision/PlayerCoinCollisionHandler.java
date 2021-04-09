@@ -14,7 +14,7 @@ public class PlayerCoinCollisionHandler extends CollisionHandler {
 
     @Override
     public void onCollisionBegin(Entity player, Entity coin) {
-        PlayerComponent playerComponent = FXGL.geto("playerComponent");
+        PlayerComponent playerComponent = player.getObject("CreatureComponent");
         CoinComponent coinComponent = coin.getComponent(CoinComponent.class);
         playerComponent.addGold(coinComponent.getValue());
         coin.removeFromWorld();
