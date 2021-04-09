@@ -9,9 +9,6 @@ import javafx.util.Duration;
 import uwu.openjfx.MainApp;
 import uwu.openjfx.UI;
 import uwu.openjfx.behaviors.GameOverWhenDie;
-import uwu.openjfx.weapons.Bow0;
-import uwu.openjfx.weapons.GoldenSword0;
-import uwu.openjfx.weapons.MagicStaff0;
 import uwu.openjfx.weapons.Weapon;
 
 import java.util.ArrayList;
@@ -51,7 +48,6 @@ public class PlayerComponent extends CreatureComponent {
 
     // Todo: char state class?
     private static String playerName;
-    private static String playerWeapon;
     private static String gameDifficulty;
 
     // Todo: inventory-esque things, move?
@@ -283,14 +279,6 @@ public class PlayerComponent extends CreatureComponent {
         PlayerComponent.playerName = playerName;
     }
 
-    public static String getPlayerWeapon() {
-        return playerWeapon;
-    }
-
-    public static void setPlayerWeapon(String playerWeapon) {
-        PlayerComponent.playerWeapon = playerWeapon;
-    }
-
     public static String getGameDifficulty() {
         return gameDifficulty;
     }
@@ -304,7 +292,7 @@ public class PlayerComponent extends CreatureComponent {
     }
 
     public static void addWeaponToInventory(Weapon weapon) {
-        for (Weapon playerWeapon: weaponInventoryList) {
+        for (Weapon playerWeapon : weaponInventoryList) {
             if (playerWeapon.getName().equals(weapon.getName())) {
                 return;
             }

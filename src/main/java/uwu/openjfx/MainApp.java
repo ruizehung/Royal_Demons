@@ -41,7 +41,7 @@ public class MainApp extends GameApplication {
     private Set<String> weaponsSet;
     private Map<String, String> itemNameAssetMap;
     private Map<String, Item> itemNameObjMap;
-    private final Boolean developerCheat = false;
+    private final Boolean developerCheat = true;
     private static boolean isTesting = false;
 
     // Top priority : (
@@ -210,7 +210,9 @@ public class MainApp extends GameApplication {
     @Override
     protected void initGame() {
         if (developerCheat) {
-            PlayerComponent.setPlayerWeapon("Sword");
+            GoldenSword0 goldenSword0 = new GoldenSword0();
+            PlayerComponent.setCurrentWeapon(goldenSword0);
+            PlayerComponent.getWeaponInventoryList().add(goldenSword0);
             PlayerComponent.setGold(1000);
         }
         // Initialize Epressed to false. During the time player press E, this will

@@ -20,7 +20,7 @@ public class TestPlayerCoinCollisionHandler {
         int initialGold = 1000;
         int coinValue = 5;
 
-        PlayerComponent.setPlayerWeapon("Sword");
+
         PlayerComponent.setGold(initialGold);
 
         Entity player = new Entity();

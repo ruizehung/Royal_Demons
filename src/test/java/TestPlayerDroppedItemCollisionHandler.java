@@ -24,7 +24,7 @@ public class TestPlayerDroppedItemCollisionHandler {
         Entity potion = new Entity();
         potion.setProperty("name", "HealthPotion");
 
-        PlayerComponent.setPlayerWeapon("Sword");
+
         Entity player = new Entity();
         PlayerComponent playerComponent = new PlayerComponent(10);
         player.addComponent(playerComponent);
@@ -41,7 +41,7 @@ public class TestPlayerDroppedItemCollisionHandler {
         Entity potion = new Entity();
         potion.setProperty("name", "RagePotion");
 
-        PlayerComponent.setPlayerWeapon("Sword");
+
         Entity player = new Entity();
         PlayerComponent playerComponent = new PlayerComponent(10);
         player.addComponent(playerComponent);
@@ -57,7 +57,6 @@ public class TestPlayerDroppedItemCollisionHandler {
     void testHeartPickUp() {
         int initialMaxHealth = 10;
 
-        PlayerComponent.setPlayerWeapon("Sword");
         Entity player = new Entity();
         PlayerComponent playerComponent = new PlayerComponent(initialMaxHealth);
         player.addComponent(playerComponent);

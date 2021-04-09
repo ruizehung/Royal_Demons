@@ -122,7 +122,6 @@ public class MainMenu extends FXGLMenu {
         FXGL.getAudioPlayer().stopAllMusic();
         loopBGM("MainMenu.mp3");
         PlayerComponent.setPlayerName(null);
-        PlayerComponent.setPlayerWeapon(null);
         PlayerComponent.setGameDifficulty(null);
         PlayerComponent.getWeaponInventoryList().clear();
     }
@@ -518,7 +517,6 @@ public class MainMenu extends FXGLMenu {
         MenuButton itemSword = new MenuButton("Sword");
         itemSword.setOnAction(
             e -> {
-//                PlayerComponent.setPlayerWeapon(itemSword.getText());
                 GoldenSword0 goldenSword0 = new GoldenSword0();
                 PlayerComponent.setCurrentWeapon(goldenSword0);
                 PlayerComponent.getWeaponInventoryList().add(goldenSword0);
@@ -529,7 +527,6 @@ public class MainMenu extends FXGLMenu {
         MenuButton itemWand = new MenuButton("Wand");
         itemWand.setOnAction(
             e -> {
-//                PlayerComponent.setPlayerWeapon(itemWand.getText());
                 MagicStaff0 magicStaff0 = new MagicStaff0();
                 PlayerComponent.setCurrentWeapon(magicStaff0);
                 PlayerComponent.getWeaponInventoryList().add(magicStaff0);
@@ -539,7 +536,6 @@ public class MainMenu extends FXGLMenu {
         MenuButton itemBow = new MenuButton("Bow");
         itemBow.setOnAction(
             e -> {
-//                PlayerComponent.setPlayerWeapon(itemBow.getText());
                 Bow0 bow0 = new Bow0();
                 PlayerComponent.setCurrentWeapon(bow0);
                 PlayerComponent.getWeaponInventoryList().add(bow0);
