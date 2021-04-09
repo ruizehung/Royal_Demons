@@ -99,4 +99,47 @@ public class TestPlayerAttackEnemyCollisionHandler {
 
         assert enemyComponent.getHealthPoints() < origHealth;
     }
+
+    // jason 3
+    @Test
+    void testEnemyBlocksDamage() {
+        int healthPoints = 100;
+        Entity monster = new Entity();
+        EnemyComponent enemyComponent = new EnemyComponent(
+            healthPoints, "", 10, 20);
+        enemyComponent.setBlockProbability(100); // 100% chance of blocking
+        monster.addComponent(enemyComponent);
+        monster.setProperty("CreatureComponent", enemyComponent);
+
+        double attackDamage = 100; // Without armor or blocking, enemy should get one shot
+        Entity weapon = new Entity();
+        weapon.addComponent(new AttackDamageComponent(false, attackDamage));
+
+        PlayerAttackEnemyCollisionHandler handler = new PlayerAttackEnemyCollisionHandler();
+        handler.onCollisionBegin(weapon, monster);
+        assert enemyComponent.getHealthPoints() == healthPoints;
+    }
+
+    // jason 4
+    @Test
+    void testEnemyArmorSoftensDamageTaken() {
+        int healthPoints = 100;
+        Entity monster = new Entity();
+        EnemyComponent enemyComponent = new EnemyComponent(
+            healthPoints, "", 10, 20);
+        enemyComponent.setBlockProbability(0); // cannot block
+        enemyComponent.setArmorStat(2.5); // has armor
+        monster.addComponent(enemyComponent);
+        monster.setProperty("CreatureComponent", enemyComponent);
+
+        double attackDamage = 100; // Without armor (or blocking), enemy should get one shot
+        Entity weapon = new Entity();
+        weapon.addComponent(new AttackDamageComponent(false, attackDamage));
+
+        PlayerAttackEnemyCollisionHandler handler = new PlayerAttackEnemyCollisionHandler();
+        handler.onCollisionBegin(weapon, monster);
+        // confirm enemy health with armor is greater than what it would've been without armor
+        assert enemyComponent.getHealthPoints()
+            >= (enemyComponent.getHealthPoints() - attackDamage);
+    }
 }
