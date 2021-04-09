@@ -144,4 +144,9 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
         return "Some description";
     }
 
+    @Override
+    public boolean isMeleeAttack() {
+        return false;
+    }
+
 }

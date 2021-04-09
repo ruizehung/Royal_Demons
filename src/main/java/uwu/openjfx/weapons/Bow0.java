@@ -172,4 +172,9 @@ public class Bow0 implements Weapon, AngleBehavior {
     public String getDescription() {
         return "This is a bow uwu";
     }
+
+    @Override
+    public boolean isMeleeAttack() {
+        return false;
+    }
 }

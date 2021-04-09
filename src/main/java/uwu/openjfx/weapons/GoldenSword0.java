@@ -94,4 +94,9 @@ public class GoldenSword0 implements Weapon {
     public String getDescription() {
         return "Some description";
     }
+
+    @Override
+    public boolean isMeleeAttack() {
+        return false;
+    }
 }

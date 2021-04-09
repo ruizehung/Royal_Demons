@@ -20,6 +20,8 @@ import uwu.openjfx.events.InteractEvent;
 import uwu.openjfx.input.*;
 import uwu.openjfx.items.Heart;
 import uwu.openjfx.items.Item;
+import uwu.openjfx.weapons.GoldenSword0;
+import uwu.openjfx.weapons.Weapon;
 
 import java.io.File;
 import java.util.*;
@@ -39,7 +41,7 @@ public class MainApp extends GameApplication {
     private Set<String> weaponsSet;
     private Map<String, String> itemNameAssetMap;
     private Map<String, Item> itemNameObjMap;
-    private final Boolean developerCheat = true;
+    private final Boolean developerCheat = false;
     private static boolean isTesting = false;
 
     // Top priority : (
@@ -92,7 +94,7 @@ public class MainApp extends GameApplication {
 
     @Override
     protected void onUpdate(double tpf) {
-        if (PlayerComponent.getPlayerWeapon().equals("Sword")) {
+        if (PlayerComponent.getCurrentWeapon().isMeleeAttack()) {
             List<Entity> hitboxes = FXGL.getGameWorld().getEntitiesByType(RoyalType.PLAYERATTACK);
             for (Entity hitbox : hitboxes) {
                 if (hitbox != null && hitbox.isActive()) {

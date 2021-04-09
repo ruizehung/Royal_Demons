@@ -35,7 +35,11 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import org.jetbrains.annotations.NotNull;
 import uwu.openjfx.components.PlayerComponent;
+import uwu.openjfx.weapons.Bow0;
+import uwu.openjfx.weapons.GoldenSword0;
+import uwu.openjfx.weapons.MagicStaff0;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -120,6 +124,7 @@ public class MainMenu extends FXGLMenu {
         PlayerComponent.setPlayerName(null);
         PlayerComponent.setPlayerWeapon(null);
         PlayerComponent.setGameDifficulty(null);
+        PlayerComponent.getWeaponInventoryList().clear();
     }
 
     @Override
@@ -445,7 +450,7 @@ public class MainMenu extends FXGLMenu {
             if (PlayerComponent.getPlayerName() != null
                     && !PlayerComponent.getPlayerName().isEmpty()
                     && !PlayerComponent.getPlayerName().trim().isEmpty()
-                    && PlayerComponent.getPlayerWeapon() != null
+                    && PlayerComponent.getCurrentWeapon() != null
                     && PlayerComponent.getGameDifficulty() != null) {
                 FXGL.getDialogService().showConfirmationBox("Are you sure?", yes -> {
                     if (yes) {
@@ -513,7 +518,10 @@ public class MainMenu extends FXGLMenu {
         MenuButton itemSword = new MenuButton("Sword");
         itemSword.setOnAction(
             e -> {
-                PlayerComponent.setPlayerWeapon(itemSword.getText());
+//                PlayerComponent.setPlayerWeapon(itemSword.getText());
+                GoldenSword0 goldenSword0 = new GoldenSword0();
+                PlayerComponent.setCurrentWeapon(goldenSword0);
+                PlayerComponent.getWeaponInventoryList().add(goldenSword0);
                 itemSword.updateText(itemSword.getText());
 
             });
@@ -521,14 +529,20 @@ public class MainMenu extends FXGLMenu {
         MenuButton itemWand = new MenuButton("Wand");
         itemWand.setOnAction(
             e -> {
-                PlayerComponent.setPlayerWeapon(itemWand.getText());
+//                PlayerComponent.setPlayerWeapon(itemWand.getText());
+                MagicStaff0 magicStaff0 = new MagicStaff0();
+                PlayerComponent.setCurrentWeapon(magicStaff0);
+                PlayerComponent.getWeaponInventoryList().add(magicStaff0);
                 itemWand.updateText(itemWand.getText());
             });
 
         MenuButton itemBow = new MenuButton("Bow");
         itemBow.setOnAction(
             e -> {
-                PlayerComponent.setPlayerWeapon(itemBow.getText());
+//                PlayerComponent.setPlayerWeapon(itemBow.getText());
+                Bow0 bow0 = new Bow0();
+                PlayerComponent.setCurrentWeapon(bow0);
+                PlayerComponent.getWeaponInventoryList().add(bow0);
                 itemBow.updateText(itemBow.getText());
             });
 

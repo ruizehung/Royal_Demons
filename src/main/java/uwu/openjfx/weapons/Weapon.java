@@ -18,4 +18,5 @@ public interface Weapon {
     String getWeaponIconPath();
     String getName();
     String getDescription();
+    boolean isMeleeAttack();
 }
