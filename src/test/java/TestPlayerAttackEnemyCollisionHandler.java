@@ -107,8 +107,8 @@ public class TestPlayerAttackEnemyCollisionHandler {
         Entity monster = new Entity();
         EnemyComponent enemyComponent = new EnemyComponent(
             healthPoints, "", 10, 20);
-        enemyComponent.setBlockProbability(100); // 100% chance of blocking
         monster.addComponent(enemyComponent);
+        enemyComponent.setBlockProbability(100); // 100% chance of blocking
         monster.setProperty("CreatureComponent", enemyComponent);
 
         double attackDamage = 100; // Without armor or blocking, enemy should get one shot
@@ -117,6 +117,7 @@ public class TestPlayerAttackEnemyCollisionHandler {
 
         PlayerAttackEnemyCollisionHandler handler = new PlayerAttackEnemyCollisionHandler();
         handler.onCollisionBegin(weapon, monster);
+        System.out.println(enemyComponent.getBlockProbability());
         assert enemyComponent.getHealthPoints() == healthPoints;
     }
 
