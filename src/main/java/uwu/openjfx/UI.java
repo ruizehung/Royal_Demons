@@ -22,98 +22,108 @@ public class UI {
 
     public static void init(Entity player) {
         UI.player = player;
-        // HP:
-        Text textHealthPrefix = FXGL.getUIFactoryService().newText("HP:", 50);
-        textHealthPrefix.setTranslateX(25);
-        textHealthPrefix.setTranslateY(50);
-        textHealthPrefix.setStroke(Color.RED);
 
-        // HP amount
-        Text textHealth = FXGL.getUIFactoryService().newText("", 50);
-        textHealth.setTranslateX(100);
-        textHealth.setTranslateY(50);
-        textHealth.setStroke(Color.WHITE);
+        if (!MainApp.isIsTesting()) {
+            // HP:
+            Text textHealthPrefix = FXGL.getUIFactoryService().newText("HP:", 50);
+            textHealthPrefix.setTranslateX(25);
+            textHealthPrefix.setTranslateY(50);
+            textHealthPrefix.setStroke(Color.RED);
 
-        textHealth.textProperty().bind(
-                player.getComponent(PlayerComponent.class).getHealthIntegerProperty().asString());
+            // HP amount
+            Text textHealth = FXGL.getUIFactoryService().newText("", 50);
+            textHealth.setTranslateX(100);
+            textHealth.setTranslateY(50);
+            textHealth.setStroke(Color.WHITE);
 
-        // GOLD:
-        Text textGoldPrefix = FXGL.getUIFactoryService().newText("GOLD:", 50);
-        textGoldPrefix.setTranslateX(FXGL.getAppWidth() - 225);
-        textGoldPrefix.setTranslateY(50);
-        textGoldPrefix.setStroke(Color.GOLD);
+            textHealth.textProperty().bind(
+                    player.getComponent(
+                            PlayerComponent.class).getHealthIntegerProperty().asString());
 
-        // Gold amount
-        Text textGold = FXGL.getUIFactoryService().newText("", 50);
-        textGold.setTranslateX(FXGL.getAppWidth() - 100);
-        textGold.setTranslateY(50);
-        textGold.setStroke(Color.WHITE);
+            // GOLD:
+            Text textGoldPrefix = FXGL.getUIFactoryService().newText("GOLD:", 50);
+            textGoldPrefix.setTranslateX(FXGL.getAppWidth() - 225);
+            textGoldPrefix.setTranslateY(50);
+            textGoldPrefix.setStroke(Color.GOLD);
 
-        textGold.textProperty().bind(goldProperty.asString());
+            // Gold amount
+            Text textGold = FXGL.getUIFactoryService().newText("", 50);
+            textGold.setTranslateX(FXGL.getAppWidth() - 100);
+            textGold.setTranslateY(50);
+            textGold.setStroke(Color.WHITE);
 
-        // weapon
-        Texture weaponBox = FXGL.getAssetLoader().loadTexture("ui/weapon_box_ui.png");
-        weaponBox.setTranslateX(25);
-        weaponBox.setTranslateY(FXGL.getAppHeight() - weaponBox.getHeight() - 25);
+            textGold.textProperty().bind(goldProperty.asString());
 
-        Texture weapon = new Texture(PlayerComponent.getCurrentWeapon().getWeaponSprite());
-        weapon.setRotate(45.0);
-        weapon.setTranslateX(
-                weaponBox.getTranslateX() + (weaponBox.getWidth() / 2) - weapon.getWidth() / 2);
-        weapon.setTranslateY(
-                weaponBox.getTranslateY() + (weaponBox.getWidth() / 2) - weapon.getHeight() / 2);
+            // weapon
+            Texture weaponBox = FXGL.getAssetLoader().loadTexture("ui/weapon_box_ui.png");
+            weaponBox.setTranslateX(25);
+            weaponBox.setTranslateY(FXGL.getAppHeight() - weaponBox.getHeight() - 25);
 
-        weapon.imageProperty().bind(weaponProperty);
+            Texture weapon = new Texture(PlayerComponent.getCurrentWeapon().getWeaponSprite());
+            weapon.setRotate(45.0);
+            weapon.setTranslateX(weaponBox.getTranslateX()
+                    + (weaponBox.getWidth() / 2)
+                    - weapon.getWidth() / 2);
+            weapon.setTranslateY(weaponBox.getTranslateY()
+                    + (weaponBox.getWidth() / 2)
+                    - weapon.getHeight() / 2);
+
+            weapon.imageProperty().bind(weaponProperty);
 
 
-        // Health pots
-        Texture healthPotBox = FXGL.getAssetLoader().loadTexture("ui/pot_box_ui.png");
-        healthPotBox.setTranslateX(weaponBox.getTranslateX() + weaponBox.getWidth() + 10);
-        healthPotBox.setTranslateY(FXGL.getAppHeight() - healthPotBox.getHeight() - 25);
+            // Health pots
+            Texture healthPotBox = FXGL.getAssetLoader().loadTexture("ui/pot_box_ui.png");
+            healthPotBox.setTranslateX(weaponBox.getTranslateX() + weaponBox.getWidth() + 10);
+            healthPotBox.setTranslateY(FXGL.getAppHeight() - healthPotBox.getHeight() - 25);
 
-        Texture healthPot = FXGL.getAssetLoader().loadTexture("ui/health_potion_ui.png");
-        healthPot.setTranslateX(healthPotBox.getTranslateX() + healthPotBox.getWidth() / 4.0);
-        healthPot.setTranslateY(healthPotBox.getTranslateY() + healthPotBox.getHeight() / 4.0 - 2);
+            Texture healthPot = FXGL.getAssetLoader().loadTexture("ui/health_potion_ui.png");
+            healthPot.setTranslateX(healthPotBox.getTranslateX()
+                    + healthPotBox.getWidth() / 4.0);
+            healthPot.setTranslateY(healthPotBox.getTranslateY()
+                    + healthPotBox.getHeight() / 4.0 - 2);
 
-        Text textHealthPot = FXGL.getUIFactoryService().newText("", 25);
-        textHealthPot.setTranslateX(
-                healthPotBox.getTranslateX() + healthPotBox.getWidth() * 3 / 5.0);
-        textHealthPot.setTranslateY(
-                healthPotBox.getTranslateY() + healthPotBox.getHeight() * 3 / 4.0);
-        textHealthPot.setStroke(Color.RED);
+            Text textHealthPot = FXGL.getUIFactoryService().newText("", 25);
+            textHealthPot.setTranslateX(
+                    healthPotBox.getTranslateX() + healthPotBox.getWidth() * 3 / 5.0);
+            textHealthPot.setTranslateY(
+                    healthPotBox.getTranslateY() + healthPotBox.getHeight() * 3 / 4.0);
+            textHealthPot.setStroke(Color.RED);
 
-        textHealthPot.textProperty().bind(healthPotProperty.asString());
+            textHealthPot.textProperty().bind(healthPotProperty.asString());
 
-        // Rage pots
-        Texture ragePotBox = FXGL.getAssetLoader().loadTexture("ui/pot_box_ui.png");
-        ragePotBox.setTranslateX(healthPotBox.getTranslateX() + healthPotBox.getWidth() + 10);
-        ragePotBox.setTranslateY(healthPotBox.getTranslateY());
+            // Rage pots
+            Texture ragePotBox = FXGL.getAssetLoader().loadTexture("ui/pot_box_ui.png");
+            ragePotBox.setTranslateX(healthPotBox.getTranslateX() + healthPotBox.getWidth() + 10);
+            ragePotBox.setTranslateY(healthPotBox.getTranslateY());
 
-        Texture ragePot = FXGL.getAssetLoader().loadTexture("ui/rage_potion_ui.png");
-        ragePot.setTranslateX(ragePotBox.getTranslateX() + ragePotBox.getWidth() / 4.0);
-        ragePot.setTranslateY(ragePotBox.getTranslateY() + ragePotBox.getHeight() / 4.0 - 2);
+            Texture ragePot = FXGL.getAssetLoader().loadTexture("ui/rage_potion_ui.png");
+            ragePot.setTranslateX(ragePotBox.getTranslateX() + ragePotBox.getWidth() / 4.0);
+            ragePot.setTranslateY(ragePotBox.getTranslateY() + ragePotBox.getHeight() / 4.0 - 2);
 
-        Text textRagePot = FXGL.getUIFactoryService().newText("", 25);
-        textRagePot.setTranslateX(ragePotBox.getTranslateX() + ragePotBox.getWidth() * 3 / 5.0);
-        textRagePot.setTranslateY(ragePotBox.getTranslateY() + ragePotBox.getHeight() * 3 / 4.0);
-        textRagePot.setStroke(Color.PURPLE);
+            Text textRagePot = FXGL.getUIFactoryService().newText("", 25);
+            textRagePot.setTranslateX(ragePotBox.getTranslateX()
+                    + ragePotBox.getWidth() * 3 / 5.0);
+            textRagePot.setTranslateY(ragePotBox.getTranslateY()
+                    + ragePotBox.getHeight() * 3 / 4.0);
+            textRagePot.setStroke(Color.PURPLE);
 
-        textRagePot.textProperty().bind(ragePotProperty.asString());
+            textRagePot.textProperty().bind(ragePotProperty.asString());
 
-        FXGL.getGameScene().addUINodes(
-                textHealthPrefix,
-                textHealth,
-                textGoldPrefix,
-                textGold,
-                weaponBox,
-                weapon,
-                healthPotBox,
-                healthPot,
-                textHealthPot,
-                ragePotBox,
-                ragePot,
-                textRagePot
-        );
+            FXGL.getGameScene().addUINodes(
+                    textHealthPrefix,
+                    textHealth,
+                    textGoldPrefix,
+                    textGold,
+                    weaponBox,
+                    weapon,
+                    healthPotBox,
+                    healthPot,
+                    textHealthPot,
+                    ragePotBox,
+                    ragePot,
+                    textRagePot
+            );
+        }
     }
 
     public static IntegerProperty getGoldProperty() {
