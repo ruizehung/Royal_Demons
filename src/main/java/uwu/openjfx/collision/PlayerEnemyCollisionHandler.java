@@ -46,7 +46,7 @@ public class PlayerEnemyCollisionHandler extends CollisionHandler {
     public void onCollision(Entity player, Entity enemy) {
         playerComponent = player.getComponent(PlayerComponent.class);
         if (!playerComponent.isInvulnerable()) {
-            playerComponent.deductHealth(1, 1, 0, 1);
+            playerComponent.deductHealth(1, 1, 0, 1, 0);
         }
 
         if (!MainApp.isIsTesting()) {

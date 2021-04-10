@@ -175,6 +175,8 @@ public class UI {
         if (ragePotProperty.get() > 0) {
             ragePotProperty.set(ragePotProperty.get() - 1);
             PlayerComponent.setAttackPower(2.5);
+            PlayerComponent.setAttackPowerHitCount(5);
+            PlayerComponent.setPiercePow(0);
         }
     }
 }

@@ -43,7 +43,8 @@ public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
                 weapon.getComponent(AttackDamageComponent.class).getAttackDamage(),
                 PlayerComponent.getAttackPower(),
                 enemyComponent.getBlockProbability(),
-                enemyComponent.getArmorStat());
+                enemyComponent.getArmorStat(),
+                PlayerComponent.getPiercePow());
             PlayerComponent.updateAttackPowerHitCount();
         }
     }

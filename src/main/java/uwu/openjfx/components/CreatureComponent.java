@@ -35,16 +35,18 @@ public class CreatureComponent extends Component implements HasLife {
     }
 
     @Override
-    public void deductHealth(double point, double attackPower, double blockProb, double armor) {
+    public void deductHealth(double point, double attackPower,
+                             double blockProb, double armor, int pierce) {
         /*
             point: raw damage to be dealt
             attackPower: 1.0 means deal raw damage, 3.0 means deal triple times raw damage
             blockProb: % chance of being damaged (0% means never block, 100% means always block)
             armor: 1.0 means get hit full force, 2.0 means get hit by half the force
+            pierce: 1.0 means normal chance to block. 0 means pierce through their block attempt
          */
         if (armor > 0) { // cannot divide by 0
             int blockRand = (int) (Math.random() * 101);
-            if (blockRand < blockProb) {
+            if (blockRand < blockProb * pierce) {
                 System.out.println("BLOCKED");
                 return;
             }
