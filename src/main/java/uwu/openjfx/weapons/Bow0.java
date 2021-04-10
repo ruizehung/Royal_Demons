@@ -37,10 +37,10 @@ public class Bow0 implements Weapon, AngleBehavior {
 
     @Override
     public void prepAttack(Entity player) {
-        int width = 23; // width of bow
-        int height = 57; // height of bow
-        double bowOffsetX = 5; // spawn bow offset with respect to x player location
-        double bowOffsetY = 0; // spawn bow offset with respect to y player location
+        int width = 16; // width of bow
+        int height = 43; // height of bow
+        double bowOffsetX = 20; // spawn bow offset with respect to x player location
+        double bowOffsetY = 5; // spawn bow offset with respect to y player location
 
         Entity b = spawn("weapon",
             new SpawnData(
