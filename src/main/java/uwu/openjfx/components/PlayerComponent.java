@@ -33,13 +33,13 @@ public class PlayerComponent extends CreatureComponent {
     private static Weapon currentWeapon; // Player's current weapon
     private static List<Weapon> weaponInventoryList = new ArrayList<>();
     private static double attackPower = 1;
+    private static int piercePow = 1;
     private static int attackPowerHitCount = 5;
 
     private double currMouseX; // mouse input for x
     private double currMouseY; // mouse input for y
 
     private double speed = 170;
-    private boolean overDrive = false;
     private double velocityDecrementer = 5;
     private boolean isPressingMovementKeys = false; // Player is moving with WASD / Arrow keys
     private boolean prepAttack = false; // Player has initiated attack charge/channel
@@ -85,11 +85,12 @@ public class PlayerComponent extends CreatureComponent {
 
     @Override
     public void onUpdate(double tpf) {
-        if (!isPressingMovementKeys || overDrive) {
+        // region Movement
+        if (!isPressingMovementKeys) {
             normalizeVelocityX();
             normalizeVelocityY();
         }
-        // region Movement
+
         if (!prepAttack) {
             // if Player has initiated an attack, then do not perform walk/idle animations
             if (physics.isMoving()) {
@@ -186,13 +187,16 @@ public class PlayerComponent extends CreatureComponent {
         physics.setVelocityY(0);
     }
 
-    public void setOverDrive(boolean overDrive) {
-        this.overDrive = overDrive;
+    public boolean isPressingMovementKeys() {
+        return isPressingMovementKeys;
+    }
+
+    public void setPressingMovementKeys(boolean moving) {
+        isPressingMovementKeys = moving;
     }
     // endregion
 
     // region Player Attack functions
-
     public void autoAttack(boolean ultimateActivated) {
         this.ultimateActivated = ultimateActivated;
         if (currMouseX > entity.getX() + 20) { // turn player in direction of mouse
@@ -221,22 +225,9 @@ public class PlayerComponent extends CreatureComponent {
         return speed;
     }
 
-    public boolean isPressingMovementKeys() {
-        return isPressingMovementKeys;
-    }
-
     public boolean isAttacking() {
         // used in MainApp for LMB/RMB input, confirmation of whether or not Player is attacking
         return prepAttack;
-    }
-
-    public static Weapon getCurrentWeapon() {
-        return currentWeapon;
-    }
-
-    public static void setCurrentWeapon(Weapon weapon) {
-        currentWeapon = weapon;
-        UI.setWeaponProperty(currentWeapon.getWeaponSprite());
     }
 
     public static double getAttackPower() {
@@ -247,25 +238,53 @@ public class PlayerComponent extends CreatureComponent {
         PlayerComponent.attackPower = attackPower;
     }
 
+    public static void setAttackPowerHitCount(int count) {
+        attackPowerHitCount = count;
+    }
+
+    public static void setPiercePow(int pierce) {
+        piercePow = pierce;
+    }
+
+    public static int getPiercePow() {
+        return piercePow;
+    }
+
     public static void updateAttackPowerHitCount() {
         attackPowerHitCount--;
         if (attackPowerHitCount <= 0) {
             attackPowerHitCount = 5;
             attackPower = 1;
+            piercePow = 1;
         }
     }
-
-    public void setPressingMovementKeys(boolean moving) {
-        isPressingMovementKeys = moving;
-    }
-
     // endregion
 
-    public void setMousePosition(double mouseXPos, double mouseYPos) {
-        currMouseX = mouseXPos;
-        currMouseY = mouseYPos;
+    // region Player Weapon
+    public static void setCurrentWeapon(Weapon weapon) {
+        currentWeapon = weapon;
+        UI.setWeaponProperty(currentWeapon.getWeaponSprite());
     }
 
+    public static Weapon getCurrentWeapon() {
+        return currentWeapon;
+    }
+
+    public static List<Weapon> getWeaponInventoryList() {
+        return weaponInventoryList;
+    }
+
+    public static void addWeaponToInventory(Weapon weapon) {
+        for (Weapon playerWeapon : weaponInventoryList) {
+            if (playerWeapon.getName().equals(weapon.getName())) {
+                return;
+            }
+        }
+        weaponInventoryList.add(weapon);
+    }
+    // endregion
+
+    // region Gold
     public void addGold(int gold) {
         PlayerComponent.gold += gold;
         UI.getGoldProperty().set(PlayerComponent.gold);
@@ -279,7 +298,9 @@ public class PlayerComponent extends CreatureComponent {
     public static int getGold() {
         return gold;
     }
+    // endregion
 
+    // region Player Name & Game Misc.
     public static String getPlayerName() {
         return playerName;
     }
@@ -296,17 +317,9 @@ public class PlayerComponent extends CreatureComponent {
         PlayerComponent.gameDifficulty = gameDifficulty;
     }
 
-    public static List<Weapon> getWeaponInventoryList() {
-        return weaponInventoryList;
+    public void setMousePosition(double mouseXPos, double mouseYPos) {
+        currMouseX = mouseXPos;
+        currMouseY = mouseYPos;
     }
-
-    public static void addWeaponToInventory(Weapon weapon) {
-        for (Weapon playerWeapon : weaponInventoryList) {
-            if (playerWeapon.getName().equals(weapon.getName())) {
-                return;
-            }
-        }
-        weaponInventoryList.add(weapon);
-    }
-
+    // endregion
 }

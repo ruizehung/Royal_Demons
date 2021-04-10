@@ -5,7 +5,8 @@ import javafx.beans.property.IntegerProperty;
 public interface HasLife {
     void increaseHealth(int point);
 
-    void deductHealth(double point, double attackPower, double blockProb, double armor);
+    void deductHealth(double point, double attackPower,
+                      double blockProb, double armor, int pierce);
 
     boolean isInvulnerable();
 

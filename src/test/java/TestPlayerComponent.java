@@ -18,7 +18,7 @@ public class TestPlayerComponent {
         Entity player = new Entity();
         PlayerComponent playerComponent = new PlayerComponent(1);
         player.addComponent(playerComponent);
-        playerComponent.deductHealth(Double.MAX_VALUE, 1, 0, 1);
+        playerComponent.deductHealth(Double.MAX_VALUE, 1, 0, 1, 0);
         assert playerComponent.dead();
     }
 }
