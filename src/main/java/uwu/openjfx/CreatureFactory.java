@@ -131,7 +131,7 @@ public class CreatureFactory implements EntityFactory {
         DropItemComponent dropItemWhenDie = new DropItemComponent(Arrays.asList("Heart"));
         EnemyComponent enemyComponent = new EnemyComponent(100,
                 "creatures/miniBoss/" + miniBossFileName,
-                widthHeight.get(0), widthHeight.get(1));
+                widthHeight.get(0), widthHeight.get(1), 8, "miniboss", "melee");
         enemyComponent.setDieBehavior(dropItemWhenDie);
 
         // TODO_: better to manually define bbox tailor to each minion

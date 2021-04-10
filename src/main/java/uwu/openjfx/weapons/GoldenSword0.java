@@ -61,8 +61,8 @@ public class GoldenSword0 implements Weapon {
         hitBoxHeight = !ultimateActivated ? 130 : 175;
         swordOffset = !ultimateActivated ? 22 : 0;
         meleeHitBox = spawn("meleeSwordHitBox",
-                new SpawnData(player.getX(), player.getY())
-                        .put("width", hitBoxWidth).put("height", hitBoxHeight).
+                new SpawnData(player.getX(), player.getY()).
+                        put("width", hitBoxWidth).put("height", hitBoxHeight).
                         put("damage", attackDamage));
         // Spawn hitbox on top of player and apply offset
         meleeHitBox.getTransformComponent().setAnchoredPosition(

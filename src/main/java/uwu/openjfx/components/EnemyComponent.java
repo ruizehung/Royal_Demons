@@ -3,6 +3,7 @@ package uwu.openjfx.components;
 import com.almasb.fxgl.core.math.Vec2;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.components.IDComponent;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
@@ -25,59 +26,68 @@ import static com.almasb.fxgl.dsl.FXGL.spawn;
 public class EnemyComponent extends CreatureComponent {
     private PhysicsComponent physics;
 
-    private String type;
-    private AnimatedTexture texture;
-    private int width;
-    private int height;
-
+    /*
+        Player Numbers
+     */
     private final double playerHitBoxOffsetX = 3; // player's hitbox own offset from top left
     private final double playerHitBoxOffsetY = 15; // player's hitbox own offset from top left
     private final double playerHitBoxWidth = 35; // width of player's hitbox from 3 to 38
     private final double playerHitBoxHeight = 40; // height of player's hitbox from 15 to 55
+    private double playerX; // the center of the player X
+    private double playerY; // the center of the player Y
 
-    private double playerX;
-    private double playerY;
+    /*
+        Abstract Enemy
+     */
+    private String type;
+    private String fighterClass; // melee/ranged/magic
+    private boolean massEffect = true; // if enemy has ability to reach equilibrium against player
+    private double blockProbability; // chance of blocking
+    private double armorStat; // how much damage to soak
 
-    private double enemyX;
-    private double enemyY;
-
+    /*
+        Every Enemy Aspects
+     */
+    private String assetName;
+    private int width;
+    private int height;
+    private AnimatedTexture texture;
     private AnimationChannel animIdle;
     private AnimationChannel animWalk;
     private AnimationChannel animMeleeAttack;
-
-    private boolean massEffect = true;
-    private boolean isStunned = false;
-    private boolean playerLeavesRadius = false;
+    private double enemyX; // the center of the enemy X
+    private double enemyY; // the center of the enemy Y
+    private boolean playerLeavesRadius = false; // if player has stopped interacting with enemy
     private boolean collidingWithPlayer = false;
+    private int attackDuration = 900; // how long in MS the actual attack/animation should take
+    private double velocityDecrementer = 10; // how much velocity will be deducted on update
+    private double speed = 70; // movement speed of the enemy
+    private boolean overDrive = false; // if enemy needs to slow to a stop if involuntarily moving
+    private boolean isStunned = false;
+    private boolean attackCD = false; // when the enemy can attack again
     private boolean prepAttack = false; // enemy begins attack charge
     private boolean startAttacking = false; // enemy does the attack animation / instantiate hitbox
     private boolean startShrink = false; // for growing enemies
-    private boolean attackCD = false;
-    private int attackDuration = 900;
-    private boolean overDrive = false;
-    private double velocityDecrementer = 10;
-    private double speed = 70;
-    private double blockProbability = 20;
-    private double armorStat = 1.25;
+    private double scaler = 1.0; // to keep track of scale when shrinking/enlarging
+    private LocalTimer moveTimer; // time to check player's location
 
-    private double scaler = 1.0;
-
-    private LocalTimer moveTimer;
-
-    public EnemyComponent(int maxHP, String assetName, int width, int height, int frames) {
+    public EnemyComponent(int maxHP, String assetName, int width, int height, int frames,
+                          String type, String fighterClass) {
         super(maxHP, maxHP);
 
-        this.type = assetName;
+        this.assetName = assetName;
         this.width = width;
         this.height = height;
+        this.type = type;
+        this.fighterClass = fighterClass;
 
         if (!MainApp.isIsTesting()) {
             animIdle = new AnimationChannel(FXGL.image(assetName), frames,
-                    width, height, Duration.seconds(0.5), 0, frames / 2 - 1);
+                width, height, Duration.seconds(0.5), 0, frames / 2 - 1);
             animWalk = new AnimationChannel(FXGL.image(assetName), frames,
-                    width, height, Duration.seconds(0.5), frames / 2, frames - 1);
+                width, height, Duration.seconds(0.5), frames / 2, frames - 1);
             animMeleeAttack = new AnimationChannel(FXGL.image(assetName), frames,
-                    width, height, Duration.seconds(attackDuration / 1000), frames / 2,
+                width, height, Duration.seconds(attackDuration / 1000), frames / 2,
                 frames / 2);
 
             texture = new AnimatedTexture(animIdle);
@@ -87,11 +97,42 @@ public class EnemyComponent extends CreatureComponent {
     }
 
     public EnemyComponent(int healthPoints, String assetName, int width, int height) {
-        this(healthPoints, assetName, width, height, 8);
+        this(healthPoints, assetName, width, height, 8, "small", "melee");
     }
 
     @Override
     public void onAdded() {
+        // region Define Enemy Variables based on type
+        switch (type) {
+        case "small":
+            massEffect = false;
+            blockProbability = 20;
+            armorStat = 1;
+            break;
+        case "medium":
+            massEffect = true;
+            blockProbability = 30;
+            armorStat = 1.5;
+            break;
+        case "large":
+            massEffect = true;
+            blockProbability = 40;
+            armorStat = 2.5;
+            break;
+        case "miniboss":
+            massEffect = true;
+            blockProbability = 30;
+            armorStat = 4.5;
+            break;
+        case "finalboss":
+            massEffect = true;
+            blockProbability = 30;
+            armorStat = 5.5;
+            break;
+        default:
+        }
+        // endregion
+
         if (!MainApp.isIsTesting()) {
             entity.getTransformComponent().setScaleOrigin(
                 new Point2D(width / 2.0, height / 2.0));
@@ -106,26 +147,40 @@ public class EnemyComponent extends CreatureComponent {
 
     @Override
     public void onUpdate(double tpf) {
+        // region Calculate Player Center and Enemy Center
         Entity player = FXGL.geto("player");
         playerX = player.getX() + playerHitBoxOffsetX + (playerHitBoxWidth / 2);
         playerY = player.getY() + playerHitBoxOffsetY + (playerHitBoxHeight / 2);
-        enemyX = entity.getX() + (width / 2);
-        enemyY = entity.getY() + (height / 2);
+        enemyX = entity.getX() + ((double) width / 2);
+        enemyY = entity.getY() + ((double) height / 2);
+        // endregion
 
+        // region Player to Enemy Distance Relationship
         double dist = Math.max(
-                        Math.abs(playerX - enemyX),
-                        Math.abs(playerY - enemyY));
+            Math.abs(playerX - enemyX),
+            Math.abs(playerY - enemyY));
         if (dist > 150) {
             playerLeavesRadius = true;
         }
-
         if (moveTimer.elapsed(Duration.seconds(1))) {
             if (!isStunned) {
-                if (dist < 100 && !attackCD) {
+                if (dist < 120 && !attackCD) {
                     playerLeavesRadius = false;
-                    autoAttack();
-                } else if (dist < 300 && !prepAttack) {
-                    moveToPlayer();
+                    if (fighterClass.equals("melee")) {
+                        autoAttack();
+                    }
+                } else if (!prepAttack) {
+                    if (fighterClass.equals("melee")) {
+                        if (dist < 300) {
+                            moveToPlayer();
+                        }
+                    } else {
+                        if (dist < 300 && !attackCD) {
+                            autoAttack();
+                        } else if (dist < 500) {
+                            moveToPlayer();
+                        }
+                    }
                 } else {
                     stop();
                 }
@@ -133,6 +188,17 @@ public class EnemyComponent extends CreatureComponent {
             moveTimer.capture();
         }
 
+        if (isStunned) {
+            normalizeVelocityX();
+            normalizeVelocityY();
+            FXGL.getGameTimer().runAtInterval(() -> {
+                isStunned = false;
+                FXGL.getGameTimer().clear();
+            }, Duration.seconds(.5));
+        }
+        // endregion
+
+        // region Overdrive
         // if enemy has been pushed by player to a velocity greater than its limit
         if (Math.abs(physics.getVelocityX()) > speed || Math.abs(physics.getVelocityY()) > speed) {
             overDrive = true;
@@ -143,7 +209,9 @@ public class EnemyComponent extends CreatureComponent {
             normalizeVelocityX();
             normalizeVelocityY();
         }
+        // endregion
 
+        // region Enemy Attack
         // if enemy is not charging up
         if (!prepAttack) {
             if (physics.isMoving()) {
@@ -164,11 +232,21 @@ public class EnemyComponent extends CreatureComponent {
 
         // Enemy does the actual attack, spawns hitbox and then shrinks
         if (startAttacking) {
-            final Entity meleeHitBox = spawn("meleeEnemyAttack",
-                getEntity().getScaleX() > 0
-                    ? enemyX
-                    : enemyX - 40, enemyY - 5);
-            FXGL.getGameTimer().runAtInterval(meleeHitBox::removeFromWorld, Duration.seconds(.01));
+            int widthBox = width * 2;
+            int heightBox = height * 2;
+            int sideOffset = widthBox / 2;
+            final Entity meleePunchHitBox = spawn("meleeEnemyPunch",
+                new SpawnData(enemyX, enemyY).
+                    put("widthBox", widthBox).
+                    put("heightBox", heightBox));
+            // Spawn hitbox on top of enemy and apply offset
+            meleePunchHitBox.getTransformComponent().setAnchoredPosition(
+                new Point2D(
+                    enemyX - ((double) widthBox / 2)
+                        + (getEntity().getScaleX() > 0 ? sideOffset : -sideOffset),
+                    enemyY - ((double) heightBox / 2)));
+            FXGL.getGameTimer().
+                runAtInterval(meleePunchHitBox::removeFromWorld, Duration.seconds(.01));
             startShrink = true;
             startAttacking = false;
             prepAttack = false;
@@ -179,7 +257,6 @@ public class EnemyComponent extends CreatureComponent {
         if (startShrink) {
             shrink();
         }
-
         // Enemy is on cooldown from attacking recently
         if (attackCD) {
             FXGL.getGameTimer().runAtInterval(() -> {
@@ -187,14 +264,22 @@ public class EnemyComponent extends CreatureComponent {
                 FXGL.getGameTimer().clear();
             }, Duration.seconds(2));
         }
+        // endregion
+    }
 
-        if (isStunned) {
-            normalizeVelocityX();
-            normalizeVelocityY();
-            FXGL.getGameTimer().runAtInterval(() -> {
-                isStunned = false;
-                FXGL.getGameTimer().clear();
-            }, Duration.seconds(.5));
+    // region Movement
+    private void moveToPlayer() {
+        double xDir = playerX - enemyX > 0 ? 1 : -1;
+        double yDir = playerY - enemyY > 0 ? 1 : -1;
+        physics.setVelocityX(speed * xDir);
+        physics.setVelocityY(speed * yDir);
+        entity.setScaleX(xDir);
+    }
+
+    private void stop() {
+        if (!collidingWithPlayer) {
+            physics.setVelocityX(0);
+            physics.setVelocityY(0);
         }
     }
 
@@ -247,11 +332,11 @@ public class EnemyComponent extends CreatureComponent {
     }
 
     public void knockBackFromPlayer() {
-        if (physics != null) {
+        if (physics != null && !type.equals("finalboss")) {
             isStunned = true;
             double knockBackPower = 400;
-            double adjacent = (getEntity().getX() + width / 2) - playerX;
-            double opposite = (getEntity().getY() + height / 2) - playerY;
+            double adjacent = (getEntity().getX() + ((double) width) / 2) - playerX;
+            double opposite = (getEntity().getY() + ((double) height) / 2) - playerY;
             double angle = Math.atan2(opposite, adjacent);
             angle = Math.toDegrees(angle);
             Vec2 dir = Vec2.fromAngle(angle);
@@ -260,7 +345,9 @@ public class EnemyComponent extends CreatureComponent {
             physics.setLinearVelocity(new Point2D(xPow, yPow));
         }
     }
+    // endregion
 
+    // region Attack Stats
     public double getBlockProbability() {
         return blockProbability;
     }
@@ -276,13 +363,23 @@ public class EnemyComponent extends CreatureComponent {
     public void setArmorStat(double armorStat) {
         this.armorStat = armorStat;
     }
+    // endregion
 
-    private void moveToPlayer() {
-        double xDir = playerX - enemyX > 0 ? 1 : -1;
-        double yDir = playerY - enemyY > 0 ? 1 : -1;
-        physics.setVelocityX(speed * xDir);
-        physics.setVelocityY(speed * yDir);
-        entity.setScaleX(xDir);
+    // region Attack
+    private void autoAttack() {
+        prepAttack = true;
+        stop();
+        texture.playAnimationChannel(animMeleeAttack);
+        Timer t = new java.util.Timer();
+        t.schedule(
+            new java.util.TimerTask() {
+                @Override
+                public void run() {
+                    startAttacking = true;
+                    t.cancel();
+                }
+            }, attackDuration
+        );
     }
 
     private void enlarge() {
@@ -303,30 +400,9 @@ public class EnemyComponent extends CreatureComponent {
             startShrink = false;
         }
     }
+    // endregion
 
-    private void stop() {
-        if (!collidingWithPlayer) {
-            physics.setVelocityX(0);
-            physics.setVelocityY(0);
-        }
-    }
-
-    private void autoAttack() {
-        prepAttack = true;
-        stop();
-        texture.playAnimationChannel(animMeleeAttack);
-        Timer t = new java.util.Timer();
-        t.schedule(
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        startAttacking = true;
-                        t.cancel();
-                    }
-                }, attackDuration
-        );
-    }
-
+    // region Enemy Misc.
     @Override
     public void die() {
         super.die();
@@ -337,4 +413,5 @@ public class EnemyComponent extends CreatureComponent {
             curRoom.setEntityData(idComponent.getId(), "isAlive", 0);
         }
     }
+    // endregion
 }
