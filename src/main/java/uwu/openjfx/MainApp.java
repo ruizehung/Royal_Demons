@@ -21,7 +21,6 @@ import uwu.openjfx.input.*;
 import uwu.openjfx.items.Heart;
 import uwu.openjfx.items.Item;
 import uwu.openjfx.weapons.GoldenSword0;
-import uwu.openjfx.weapons.Weapon;
 
 import java.io.File;
 import java.util.*;

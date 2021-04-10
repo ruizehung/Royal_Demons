@@ -174,7 +174,7 @@ public class UI {
     public static void useRagePot() {
         if (ragePotProperty.get() > 0) {
             ragePotProperty.set(ragePotProperty.get() - 1);
-            // todo: make char stronger for x hits
+            PlayerComponent.setAttackPower(2.5);
         }
     }
 }

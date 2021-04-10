@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import uwu.openjfx.MainApp;
 import uwu.openjfx.UI;
-import uwu.openjfx.behaviors.DropItemComponent;
 import uwu.openjfx.collision.PlayerDroppedItemCollisionHandler;
 import uwu.openjfx.components.PlayerComponent;
 import uwu.openjfx.weapons.Bow0;

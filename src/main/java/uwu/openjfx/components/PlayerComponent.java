@@ -33,6 +33,7 @@ public class PlayerComponent extends CreatureComponent {
     private static Weapon currentWeapon; // Player's current weapon
     private static List<Weapon> weaponInventoryList = new ArrayList<>();
     private static double attackPower = 1;
+    private static int attackPowerHitCount = 5;
 
     private double currMouseX; // mouse input for x
     private double currMouseY; // mouse input for y
@@ -244,6 +245,14 @@ public class PlayerComponent extends CreatureComponent {
 
     public static void setAttackPower(double attackPower) {
         PlayerComponent.attackPower = attackPower;
+    }
+
+    public static void updateAttackPowerHitCount() {
+        attackPowerHitCount--;
+        if (attackPowerHitCount <= 0) {
+            attackPowerHitCount = 5;
+            attackPower = 1;
+        }
     }
 
     public void setPressingMovementKeys(boolean moving) {

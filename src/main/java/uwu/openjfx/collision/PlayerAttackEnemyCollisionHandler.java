@@ -44,6 +44,7 @@ public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
                 PlayerComponent.getAttackPower(),
                 enemyComponent.getBlockProbability(),
                 enemyComponent.getArmorStat());
+            PlayerComponent.updateAttackPowerHitCount();
         }
     }
 }
