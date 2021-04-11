@@ -37,7 +37,7 @@ public class Bow0 implements Weapon, AngleBehavior {
 
     @Override
     public void prepAttack(Entity player) {
-        int width = 16; // width of bow
+        int width = !ultimateActivated ? 44 : 75; // width of bow
         int height = 43; // height of bow
         double bowOffsetX = 20; // spawn bow offset with respect to x player location
         double bowOffsetY = 5; // spawn bow offset with respect to y player location
@@ -45,11 +45,11 @@ public class Bow0 implements Weapon, AngleBehavior {
         Entity b = spawn("weapon",
             new SpawnData(
                 player.getX(), player.getY()).
-                put("weaponFile", !ultimateActivated ? "bow0_reg_16x32" : "bow0_reg_16x32").
+                put("weaponFile", !ultimateActivated ? "bow0_charge_44x43" : "bow0_ult_75x43").
                 put("duration", getDuration(ultimateActivated)).
                 put("frameWidth", width).
                 put("frameHeight", height).
-                put("fpr", !ultimateActivated ? 1 : 1).
+                put("fpr", !ultimateActivated ? 5 : 5).
                 put("weaponSprite", sprite));
         // Spawn bow at player's "hands"
         b.getTransformComponent().setAnchoredPosition(
