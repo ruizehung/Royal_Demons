@@ -46,7 +46,7 @@ public class CreatureComponent extends Component implements HasLife {
          */
         if (armor > 0) { // cannot divide by 0
             int blockRand = (int) (Math.random() * 101);
-            if (blockRand < blockProb * pierce) {
+            if (blockRand <= blockProb * pierce) {
                 System.out.println("BLOCKED");
                 return;
             }
