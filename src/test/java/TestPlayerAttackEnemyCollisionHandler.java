@@ -1,6 +1,7 @@
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.test.RunWithFX;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import uwu.openjfx.MainApp;
@@ -8,6 +9,7 @@ import uwu.openjfx.collision.PlayerAttackEnemyCollisionHandler;
 import uwu.openjfx.components.AttackDamageComponent;
 import uwu.openjfx.components.BossComponent;
 import uwu.openjfx.components.EnemyComponent;
+import uwu.openjfx.components.PlayerComponent;
 
 @ExtendWith(RunWithFX.class)
 public class TestPlayerAttackEnemyCollisionHandler {
@@ -101,7 +103,7 @@ public class TestPlayerAttackEnemyCollisionHandler {
     }
 
     // jason 3
-    @Test
+    @RepeatedTest(3000)
     void testEnemyBlocksDamage() {
         int healthPoints = 100;
         Entity monster = new Entity();
@@ -116,6 +118,7 @@ public class TestPlayerAttackEnemyCollisionHandler {
         weapon.addComponent(new AttackDamageComponent(false, attackDamage));
 
         PlayerAttackEnemyCollisionHandler handler = new PlayerAttackEnemyCollisionHandler();
+        PlayerComponent.setPiercePow(1);
         handler.onCollisionBegin(weapon, monster);
         assert enemyComponent.getHealthPoints() == healthPoints;
     }
