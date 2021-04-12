@@ -1,6 +1,7 @@
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.test.RunWithFX;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import uwu.openjfx.MainApp;
@@ -101,7 +102,7 @@ public class TestPlayerAttackEnemyCollisionHandler {
     }
 
     // jason 3
-    @Test
+    @RepeatedTest(2000)
     void testEnemyBlocksDamage() {
         int healthPoints = 100;
         Entity monster = new Entity();
@@ -117,7 +118,6 @@ public class TestPlayerAttackEnemyCollisionHandler {
 
         PlayerAttackEnemyCollisionHandler handler = new PlayerAttackEnemyCollisionHandler();
         handler.onCollisionBegin(weapon, monster);
-        System.out.println(enemyComponent.getBlockProbability());
         assert enemyComponent.getHealthPoints() == healthPoints;
     }
 

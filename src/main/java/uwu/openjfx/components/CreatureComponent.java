@@ -45,7 +45,7 @@ public class CreatureComponent extends Component implements HasLife {
             pierce: 1.0 means normal chance to block. 0 means pierce through their block attempt
          */
         if (armor > 0) { // cannot divide by 0
-            int blockRand = (int) (Math.random() * 101) + 1;
+            int blockRand = (int) (Math.random() * 100) + 1;
             if (blockRand <= blockProb * pierce) {
                 System.out.println("BLOCKED");
                 return;
