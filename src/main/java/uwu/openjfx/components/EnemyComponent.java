@@ -29,18 +29,14 @@ public class EnemyComponent extends CreatureComponent {
     /*
         Player Numbers
      */
-    private final double playerHitBoxOffsetX = 3; // player's hitbox own offset from top left
-    private final double playerHitBoxOffsetY = 15; // player's hitbox own offset from top left
-    private final double playerHitBoxWidth = 35; // width of player's hitbox from 3 to 38
-    private final double playerHitBoxHeight = 40; // height of player's hitbox from 15 to 55
     private double playerX; // the center of the player X
     private double playerY; // the center of the player Y
 
     /*
         Abstract Enemy
      */
-    private String type;
-    private String fighterClass; // melee/ranged/magic
+    private final String type;
+    private final String fighterClass; // melee/ranged/magic
     private boolean massEffect = true; // if enemy has ability to reach equilibrium against player
     private double blockProbability; // chance of blocking
     private double armorStat; // how much damage to soak
@@ -48,9 +44,9 @@ public class EnemyComponent extends CreatureComponent {
     /*
         Every Enemy Aspects
      */
-    private String assetName;
-    private int width;
-    private int height;
+    private final String assetName;
+    private final int width;
+    private final int height;
     private AnimatedTexture texture;
     private AnimationChannel animIdle;
     private AnimationChannel animWalk;
@@ -59,9 +55,13 @@ public class EnemyComponent extends CreatureComponent {
     private double enemyY; // the center of the enemy Y
     private boolean playerLeavesRadius = false; // if player has stopped interacting with enemy
     private boolean collidingWithPlayer = false;
-    private int attackDuration = 900; // how long in MS the actual attack/animation should take
-    private double velocityDecrementer = 10; // how much velocity will be deducted on update
-    private double speed = 70; // movement speed of the enemy
+    private final int attackDuration = 900; // how long in MS the actual attack/animation takes
+    private final double velocityDecrementer = 10; // how much velocity will be deducted on update
+    private double speed; // movement speed of the enemy
+    private double dist;
+    private boolean kiteBack;
+    private boolean kiteCircular;
+    private boolean kiting = false;
     private boolean overDrive = false; // if enemy needs to slow to a stop if involuntarily moving
     private boolean isStunned = false;
     private boolean attackCD = false; // when the enemy can attack again
@@ -87,8 +87,8 @@ public class EnemyComponent extends CreatureComponent {
             animWalk = new AnimationChannel(FXGL.image(assetName), frames,
                 width, height, Duration.seconds(0.5), frames / 2, frames - 1);
             animMeleeAttack = new AnimationChannel(FXGL.image(assetName), frames,
-                width, height, Duration.seconds(attackDuration / 1000), frames / 2,
-                frames / 2);
+                width, height, Duration.seconds((double) attackDuration / 1000),
+                frames / 2, frames / 2);
 
             texture = new AnimatedTexture(animIdle);
 
@@ -131,6 +131,7 @@ public class EnemyComponent extends CreatureComponent {
             break;
         default:
         }
+        speed = fighterClass.equals("melee") ? 70 : 120;
         // endregion
 
         if (!MainApp.isIsTesting()) {
@@ -147,6 +148,14 @@ public class EnemyComponent extends CreatureComponent {
 
     @Override
     public void onUpdate(double tpf) {
+        /*
+        Player Numbers
+        */
+        final double playerHitBoxOffsetX = 3; // player's hitbox own offset from top left
+        final double playerHitBoxOffsetY = 15; // player's hitbox own offset from top left
+        final double playerHitBoxWidth = 35; // width of player's hitbox from 3 to 38
+        final double playerHitBoxHeight = 40; // height of player's hitbox from 15 to 55
+
         // region Calculate Player Center and Enemy Center
         Entity player = FXGL.geto("player");
         playerX = player.getX() + playerHitBoxOffsetX + (playerHitBoxWidth / 2);
@@ -156,38 +165,46 @@ public class EnemyComponent extends CreatureComponent {
         // endregion
 
         // region Player to Enemy Distance Relationship
-        double dist = Math.max(
-            Math.abs(playerX - enemyX),
-            Math.abs(playerY - enemyY));
+        double xPythag = Math.abs(playerX - enemyX);
+        double yPythag = Math.abs(playerY - enemyY);
+        dist = Math.sqrt(xPythag * xPythag + yPythag * yPythag);
         if (dist > 150) {
             playerLeavesRadius = true;
         }
         if (moveTimer.elapsed(Duration.seconds(1))) {
             if (!isStunned) {
-                if (dist < 120 && !attackCD) {
-                    playerLeavesRadius = false;
-                    if (fighterClass.equals("melee")) {
+                if (fighterClass.equals("melee")) {
+                    if (dist < 120 && !attackCD) {
+                        playerLeavesRadius = false;
                         autoAttack();
-                    }
-                } else if (!prepAttack) {
-                    if (fighterClass.equals("melee")) {
-                        if (dist < 300) {
+                    } else if (dist < 300) {
+                        if (!prepAttack) {
                             moveToPlayer();
                         }
                     } else {
-                        if (dist < 300 && !attackCD) {
-                            autoAttack();
-                        } else if (dist < 500) {
-                            moveToPlayer();
-                        }
+                        stop();
                     }
                 } else {
-                    stop();
+                    if (dist < 400) {
+                        if (!attackCD) {
+                            autoAttack();
+                        }
+                        if (!prepAttack && !kiting) { kiting = true;
+                        }
+                    } else if (dist < 500) {
+                        if (!prepAttack) {
+                            moveToPlayer();
+                        }
+                    } else {
+                        stop();
+                    }
                 }
             }
             moveTimer.capture();
         }
-
+        if (kiting) {
+            kitePlayer();
+        }
         if (isStunned) {
             normalizeVelocityX();
             normalizeVelocityY();
@@ -196,11 +213,17 @@ public class EnemyComponent extends CreatureComponent {
                 FXGL.getGameTimer().clear();
             }, Duration.seconds(.5));
         }
+
+        if (prepAttack && (physics.getVelocityX() != 0 || physics.getVelocityY() != 0)) {
+            normalizeVelocityX();
+            normalizeVelocityY();
+        }
         // endregion
 
         // region Overdrive
         // if enemy has been pushed by player to a velocity greater than its limit
-        if (Math.abs(physics.getVelocityX()) > speed || Math.abs(physics.getVelocityY()) > speed) {
+        if (Math.abs(physics.getVelocityX()) - Math.abs(speed) > 5.0
+            || Math.abs(physics.getVelocityY()) - Math.abs(speed) > 5.0) {
             overDrive = true;
         }
 
@@ -232,6 +255,7 @@ public class EnemyComponent extends CreatureComponent {
 
         // Enemy does the actual attack, spawns hitbox and then shrinks
         if (startAttacking) {
+            getEntity().setScaleX((playerX - enemyX > 0 ? 1 : -1));
             int widthBox = width * 2;
             int heightBox = height * 2;
             int sideOffset = widthBox / 2;
@@ -343,6 +367,39 @@ public class EnemyComponent extends CreatureComponent {
             double xPow = dir.toPoint2D().getX() * knockBackPower;
             double yPow = dir.toPoint2D().getY() * knockBackPower;
             physics.setLinearVelocity(new Point2D(xPow, yPow));
+        }
+    }
+
+    private void kitePlayer() {
+        if (physics != null && !prepAttack) {
+            if (!kiteBack && !kiteCircular) {
+                int random = (int) (Math.random() * 101);
+                if (physics.getVelocityX() == 0 && physics.getVelocityY() == 0) {
+                    random = 50;
+                }
+                kiteBack = random < 50;
+                kiteCircular = random >= 50;
+            }
+            double adjacent = (getEntity().getX()
+                + ((double) width) / 2) - playerX;
+            double opposite = (getEntity().getY()
+                + ((double) height) / 2) - playerY;
+            double radians = (Math.atan2(opposite, adjacent));
+            if (kiteCircular) {
+                radians += Math.PI / 2;
+            }
+            Vec2 dir = Vec2.fromAngle(Math.toDegrees(radians));
+            double xPow = dir.toPoint2D().getX() * speed;
+            double yPow = dir.toPoint2D().getY() * speed;
+            physics.setLinearVelocity(xPow, yPow);
+            FXGL.getGameTimer().runAtInterval(() -> {
+                kiteBack = false;
+                kiteCircular = false;
+            }, Duration.seconds(1));
+            if (dist >= 300) {
+                kiting = false;
+                stop();
+            }
         }
     }
     // endregion
