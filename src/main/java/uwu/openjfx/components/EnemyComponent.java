@@ -189,7 +189,8 @@ public class EnemyComponent extends CreatureComponent {
                         if (!attackCD) {
                             autoAttack();
                         }
-                        if (!prepAttack && !kiting) { kiting = true;
+                        if (!prepAttack && !kiting) {
+                            kiting = true;
                         }
                     } else if (dist < 500) {
                         if (!prepAttack) {
