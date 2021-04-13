@@ -275,74 +275,7 @@ public class EnemyComponent extends CreatureComponent {
                 FXGL.getGameTimer().
                     runAtInterval(meleePunchHitBox::removeFromWorld, Duration.seconds(.01));
             } else {
-                // adjacent is distance (x) from mouse to player's "hands"
-                // opposite is distance (y) from mouse to player's "hands"
-                // angle calculated with tangent
-                double adjacent = playerX - enemyX;
-                double opposite = playerY - enemyY;
-                double angle = Math.atan2(opposite, adjacent);
-                angle = Math.toDegrees(angle);
-                Vec2 dir = Vec2.fromAngle(angle);
-
-                // top offset used to shrink the top/bot edges of hitbox
-                int topBottomOffset = 20;
-                // left offset used to shrink the left edge of hitbox
-                int leftOffset = 30;
-                // right offset used to shrink the right edge of hitbox
-                int rightOffset = 20;
-                // width of the original frame (64 / 32)
-                int frameWidth = 64;
-                // height of original frame (64 / 32)
-                int frameHeight = 64;
-
-                // the center of the NEW and MODIFIED hitbox
-                double centerX = ((double) (leftOffset + (frameWidth - rightOffset)) / 2);
-                double centerY = ((double) (topBottomOffset + (frameHeight - topBottomOffset)) / 2);
-
-                int speed = 300; // speed at which magic spell goes
-
-                /*
-                    Instantiate a brand new magic spell that will hold the
-                    corresponding dimensions, components, and speed. It will temporarily
-                    spawn the magic spell at the players ORIGINAL getX() and getY() excluding
-                    its modified hitbox done in CreatureFactory.
-                 */
-
-                Entity rangedHitBox = spawn("rangedMagicHitBox",
-                    new SpawnData(
-                        player.getX(), player.getY()).
-                        put("dir", dir.toPoint2D()).
-                        put("speed", speed).
-                        put("weapon", "fireball_64x64").
-                        put("duration", 500).
-                        put("fpr", 60).
-                        put("ultimateActive", true).
-                        put("topBotOffset", topBottomOffset).
-                        put("leftOffset", leftOffset).
-                        put("rightOffset", rightOffset).
-                        put("frameWidth", frameWidth).
-                        put("frameHeight", frameHeight).
-                        put("isArrow", false).
-                        put("isMagic", true).
-                        put("damage", 50.0).
-                        put("royalType", RoyalType.ENEMYATTACK));
-                /*
-                    setLocalAnchor(...) will ensure that the anchor/pivot point of the
-                    magic spell is located at the CENTER of the NEW hitbox.
-                    setAnchoredPosition(...) will spawn the magic spell to the right
-                    of the player if player is facing right, and left if the player is
-                    facing left, and located at the player's "hands".
-                    setRotationOrigin(...) will ensure that the rotation anchor/pivot
-                    point of the magic spell is located at the CENTER of the NEW hitbox.
-                    The arguments are offsets based off of the top-left point of the
-                    ORIGINAL frameWidth x frameHeight frame. Therefore, we need to offset
-                    centerX in the x-direction, and the center of the magic spell will
-                    CONSISTENTLY be at its midpoint in the y-direction.
-                 */
-                rangedHitBox.setLocalAnchor(new Point2D(centerX, centerY));
-                rangedHitBox.setAnchoredPosition(enemyX, enemyY);
-                rangedHitBox.getTransformComponent().setRotationOrigin(
-                    new Point2D(centerX, ((double) (frameHeight)) / 2));
+                magicAutoAttack();
             }
             startShrink = true;
             startAttacking = false;
@@ -510,6 +443,77 @@ public class EnemyComponent extends CreatureComponent {
                 }
             }, attackDuration
         );
+    }
+
+    private void magicAutoAttack() {
+        // adjacent is distance (x) from mouse to player's "hands"
+        // opposite is distance (y) from mouse to player's "hands"
+        // angle calculated with tangent
+        double adjacent = playerX - enemyX;
+        double opposite = playerY - enemyY;
+        double angle = Math.atan2(opposite, adjacent);
+        angle = Math.toDegrees(angle);
+        Vec2 dir = Vec2.fromAngle(angle);
+
+        // top offset used to shrink the top/bot edges of hitbox
+        int topBottomOffset = 20;
+        // left offset used to shrink the left edge of hitbox
+        int leftOffset = 30;
+        // right offset used to shrink the right edge of hitbox
+        int rightOffset = 20;
+        // width of the original frame (64 / 32)
+        int frameWidth = 64;
+        // height of original frame (64 / 32)
+        int frameHeight = 64;
+
+        // the center of the NEW and MODIFIED hitbox
+        double centerX = ((double) (leftOffset + (frameWidth - rightOffset)) / 2);
+        double centerY = ((double) (topBottomOffset + (frameHeight - topBottomOffset)) / 2);
+
+        int speed = 300; // speed at which magic spell goes
+
+        /*
+            Instantiate a brand new magic spell that will hold the
+            corresponding dimensions, components, and speed. It will temporarily
+            spawn the magic spell at the players ORIGINAL getX() and getY() excluding
+            its modified hitbox done in CreatureFactory.
+         */
+
+        Entity rangedHitBox = spawn("rangedMagicHitBox",
+            new SpawnData(
+                enemyX, enemyY).
+                put("dir", dir.toPoint2D()).
+                put("speed", speed).
+                put("weapon", "fireball_64x64").
+                put("duration", 500).
+                put("fpr", 60).
+                put("ultimateActive", true).
+                put("topBotOffset", topBottomOffset).
+                put("leftOffset", leftOffset).
+                put("rightOffset", rightOffset).
+                put("frameWidth", frameWidth).
+                put("frameHeight", frameHeight).
+                put("isArrow", false).
+                put("isMagic", true).
+                put("damage", 50.0).
+                put("royalType", RoyalType.ENEMYATTACK));
+        /*
+            setLocalAnchor(...) will ensure that the anchor/pivot point of the
+            magic spell is located at the CENTER of the NEW hitbox.
+            setAnchoredPosition(...) will spawn the magic spell to the right
+            of the player if player is facing right, and left if the player is
+            facing left, and located at the player's "hands".
+            setRotationOrigin(...) will ensure that the rotation anchor/pivot
+            point of the magic spell is located at the CENTER of the NEW hitbox.
+            The arguments are offsets based off of the top-left point of the
+            ORIGINAL frameWidth x frameHeight frame. Therefore, we need to offset
+            centerX in the x-direction, and the center of the magic spell will
+            CONSISTENTLY be at its midpoint in the y-direction.
+         */
+        rangedHitBox.setLocalAnchor(new Point2D(centerX, centerY));
+        rangedHitBox.setAnchoredPosition(enemyX, enemyY);
+        rangedHitBox.getTransformComponent().setRotationOrigin(
+            new Point2D(centerX, ((double) (frameHeight)) / 2));
     }
 
     private void enlarge() {
