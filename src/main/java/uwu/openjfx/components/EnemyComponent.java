@@ -13,6 +13,8 @@ import javafx.geometry.Point2D;
 import javafx.util.Duration;
 import uwu.openjfx.MainApp;
 import uwu.openjfx.MapGeneration.Room;
+import uwu.openjfx.RoyalType;
+
 import java.util.Timer;
 
 import static com.almasb.fxgl.dsl.FXGL.spawn;
@@ -256,22 +258,92 @@ public class EnemyComponent extends CreatureComponent {
 
         // Enemy does the actual attack, spawns hitbox and then shrinks
         if (startAttacking) {
-            getEntity().setScaleX((playerX - enemyX > 0 ? 1 : -1));
-            int widthBox = width * 2;
-            int heightBox = height * 2;
-            int sideOffset = widthBox / 2;
-            final Entity meleePunchHitBox = spawn("meleeEnemyPunch",
-                new SpawnData(enemyX, enemyY).
-                    put("widthBox", widthBox).
-                    put("heightBox", heightBox));
-            // Spawn hitbox on top of enemy and apply offset
-            meleePunchHitBox.getTransformComponent().setAnchoredPosition(
-                new Point2D(
-                    enemyX - ((double) widthBox / 2)
-                        + (getEntity().getScaleX() > 0 ? sideOffset : -sideOffset),
-                    enemyY - ((double) heightBox / 2)));
-            FXGL.getGameTimer().
-                runAtInterval(meleePunchHitBox::removeFromWorld, Duration.seconds(.01));
+            if (fighterClass.equals("melee")) {
+                int widthBox = width * 2;
+                int heightBox = height * 2;
+                int sideOffset = widthBox / 2;
+                final Entity meleePunchHitBox = spawn("meleeEnemyPunch",
+                    new SpawnData(enemyX, enemyY).
+                        put("widthBox", widthBox).
+                        put("heightBox", heightBox));
+                // Spawn hitbox on top of enemy and apply offset
+                meleePunchHitBox.getTransformComponent().setAnchoredPosition(
+                    new Point2D(
+                        enemyX - ((double) widthBox / 2)
+                            + (getEntity().getScaleX() > 0 ? sideOffset : -sideOffset),
+                        enemyY - ((double) heightBox / 2)));
+                FXGL.getGameTimer().
+                    runAtInterval(meleePunchHitBox::removeFromWorld, Duration.seconds(.01));
+            } else {
+                // adjacent is distance (x) from mouse to player's "hands"
+                // opposite is distance (y) from mouse to player's "hands"
+                // angle calculated with tangent
+                double adjacent = playerX - enemyX;
+                double opposite = playerY - enemyY;
+                double angle = Math.atan2(opposite, adjacent);
+                angle = Math.toDegrees(angle);
+                Vec2 dir = Vec2.fromAngle(angle);
+
+                // top offset used to shrink the top/bot edges of hitbox
+                int topBottomOffset = 20;
+                // left offset used to shrink the left edge of hitbox
+                int leftOffset = 30;
+                // right offset used to shrink the right edge of hitbox
+                int rightOffset = 20;
+                // width of the original frame (64 / 32)
+                int frameWidth = 64;
+                // height of original frame (64 / 32)
+                int frameHeight = 64;
+
+                // the center of the NEW and MODIFIED hitbox
+                double centerX = ((double) (leftOffset + (frameWidth - rightOffset)) / 2);
+                double centerY = ((double) (topBottomOffset + (frameHeight - topBottomOffset)) / 2);
+
+                int speed = 300; // speed at which magic spell goes
+
+                /*
+                    Instantiate a brand new magic spell that will hold the
+                    corresponding dimensions, components, and speed. It will temporarily
+                    spawn the magic spell at the players ORIGINAL getX() and getY() excluding
+                    its modified hitbox done in CreatureFactory.
+                 */
+
+                Entity rangedHitBox = spawn("rangedMagicHitBox",
+                    new SpawnData(
+                        player.getX(), player.getY()).
+                        put("dir", dir.toPoint2D()).
+                        put("speed", speed).
+                        put("weapon", "fireball_64x64").
+                        put("duration", 500).
+                        put("fpr", 60).
+                        put("ultimateActive", true).
+                        put("topBotOffset", topBottomOffset).
+                        put("leftOffset", leftOffset).
+                        put("rightOffset", rightOffset).
+                        put("frameWidth", frameWidth).
+                        put("frameHeight", frameHeight).
+                        put("isArrow", false).
+                        put("isMagic", true).
+                        put("damage", 50.0).
+                        put("royalType", RoyalType.ENEMYATTACK));
+                /*
+                    setLocalAnchor(...) will ensure that the anchor/pivot point of the
+                    magic spell is located at the CENTER of the NEW hitbox.
+                    setAnchoredPosition(...) will spawn the magic spell to the right
+                    of the player if player is facing right, and left if the player is
+                    facing left, and located at the player's "hands".
+                    setRotationOrigin(...) will ensure that the rotation anchor/pivot
+                    point of the magic spell is located at the CENTER of the NEW hitbox.
+                    The arguments are offsets based off of the top-left point of the
+                    ORIGINAL frameWidth x frameHeight frame. Therefore, we need to offset
+                    centerX in the x-direction, and the center of the magic spell will
+                    CONSISTENTLY be at its midpoint in the y-direction.
+                 */
+                rangedHitBox.setLocalAnchor(new Point2D(centerX, centerY));
+                rangedHitBox.setAnchoredPosition(enemyX, enemyY);
+                rangedHitBox.getTransformComponent().setRotationOrigin(
+                    new Point2D(centerX, ((double) (frameHeight)) / 2));
+            }
             startShrink = true;
             startAttacking = false;
             prepAttack = false;

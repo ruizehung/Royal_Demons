@@ -5,6 +5,7 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
+import uwu.openjfx.RoyalType;
 
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 
@@ -77,7 +78,8 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
                         put("frameHeight", frameHeight).
                         put("isArrow", false).
                         put("isMagic", true).
-                        put("damage", attackDamage));
+                        put("damage", attackDamage).
+                        put("royalType", RoyalType.PLAYERATTACK));
         /*
             setLocalAnchor(...) will ensure that the anchor/pivot point of the
             magic spell is located at the CENTER of the NEW hitbox.

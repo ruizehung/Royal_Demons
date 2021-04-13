@@ -110,13 +110,14 @@ public class WeaponFactory implements EntityFactory {
         boolean isArrow = data.get("isArrow");
         boolean isMagic = data.get("isMagic");
         double attackDamage = data.get("damage");
+        RoyalType type = data.get("royalType");
 
         double widthHitBox = (frameWidth - rightOffset) - leftOffset;
         double heightHitBox = (frameHeight - topBotOffset) - topBotOffset;
         double newCenterXOffset = leftOffset;
         double newCenterYOffset = topBotOffset;
         return FXGL.entityBuilder(data)
-                .type(RoyalType.PLAYERATTACK)
+                .type(type)
                 .bbox(new HitBox(
                         new Point2D(
                                 newCenterXOffset,
