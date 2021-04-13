@@ -108,22 +108,17 @@ public class EnemyComponent extends CreatureComponent {
         switch (type) {
         case "small":
             massEffect = false;
-            blockProbability = 20;
+            blockProbability = 10;
             armorStat = 1;
-            break;
-        case "medium":
-            massEffect = true;
-            blockProbability = 30;
-            armorStat = 1.5;
             break;
         case "large":
             massEffect = true;
-            blockProbability = 40;
+            blockProbability = 20;
             armorStat = 2.5;
             break;
         case "miniboss":
             massEffect = true;
-            blockProbability = 30;
+            blockProbability = 25;
             armorStat = 4.5;
             break;
         case "finalboss":
