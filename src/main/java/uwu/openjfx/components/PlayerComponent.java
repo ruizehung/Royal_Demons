@@ -225,6 +225,10 @@ public class PlayerComponent extends CreatureComponent {
         return speed;
     }
 
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
     public boolean isAttacking() {
         // used in MainApp for LMB/RMB input, confirmation of whether or not Player is attacking
         return prepAttack;

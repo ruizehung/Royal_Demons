@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="60" height="60" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="181">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="60" height="60" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="186">
  <tileset firstgid="1" name="0x72_DungeonTilesetII_32x32" tilewidth="32" tileheight="32" tilecount="1024" columns="32">
   <image source="0x72_DungeonTilesetII_32x32.png" width="1024" height="1024"/>
  </tileset>
@@ -314,7 +314,6 @@
   <object id="90" type="wall" x="1217.72" y="732.758" width="127.023" height="21.2154"/>
   <object id="91" type="wall" x="1409.63" y="733.729" width="308.791" height="21.2154"/>
   <object id="92" type="wall" x="1396.99" y="957.021" width="6.41114" height="96.7009"/>
-  <object id="93" type="projectile-penetrable-wall" x="1375.65" y="585.509" width="191.1" height="21.2154"/>
   <object id="95" type="projectile-penetrable-wall" x="1375.4" y="446.602" width="30.4207" height="138.511"/>
   <object id="97" type="projectile-penetrable-wall" x="1406.8" y="447.249" width="160.518" height="31.7149"/>
   <object id="98" type="projectile-penetrable-wall" x="1536.25" y="545.308" width="30.4207" height="40.7764"/>
@@ -465,13 +464,13 @@
   <object id="154" name="Minion" type="minion" x="808.654" y="1078.48">
    <point/>
   </object>
-  <object id="155" name="Minion" type="minion" x="887.557" y="513.699">
+  <object id="155" name="Minion" type="minion" x="852.877" y="500.439">
    <point/>
   </object>
   <object id="156" name="Minion" type="minion" x="1299.19" y="415.834">
    <point/>
   </object>
-  <object id="157" name="Minion" type="minion" x="951.769" y="529.395">
+  <object id="157" name="Minion" type="minion" x="954.829" y="551.835">
    <point/>
   </object>
   <object id="158" name="Minion" type="minion" x="893.265" y="580.765">
@@ -519,6 +518,16 @@
     <property name="groupId" type="int" value="1"/>
     <property name="newView" value="lever-right.png"/>
    </properties>
+  </object>
+  <object id="181" type="projectile-penetrable-wall" x="1376.3" y="585.068" width="191.1" height="21.2154"/>
+  <object id="182" type="projectile-penetrable-wall" x="896.573" y="488.576" width="31.6197" height="17.3399">
+   <ellipse/>
+  </object>
+  <object id="184" type="projectile-penetrable-wall" x="510.506" y="1094.96" width="31.6197" height="17.3399">
+   <ellipse/>
+  </object>
+  <object id="185" type="projectile-penetrable-wall" x="1598.84" y="839.963" width="31.6197" height="17.3399">
+   <ellipse/>
   </object>
  </objectgroup>
 </map>

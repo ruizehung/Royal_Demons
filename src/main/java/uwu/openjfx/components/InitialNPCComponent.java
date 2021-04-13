@@ -52,6 +52,7 @@ public class InitialNPCComponent extends Component implements Interactable {
                 FXGL.getAssetLoader().loadTexture("creatures/ally/Wizard.png"),
                 text
         );
+        content.setSpacing(5);
 
         Button btnClose = FXGL.getUIFactoryService().newButton("Press me to close");
         btnClose.setPrefWidth(300);

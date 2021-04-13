@@ -3,12 +3,10 @@ package uwu.openjfx.MapGeneration;
 import com.almasb.fxgl.dsl.FXGL;
 import uwu.openjfx.MainApp;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Room {
+    private Random random = MainApp.getRandom();
     private Coordinate coordinate;
 
     // num of Neighbors == num of doors
@@ -35,7 +33,7 @@ public class Room {
         this.coordinate = coordinate;
         if (!MainApp.isIsTesting()) {
             List<String> roomTypeList = FXGL.geto("roomTypeList");
-            roomType = roomTypeList.get(FXGL.random(0, roomTypeList.size() - 1));
+            roomType = roomTypeList.get(random.nextInt(roomTypeList.size()));
         }
     }
 

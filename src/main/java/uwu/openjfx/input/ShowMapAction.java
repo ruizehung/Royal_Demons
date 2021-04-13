@@ -36,7 +36,7 @@ public class ShowMapAction extends UserAction {
             int x = room.getCoordinate().getX() + 50;
             int y = 50 - room.getCoordinate().getY();
             vBoxes[x][y] = new VBox();
-            Text t = new Text("R");
+            Text t = new Text(room.getRoomType().equals("challengeRoom") ? "C" : "R");
             t.setFill(room.visited() ? Color.WHITE : Color.BLACK);
             if (developerCheat) {
                 t.setFill(Color.WHITE);

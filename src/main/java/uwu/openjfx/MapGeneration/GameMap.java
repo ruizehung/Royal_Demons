@@ -7,6 +7,7 @@ import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import javafx.geometry.Point2D;
 import javafx.util.Pair;
+import uwu.openjfx.MainApp;
 import uwu.openjfx.RoyalType;
 import uwu.openjfx.behaviors.CanOnlyInteractOnce;
 import uwu.openjfx.components.TrapComponent;
@@ -18,7 +19,7 @@ import static com.almasb.fxgl.dsl.FXGL.setLevelFromMap;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.set;
 
 public class GameMap {
-    private Random random = new Random();
+    private Random random = MainApp.getRandom();
 
     private int numOfRooms;
     private int finalBossDist;
@@ -29,10 +30,6 @@ public class GameMap {
 
     private List<Pair<Pair<Integer, Integer>, String>> directions = new ArrayList<>();
 
-    public GameMap() {
-        this(40);
-    }
-
     public GameMap(int numOfRooms) {
         directions.add(new Pair(new Pair(0, 1), "North"));
         directions.add(new Pair(new Pair(1, 0), "East"));
@@ -41,12 +38,10 @@ public class GameMap {
 
         this.numOfRooms = numOfRooms;
         finalBossDist = 7;
-        generateRooms();
+    }
 
-        initialRoom.setRoomType("initialRoom");
-        bossRoom.setRoomType("bossRoom");
-        //debug print statement for boss room distance
-        //System.out.println("boss room distance: " + bossRoom.getDistFromInitRoom());
+    public void setRandomSeed(long seed) {
+        random.setSeed(seed);
     }
 
     public Room getRoom(Coordinate coordinate) {
@@ -73,7 +68,7 @@ public class GameMap {
         return bossRoom;
     }
 
-    private void generateRooms() {
+    public void generateRooms() {
         // generate first room
         initialRoom = new Room(new Coordinate(0, 0), 4);
         rooms.put(initialRoom.getCoordinate(), initialRoom);
@@ -87,8 +82,8 @@ public class GameMap {
 
         while (numRoomsGenerated < numOfRooms || maxDistFromInitRoom < finalBossDist) {
             if (roomsToCreate.isEmpty()) {
-                for (Room room: rooms.values()) {
-                    for (Coordinate coordinate: room.getAdjacentCoordinates()) {
+                for (Room room : rooms.values()) {
+                    for (Coordinate coordinate : room.getAdjacentCoordinates()) {
                         if (getRoom(coordinate) == null) {
                             roomsToCreate.add(coordinate);
                         }
@@ -118,8 +113,27 @@ public class GameMap {
             connectRoomWithAdjacentRooms(room);
         }
 
-        // determine shop rooms
 
+        initialRoom.setRoomType("initialRoom");
+        bossRoom.setRoomType("bossRoom");
+
+        int challengeRooms = 1 + random.nextInt(3);
+        Object[] roomList = rooms.values().toArray();
+        for (int i = 0; i < challengeRooms; ++i) {
+            // randomly pick a room
+            Room room = null;
+            while (true) {
+                room = (Room) roomList[random.nextInt(roomList.length)];
+                // make sure it's not initial room or boss room or challenge room
+                if (!(room.getRoomType().equals("initialRoom")
+                        || room.getRoomType().equals("bossRoom")
+                        || room.getRoomType().equals("challengeRoom"))) {
+                    break;
+                }
+            }
+            // set to challenge room
+            room.setRoomType("challengeRoom");
+        }
     }
 
     private void generate4RoomsAroundInitialRoom(List<Coordinate> roomsToCreate) {
@@ -167,23 +181,23 @@ public class GameMap {
             adjacentRoom = rooms.get(adjacentCoordinate);
             if (adjacentRoom != null) {
                 switch (dir.getValue()) {
-                case "North":
-                    room.setNorthRoom(adjacentRoom);
-                    adjacentRoom.setSouthRoom(room);
-                    break;
-                case "East":
-                    room.setEastRoom(adjacentRoom);
-                    adjacentRoom.setWestRoom(room);
-                    break;
-                case "South":
-                    room.setSouthRoom(adjacentRoom);
-                    adjacentRoom.setNorthRoom(room);
-                    break;
-                case "West":
-                    room.setWestRoom(adjacentRoom);
-                    adjacentRoom.setEastRoom(room);
-                    break;
-                default:
+                    case "North":
+                        room.setNorthRoom(adjacentRoom);
+                        adjacentRoom.setSouthRoom(room);
+                        break;
+                    case "East":
+                        room.setEastRoom(adjacentRoom);
+                        adjacentRoom.setWestRoom(room);
+                        break;
+                    case "South":
+                        room.setSouthRoom(adjacentRoom);
+                        adjacentRoom.setNorthRoom(room);
+                        break;
+                    case "West":
+                        room.setWestRoom(adjacentRoom);
+                        adjacentRoom.setEastRoom(room);
+                        break;
+                    default:
                 }
             }
         }
@@ -234,6 +248,20 @@ public class GameMap {
                     if (newRoom.getChestsData(idComponent.getId(), "hasInteracted") == 1) {
                         CanOnlyInteractOnce chestComponent = entity.getObject("chestComponent");
                         chestComponent.disable();
+                    }
+                }
+            }
+
+            if (entity.isType(RoyalType.NPC)) {
+                IDComponent idComponent = entity.getComponent(IDComponent.class);
+                if (!newRoom.visited()) {
+                    newRoom.setChestData(idComponent.getId(), "hasInteracted", 0);
+                } else {
+                    if (newRoom.getChestsData(idComponent.getId(), "hasInteracted") == 1) {
+                        if (entity.getBoolean("isChallengeNPC")) {
+                            System.out.println("It is a ChallengeNPCComponent!!");
+                            ((CanOnlyInteractOnce) entity.getObject("Interactable")).disable();
+                        }
                     }
                 }
             }

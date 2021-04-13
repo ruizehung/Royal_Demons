@@ -217,6 +217,21 @@ public class CreatureFactory implements EntityFactory {
                 .with(new CollidableComponent(true))
                 .with(initialNPCComponent)
                 .with("Interactable", initialNPCComponent)
+                .with("isChallengeNPC", false)
+                .build();
+    }
+
+    @Spawns("challengeNPC")
+    public Entity newChallengeRoomNPC(SpawnData data) {
+        ChallengeNPCComponent challengeNPCComponent = new ChallengeNPCComponent();
+        return FXGL.entityBuilder(data)
+                .type(RoyalType.NPC)
+                .bbox(new HitBox(BoundingShape.polygon(new Point2D(3, 15), new Point2D(38, 15),
+                        new Point2D(38, 55), new Point2D(3, 55))))
+                .with(new CollidableComponent(true))
+                .with(challengeNPCComponent)
+                .with("Interactable", challengeNPCComponent)
+                .with("isChallengeNPC", true)
                 .build();
     }
 
@@ -230,6 +245,7 @@ public class CreatureFactory implements EntityFactory {
                 .with(new CollidableComponent(true))
                 .with(greenFElfComponent)
                 .with("Interactable", greenFElfComponent)
+                .with("isChallengeNPC", false)
                 .build();
     }
 }

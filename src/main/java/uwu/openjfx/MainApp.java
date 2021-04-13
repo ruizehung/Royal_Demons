@@ -40,8 +40,9 @@ public class MainApp extends GameApplication {
     private Set<String> weaponsSet;
     private Map<String, String> itemNameAssetMap;
     private Map<String, Item> itemNameObjMap;
-    private final Boolean developerCheat = false;
+    private final Boolean developerCheat = true;
     private static boolean isTesting = false;
+    private static Random random = new Random();
 
     // Top priority : (
 
@@ -223,9 +224,10 @@ public class MainApp extends GameApplication {
         loadRoomAsset();
         loadEnemiesAsset();
         initItemsNameAssetMappingAndWeaponsList();
-        gameMap = new GameMap(40);
+        gameMap = new GameMap(8);
+        gameMap.setRandomSeed(63);
+        gameMap.generateRooms();
         set("gameMap", gameMap);
-
 
         getGameWorld().addEntityFactory(new StructureFactory());
         getGameWorld().addEntityFactory(new CreatureFactory());
@@ -241,6 +243,7 @@ public class MainApp extends GameApplication {
         if (developerCheat) {
             player.getComponent(PlayerComponent.class).setHealthPoints(200);
             player.getComponent(PlayerComponent.class).setMaxHealthPoints(999);
+            player.getComponent(PlayerComponent.class).setSpeed(300);
         }
 
         gameMap.loadRoom(gameMap.getInitialRoom(), "center");
@@ -370,7 +373,8 @@ public class MainApp extends GameApplication {
         File dir = new File("src/main/resources/assets/levels/tmx");
         for (File file : dir.listFiles()) {
             if (file.getName().endsWith(".tmx") && !file.getName().equals("initialRoom.tmx")
-                    && !file.getName().equals("bossRoom.tmx")) {
+                    && !file.getName().equals("bossRoom.tmx")
+                    && !file.getName().equals("challengeRoom.tmx")) {
                 roomTypeList.add(file.getName().replaceAll(".tmx", ""));
             }
         }
@@ -383,6 +387,10 @@ public class MainApp extends GameApplication {
 
     public static void setIsTesting(boolean isTesting) {
         MainApp.isTesting = isTesting;
+    }
+
+    public static Random getRandom() {
+        return random;
     }
 
     public static void main(String[] args) {

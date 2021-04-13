@@ -1,3 +1,4 @@
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.test.RunWithFX;
 import org.junit.jupiter.api.BeforeEach;
@@ -103,7 +104,7 @@ public class TestPlayerAttackEnemyCollisionHandler {
     }
 
     // jason 3
-    @RepeatedTest(3000)
+    @RepeatedTest(8000)
     void testEnemyBlocksDamage() {
         int healthPoints = 100;
         Entity monster = new Entity();
@@ -124,7 +125,7 @@ public class TestPlayerAttackEnemyCollisionHandler {
     }
 
     // jason 4
-    @Test
+    @RepeatedTest(10)
     void testEnemyArmorSoftensDamageTaken() {
         int healthPoints = 100;
         Entity monster = new Entity();
