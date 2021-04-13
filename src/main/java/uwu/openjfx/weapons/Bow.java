@@ -26,22 +26,20 @@ public abstract class Bow implements Weapon, AngleBehavior {
 
     private boolean ultimateActivated;
     private final Image sprite; // weapon sprite
-    private final String inventoryIconPath;
+    private final String inventoryIconPath = "ui/inventory/bow.png";
     private final String arrow;
-    private final String name;
+    private final String name = "Buwu";
     private final double attackDamage;
     private final String regularAttackPath;
     private final String ultimateAttackPath;
     private final int attackDuration;
     private final int ultimateChargeDuration;
 
-    public Bow(Image sprite, String inventoryPath, String arrow, String name, double attackDamage,
+    public Bow(Image sprite, String arrow, double attackDamage,
                String regularAttackPath, String ultimateAttackPath,
                int attackDuration, int ultimateChargeDuration) {
         this.sprite = sprite;
-        this.inventoryIconPath = inventoryPath;
         this.arrow = arrow;
-        this.name = name;
         this.attackDamage = attackDamage;
         this.regularAttackPath = regularAttackPath;
         this.ultimateAttackPath = ultimateAttackPath;

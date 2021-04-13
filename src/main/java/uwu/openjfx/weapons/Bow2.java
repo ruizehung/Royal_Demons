@@ -8,9 +8,7 @@ public class Bow2 extends Bow implements Weapon, AngleBehavior {
     public Bow2() {
         super(new Image(
                 "assets/textures/ui/weapons/bow2_ui.png"),
-            "ui/inventory/bow.png",
             "bow2_arrow",
-            "Buwu2",
             75,
             "bow2_charge_44x43",
             "bow2_ult_75x43",
