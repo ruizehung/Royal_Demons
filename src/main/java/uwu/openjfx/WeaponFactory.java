@@ -78,7 +78,7 @@ public class WeaponFactory implements EntityFactory {
         double newCenterYOffset = topBotOffset;
         return FXGL.entityBuilder(data)
                 .type(RoyalType.PLAYERATTACK)
-                .view("./weapons/arrow.png")
+                .view("./weapons/" + weapon + ".png")
                 .bbox(new HitBox(
                         new Point2D(
                                 newCenterXOffset,
