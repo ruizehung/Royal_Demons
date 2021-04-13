@@ -31,7 +31,36 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
 
     @Override
     public void prepAttack(Entity player) {
-        // Entity gs = spawn("meleeSword", new SpawnData(0, 0).put("weapon", "gs0"));
+        int width = !ultimateActivated ? 175 : 175; // width of bow
+        int height = 175; // height of bow
+        double bowOffsetX = -8; // spawn bow offset with respect to x player location
+        double bowOffsetY = 25; // spawn bow offset with respect to y player location
+
+        Entity b = spawn("weapon",
+            new SpawnData(
+                player.getX(), player.getY()).
+                put("weaponFile", !ultimateActivated ? "red_wand_175x175" : "red_wand_175x175").
+                put("duration", getDuration(ultimateActivated)).
+                put("frameWidth", width).
+                put("frameHeight", height).
+                put("fpr", !ultimateActivated ? 6 : 6).
+                put("weaponSprite", sprite));
+        // Spawn bow at player's "hands"
+        b.getTransformComponent().setAnchoredPosition(
+            new Point2D(
+                (player.getX() + playerHitBoxOffsetX + (playerHitBoxWidth / 2))
+                    - ((double) width / 2) + bowOffsetX,
+                (player.getY() + bowOffsetY) - ((double) height / 2)));
+        b.setZIndex(2000); // put bow on top of player (z = 1000)
+        if (player.getScaleX() == 1) {
+            b.setScaleX(1);
+        }
+        /*
+        else {
+            //b.setScaleX(-1);
+            //b.translateX(-(2 * bowOffsetX)); // smooth reflection over middle axis rel. to player
+        }
+        */
     }
 
     @Override

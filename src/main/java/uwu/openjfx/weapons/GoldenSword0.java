@@ -16,16 +16,10 @@ import static com.almasb.fxgl.dsl.FXGL.spawn;
     will be handled in the WeaponAnimationComponent class.
  */
 public class GoldenSword0 implements Weapon {
-    private final double playerHitBoxOffsetX = 3; // player's hitbox own offset from top left
-    private final double playerHitBoxOffsetY = 15; // player's hitbox own offset from top left
-    private final double playerHitBoxWidth = 35; // width of player's hitbox from 3 to 38
-    private final double playerHitBoxHeight = 40; // height of player's hitbox from 15 to 55
-    private Entity meleeHitBox; // slash hitbox to be spawned (ultimate / nonultimate)
     private boolean ultimateActivated;
     private Image sprite = new Image("assets/textures/ui/weapons/sword0_ui.png"); // weapon sprite
     private String name = "Golden Sword";
     private String inventoryIconPath = "ui/inventory/golden_sword.png";
-    private double attackDamage = 30;
 
     @Override
     public boolean equals(Object obj) {
@@ -80,12 +74,13 @@ public class GoldenSword0 implements Weapon {
         int hitBoxWidth; // width of the hitbox
         int hitBoxHeight; // height of the hitbox
         double swordOffset; // distance from player the hitbox should spawn
+        double attackDamage = 30;
 
         if (!ultimateActivated) {
             hitBoxWidth = 60;
             hitBoxHeight = 75;
             swordOffset = 22;
-            meleeHitBox = spawn("meleeSwordHitBox",
+            Entity meleeHitBox = spawn("meleeSwordHitBox",
                 new SpawnData(player.getX(), player.getY()).
                     put("width", hitBoxWidth).put("height", hitBoxHeight).
                     put("damage", attackDamage));
@@ -96,16 +91,21 @@ public class GoldenSword0 implements Weapon {
                         + (player.getScaleX() > 0 ? swordOffset : -swordOffset),
                     player.getY() - ((double) hitBoxHeight / 2) + player.getHeight() / 2));
         } else {
+            final double playerHitBoxOffsetX = 3; // player's hitbox own offset from top left
+            final double playerHitBoxOffsetY = 15; // player's hitbox own offset from top left
+            final double playerHitBoxWidth = 35; // width of player's hitbox from 3 to 38
+            final double playerHitBoxHeight = 40; // height of player's hitbox from 15 to 55
+
             // top offset used to shrink the top/bot edges of hitbox
-            int topBottomOffset = !ultimateActivated ? 5 : 5;
+            int topBottomOffset = 5;
             // left offset used to shrink the left edge of hitbox
-            int leftOffset = !ultimateActivated ? 20 : 20;
+            int leftOffset = 20;
             // right offset used to shrink the right edge of hitbox
-            int rightOffset = !ultimateActivated ? 12 : 12;
+            int rightOffset = 12;
             // width of the original frame (32 / 64)
-            int frameWidth = !ultimateActivated ? 48 : 48;
+            int frameWidth = 48;
             // height of original frame (32 / 64)
-            int frameHeight = !ultimateActivated ? 16 : 16;
+            int frameHeight = 16;
 
             // the center of the NEW and MODIFIED hitbox
             double centerX = ((double) (leftOffset + (frameWidth - rightOffset)) / 2);
