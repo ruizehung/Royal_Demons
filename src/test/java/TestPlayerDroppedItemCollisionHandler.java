@@ -8,7 +8,7 @@ import uwu.openjfx.UI;
 import uwu.openjfx.collision.PlayerDroppedItemCollisionHandler;
 import uwu.openjfx.components.PlayerComponent;
 import uwu.openjfx.weapons.Bow0;
-import uwu.openjfx.weapons.GoldenSword0;
+import uwu.openjfx.weapons.GoldenSword1;
 import uwu.openjfx.items.Heart;
 import uwu.openjfx.items.Item;
 
@@ -67,7 +67,7 @@ public class TestPlayerDroppedItemCollisionHandler {
         PlayerDroppedItemCollisionHandler handler = new PlayerDroppedItemCollisionHandler();
         handler.onCollision(player, sword);
 
-        assert PlayerComponent.getWeaponInventoryList().contains(new GoldenSword0());
+        assert PlayerComponent.getWeaponInventoryList().contains(new GoldenSword1());
     }
 
     //alice 4

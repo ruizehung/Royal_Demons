@@ -21,6 +21,7 @@ import uwu.openjfx.input.*;
 import uwu.openjfx.items.Heart;
 import uwu.openjfx.items.Item;
 import uwu.openjfx.weapons.GoldenSword0;
+import uwu.openjfx.weapons.GoldenSword1;
 
 import java.io.File;
 import java.util.*;
@@ -40,7 +41,7 @@ public class MainApp extends GameApplication {
     private Set<String> weaponsSet;
     private Map<String, String> itemNameAssetMap;
     private Map<String, Item> itemNameObjMap;
-    private final Boolean developerCheat = false;
+    private final Boolean developerCheat = true;
     private static boolean isTesting = false;
     private static Random random = new Random();
 
@@ -186,7 +187,8 @@ public class MainApp extends GameApplication {
         getInput().addAction(new UserAction("SPACE") {
             @Override
             protected void onActionBegin() {
-                if (!player.getComponent(PlayerComponent.class).isAttacking()) {
+                if (!player.getComponent(PlayerComponent.class).isAttacking()
+                    && !player.getComponent(PlayerComponent.class).getUltimateCD()) {
                     player.getComponent(PlayerComponent.class).setMousePosition(
                             FXGL.getInput().getMousePositionWorld().getX(),
                             FXGL.getInput().getMousePositionWorld().getY());

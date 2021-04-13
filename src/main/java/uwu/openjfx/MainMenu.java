@@ -36,10 +36,9 @@ import javafx.util.Duration;
 import org.jetbrains.annotations.NotNull;
 import uwu.openjfx.components.PlayerComponent;
 import uwu.openjfx.weapons.Bow0;
-import uwu.openjfx.weapons.GoldenSword0;
+import uwu.openjfx.weapons.GoldenSword1;
 import uwu.openjfx.weapons.MagicStaff0;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -517,9 +516,9 @@ public class MainMenu extends FXGLMenu {
         MenuButton itemSword = new MenuButton("Sword");
         itemSword.setOnAction(
             e -> {
-                GoldenSword0 goldenSword0 = new GoldenSword0();
-                PlayerComponent.setCurrentWeapon(goldenSword0);
-                PlayerComponent.getWeaponInventoryList().add(goldenSword0);
+                GoldenSword1 goldenSword1 = new GoldenSword1();
+                PlayerComponent.setCurrentWeapon(goldenSword1);
+                PlayerComponent.getWeaponInventoryList().add(goldenSword1);
                 itemSword.updateText(itemSword.getText());
 
             });
