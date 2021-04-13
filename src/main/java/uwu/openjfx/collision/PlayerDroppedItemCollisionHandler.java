@@ -11,7 +11,7 @@ import uwu.openjfx.UI;
 import uwu.openjfx.components.PlayerComponent;
 import uwu.openjfx.items.Item;
 import uwu.openjfx.weapons.Bow0;
-import uwu.openjfx.weapons.GoldenSword0;
+import uwu.openjfx.weapons.GoldenSword1;
 import uwu.openjfx.weapons.MagicStaff0;
 
 import java.util.Map;
@@ -36,7 +36,7 @@ public class PlayerDroppedItemCollisionHandler extends CollisionHandler {
             } else {
                 switch (itemName) {
                 case "golden_sword":
-                    PlayerComponent.addWeaponToInventory(new GoldenSword0());
+                    PlayerComponent.addWeaponToInventory(new GoldenSword1());
                     break;
                 case "nature_staff":
                     PlayerComponent.addWeaponToInventory(new MagicStaff0());

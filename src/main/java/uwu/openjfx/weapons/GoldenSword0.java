@@ -1,7 +1,9 @@
 package uwu.openjfx.weapons;
 
+import com.almasb.fxgl.core.math.Vec2;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
+import com.almasb.fxgl.entity.components.IrremovableComponent;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 
@@ -14,35 +16,57 @@ import static com.almasb.fxgl.dsl.FXGL.spawn;
     will be handled in the WeaponAnimationComponent class.
  */
 public class GoldenSword0 implements Weapon {
+    private final double playerHitBoxOffsetX = 3; // player's hitbox own offset from top left
+    private final double playerHitBoxOffsetY = 15; // player's hitbox own offset from top left
+    private final double playerHitBoxWidth = 35; // width of player's hitbox from 3 to 38
+    private final double playerHitBoxHeight = 40; // height of player's hitbox from 15 to 55
     private Entity meleeHitBox; // slash hitbox to be spawned (ultimate / nonultimate)
     private boolean ultimateActivated;
     private Image sprite = new Image("assets/textures/ui/weapons/sword0_ui.png"); // weapon sprite
     private String name = "Golden Sword";
     private String inventoryIconPath = "ui/inventory/golden_sword.png";
-    private double attackDamage = 50;
+    private double attackDamage = 30;
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof GoldenSword0;
+        return obj instanceof GoldenSword1;
     }
 
     @Override
     public void prepAttack(Entity player) {
-        int width = !ultimateActivated ? 140 : 175; // width of the frame
-        int height = !ultimateActivated ? 140 : 175; // height of the frame
+        int width; // width of the frame
+        int height; // height of the frame
+        double swordOffset;
+        String chosenAttack;
+        int random = (int) (Math.random() * 101);
+        if (random < 50) {
+            chosenAttack = "gold_knife_swipe_50x100";
+            width = 50;
+            height = 100;
+            swordOffset = 22;
+
+        } else {
+            chosenAttack = "gold_knife_stab_69x26";
+            width = 69;
+            height = 26;
+            swordOffset = 22;
+        }
+
         Entity gs = spawn("weapon",
-                new SpawnData(
-                        player.getX(), player.getY()).
-                        put("weaponFile", !ultimateActivated
-                                ? "gold_sword0_slash_140x140" : "gold_sword0_ult_175x175").
-                        put("duration", getDuration(ultimateActivated)).
-                        put("frameWidth", width).
-                        put("frameHeight", height).
-                        put("fpr", !ultimateActivated ? 6 : 6));
+            new SpawnData(
+                player.getX(), player.getY()).
+                put("weaponFile", !ultimateActivated
+                    ? chosenAttack : "gold_knife_stab_69x26").
+                put("duration", getDuration(ultimateActivated)).
+                put("frameWidth", width).
+                put("frameHeight", height).
+                put("fpr", !ultimateActivated ? 3 : 4));
         // Spawn the sword at player's "hands"
         gs.getTransformComponent().setAnchoredPosition(
-                new Point2D(player.getX() - ((double) width / 2) + player.getWidth() / 2,
-                        player.getY() - ((double) height / 2) + player.getHeight() / 2));
+            new Point2D(
+                player.getX() - ((double) width / 2) + player.getWidth() / 2
+                    + (player.getScaleX() > 0 ? swordOffset : -swordOffset),
+                player.getY() - ((double) height / 2) + player.getHeight() / 2));
         if (player.getScaleX() == 1) {
             gs.setScaleX(1);
         } else {
@@ -57,25 +81,99 @@ public class GoldenSword0 implements Weapon {
         int hitBoxHeight; // height of the hitbox
         double swordOffset; // distance from player the hitbox should spawn
 
-        hitBoxWidth = !ultimateActivated ? 82 : 175;
-        hitBoxHeight = !ultimateActivated ? 130 : 175;
-        swordOffset = !ultimateActivated ? 22 : 0;
-        meleeHitBox = spawn("meleeSwordHitBox",
+        if (!ultimateActivated) {
+            hitBoxWidth = 60;
+            hitBoxHeight = 75;
+            swordOffset = 22;
+            meleeHitBox = spawn("meleeSwordHitBox",
                 new SpawnData(player.getX(), player.getY()).
-                        put("width", hitBoxWidth).put("height", hitBoxHeight).
-                        put("damage", attackDamage));
-        // Spawn hitbox on top of player and apply offset
-        meleeHitBox.getTransformComponent().setAnchoredPosition(
+                    put("width", hitBoxWidth).put("height", hitBoxHeight).
+                    put("damage", attackDamage));
+            // Spawn hitbox on top of player and apply offset
+            meleeHitBox.getTransformComponent().setAnchoredPosition(
                 new Point2D(
-                        player.getX() - ((double) hitBoxWidth / 2) + player.getWidth() / 2
-                                + (player.getScaleX() > 0 ? swordOffset : -swordOffset),
-                        player.getY() - ((double) hitBoxHeight / 2) + player.getHeight() / 2));
+                    player.getX() - ((double) hitBoxWidth / 2) + player.getWidth() / 2
+                        + (player.getScaleX() > 0 ? swordOffset : -swordOffset),
+                    player.getY() - ((double) hitBoxHeight / 2) + player.getHeight() / 2));
+        } else {
+            // top offset used to shrink the top/bot edges of hitbox
+            int topBottomOffset = !ultimateActivated ? 5 : 5;
+            // left offset used to shrink the left edge of hitbox
+            int leftOffset = !ultimateActivated ? 20 : 20;
+            // right offset used to shrink the right edge of hitbox
+            int rightOffset = !ultimateActivated ? 12 : 12;
+            // width of the original frame (32 / 64)
+            int frameWidth = !ultimateActivated ? 48 : 48;
+            // height of original frame (32 / 64)
+            int frameHeight = !ultimateActivated ? 16 : 16;
+
+            // the center of the NEW and MODIFIED hitbox
+            double centerX = ((double) (leftOffset + (frameWidth - rightOffset)) / 2);
+            double centerY = ((double) (topBottomOffset + (frameHeight - topBottomOffset)) / 2);
+
+            int speed = 300; // speed at which magic spell goes
+            /*
+                Instantiate a brand new arrow that will hold the
+                corresponding dimensions, components, and speed. It will temporarily
+                spawn the magic spell at the players ORIGINAL getX() and getY() excluding
+                its modified hitbox done in CreatureFactory.
+             */
+            int amountOfDaggers = 10;
+            Vec2[] angles = new Vec2[amountOfDaggers];
+            double angleIncrementer = 2 * Math.PI / amountOfDaggers;
+            double angle = 0;
+            for (int i = 0; i < angles.length; i++) {
+                double x = Math.cos(angle);
+                double y = Math.sin(angle);
+                angles[i] = new Vec2(new Point2D(x, y));
+                angle += angleIncrementer;
+            }
+            for (Vec2 vec : angles) {
+                Entity rangedHitBox = spawn("rangedArrowHitBox",
+                    new SpawnData(
+                        player.getX(), player.getY()).
+                        put("dir", vec.toPoint2D()).
+                        put("speed", speed).
+                        put("weapon", "bow0_arrow").
+                        put("duration", 500).
+                        put("fpr", 1).
+                        put("ultimateActive", ultimateActivated).
+                        put("topBotOffset", topBottomOffset).
+                        put("leftOffset", leftOffset).
+                        put("rightOffset", rightOffset).
+                        put("frameWidth", frameWidth).
+                        put("frameHeight", frameHeight).
+                        put("isArrow", true).
+                        put("isMagic", false).
+                        put("damage", attackDamage));
+                /*
+                    setLocalAnchor(...) will ensure that the anchor/pivot point of the
+                    arrow is located at the CENTER of the NEW hitbox.
+                    setAnchoredPosition(...) will spawn the arrow to the right
+                    of the player if player is facing right, and left if the player is
+                    facing left, and located at the player's "hands".
+                    setRotationOrigin(...) will ensure that the rotation anchor/pivot
+                    point of the arrow is located at the CENTER of the NEW hitbox.
+                    The arguments are offsets based off of the top-left point of the
+                    ORIGINAL frameWidth x frameHeight frame. Therefore, we need to offset
+                    centerX in the x-direction, and the center of the arrow will
+                    CONSISTENTLY be at its midpoint in the y-direction.
+                 */
+                rangedHitBox.setLocalAnchor(new Point2D(centerX, centerY));
+                rangedHitBox.setAnchoredPosition(
+                    (player.getX() + playerHitBoxOffsetX + (playerHitBoxWidth / 2)),
+                    (player.getY() + playerHitBoxOffsetY + (playerHitBoxHeight / 2)));
+                rangedHitBox.getTransformComponent().setRotationOrigin(
+                    new Point2D(centerX, ((double) (frameHeight)) / 2));
+                rangedHitBox.addComponent(new IrremovableComponent());
+            }
+        }
     }
 
     @Override
     public int getDuration(boolean ultimateActivated) {
-        int attackDuration = 500; // charge-up time of attacking in milliseconds
-        int ultimateChargeDuration = 1000; // charge-up time of attacking in milliseconds
+        int attackDuration = 450; // charge-up time of attacking in milliseconds
+        int ultimateChargeDuration = 500; // charge-up time of attacking in milliseconds
         this.ultimateActivated = ultimateActivated;
         return ultimateActivated ? ultimateChargeDuration : attackDuration;
     }
