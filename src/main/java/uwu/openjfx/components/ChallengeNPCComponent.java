@@ -45,11 +45,11 @@ public class ChallengeNPCComponent extends CanOnlyInteractOnce {
     public void interact() {
         if (!hasInteractedBefore()) {
             FXGL.getDialogService().showConfirmationBox(
-                    "Hero, would you accept the challenge?", answer -> {
-                        if (answer) {
-                            super.interact();
-                        }
-                    });
+                "Hero, would you accept the challenge?", answer -> {
+                    if (answer) {
+                        super.interact();
+                    }
+                });
         } else {
             String s = "Hmmm .... What's up?";
             Text text = FXGL.getUIFactoryService().newText(s);

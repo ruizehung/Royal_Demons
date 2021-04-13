@@ -36,8 +36,6 @@ import javafx.util.Duration;
 import org.jetbrains.annotations.NotNull;
 import uwu.openjfx.components.PlayerComponent;
 import uwu.openjfx.weapons.Bow0;
-import uwu.openjfx.weapons.Bow1;
-import uwu.openjfx.weapons.Bow2;
 import uwu.openjfx.weapons.GoldenSword0;
 import uwu.openjfx.weapons.MagicStaff0;
 
