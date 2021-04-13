@@ -13,13 +13,13 @@ import static com.almasb.fxgl.dsl.FXGL.spawn;
     - Spawn the player-sword in the prepAttack() method, whose animation
     will be handled in the WeaponAnimationComponent class.
  */
-public class GoldenSword1 implements Weapon {
+public class GoldenSword2 implements Weapon {
     private Entity meleeHitBox; // slash hitbox to be spawned (ultimate / nonultimate)
     private boolean ultimateActivated;
     private Image sprite = new Image("assets/textures/ui/weapons/sword0_ui.png"); // weapon sprite
-    private String name = "Golden Sword";
+    private String name = "Legend Sword";
     private String inventoryIconPath = "ui/inventory/golden_sword.png";
-    private double attackDamage = 50;
+    private double attackDamage = 80;
 
     @Override
     public boolean equals(Object obj) {
@@ -28,21 +28,21 @@ public class GoldenSword1 implements Weapon {
 
     @Override
     public void prepAttack(Entity player) {
-        int width = !ultimateActivated ? 140 : 175; // width of the frame
-        int height = !ultimateActivated ? 140 : 175; // height of the frame
+        int width = !ultimateActivated ? 175 : 175; // width of the frame
+        int height = !ultimateActivated ? 180 : 175; // height of the frame
         Entity gs = spawn("weapon",
-                new SpawnData(
-                        player.getX(), player.getY()).
-                        put("weaponFile", !ultimateActivated
-                                ? "gold_sword0_slash_140x140" : "gold_sword0_ult_175x175").
-                        put("duration", getDuration(ultimateActivated)).
-                        put("frameWidth", width).
-                        put("frameHeight", height).
-                        put("fpr", !ultimateActivated ? 6 : 6));
+            new SpawnData(
+                player.getX(), player.getY()).
+                put("weaponFile", !ultimateActivated
+                    ? "legend_sword_175x180" : "gold_sword0_ult_175x175").
+                put("duration", getDuration(ultimateActivated)).
+                put("frameWidth", width).
+                put("frameHeight", height).
+                put("fpr", !ultimateActivated ? 6 : 6));
         // Spawn the sword at player's "hands"
         gs.getTransformComponent().setAnchoredPosition(
-                new Point2D(player.getX() - ((double) width / 2) + player.getWidth() / 2,
-                        player.getY() - ((double) height / 2) + player.getHeight() / 2));
+            new Point2D(player.getX() - ((double) width / 2) + player.getWidth() / 2,
+                player.getY() - ((double) height / 2) + player.getHeight() / 2));
         if (player.getScaleX() == 1) {
             gs.setScaleX(1);
         } else {
@@ -57,24 +57,24 @@ public class GoldenSword1 implements Weapon {
         int hitBoxHeight; // height of the hitbox
         double swordOffset; // distance from player the hitbox should spawn
 
-        hitBoxWidth = !ultimateActivated ? 82 : 175;
-        hitBoxHeight = !ultimateActivated ? 130 : 175;
+        hitBoxWidth = !ultimateActivated ? 105 : 175;
+        hitBoxHeight = !ultimateActivated ? 155 : 175;
         swordOffset = !ultimateActivated ? 22 : 0;
         meleeHitBox = spawn("meleeSwordHitBox",
-                new SpawnData(player.getX(), player.getY()).
-                        put("width", hitBoxWidth).put("height", hitBoxHeight).
-                        put("damage", attackDamage));
+            new SpawnData(player.getX(), player.getY()).
+                put("width", hitBoxWidth).put("height", hitBoxHeight).
+                put("damage", attackDamage));
         // Spawn hitbox on top of player and apply offset
         meleeHitBox.getTransformComponent().setAnchoredPosition(
-                new Point2D(
-                        player.getX() - ((double) hitBoxWidth / 2) + player.getWidth() / 2
-                                + (player.getScaleX() > 0 ? swordOffset : -swordOffset),
-                        player.getY() - ((double) hitBoxHeight / 2) + player.getHeight() / 2));
+            new Point2D(
+                player.getX() - ((double) hitBoxWidth / 2) + player.getWidth() / 2
+                    + (player.getScaleX() > 0 ? swordOffset : -swordOffset),
+                player.getY() - ((double) hitBoxHeight / 2) + player.getHeight() / 2));
     }
 
     @Override
     public int getDuration(boolean ultimateActivated) {
-        int attackDuration = 750; // charge-up time of attacking in milliseconds
+        int attackDuration = 600; // charge-up time of attacking in milliseconds
         int ultimateChargeDuration = 1000; // charge-up time of attacking in milliseconds
         this.ultimateActivated = ultimateActivated;
         return ultimateActivated ? ultimateChargeDuration : attackDuration;
