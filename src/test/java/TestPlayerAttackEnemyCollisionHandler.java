@@ -1,4 +1,3 @@
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.test.RunWithFX;
 import org.junit.jupiter.api.BeforeEach;
@@ -104,12 +103,12 @@ public class TestPlayerAttackEnemyCollisionHandler {
     }
 
     // jason 3
-    @RepeatedTest(8000)
+    @Test
     void testEnemyBlocksDamage() {
         int healthPoints = 100;
         Entity monster = new Entity();
         EnemyComponent enemyComponent = new EnemyComponent(
-            healthPoints, "", 10, 20);
+                healthPoints, "", 10, 20);
         monster.addComponent(enemyComponent);
         enemyComponent.setBlockProbability(100); // 100% chance of blocking
         monster.setProperty("CreatureComponent", enemyComponent);
@@ -130,7 +129,7 @@ public class TestPlayerAttackEnemyCollisionHandler {
         int healthPoints = 100;
         Entity monster = new Entity();
         EnemyComponent enemyComponent = new EnemyComponent(
-            healthPoints, "", 10, 20);
+                healthPoints, "", 10, 20);
         enemyComponent.setBlockProbability(0); // cannot block
         enemyComponent.setArmorStat(2.5); // has armor
         monster.addComponent(enemyComponent);
@@ -144,6 +143,6 @@ public class TestPlayerAttackEnemyCollisionHandler {
         handler.onCollisionBegin(weapon, monster);
         // confirm enemy health with armor is greater than what it would've been without armor
         assert enemyComponent.getHealthPoints()
-            >= (enemyComponent.getHealthPoints() - attackDamage);
+                >= (enemyComponent.getHealthPoints() - attackDamage);
     }
 }

@@ -21,6 +21,8 @@ public class TestMapGeneration {
     @RepeatedTest(500)
     void testBossRoomAtLeast6RoomsAway() {
         GameMap gameMap = new GameMap(rooms);
+        gameMap.generateRooms();
+
         assert (gameMap.getBossRoom().getDistFromInitRoom() > 6);
         gameMap = null;
     }
@@ -28,6 +30,7 @@ public class TestMapGeneration {
     @RepeatedTest(500)
     void testBossRoomReachable() {
         GameMap gameMap = new GameMap(rooms);
+        gameMap.generateRooms();
 
         Room initialRoom = gameMap.getInitialRoom();
         Room bossRoom = gameMap.getBossRoom();
@@ -61,6 +64,7 @@ public class TestMapGeneration {
     @RepeatedTest(500)
     void testInitialRoomHas4AdjRooms() {
         GameMap gameMap = new GameMap(rooms);
+        gameMap.generateRooms();
         assert (gameMap.getInitialRoom().getNumAdjRooms() == 4);
         assert (gameMap.getInitialRoom().getNorthRoom() != null);
         assert (gameMap.getInitialRoom().getEastRoom() != null);

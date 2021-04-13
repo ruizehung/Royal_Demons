@@ -38,6 +38,10 @@ public class GameMap {
 
         this.numOfRooms = numOfRooms;
         finalBossDist = 7;
+
+        if (MainApp.isIsTesting()) {
+            random = new Random();
+        }
     }
 
     public void setRandomSeed(long seed) {
@@ -117,22 +121,24 @@ public class GameMap {
         initialRoom.setRoomType("initialRoom");
         bossRoom.setRoomType("bossRoom");
 
-        int challengeRooms = 1 + random.nextInt(3);
-        Object[] roomList = rooms.values().toArray();
-        for (int i = 0; i < challengeRooms; ++i) {
-            // randomly pick a room
-            Room room = null;
-            while (true) {
-                room = (Room) roomList[random.nextInt(roomList.length)];
-                // make sure it's not initial room or boss room or challenge room
-                if (!(room.getRoomType().equals("initialRoom")
-                        || room.getRoomType().equals("bossRoom")
-                        || room.getRoomType().equals("challengeRoom"))) {
-                    break;
+        if (!MainApp.isIsTesting()) {
+            int challengeRooms = 1 + random.nextInt(3);
+            Object[] roomList = rooms.values().toArray();
+            for (int i = 0; i < challengeRooms; ++i) {
+                // randomly pick a room
+                Room room = null;
+                while (true) {
+                    room = (Room) roomList[random.nextInt(roomList.length)];
+                    // make sure it's not initial room or boss room or challenge room
+                    if (!(room.getRoomType().equals("initialRoom")
+                            || room.getRoomType().equals("bossRoom")
+                            || room.getRoomType().equals("challengeRoom"))) {
+                        break;
+                    }
                 }
+                // set to challenge room
+                room.setRoomType("challengeRoom");
             }
-            // set to challenge room
-            room.setRoomType("challengeRoom");
         }
     }
 

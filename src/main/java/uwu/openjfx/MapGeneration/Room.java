@@ -35,6 +35,10 @@ public class Room {
             List<String> roomTypeList = FXGL.geto("roomTypeList");
             roomType = roomTypeList.get(random.nextInt(roomTypeList.size()));
         }
+
+        if (MainApp.isIsTesting()) {
+            random = new Random();
+        }
     }
 
     public Room(Coordinate coordinate, int numAdjRooms) {

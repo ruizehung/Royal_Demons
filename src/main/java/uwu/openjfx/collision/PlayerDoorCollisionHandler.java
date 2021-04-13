@@ -53,7 +53,6 @@ public class PlayerDoorCollisionHandler extends CollisionHandler {
             if (!newRoom.visited() && !curRoom.enemiesCleared()) {
                 pushNotification("Clear enemies before exploring new rooms!");
             } else {
-                AtomicBoolean proceed = new AtomicBoolean(true);
                 if (newRoom.getCoordinate().equals(gameMap.getBossRoom().getCoordinate())) {
                     String finalSpawnPosition = spawnPosition;
                     FXGL.getDialogService().showConfirmationBox(
@@ -67,7 +66,6 @@ public class PlayerDoorCollisionHandler extends CollisionHandler {
                         }
                     });
                 } else {
-                    System.out.println("Proceed = " + proceed.get());
                     final String spawnPositionFinal = spawnPosition;
                     getGameScene().getViewport().fade(() -> {
                         gameMap.loadRoom(newRoom, spawnPositionFinal);
