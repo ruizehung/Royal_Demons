@@ -134,7 +134,7 @@ public class GoldenSword0 implements Weapon {
                         player.getX(), player.getY()).
                         put("dir", vec.toPoint2D()).
                         put("speed", speed).
-                        put("weapon", "bow0_arrow").
+                        put("weapon", "gold_knife").
                         put("duration", 500).
                         put("fpr", 1).
                         put("ultimateActive", ultimateActivated).
