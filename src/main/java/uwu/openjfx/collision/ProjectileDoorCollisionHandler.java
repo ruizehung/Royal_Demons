@@ -7,6 +7,7 @@ import com.almasb.fxgl.entity.components.IrremovableComponent;
 import com.almasb.fxgl.physics.CollisionHandler;
 import javafx.util.Duration;
 import uwu.openjfx.RoyalType;
+import uwu.openjfx.components.ExplosionAtDistComponent;
 import uwu.openjfx.components.ProjectileAnimationComponent;
 
 /*
@@ -20,11 +21,15 @@ public class ProjectileDoorCollisionHandler extends CollisionHandler {
 
     public void onCollisionBegin(Entity weapon, Entity door) {
         if (weapon.hasComponent(ProjectileAnimationComponent.class)) {
-            ProjectileAnimationComponent projectileAnimationComponent =
-                weapon.getComponent(ProjectileAnimationComponent.class);
-            if (projectileAnimationComponent.getIsArrow()) {
+            if (weapon.getComponent(ProjectileAnimationComponent.class).getIsArrow()) {
                 weapon.getComponent(ProjectileComponent.class).pause();
-            } else if (projectileAnimationComponent.getIsMagic()) {
+            }
+            if (weapon.getComponent(ProjectileAnimationComponent.class).getIsMagic()
+                || (weapon.hasComponent(ExplosionAtDistComponent.class)
+                && weapon.getComponent(ExplosionAtDistComponent.class).getExplodeColl())) {
+                if (weapon.hasComponent(ExplosionAtDistComponent.class)) {
+                    weapon.getComponent(ExplosionAtDistComponent.class).explode();
+                }
                 weapon.removeFromWorld();
             }
         }

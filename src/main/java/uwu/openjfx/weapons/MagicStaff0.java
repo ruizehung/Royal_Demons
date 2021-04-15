@@ -180,4 +180,8 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
         return false;
     }
 
+    @Override
+    public int getUltimateCD() {
+        return 5;
+    }
 }

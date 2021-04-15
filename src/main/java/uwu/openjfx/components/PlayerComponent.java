@@ -117,7 +117,7 @@ public class PlayerComponent extends CreatureComponent {
             FXGL.getGameTimer().runAtInterval(() -> {
                 ultimateCD = false;
                 FXGL.getGameTimer().clear();
-            }, Duration.seconds(5));
+            }, Duration.seconds(currentWeapon.getUltimateCD()));
         }
         // endregion
     }
@@ -199,7 +199,9 @@ public class PlayerComponent extends CreatureComponent {
     // region Player Attack functions
     public void autoAttack(boolean ultimateActivated) {
         this.ultimateActivated = ultimateActivated;
-        ultimateCD = ultimateActivated;
+        if (ultimateActivated) {
+            ultimateCD = true;
+        }
         if (currMouseX > entity.getX() + 20) { // turn player in direction of mouse
             entity.setScaleX(1);
         } else {
