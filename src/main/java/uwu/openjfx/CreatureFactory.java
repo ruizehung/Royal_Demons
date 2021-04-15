@@ -64,17 +64,15 @@ public class CreatureFactory implements EntityFactory {
 
         enemyComponent.setDieBehavior(new DropCoinBehavior(1, 5));
 
-        // TODO__: better to manually define bbox tailor to each minion
-        List<Point2D> point2DList = Arrays.asList(
-                new Point2D(3, 5),
-                new Point2D(widthHeight.get(0) - 3, 5),
-                new Point2D(widthHeight.get(0) - 3, widthHeight.get(1) - 2),
-                new Point2D(3, widthHeight.get(1) - 2)
-        );
-
         return FXGL.entityBuilder(data)
                 .type(RoyalType.ENEMY)
-                .bbox(new HitBox(BoundingShape.polygon(point2DList)))
+                .bbox(new HitBox(
+                    new Point2D(
+                        5,
+                        8),
+                    BoundingShape.box(
+                        widthHeight.get(0) - 12,
+                        widthHeight.get(1) - 10)))
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .with(enemyComponent)
@@ -98,19 +96,17 @@ public class CreatureFactory implements EntityFactory {
         enemyComponent.setDieBehavior(new DropCoinBehavior(1, 5));
 
         // Ent has too much empty space at top
-        int startingY = minionFileName.startsWith("Ent") ? 3 : 10;
-
-        // Todo: better to manually define bbox tailor to each minion
-        List<Point2D> point2DList = Arrays.asList(
-                new Point2D(3, startingY),
-                new Point2D(widthHeight.get(0) - 3, startingY),
-                new Point2D(widthHeight.get(0) - 3, widthHeight.get(1) - 2),
-                new Point2D(3, widthHeight.get(1) - 2)
-        );
+        int startingY = minionFileName.startsWith("Ent") ? 18 : 21;
 
         return FXGL.entityBuilder(data)
                 .type(RoyalType.ENEMY)
-                .bbox(new HitBox(BoundingShape.polygon(point2DList)))
+                .bbox(new HitBox(
+                    new Point2D(
+                        15,
+                        20),
+                    BoundingShape.box(
+                        widthHeight.get(0) - 25,
+                        widthHeight.get(1) - 20)))
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .with(enemyComponent)
@@ -134,17 +130,15 @@ public class CreatureFactory implements EntityFactory {
                 widthHeight.get(0), widthHeight.get(1), 8, "miniboss", "melee");
         enemyComponent.setDieBehavior(dropItemWhenDie);
 
-        // TODO_: better to manually define bbox tailor to each minion
-        List<Point2D> point2DList = Arrays.asList(
-                new Point2D(3, 5),
-                new Point2D(widthHeight.get(0) - 3, 5),
-                new Point2D(widthHeight.get(0) - 3, widthHeight.get(1) - 2),
-                new Point2D(3, widthHeight.get(1) - 2)
-        );
-
         return FXGL.entityBuilder(data)
                 .type(RoyalType.ENEMY)
-                .bbox(new HitBox(BoundingShape.polygon(point2DList)))
+                .bbox(new HitBox(
+                    new Point2D(
+                        25,
+                        30),
+                    BoundingShape.box(
+                        widthHeight.get(0) - 50,
+                        widthHeight.get(1) - 30)))
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .with(enemyComponent)
@@ -166,17 +160,15 @@ public class CreatureFactory implements EntityFactory {
                 100, "creatures/boss/" + bossFileName,
                 widthHeight.get(0), widthHeight.get(1), 12);
 
-        // TODO_: better to manually define bbox tailor to each minion
-        List<Point2D> point2DList = Arrays.asList(
-                new Point2D(3, 5),
-                new Point2D(widthHeight.get(0) - 3, 5),
-                new Point2D(widthHeight.get(0) - 3, widthHeight.get(1) - 2),
-                new Point2D(3, widthHeight.get(1) - 2)
-        );
-
         return FXGL.entityBuilder(data)
                 .type(RoyalType.ENEMY)
-                .bbox(new HitBox(BoundingShape.polygon(point2DList)))
+                .bbox(new HitBox(
+                    new Point2D(
+                        50,
+                        20),
+                    BoundingShape.box(
+                        widthHeight.get(0) - 90,
+                        widthHeight.get(1) - 35)))
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .with(bossComponent)

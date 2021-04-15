@@ -6,6 +6,7 @@ import com.almasb.fxgl.physics.CollisionHandler;
 import uwu.openjfx.RoyalType;
 import uwu.openjfx.components.AttackDamageComponent;
 import uwu.openjfx.components.EnemyComponent;
+import uwu.openjfx.components.ExplosionAtDistComponent;
 import uwu.openjfx.components.PlayerComponent;
 
 /*
@@ -31,6 +32,9 @@ public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
             || ((!weapon.hasComponent(ProjectileComponent.class))
             && (weapon.hasComponent(AttackDamageComponent.class))
             && (weapon.getComponent(AttackDamageComponent.class).isPaused()))) {
+            if (weapon.hasComponent(ExplosionAtDistComponent.class)) {
+                weapon.getComponent(ExplosionAtDistComponent.class).explode();
+            }
             weapon.removeFromWorld();
         }
 

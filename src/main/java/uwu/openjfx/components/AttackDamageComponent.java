@@ -3,7 +3,7 @@ package uwu.openjfx.components;
 import com.almasb.fxgl.entity.component.Component;
 
 /*
-    This class is allows a weapon to attack multiple enemies at once, rather than
+    This class allows a weapon to attack multiple enemies at once, rather than
     disappearing at the first enemy hit.
  */
 public class AttackDamageComponent extends Component {

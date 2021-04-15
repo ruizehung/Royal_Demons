@@ -104,4 +104,9 @@ public class GoldenSword1 implements Weapon {
     public boolean isMeleeAttack() {
         return true;
     }
+
+    @Override
+    public int getUltimateCD() {
+        return 3;
+    }
 }

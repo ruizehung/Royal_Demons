@@ -19,4 +19,5 @@ public interface Weapon {
     String getName();
     String getDescription();
     boolean isMeleeAttack();
+    int getUltimateCD();
 }

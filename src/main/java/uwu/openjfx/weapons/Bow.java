@@ -18,13 +18,13 @@ import static com.almasb.fxgl.dsl.FXGL.spawn;
  */
 public abstract class Bow implements Weapon, AngleBehavior {
 
-    private final double playerHitBoxOffsetX = 3; // player's hitbox own offset from top left
-    private final double playerHitBoxOffsetY = 15; // player's hitbox own offset from top left
-    private final double playerHitBoxWidth = 35; // width of player's hitbox from 3 to 38
-    private final double playerHitBoxHeight = 40; // height of player's hitbox from 15 to 55
-    private Vec2 dir; // the direction with respect to mouse-pressed location
+    protected final double playerHitBoxOffsetX = 3; // player's hitbox own offset from top left
+    protected final double playerHitBoxOffsetY = 15; // player's hitbox own offset from top left
+    protected final double playerHitBoxWidth = 35; // width of player's hitbox from 3 to 38
+    protected final double playerHitBoxHeight = 40; // height of player's hitbox from 15 to 55
+    protected Vec2 dir; // the direction with respect to mouse-pressed location
 
-    private boolean ultimateActivated;
+    protected boolean ultimateActivated;
     private final Image sprite; // weapon sprite
     private final String inventoryIconPath = "ui/inventory/bow.png";
     private final String arrow;
@@ -34,6 +34,15 @@ public abstract class Bow implements Weapon, AngleBehavior {
     private final String ultimateAttackPath;
     private final int attackDuration;
     private final int ultimateChargeDuration;
+
+    private int topBottomOffset;
+    private int leftOffset;
+    private int rightOffset;
+    private int frameWidth;
+    private int frameHeight;
+    private double centerX;
+    private double centerY;
+    private int speed;
 
     public Bow(Image sprite, String arrow, double attackDamage,
                String regularAttackPath, String ultimateAttackPath,
@@ -54,7 +63,7 @@ public abstract class Bow implements Weapon, AngleBehavior {
 
     @Override
     public void prepAttack(Entity player) {
-        int width = !ultimateActivated ? 44 : 75; // width of bow
+        int width = 44; // width of bow
         int height = 43; // height of bow
         double bowOffsetX = 8; // spawn bow offset with respect to x player location
         double bowOffsetY = 5; // spawn bow offset with respect to y player location
@@ -66,7 +75,7 @@ public abstract class Bow implements Weapon, AngleBehavior {
                 put("duration", getDuration(ultimateActivated)).
                 put("frameWidth", width).
                 put("frameHeight", height).
-                put("fpr", !ultimateActivated ? 5 : 5).
+                put("fpr", 5).
                 put("weaponSprite", sprite));
         // Spawn bow at player's "hands"
         b.getTransformComponent().setAnchoredPosition(
@@ -87,65 +96,69 @@ public abstract class Bow implements Weapon, AngleBehavior {
         calculateAnglePlayerRelative(player, mouseCurrX, mouseCurrY);
 
         // top offset used to shrink the top/bot edges of hitbox
-        int topBottomOffset = !ultimateActivated ? 5 : 5;
+        topBottomOffset = 5;
         // left offset used to shrink the left edge of hitbox
-        int leftOffset = !ultimateActivated ? 20 : 20;
+        leftOffset = 20;
         // right offset used to shrink the right edge of hitbox
-        int rightOffset = !ultimateActivated ? 12 : 12;
+        rightOffset = 12;
         // width of the original frame (32 / 64)
-        int frameWidth = !ultimateActivated ? 48 : 48;
+        frameWidth = 48;
         // height of original frame (32 / 64)
-        int frameHeight = !ultimateActivated ? 16 : 16;
+        frameHeight = 16;
 
         // the center of the NEW and MODIFIED hitbox
-        double centerX = ((double) (leftOffset + (frameWidth - rightOffset)) / 2);
-        double centerY = ((double) (topBottomOffset + (frameHeight - topBottomOffset)) / 2);
+        centerX = ((double) (leftOffset + (frameWidth - rightOffset)) / 2);
+        centerY = ((double) (topBottomOffset + (frameHeight - topBottomOffset)) / 2);
 
-        int speed = 300; // speed at which magic spell goes
+        speed = 300; // speed at which magic spell goes
         /*
             Instantiate a brand new arrow that will hold the
             corresponding dimensions, components, and speed. It will temporarily
             spawn the magic spell at the players ORIGINAL getX() and getY() excluding
             its modified hitbox done in CreatureFactory.
          */
-        Entity rangedHitBox = spawn("rangedArrowHitBox",
-            new SpawnData(
-                player.getX(), player.getY()).
-                put("dir", dir.toPoint2D()).
-                put("speed", speed).
-                put("weapon", arrow).
-                put("duration", 500).
-                put("fpr", 1).
-                put("ultimateActive", ultimateActivated).
-                put("topBotOffset", topBottomOffset).
-                put("leftOffset", leftOffset).
-                put("rightOffset", rightOffset).
-                put("frameWidth", frameWidth).
-                put("frameHeight", frameHeight).
-                put("isArrow", true).
-                put("isMagic", false).
-                put("damage", attackDamage));
-        /*
-            setLocalAnchor(...) will ensure that the anchor/pivot point of the
-            arrow is located at the CENTER of the NEW hitbox.
-            setAnchoredPosition(...) will spawn the arrow to the right
-            of the player if player is facing right, and left if the player is
-            facing left, and located at the player's "hands".
-            setRotationOrigin(...) will ensure that the rotation anchor/pivot
-            point of the arrow is located at the CENTER of the NEW hitbox.
-            The arguments are offsets based off of the top-left point of the
-            ORIGINAL frameWidth x frameHeight frame. Therefore, we need to offset
-            centerX in the x-direction, and the center of the arrow will
-            CONSISTENTLY be at its midpoint in the y-direction.
-         */
-        rangedHitBox.setLocalAnchor(new Point2D(centerX, centerY));
-        rangedHitBox.setAnchoredPosition(
-            (player.getX() + playerHitBoxOffsetX
-                + (player.getScaleX() > 0 ? playerHitBoxWidth : 0)), // right-left side
-            (player.getY() + playerHitBoxOffsetY
-                + (playerHitBoxHeight / 2))); // midpoint player hitbox
-        rangedHitBox.getTransformComponent().setRotationOrigin(
-            new Point2D(centerX, ((double) (frameHeight)) / 2));
+        if (!ultimateActivated) {
+            Entity rangedHitBox = spawn("rangedArrowHitBox",
+                new SpawnData(
+                    player.getX(), player.getY()).
+                    put("dir", dir.toPoint2D()).
+                    put("speed", speed).
+                    put("weapon", arrow).
+                    put("duration", 500).
+                    put("fpr", 1).
+                    put("ultimateActive", ultimateActivated).
+                    put("topBotOffset", topBottomOffset).
+                    put("leftOffset", leftOffset).
+                    put("rightOffset", rightOffset).
+                    put("frameWidth", frameWidth).
+                    put("frameHeight", frameHeight).
+                    put("isArrow", true).
+                    put("isMagic", false).
+                    put("damage", attackDamage));
+            /*
+                setLocalAnchor(...) will ensure that the anchor/pivot point of the
+                arrow is located at the CENTER of the NEW hitbox.
+                setAnchoredPosition(...) will spawn the arrow to the right
+                of the player if player is facing right, and left if the player is
+                facing left, and located at the player's "hands".
+                setRotationOrigin(...) will ensure that the rotation anchor/pivot
+                point of the arrow is located at the CENTER of the NEW hitbox.
+                The arguments are offsets based off of the top-left point of the
+                ORIGINAL frameWidth x frameHeight frame. Therefore, we need to offset
+                centerX in the x-direction, and the center of the arrow will
+                CONSISTENTLY be at its midpoint in the y-direction.
+             */
+            rangedHitBox.setLocalAnchor(new Point2D(centerX, centerY));
+            rangedHitBox.setAnchoredPosition(
+                (player.getX() + playerHitBoxOffsetX
+                    + (player.getScaleX() > 0 ? playerHitBoxWidth : 0)), // right-left side
+                (player.getY() + playerHitBoxOffsetY
+                    + (playerHitBoxHeight / 2))); // midpoint player hitbox
+            rangedHitBox.getTransformComponent().setRotationOrigin(
+                new Point2D(centerX, ((double) (frameHeight)) / 2));
+        } else {
+            ultimateAttack(player, dir.angle());
+        }
     }
 
     @Override
@@ -193,5 +206,48 @@ public abstract class Bow implements Weapon, AngleBehavior {
     @Override
     public boolean isMeleeAttack() {
         return false;
+    }
+
+    @Override
+    public int getUltimateCD() {
+        return 3;
+    }
+
+    public void ultimateAttack(Entity player, double angle) {
+        int amountOfArrows = 10;
+        Vec2[] angles = new Vec2[amountOfArrows];
+        double angleIncrementer = 2.0 * (30.0) / amountOfArrows;
+        angle -= 30;
+        for (int i = 0; i < angles.length; i++) {
+            angles[i] = Vec2.fromAngle(angle);
+            angle += angleIncrementer;
+        }
+        for (Vec2 vec : angles) {
+            Entity rangedHitBox = spawn("rangedArrowHitBox",
+                new SpawnData(
+                    player.getX(), player.getY()).
+                    put("dir", vec.toPoint2D()).
+                    put("speed", speed).
+                    put("weapon", arrow).
+                    put("duration", 500).
+                    put("fpr", 1).
+                    put("ultimateActive", ultimateActivated).
+                    put("topBotOffset", topBottomOffset).
+                    put("leftOffset", leftOffset).
+                    put("rightOffset", rightOffset).
+                    put("frameWidth", frameWidth).
+                    put("frameHeight", frameHeight).
+                    put("isArrow", true).
+                    put("isMagic", false).
+                    put("damage", attackDamage));
+            rangedHitBox.setLocalAnchor(new Point2D(centerX, centerY));
+            rangedHitBox.setAnchoredPosition(
+                (player.getX() + playerHitBoxOffsetX
+                    + (player.getScaleX() > 0 ? playerHitBoxWidth : 0)), // right-left side
+                (player.getY() + playerHitBoxOffsetY
+                    + (playerHitBoxHeight / 2))); // midpoint player hitbox
+            rangedHitBox.getTransformComponent().setRotationOrigin(
+                new Point2D(centerX, ((double) (frameHeight)) / 2));
+        }
     }
 }

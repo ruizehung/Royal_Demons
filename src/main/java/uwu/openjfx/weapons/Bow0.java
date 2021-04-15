@@ -11,7 +11,7 @@ public class Bow0 extends Bow implements Weapon, AngleBehavior {
             "bow0_arrow",
             60,
             "bow0_charge_44x43",
-            "bow0_ult_75x43",
+            "bow0_charge_44x43",
             900, 1000);
     }
 
