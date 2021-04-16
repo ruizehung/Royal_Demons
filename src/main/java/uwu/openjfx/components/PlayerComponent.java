@@ -287,6 +287,10 @@ public class PlayerComponent extends CreatureComponent {
         attackPowerHitCount = count;
     }
 
+    public static int getAttackPowerHitCount() {
+        return attackPowerHitCount;
+    }
+
     public static void setPiercePow(int pierce) {
         piercePow = pierce;
     }
