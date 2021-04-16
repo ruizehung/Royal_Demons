@@ -46,6 +46,7 @@ public class EnemyComponent extends CreatureComponent {
     /*
         Every Enemy Aspects
      */
+    private int kiteTimer;
     private final String assetName;
     private final int width;
     private final int height;
@@ -63,6 +64,7 @@ public class EnemyComponent extends CreatureComponent {
     private double dist;
     private boolean kiteBack;
     private boolean kiteCircular;
+    private boolean clockwise;
     private boolean kiting = false;
     private boolean overDrive = false; // if enemy needs to slow to a stop if involuntarily moving
     private boolean isStunned = false;
@@ -250,14 +252,6 @@ public class EnemyComponent extends CreatureComponent {
             startAttacking = false;
             prepAttack = false;
             attackCD = true;
-        }
-
-        // Enemy shrinks
-        if (startShrink) {
-            shrink();
-        }
-        // Enemy is on cooldown from attacking recently
-        if (attackCD) {
             Runnable runnable = () -> {
                 try {
                     Thread.sleep(2000);
@@ -268,6 +262,11 @@ public class EnemyComponent extends CreatureComponent {
             };
             Thread thread = new Thread(runnable);
             thread.start();
+        }
+
+        // Enemy shrinks
+        if (startShrink) {
+            shrink();
         }
         // endregion
     }
@@ -294,6 +293,7 @@ public class EnemyComponent extends CreatureComponent {
                 } else {
                     if (dist < 400) {
                         if (!attackCD) {
+                            entity.setScaleX(playerX - enemyX > 0 ? 1 : -1);
                             autoAttack();
                         }
                         if (!prepAttack && !kiting) {
@@ -390,11 +390,19 @@ public class EnemyComponent extends CreatureComponent {
         if (physics != null && !prepAttack) {
             if (!kiteBack && !kiteCircular) {
                 int random = (int) (Math.random() * 101);
-                if (physics.getVelocityX() == 0 && physics.getVelocityY() == 0) {
-                    random = 50;
+                kiteBack = random < 35;
+                kiteCircular = random >= 35;
+                if ((physics.getVelocityX() == 0 && physics.getVelocityY() == 0) && !prepAttack) {
+                    kiteTimer++;
+                    if (kiteTimer >= 60) {
+                        if (kiteCircular) {
+                            clockwise = !clockwise;
+                        }
+                        kiteBack = false;
+                        kiteCircular = true;
+                        kiteTimer = 0;
+                    }
                 }
-                kiteBack = random < 50;
-                kiteCircular = random >= 50;
             }
             double adjacent = (getEntity().getX()
                 + ((double) width) / 2) - playerX;
@@ -402,7 +410,7 @@ public class EnemyComponent extends CreatureComponent {
                 + ((double) height) / 2) - playerY;
             double radians = (Math.atan2(opposite, adjacent));
             if (kiteCircular) {
-                radians += Math.PI / 2;
+                radians = radians + (clockwise ? Math.PI / 2 : -(Math.PI / 2));
             }
             Vec2 dir = Vec2.fromAngle(Math.toDegrees(radians));
             double xPow = dir.toPoint2D().getX() * speed;
