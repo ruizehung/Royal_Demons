@@ -28,4 +28,19 @@ public class TestEnemyAttackPlayerCollisionHandler {
 
         assert playerComponent.getHealthPoints() < origHealth;
     }
+    // jason 6
+    @Test
+    void testEnemyKillsPlayer() {
+        int playerCurrHealth = 1;
+        Entity player = new Entity();
+        PlayerComponent playerComponent = new PlayerComponent(playerCurrHealth);
+        player.addComponent(playerComponent);
+
+        Entity monsterWeapon = new Entity();
+
+        EnemyAttackPlayerCollisionHandler handler = new EnemyAttackPlayerCollisionHandler();
+        handler.onCollisionBegin(monsterWeapon, player);
+
+        assert playerComponent.dead();
+    }
 }

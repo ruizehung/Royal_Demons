@@ -54,7 +54,6 @@ public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
                 enemyComponent.getBlockProbability(),
                 enemyComponent.getArmorStat(),
                 PlayerComponent.getPiercePow());
-            PlayerComponent.updateAttackPowerHitCount();
         }
     }
 
@@ -68,7 +67,6 @@ public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
                 enemyComponent.getBlockProbability(),
                 enemyComponent.getArmorStat(),
                 PlayerComponent.getPiercePow());
-            PlayerComponent.updateAttackPowerHitCount();
         }
     }
 }

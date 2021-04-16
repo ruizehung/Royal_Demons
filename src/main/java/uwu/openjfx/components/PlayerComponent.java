@@ -36,6 +36,8 @@ public class PlayerComponent extends CreatureComponent {
     private static List<Weapon> weaponInventoryList = new ArrayList<>();
     private static double attackPower = 1;
     private static int piercePow = 1;
+    private static boolean isAttackPowerBuffed = false;
+    private static int attackPowerBuffDuration = 300;
     private static int attackPowerHitCount = 5;
     private static boolean isChanneling = false;
 
@@ -121,11 +123,6 @@ public class PlayerComponent extends CreatureComponent {
                 }
             }
         }
-        if (attackPower > 1) {
-            textureRaged.setVisible(true);
-        } else {
-            textureRaged.setVisible(false);
-        }
         //endregion
         //region Player performs attack
         if (startAttack) { // Player performs the actual attack
@@ -143,6 +140,16 @@ public class PlayerComponent extends CreatureComponent {
                 speed = 170;
                 ultimateActivated = false;
             }
+        }
+        if (isAttackPowerBuffed) {
+            attackPowerBuffDuration--;
+            textureRaged.setVisible(true);
+            if (attackPowerBuffDuration <= 0) {
+                attackPowerBuffDuration = 300;
+                isAttackPowerBuffed = false;
+            }
+        } else {
+            textureRaged.setVisible(false);
         }
         // endregion
     }
@@ -299,16 +306,18 @@ public class PlayerComponent extends CreatureComponent {
         return prepAttack;
     }
 
+    public static void setIsAttackPowerBuffed(boolean buffed) {
+        isAttackPowerBuffed = buffed;
+        piercePow = 0;
+        attackPower = 2.5;
+    }
+
+    public static void setAttackPowerBuffDuration(int duration) {
+        attackPowerBuffDuration = duration;
+    }
+
     public static double getAttackPower() {
         return attackPower;
-    }
-
-    public static void setAttackPower(double attackPower) {
-        PlayerComponent.attackPower = attackPower;
-    }
-
-    public static void setAttackPowerHitCount(int count) {
-        attackPowerHitCount = count;
     }
 
     public static void setPiercePow(int pierce) {
@@ -317,15 +326,6 @@ public class PlayerComponent extends CreatureComponent {
 
     public static int getPiercePow() {
         return piercePow;
-    }
-
-    public static void updateAttackPowerHitCount() {
-        attackPowerHitCount--;
-        if (attackPowerHitCount <= 0) {
-            attackPowerHitCount = 5;
-            attackPower = 1;
-            piercePow = 1;
-        }
     }
     // endregion
 
