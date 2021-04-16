@@ -21,6 +21,7 @@ import uwu.openjfx.input.*;
 import uwu.openjfx.items.Heart;
 import uwu.openjfx.items.Item;
 import uwu.openjfx.weapons.GoldenSword0;
+import uwu.openjfx.weapons.MagicStaff2;
 
 import java.io.File;
 import java.util.*;
@@ -175,7 +176,8 @@ public class MainApp extends GameApplication {
         getInput().addAction(new UserAction("LMB") {
             @Override
             protected void onActionBegin() {
-                if (!player.getComponent(PlayerComponent.class).isAttacking()) {
+                if (!player.getComponent(PlayerComponent.class).isAttacking()
+                    && !PlayerComponent.isChanneling()) {
                     player.getComponent(PlayerComponent.class).setMousePosition(
                             FXGL.getInput().getMousePositionWorld().getX(),
                             FXGL.getInput().getMousePositionWorld().getY());

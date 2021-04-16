@@ -34,10 +34,10 @@ public class MagicStaff2 implements Weapon, AngleBehavior {
 
     @Override
     public void prepAttack(Entity player) {
-        int width = !ultimateActivated ? 175 : 175; // width of bow
-        int height = 175; // height of bow
-        double bowOffsetX = -8; // spawn bow offset with respect to x player location
-        double bowOffsetY = 25; // spawn bow offset with respect to y player location
+        int width = !ultimateActivated ? 175 : 175; // width of staff
+        int height = 175; // height of staff
+        double bowOffsetX = -8; // spawn staff offset with respect to x player location
+        double bowOffsetY = 25; // spawn staff offset with respect to y player location
 
         Entity b = spawn("weapon",
             new SpawnData(
@@ -71,15 +71,15 @@ public class MagicStaff2 implements Weapon, AngleBehavior {
         calculateAnglePlayerRelative(player, mouseCurrX, mouseCurrY);
 
         // top offset used to shrink the top/bot edges of hitbox
-        int topBottomOffset = !ultimateActivated ? 10 : 20;
+        int topBottomOffset = 20;
         // left offset used to shrink the left edge of hitbox
-        int leftOffset = !ultimateActivated ? 12 : 30;
+        int leftOffset = 30;
         // right offset used to shrink the right edge of hitbox
-        int rightOffset = !ultimateActivated ? 8 : 20;
-        // width of the original frame (64 / 32)
-        int frameWidth = !ultimateActivated ? 32 : 64;
-        // height of original frame (64 / 32)
-        int frameHeight = !ultimateActivated ? 32 : 64;
+        int rightOffset = 20;
+        // width of the original frame (64 / 100)
+        int frameWidth = !ultimateActivated ? 64 : 100;
+        // height of original frame (64 / 100)
+        int frameHeight = !ultimateActivated ? 64 : 100;
 
         // the center of the NEW and MODIFIED hitbox
         double centerX = ((double) (leftOffset + (frameWidth - rightOffset)) / 2);
@@ -100,9 +100,9 @@ public class MagicStaff2 implements Weapon, AngleBehavior {
                     player.getX(), player.getY()).
                     put("dir", dir.toPoint2D()).
                     put("speed", speed).
-                    put("weapon", !ultimateActivated ? "magic1_32x32" : "fireball_64x64").
+                    put("weapon", "fireball_64x64").
                     put("duration", 500).
-                    put("fpr", !ultimateActivated ? 30 : 60).
+                    put("fpr", 60).
                     put("ultimateActive", ultimateActivated).
                     put("topBotOffset", topBottomOffset).
                     put("leftOffset", leftOffset).
@@ -135,14 +135,32 @@ public class MagicStaff2 implements Weapon, AngleBehavior {
             rangedHitBox.getTransformComponent().setRotationOrigin(
                 new Point2D(centerX, ((double) (frameHeight)) / 2));
         } else {
-            int hitBoxWidth; // width of the hitbox
-            int hitBoxHeight; // height of the hitbox
-            double breathOffset; // distance from player the hitbox should spawn
+            int hitBoxWidth = 175; // width of the hitbox
+            int hitBoxHeight = 110; // height of the hitbox
+            double breathHitBoxOffset = 50; // distance from player the hitbox should spawn
+            double breathSpriteOffset = 20; // distance from player the sprite should spawn
 
-            hitBoxWidth = 175;
-            hitBoxHeight = 110;
-            breathOffset = 50;
-            Entity breathOfFire = spawn("breathOfFire",
+            Entity breathSprite = spawn("weapon",
+                new SpawnData(
+                    player.getX() - ((double) frameWidth / 2)
+                        + (player.getScaleX() > 0 ? breathSpriteOffset : 6 * breathSpriteOffset),
+                    player.getY() - ((double) frameHeight / 2) - 40).
+                    put("weaponFile", "firebreath_100x100").
+                    put("duration", 2000).
+                    put("frameWidth", frameWidth).
+                    put("frameHeight", frameHeight).
+                    put("fpr", 60).
+                    put("weaponSprite", sprite));
+            breathSprite.setScaleX(2.5);
+            breathSprite.setScaleY(2.5);
+
+            if (player.getScaleX() == 1) {
+                breathSprite.setScaleX(2.5);
+            } else {
+                breathSprite.setScaleX(-2.5);
+            }
+
+            Entity breathHitbox = spawn("breathOfFire",
                 new SpawnData(player.getX(), player.getY()).
                     put("width", hitBoxWidth).put("height", hitBoxHeight).
                     put("damage", 2.0));
@@ -151,13 +169,18 @@ public class MagicStaff2 implements Weapon, AngleBehavior {
 
             Runnable runnable = () -> {
                 FXGL.getGameTimer().runAtInterval(() -> {
-                    breathOfFire.getTransformComponent().setAnchoredPosition(
+                    breathHitbox.getTransformComponent().setAnchoredPosition(
                         new Point2D(
                             player.getX() - ((double) hitBoxWidth / 2) + player.getWidth() / 2
-                                + (player.getScaleX() > 0 ? breathOffset : -breathOffset),
+                                + (player.getScaleX() > 0 ? breathHitBoxOffset : -breathHitBoxOffset),
                             player.getY() - ((double) hitBoxHeight / 2) + player.getHeight() / 2));
+                    breathSprite.getTransformComponent().setAnchoredPosition(
+                        new Point2D(
+                            player.getX() - ((double) frameWidth / 2)
+                                + (player.getScaleX() > 0 ? breathSpriteOffset : 6 * breathSpriteOffset),
+                            player.getY() - ((double) frameHeight / 2) - 40));
                     if (!PlayerComponent.isChanneling()) {
-                        breathOfFire.removeFromWorld();
+                        breathHitbox.removeFromWorld();
                         FXGL.getGameTimer().clear();
                     }
                 }, Duration.seconds(.01));
@@ -184,7 +207,7 @@ public class MagicStaff2 implements Weapon, AngleBehavior {
 
     @Override
     public int getDuration(boolean ultimateActivated) {
-        int attackDuration = 700; // charge-up time of attacking in milliseconds
+        int attackDuration = 800; // charge-up time of attacking in milliseconds
         int ultimateChargeDuration = 350; // charge-up time of attacking in milliseconds
         this.ultimateActivated = ultimateActivated;
         return ultimateActivated ? ultimateChargeDuration : attackDuration;
