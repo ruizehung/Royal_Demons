@@ -85,8 +85,8 @@ public class MainApp extends GameApplication {
         }
         settings.setGameMenuEnabled(true);
         settings.setEnabledMenuItems(EnumSet.of(MenuItem.EXTRA));
-        settings.setDeveloperMenuEnabled(true);
-        settings.setApplicationMode(ApplicationMode.DEVELOPER);
+        // settings.setDeveloperMenuEnabled(true);
+        // settings.setApplicationMode(ApplicationMode.DEVELOPER);
     }
 
 
@@ -223,7 +223,7 @@ public class MainApp extends GameApplication {
     protected void initGame() {
         if (developerCheat) {
             int i = 1;
-            switch (i) {
+            switch (8) {
             case 0:
                 GoldenSword0 goldenSword0 = new GoldenSword0();
                 PlayerComponent.setCurrentWeapon(goldenSword0);
