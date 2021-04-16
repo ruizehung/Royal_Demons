@@ -49,8 +49,6 @@ public class CreatureComponent extends Component implements HasLife {
             if (blockRand <= blockProb * pierce) {
                 System.out.println("BLOCKED");
                 return;
-            } else {
-                System.out.println("Fail ... pierce = " + pierce);
             }
             healthPoints -= (point * attackPower) / armor;
             if (this instanceof EnemyComponent) {

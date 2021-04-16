@@ -10,10 +10,8 @@ import uwu.openjfx.MainApp;
 import uwu.openjfx.UI;
 import uwu.openjfx.behaviors.GameOverWhenDie;
 import uwu.openjfx.weapons.Weapon;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 
 /*
     This class is responsible for the following:
@@ -35,6 +33,7 @@ public class PlayerComponent extends CreatureComponent {
     private static double attackPower = 1;
     private static int piercePow = 1;
     private static int attackPowerHitCount = 5;
+    private static boolean isChanneling = false;
 
     private double currMouseX; // mouse input for x
     private double currMouseY; // mouse input for y
@@ -104,20 +103,22 @@ public class PlayerComponent extends CreatureComponent {
             }
         }
         //endregion
-
         //region Player performs attack
         if (startAttack) { // Player performs the actual attack
             currentWeapon.attack(getEntity(), currMouseX, currMouseY);
-            startAttack = false;
             prepAttack = false;
-            ultimateActivated = false;
+            startAttack = false;
+            if (!isChanneling) {
+                ultimateActivated = false;
+            }
         }
-        // Player ultimate is on cooldown from recent activation
-        if (ultimateCD) {
-            FXGL.getGameTimer().runAtInterval(() -> {
-                ultimateCD = false;
-                FXGL.getGameTimer().clear();
-            }, Duration.seconds(currentWeapon.getUltimateCD()));
+        if (currentWeapon.getClass().getName().contains("MagicStaff")) {
+            if (isChanneling()) {
+                speed = 85;
+            } else {
+                speed = 170;
+                ultimateActivated = false;
+            }
         }
         // endregion
     }
@@ -158,14 +159,18 @@ public class PlayerComponent extends CreatureComponent {
 
     public void left() {
         if (!prepAttack) {
-            getEntity().setScaleX(-1);
+            if (!isChanneling()) {
+                getEntity().setScaleX(-1);
+            }
             physics.setVelocityX(-speed);
         }
     }
 
     public void right() {
         if (!prepAttack) {
-            getEntity().setScaleX(1);
+            if (!isChanneling()) {
+                getEntity().setScaleX(1);
+            }
             physics.setVelocityX(speed);
         }
     }
@@ -201,6 +206,16 @@ public class PlayerComponent extends CreatureComponent {
         this.ultimateActivated = ultimateActivated;
         if (ultimateActivated) {
             ultimateCD = true;
+            Runnable runnable = () -> {
+                try {
+                    Thread.sleep(currentWeapon.getUltimateCD() * 1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                ultimateCD = false;
+            };
+            Thread thread = new Thread(runnable);
+            thread.start();
         }
         if (currMouseX > entity.getX() + 20) { // turn player in direction of mouse
             entity.setScaleX(1);
@@ -211,17 +226,36 @@ public class PlayerComponent extends CreatureComponent {
         prepAttack = true; // Player has initiated attack
         stop(); // stop moving
         // Player performs the actual attack after duration amount of milliseconds
-        Timer t = new java.util.Timer();
-        t.schedule(
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        startAttack = true; // Player performs the actual attack
-                        t.cancel();
-                    }
-                }, currentWeapon.getDuration(ultimateActivated)
-        );
+        Runnable runnable = () -> {
+            try {
+                Thread.sleep(currentWeapon.getDuration(ultimateActivated));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            startAttack = true; // Player performs the actual attack
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
+        currentWeapon.getDuration(ultimateActivated);
         currentWeapon.prepAttack(getEntity());
+    }
+
+    public static void channelAttack() {
+        isChanneling = true;
+        Runnable runnable = () -> {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            isChanneling = false;
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
+    }
+
+    public static boolean isChanneling() {
+        return isChanneling;
     }
 
     public boolean getUltimateCD() {

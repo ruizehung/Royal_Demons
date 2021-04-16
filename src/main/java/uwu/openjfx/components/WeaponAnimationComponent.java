@@ -17,8 +17,7 @@ import javafx.util.Duration;
  */
 public class WeaponAnimationComponent extends Component {
     private AnimatedTexture texture;
-    private AnimationChannel animIdle;
-    private double duration;
+    private boolean ghostFrame;
 
     public WeaponAnimationComponent() {
         // Making sure there is a default constructor
@@ -30,24 +29,30 @@ public class WeaponAnimationComponent extends Component {
         // therefore which animation
         // parameter duration: tells us how long the charge-up of the attack is
         // parameter fpr: frames per row
+        if (weapon.length() == 0) {
+            ghostFrame = true;
+            return;
+        }
         AnimationChannel animAttack = new AnimationChannel(
             FXGL.image("./weapons/" + weapon + ".png"), fpr,
             frameWidth, frameHeight, Duration.millis(duration), 0, fpr - 1);
         AnimationChannel idle = new AnimationChannel(
             FXGL.image("./weapons/" + weapon + ".png"), fpr,
             frameWidth, frameHeight, Duration.millis(duration), fpr, fpr);
+
         texture = new AnimatedTexture(animAttack);
         texture.playAnimationChannel(animAttack);
         texture.setOnCycleFinished(() -> {
             texture.set(new AnimatedTexture(idle));
             texture.playAnimationChannel(idle);
         });
-        this.duration = duration;
     }
 
     @Override
     public void onAdded() {
-        entity.getTransformComponent().setScaleOrigin(new Point2D(0, 0));
-        entity.getViewComponent().addChild(texture);
+        if (!ghostFrame) {
+            entity.getTransformComponent().setScaleOrigin(new Point2D(0, 0));
+            entity.getViewComponent().addChild(texture);
+        }
     }
 }

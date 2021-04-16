@@ -40,9 +40,10 @@ public class MainApp extends GameApplication {
     private Set<String> weaponsSet;
     private Map<String, String> itemNameAssetMap;
     private Map<String, Item> itemNameObjMap;
-    private final Boolean developerCheat = false;
+    private final Boolean developerCheat = true;
     private static boolean isTesting = false;
     private static Random random = new Random();
+    private static List<Entity> hitBoxes = new ArrayList<>();
 
     // Top priority : (
 
@@ -94,11 +95,10 @@ public class MainApp extends GameApplication {
 
     @Override
     protected void onUpdate(double tpf) {
-        if (PlayerComponent.getCurrentWeapon().isMeleeAttack()) {
-            List<Entity> hitboxes = FXGL.getGameWorld().getEntitiesByType(RoyalType.PLAYERATTACK);
-            for (Entity hitbox : hitboxes) {
-                if (hitbox != null && hitbox.isActive()) {
-                    hitbox.removeFromWorld();
+        if (!hitBoxes.isEmpty()) {
+            for (Entity hitBox : hitBoxes) {
+                if (hitBox != null && hitBox.isActive()) {
+                    hitBox.removeFromWorld();
                 }
             }
         }
@@ -215,7 +215,6 @@ public class MainApp extends GameApplication {
             PlayerComponent.setCurrentWeapon(goldenSword0);
             PlayerComponent.getWeaponInventoryList().add(goldenSword0);
             PlayerComponent.setGold(1000);
-
             /*
             GoldenSword1 goldenSword1 = new GoldenSword1();
             PlayerComponent.setCurrentWeapon(goldenSword1);
@@ -347,7 +346,10 @@ public class MainApp extends GameApplication {
 
         textGold.textProperty().bind(UI.getGoldProperty().asString());
         getGameScene().addUINode(textGold); // add to the scene graph
+    }
 
+    public static void addToHitBoxDestruction(Entity hitBox) {
+        hitBoxes.add(hitBox);
     }
 
     public void loadEnemiesAsset() {
