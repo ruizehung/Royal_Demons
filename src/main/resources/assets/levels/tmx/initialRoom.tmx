@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="43">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="44">
  <tileset firstgid="1" name="0x72_DungeonTilesetII_32x32" tilewidth="32" tileheight="32" tilecount="1024" columns="32">
   <image source="0x72_DungeonTilesetII_32x32.png" width="1024" height="1024"/>
  </tileset>
@@ -138,6 +138,11 @@
   </object>
   <object id="42" name="Wizard" type="initialRoomNPC" x="539.586" y="288.699">
    <point/>
+  </object>
+  <object id="43" name="chest" type="chest" x="543.457" y="352.128" width="32" height="32">
+   <properties>
+    <property name="name" value="HealthPotion"/>
+   </properties>
   </object>
  </objectgroup>
 </map>

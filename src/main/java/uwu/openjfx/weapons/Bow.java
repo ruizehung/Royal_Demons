@@ -26,9 +26,10 @@ public abstract class Bow implements Weapon, AngleBehavior {
 
     protected boolean ultimateActivated;
     private final Image sprite; // weapon sprite
-    private final String inventoryIconPath = "ui/inventory/bow.png";
+    protected  String inventoryIconPath;
     private final String arrow;
-    private final String name = "Buwu";
+    protected String name;
+    protected String description;
     private final double attackDamage;
     private final String regularAttackPath;
     private final String ultimateAttackPath;
@@ -200,7 +201,7 @@ public abstract class Bow implements Weapon, AngleBehavior {
 
     @Override
     public String getDescription() {
-        return "This is a bow uwu";
+        return description;
     }
 
     @Override

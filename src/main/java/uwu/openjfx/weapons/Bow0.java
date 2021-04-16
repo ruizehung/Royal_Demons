@@ -13,6 +13,9 @@ public class Bow0 extends Bow implements Weapon, AngleBehavior {
             "bow0_charge_44x43",
             "bow0_charge_44x43",
             900, 1000);
+        this.name = "buwu";
+        this.description = "This is a buwu";
+        this.inventoryIconPath = "ui/inventory/bow.png";
     }
 
     @Override

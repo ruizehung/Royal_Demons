@@ -10,9 +10,7 @@ import uwu.openjfx.RoyalType;
 import uwu.openjfx.UI;
 import uwu.openjfx.components.PlayerComponent;
 import uwu.openjfx.items.Item;
-import uwu.openjfx.weapons.Bow0;
-import uwu.openjfx.weapons.GoldenSword1;
-import uwu.openjfx.weapons.MagicStaff0;
+import uwu.openjfx.weapons.*;
 
 import java.util.Map;
 
@@ -43,6 +41,12 @@ public class PlayerDroppedItemCollisionHandler extends CollisionHandler {
                     break;
                 case "bow":
                     PlayerComponent.addWeaponToInventory(new Bow0());
+                    break;
+                case "bow1":
+                    PlayerComponent.addWeaponToInventory(new Bow1());
+                    break;
+                case "bow2":
+                    PlayerComponent.addWeaponToInventory(new Bow2());
                     break;
                 default:
                 }
