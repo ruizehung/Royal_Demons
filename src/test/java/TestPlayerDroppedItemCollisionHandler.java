@@ -26,7 +26,6 @@ public class TestPlayerDroppedItemCollisionHandler {
         Entity potion = new Entity();
         potion.setProperty("name", "HealthPotion");
 
-
         Entity player = new Entity();
         PlayerComponent playerComponent = new PlayerComponent(10);
         player.addComponent(playerComponent);
