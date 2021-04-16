@@ -25,9 +25,9 @@ public class ProjectileDoorCollisionHandler extends CollisionHandler {
                 weapon.getComponent(ProjectileComponent.class).pause();
             }
             if (weapon.getComponent(ProjectileAnimationComponent.class).getIsMagic()
-                || (weapon.hasComponent(ExplosionAtDistComponent.class)
-                && weapon.getComponent(ExplosionAtDistComponent.class).getExplodeColl())) {
-                if (weapon.hasComponent(ExplosionAtDistComponent.class)) {
+                || weapon.hasComponent(ExplosionAtDistComponent.class)) {
+                if (weapon.hasComponent(ExplosionAtDistComponent.class)
+                    && weapon.getComponent(ExplosionAtDistComponent.class).getExplodeColl()) {
                     weapon.getComponent(ExplosionAtDistComponent.class).explode();
                 }
                 weapon.removeFromWorld();

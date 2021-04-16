@@ -1,5 +1,6 @@
 package uwu.openjfx;
 
+import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.MenuItem;
@@ -20,6 +21,7 @@ import uwu.openjfx.events.InteractEvent;
 import uwu.openjfx.input.*;
 import uwu.openjfx.items.Heart;
 import uwu.openjfx.items.Item;
+import uwu.openjfx.weapons.Bow0;
 import uwu.openjfx.weapons.GoldenSword0;
 import uwu.openjfx.weapons.MagicStaff2;
 
@@ -41,7 +43,7 @@ public class MainApp extends GameApplication {
     private Set<String> weaponsSet;
     private Map<String, String> itemNameAssetMap;
     private Map<String, Item> itemNameObjMap;
-    private final Boolean developerCheat = true;
+    private final Boolean developerCheat = false;
     private static boolean isTesting = false;
     private static Random random = new Random();
     private static List<Entity> hitBoxes = new ArrayList<>();
@@ -77,8 +79,8 @@ public class MainApp extends GameApplication {
         }
         settings.setGameMenuEnabled(true);
         settings.setEnabledMenuItems(EnumSet.of(MenuItem.EXTRA));
-        // settings.setDeveloperMenuEnabled(true);
-        // settings.setApplicationMode(ApplicationMode.DEVELOPER);
+        settings.setDeveloperMenuEnabled(true);
+        settings.setApplicationMode(ApplicationMode.DEVELOPER);
     }
 
 
@@ -217,6 +219,7 @@ public class MainApp extends GameApplication {
             PlayerComponent.setCurrentWeapon(goldenSword0);
             PlayerComponent.getWeaponInventoryList().add(goldenSword0);
             PlayerComponent.setGold(1000);
+
             /*
             GoldenSword1 goldenSword1 = new GoldenSword1();
             PlayerComponent.setCurrentWeapon(goldenSword1);

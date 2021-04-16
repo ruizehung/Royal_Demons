@@ -29,13 +29,13 @@ public class GoldenSword2 implements Weapon {
 
     @Override
     public void prepAttack(Entity player) {
-        int width = !ultimateActivated ? 175 : 175; // width of the frame
-        int height = !ultimateActivated ? 180 : 175; // height of the frame
+        int width = !ultimateActivated ? 175 : 225; // width of the frame
+        int height = !ultimateActivated ? 180 : 225; // height of the frame
         Entity gs = spawn("weapon",
             new SpawnData(
                 player.getX(), player.getY()).
                 put("weaponFile", !ultimateActivated
-                    ? "legend_sword_175x180" : "gold_sword0_ult_175x175").
+                    ? "legend_sword_175x180" : "legend_sword_ult_225x225").
                 put("duration", getDuration(ultimateActivated)).
                 put("frameWidth", width).
                 put("frameHeight", height).

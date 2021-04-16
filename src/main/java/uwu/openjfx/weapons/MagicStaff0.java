@@ -33,36 +33,33 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
 
     @Override
     public void prepAttack(Entity player) {
-        int width = !ultimateActivated ? 175 : 175; // width of bow
-        int height = 175; // height of bow
-        double bowOffsetX = -8; // spawn bow offset with respect to x player location
-        double bowOffsetY = 25; // spawn bow offset with respect to y player location
+        int width = 50; // width of bow
+        int height = 65; // height of bow
+        double staffOffsetX = 8; // spawn bow offset with respect to x player location
+        double staffOffsetY = 25; // spawn bow offset with respect to y player location
 
         Entity b = spawn("weapon",
             new SpawnData(
                 player.getX(), player.getY()).
-                put("weaponFile", !ultimateActivated ? "red_wand_175x175" : "red_wand_175x175").
+                put("weaponFile", "blue_wand_50x65").
                 put("duration", getDuration(ultimateActivated)).
                 put("frameWidth", width).
                 put("frameHeight", height).
-                put("fpr", !ultimateActivated ? 6 : 6).
+                put("fpr", 7).
                 put("weaponSprite", sprite));
         // Spawn bow at player's "hands"
         b.getTransformComponent().setAnchoredPosition(
             new Point2D(
                 (player.getX() + playerHitBoxOffsetX + (playerHitBoxWidth / 2))
-                    - ((double) width / 2) + bowOffsetX,
-                (player.getY() + bowOffsetY) - ((double) height / 2)));
+                    - ((double) width / 2) + staffOffsetX,
+                (player.getY() + staffOffsetY) - ((double) height / 2)));
         b.setZIndex(2000); // put bow on top of player (z = 1000)
         if (player.getScaleX() == 1) {
             b.setScaleX(1);
+        } else {
+            b.translateX(width - 2 * staffOffsetX); // smooth reflection over middle axis rel. to player
+            b.setScaleX(-1);
         }
-        /*
-        else {
-            //b.setScaleX(-1);
-            //b.translateX(-(2 * bowOffsetX)); // smooth reflection over middle axis rel. to player
-        }
-        */
     }
 
     @Override
@@ -70,11 +67,11 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
         calculateAnglePlayerRelative(player, mouseCurrX, mouseCurrY);
 
         // top offset used to shrink the top/bot edges of hitbox
-        int topBottomOffset = !ultimateActivated ? 10 : 20;
+        int topBottomOffset = -4;
         // left offset used to shrink the left edge of hitbox
-        int leftOffset = !ultimateActivated ? 12 : 30;
+        int leftOffset = 5;
         // right offset used to shrink the right edge of hitbox
-        int rightOffset = !ultimateActivated ? 8 : 20;
+        int rightOffset = 5;
         // width of the original frame (64 / 32)
         int frameWidth = 32;
         // height of original frame (64 / 32)
