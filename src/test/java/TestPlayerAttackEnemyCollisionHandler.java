@@ -1,6 +1,5 @@
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.test.RunWithFX;
-import javafx.scene.input.KeyCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -13,9 +12,6 @@ import uwu.openjfx.components.AttackDamageComponent;
 import uwu.openjfx.components.BossComponent;
 import uwu.openjfx.components.EnemyComponent;
 import uwu.openjfx.components.PlayerComponent;
-import uwu.openjfx.input.UseRagePot;
-
-import static com.almasb.fxgl.dsl.FXGLForKtKt.getInput;
 
 @ExtendWith(RunWithFX.class)
 public class TestPlayerAttackEnemyCollisionHandler {
@@ -235,8 +231,8 @@ public class TestPlayerAttackEnemyCollisionHandler {
             monsters[i].setProperty("CreatureComponent", enemyComponent);
             enemyComponent.setBlockProbability(100);
             enemyComponent.setArmorStat(1);
-            PlayerAttackEnemyCollisionHandler attackHandler = new PlayerAttackEnemyCollisionHandler();
-            attackHandler.onCollisionBegin(weapon, monsters[i]);
+            PlayerAttackEnemyCollisionHandler handler2 = new PlayerAttackEnemyCollisionHandler();
+            handler2.onCollisionBegin(weapon, monsters[i]);
         }
         assert monsters[0].getComponent(EnemyComponent.class).dead();
         assert monsters[1].getComponent(EnemyComponent.class).dead();

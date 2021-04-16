@@ -1,6 +1,5 @@
 package uwu.openjfx;
 
-import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.MenuItem;
@@ -118,6 +117,7 @@ public class MainApp extends GameApplication {
         if (developerCheat) {
             getInput().addAction(new KillAllEnemy("KillAll"), KeyCode.K);
             getInput().addAction(new TeleportToBossRoom("TeleportToBossRoom"), KeyCode.B);
+            UI.ragePotProperty().set(5);
         }
         // TODO_: refactor all these to input package
         //region Movement
@@ -221,7 +221,7 @@ public class MainApp extends GameApplication {
     @Override
     protected void initGame() {
         if (developerCheat) {
-            int i = 6;
+            int i = 1;
             switch (i) {
             case 0:
                 GoldenSword0 goldenSword0 = new GoldenSword0();

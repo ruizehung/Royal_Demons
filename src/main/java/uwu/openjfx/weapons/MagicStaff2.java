@@ -27,7 +27,7 @@ public class MagicStaff2 implements Weapon, AngleBehavior {
     private final double playerHitBoxHeight = 40; // height of player's hitbox from 15 to 55
     private Vec2 dir; // the direction with respect to mouse-pressed location
     private boolean ultimateActivated;
-    private Image sprite = new Image("assets/textures/ui/weapons/staff0_ui.png"); // weapon sprite
+    private Image sprite = new Image("assets/textures/ui/weapons/staff0_ui.png"); // sprite
     private String inventoryIconPath = "ui/inventory/nature_staff.png";
     private String name = "Nature Staff";
     private double attackDamage = 75;
@@ -58,7 +58,8 @@ public class MagicStaff2 implements Weapon, AngleBehavior {
         if (player.getScaleX() == 1) {
             b.setScaleX(1);
         } else {
-            b.translateX(width - 2 * staffOffsetX); // smooth reflection over middle axis rel. to player
+            // smooth reflection over middle axis rel. to player
+            b.translateX(width - 2 * staffOffsetX);
             b.setScaleX(-1);
         }
     }
@@ -169,12 +170,15 @@ public class MagicStaff2 implements Weapon, AngleBehavior {
                     breathHitbox.getTransformComponent().setAnchoredPosition(
                         new Point2D(
                             player.getX() - ((double) hitBoxWidth / 2) + player.getWidth() / 2
-                                + (player.getScaleX() > 0 ? breathHitBoxOffset : -breathHitBoxOffset),
-                            player.getY() - ((double) hitBoxHeight / 2) + player.getHeight() / 2));
+                                + (player.getScaleX() > 0
+                                ? breathHitBoxOffset : -breathHitBoxOffset),
+                            player.getY() - ((double) hitBoxHeight / 2)
+                                + player.getHeight() / 2));
                     breathSprite.getTransformComponent().setAnchoredPosition(
                         new Point2D(
                             player.getX() - ((double) frameWidth / 2)
-                                + (player.getScaleX() > 0 ? breathSpriteOffset : 6 * breathSpriteOffset),
+                                + (player.getScaleX() > 0
+                                ? breathSpriteOffset : 6 * breathSpriteOffset),
                             player.getY() - ((double) frameHeight / 2) - 40));
                     if (!PlayerComponent.isChanneling()) {
                         breathHitbox.removeFromWorld();

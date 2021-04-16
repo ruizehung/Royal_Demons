@@ -23,10 +23,13 @@ public class PlayerComponent extends CreatureComponent {
     private PhysicsComponent physics;
 
     private AnimatedTexture texture; // current player animation
+    private AnimatedTexture textureRaged; // current player animation if raged
 
     private AnimationChannel animIdle;
     private AnimationChannel animWalk;
     private AnimationChannel animAutoAttack;
+    private AnimationChannel animRagedIdle;
+    private AnimationChannel animRagedWalk;
 
     private static Weapon currentWeapon; // Player's current weapon
     private static List<Weapon> weaponInventoryList = new ArrayList<>();
@@ -66,9 +69,18 @@ public class PlayerComponent extends CreatureComponent {
             animAutoAttack = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
                     40, 55, Duration.millis(currentWeapon.getDuration(ultimateActivated) / 1000f),
                     8, 8);
+            animRagedIdle = new AnimationChannel(FXGL.image("creatures/lizard_m_glow_50x65.png"), 9,
+                50, 65, Duration.seconds(2), 0, 3);
+            animRagedWalk = new AnimationChannel(FXGL.image("creatures/lizard_m_glow_50x65.png"), 9,
+                50, 65, Duration.seconds(2), 4, 7);
 
             texture = new AnimatedTexture(animIdle);
             texture.loop();
+            textureRaged = new AnimatedTexture(animRagedIdle);
+            textureRaged.loop();
+            textureRaged.setTranslateX(-5);
+            textureRaged.setTranslateY(-5);
+            textureRaged.setVisible(false);
         }
 
     }
@@ -78,6 +90,7 @@ public class PlayerComponent extends CreatureComponent {
     public void onAdded() {
         if (!MainApp.isIsTesting()) {
             entity.getTransformComponent().setScaleOrigin(new Point2D(20, 25));
+            entity.getViewComponent().addChild(textureRaged);
             entity.getViewComponent().addChild(texture);
         }
     }
@@ -89,18 +102,28 @@ public class PlayerComponent extends CreatureComponent {
             normalizeVelocityX();
             normalizeVelocityY();
         }
-
         if (!prepAttack) {
             // if Player has initiated an attack, then do not perform walk/idle animations
             if (physics.isMoving()) {
                 if (texture.getAnimationChannel() != animWalk) {
                     texture.loopAnimationChannel(animWalk);
+                    if (attackPower > 1) {
+                        textureRaged.loopAnimationChannel(animRagedWalk);
+                    }
                 }
             } else {
                 if (texture.getAnimationChannel() != animIdle) {
                     texture.loopAnimationChannel(animIdle);
+                    if (attackPower > 1) {
+                        textureRaged.loopAnimationChannel(animRagedIdle);
+                    }
                 }
             }
+        }
+        if (attackPower > 1) {
+            textureRaged.setVisible(true);
+        } else {
+            textureRaged.setVisible(false);
         }
         //endregion
         //region Player performs attack
@@ -285,10 +308,6 @@ public class PlayerComponent extends CreatureComponent {
 
     public static void setAttackPowerHitCount(int count) {
         attackPowerHitCount = count;
-    }
-
-    public static int getAttackPowerHitCount() {
-        return attackPowerHitCount;
     }
 
     public static void setPiercePow(int pierce) {
