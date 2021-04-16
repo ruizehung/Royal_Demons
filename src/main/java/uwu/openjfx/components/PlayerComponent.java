@@ -5,7 +5,6 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.geometry.Point2D;
-import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import uwu.openjfx.MainApp;
 import uwu.openjfx.UI;
