@@ -168,48 +168,23 @@ public class EnemyComponent extends CreatureComponent {
         if (dist > 150) {
             playerLeavesRadius = true;
         }
-        if (moveTimer.elapsed(Duration.seconds(1))) {
-            if (!isStunned) {
-                if (fighterClass.equals("melee")) {
-                    if (dist < 120 && !attackCD) {
-                        playerLeavesRadius = false;
-                        autoAttack();
-                    } else if (dist < 300) {
-                        if (!prepAttack) {
-                            moveToPlayer();
-                        }
-                    } else {
-                        stop();
-                    }
-                } else {
-                    if (dist < 400) {
-                        if (!attackCD) {
-                            autoAttack();
-                        }
-                        if (!prepAttack && !kiting) {
-                            kiting = true;
-                        }
-                    } else if (dist < 500) {
-                        if (!prepAttack) {
-                            moveToPlayer();
-                        }
-                    } else {
-                        stop();
-                    }
-                }
-            }
-            moveTimer.capture();
-        }
+        moveToPlayer();
         if (kiting) {
             kitePlayer();
         }
         if (isStunned) {
             normalizeVelocityX();
             normalizeVelocityY();
-            FXGL.getGameTimer().runAtInterval(() -> {
+            Runnable runnable = () -> {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 isStunned = false;
-                FXGL.getGameTimer().clear();
-            }, Duration.seconds(.5));
+            };
+            Thread thread = new Thread(runnable);
+            thread.start();
         }
 
         if (prepAttack && (physics.getVelocityX() != 0 || physics.getVelocityY() != 0)) {
@@ -257,7 +232,7 @@ public class EnemyComponent extends CreatureComponent {
                 int widthBox = width * 2;
                 int heightBox = height * 2;
                 int sideOffset = widthBox / 2;
-                final Entity meleePunchHitBox = spawn("meleeEnemyPunch",
+                Entity meleePunchHitBox = spawn("meleeEnemyPunch",
                     new SpawnData(enemyX, enemyY).
                         put("widthBox", widthBox).
                         put("heightBox", heightBox));
@@ -267,8 +242,7 @@ public class EnemyComponent extends CreatureComponent {
                         enemyX - ((double) widthBox / 2)
                             + (getEntity().getScaleX() > 0 ? sideOffset : -sideOffset),
                         enemyY - ((double) heightBox / 2)));
-                FXGL.getGameTimer().
-                    runAtInterval(meleePunchHitBox::removeFromWorld, Duration.seconds(.01));
+                MainApp.addToHitBoxDestruction(meleePunchHitBox);
             } else {
                 magicAutoAttack();
             }
@@ -284,21 +258,62 @@ public class EnemyComponent extends CreatureComponent {
         }
         // Enemy is on cooldown from attacking recently
         if (attackCD) {
-            FXGL.getGameTimer().runAtInterval(() -> {
+            Runnable runnable = () -> {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 attackCD = false;
-                FXGL.getGameTimer().clear();
-            }, Duration.seconds(2));
+            };
+            Thread thread = new Thread(runnable);
+            thread.start();
         }
         // endregion
     }
 
     // region Movement
     private void moveToPlayer() {
-        double xDir = playerX - enemyX > 0 ? 1 : -1;
-        double yDir = playerY - enemyY > 0 ? 1 : -1;
-        physics.setVelocityX(speed * xDir);
-        physics.setVelocityY(speed * yDir);
-        entity.setScaleX(xDir);
+        if (moveTimer.elapsed(Duration.seconds(1))) {
+            if (!isStunned) {
+                if (fighterClass.equals("melee")) {
+                    if (dist < 120 && !attackCD) {
+                        playerLeavesRadius = false;
+                        autoAttack();
+                    } else if (dist < 300) {
+                        if (!prepAttack) {
+                            double xDir = playerX - enemyX > 0 ? 1 : -1;
+                            double yDir = playerY - enemyY > 0 ? 1 : -1;
+                            physics.setVelocityX(speed * xDir);
+                            physics.setVelocityY(speed * yDir);
+                            entity.setScaleX(xDir);
+                        }
+                    } else {
+                        stop();
+                    }
+                } else {
+                    if (dist < 400) {
+                        if (!attackCD) {
+                            autoAttack();
+                        }
+                        if (!prepAttack && !kiting) {
+                            kiting = true;
+                        }
+                    } else if (dist < 500) {
+                        if (!prepAttack) {
+                            double xDir = playerX - enemyX > 0 ? 1 : -1;
+                            double yDir = playerY - enemyY > 0 ? 1 : -1;
+                            physics.setVelocityX(speed * xDir);
+                            physics.setVelocityY(speed * yDir);
+                            entity.setScaleX(xDir);
+                        }
+                    } else {
+                        stop();
+                    }
+                }
+            }
+            moveTimer.capture();
+        }
     }
 
     private void stop() {

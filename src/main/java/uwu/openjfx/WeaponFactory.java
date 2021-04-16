@@ -13,6 +13,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import uwu.openjfx.components.AttackDamageComponent;
+import uwu.openjfx.components.DamageOverTimeComponent;
 import uwu.openjfx.components.ProjectileAnimationComponent;
 import uwu.openjfx.components.WeaponAnimationComponent;
 
@@ -46,7 +47,7 @@ public class WeaponFactory implements EntityFactory {
         int rectHeight = data.get("height");
         double attackDamage = data.get("damage");
         Rectangle hitBox = new Rectangle(rectWidth, rectHeight, Color.WHITE);
-        //hitBox.setOpacity(.5);
+        hitBox.setOpacity(.5);
         return FXGL.entityBuilder(data)
                 .type(RoyalType.PLAYERATTACK)
                 .viewWithBBox(hitBox)
@@ -131,6 +132,22 @@ public class WeaponFactory implements EntityFactory {
                 .with(new CollidableComponent(true))
                 .with(new ProjectileComponent(dir, speed))
                 .build();
+    }
+
+    @Spawns("breathOfFire")
+    public Entity newBreathOfFire(SpawnData data) {
+        int rectWidth = data.get("width");
+        int rectHeight = data.get("height");
+        double attackDamage = data.get("damage");
+        Rectangle hitBox = new Rectangle(rectWidth, rectHeight, Color.WHITE);
+        hitBox.setOpacity(.5);
+        return FXGL.entityBuilder(data)
+            .type(RoyalType.PLAYERATTACK)
+            .viewWithBBox(hitBox)
+            .with(new DamageOverTimeComponent())
+            .with(new AttackDamageComponent(true, attackDamage))
+            .with(new CollidableComponent(true))
+            .build();
     }
 
     @Spawns("meleeEnemyPunch")

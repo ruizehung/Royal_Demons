@@ -4,6 +4,7 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
+import uwu.openjfx.MainApp;
 
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 
@@ -70,6 +71,7 @@ public class GoldenSword2 implements Weapon {
                 player.getX() - ((double) hitBoxWidth / 2) + player.getWidth() / 2
                     + (player.getScaleX() > 0 ? swordOffset : -swordOffset),
                 player.getY() - ((double) hitBoxHeight / 2) + player.getHeight() / 2));
+        MainApp.addToHitBoxDestruction(meleeHitBox);
     }
 
     @Override

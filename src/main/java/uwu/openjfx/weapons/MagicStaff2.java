@@ -1,13 +1,14 @@
 package uwu.openjfx.weapons;
 
 import com.almasb.fxgl.core.math.Vec2;
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
+import javafx.util.Duration;
 import uwu.openjfx.RoyalType;
-import uwu.openjfx.components.AttackDamageComponent;
-import uwu.openjfx.components.ExplosionAtDistComponent;
+import uwu.openjfx.components.PlayerComponent;
 
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 
@@ -19,7 +20,7 @@ import static com.almasb.fxgl.dsl.FXGL.spawn;
     - Spawn the player-staff(wand) in the prepAttack() method, whose animation
     will be handled in the WeaponAnimationComponent class.
  */
-public class MagicStaff0 implements Weapon, AngleBehavior {
+public class MagicStaff2 implements Weapon, AngleBehavior {
     private final double playerHitBoxOffsetX = 3; // player's hitbox own offset from top left
     private final double playerHitBoxOffsetY = 15; // player's hitbox own offset from top left
     private final double playerHitBoxWidth = 35; // width of player's hitbox from 3 to 38
@@ -84,56 +85,86 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
         double centerX = ((double) (leftOffset + (frameWidth - rightOffset)) / 2);
         double centerY = ((double) (topBottomOffset + (frameHeight - topBottomOffset)) / 2);
 
-        int speed = 300; // speed at which magic spell goes
+        if (!ultimateActivated) {
+            int speed = 300; // speed at which magic spell goes
 
-        /*
-            Instantiate a brand new magic spell that will hold the
-            corresponding dimensions, components, and speed. It will temporarily
-            spawn the magic spell at the players ORIGINAL getX() and getY() excluding
-            its modified hitbox done in CreatureFactory.
-         */
+            /*
+                Instantiate a brand new magic spell that will hold the
+                corresponding dimensions, components, and speed. It will temporarily
+                spawn the magic spell at the players ORIGINAL getX() and getY() excluding
+                its modified hitbox done in CreatureFactory.
+             */
 
-        Entity rangedHitBox = spawn("rangedMagicHitBox",
+            Entity rangedHitBox = spawn("rangedMagicHitBox",
                 new SpawnData(
-                        player.getX(), player.getY()).
-                        put("dir", dir.toPoint2D()).
-                        put("speed", speed).
-                        put("weapon", !ultimateActivated ? "magic1_32x32" : "fireball_64x64").
-                        put("duration", 500).
-                        put("fpr", !ultimateActivated ? 30 : 60).
-                        put("ultimateActive", ultimateActivated).
-                        put("topBotOffset", topBottomOffset).
-                        put("leftOffset", leftOffset).
-                        put("rightOffset", rightOffset).
-                        put("frameWidth", frameWidth).
-                        put("frameHeight", frameHeight).
-                        put("isArrow", false).
-                        put("isMagic", true).
-                        put("damage", attackDamage).
-                        put("royalType", RoyalType.PLAYERATTACK));
-        /*
-            setLocalAnchor(...) will ensure that the anchor/pivot point of the
-            magic spell is located at the CENTER of the NEW hitbox.
-            setAnchoredPosition(...) will spawn the magic spell to the right
-            of the player if player is facing right, and left if the player is
-            facing left, and located at the player's "hands".
-            setRotationOrigin(...) will ensure that the rotation anchor/pivot
-            point of the magic spell is located at the CENTER of the NEW hitbox.
-            The arguments are offsets based off of the top-left point of the
-            ORIGINAL frameWidth x frameHeight frame. Therefore, we need to offset
-            centerX in the x-direction, and the center of the magic spell will
-            CONSISTENTLY be at its midpoint in the y-direction.
-         */
-        rangedHitBox.getComponent(AttackDamageComponent.class).setActive(false);
-        rangedHitBox.setLocalAnchor(new Point2D(centerX, centerY));
-        rangedHitBox.setAnchoredPosition(
+                    player.getX(), player.getY()).
+                    put("dir", dir.toPoint2D()).
+                    put("speed", speed).
+                    put("weapon", !ultimateActivated ? "magic1_32x32" : "fireball_64x64").
+                    put("duration", 500).
+                    put("fpr", !ultimateActivated ? 30 : 60).
+                    put("ultimateActive", ultimateActivated).
+                    put("topBotOffset", topBottomOffset).
+                    put("leftOffset", leftOffset).
+                    put("rightOffset", rightOffset).
+                    put("frameWidth", frameWidth).
+                    put("frameHeight", frameHeight).
+                    put("isArrow", false).
+                    put("isMagic", true).
+                    put("damage", attackDamage).
+                    put("royalType", RoyalType.PLAYERATTACK));
+            /*
+                setLocalAnchor(...) will ensure that the anchor/pivot point of the
+                magic spell is located at the CENTER of the NEW hitbox.
+                setAnchoredPosition(...) will spawn the magic spell to the right
+                of the player if player is facing right, and left if the player is
+                facing left, and located at the player's "hands".
+                setRotationOrigin(...) will ensure that the rotation anchor/pivot
+                point of the magic spell is located at the CENTER of the NEW hitbox.
+                The arguments are offsets based off of the top-left point of the
+                ORIGINAL frameWidth x frameHeight frame. Therefore, we need to offset
+                centerX in the x-direction, and the center of the magic spell will
+                CONSISTENTLY be at its midpoint in the y-direction.
+             */
+            rangedHitBox.setLocalAnchor(new Point2D(centerX, centerY));
+            rangedHitBox.setAnchoredPosition(
                 (player.getX() + playerHitBoxOffsetX
-                        + (player.getScaleX() > 0 ? playerHitBoxWidth : 0)), // right-left side
+                    + (player.getScaleX() > 0 ? playerHitBoxWidth : 0)), // right-left side
                 (player.getY() + playerHitBoxOffsetY
-                        + (playerHitBoxHeight / 2))); // midpoint player hitbox
-        rangedHitBox.getTransformComponent().setRotationOrigin(
+                    + (playerHitBoxHeight / 2))); // midpoint player hitbox
+            rangedHitBox.getTransformComponent().setRotationOrigin(
                 new Point2D(centerX, ((double) (frameHeight)) / 2));
-        rangedHitBox.addComponent(new ExplosionAtDistComponent(ultimateActivated));
+        } else {
+            int hitBoxWidth; // width of the hitbox
+            int hitBoxHeight; // height of the hitbox
+            double breathOffset; // distance from player the hitbox should spawn
+
+            hitBoxWidth = 175;
+            hitBoxHeight = 110;
+            breathOffset = 50;
+            Entity breathOfFire = spawn("breathOfFire",
+                new SpawnData(player.getX(), player.getY()).
+                    put("width", hitBoxWidth).put("height", hitBoxHeight).
+                    put("damage", 2.0));
+            // Spawn hitbox on top of player and apply offset
+            PlayerComponent.channelAttack();
+
+            Runnable runnable = () -> {
+                FXGL.getGameTimer().runAtInterval(() -> {
+                    breathOfFire.getTransformComponent().setAnchoredPosition(
+                        new Point2D(
+                            player.getX() - ((double) hitBoxWidth / 2) + player.getWidth() / 2
+                                + (player.getScaleX() > 0 ? breathOffset : -breathOffset),
+                            player.getY() - ((double) hitBoxHeight / 2) + player.getHeight() / 2));
+                    if (!PlayerComponent.isChanneling()) {
+                        breathOfFire.removeFromWorld();
+                        FXGL.getGameTimer().clear();
+                    }
+                }, Duration.seconds(.01));
+            };
+            Thread thread = new Thread(runnable);
+            thread.start();
+        }
     }
 
     @Override
@@ -142,10 +173,10 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
         // opposite is distance (y) from mouse to player's "hands"
         // angle calculated with tangent
         double adjacent = mouseCurrX
-                - (player.getX() + playerHitBoxOffsetX + (player.getScaleX() > 0
-                    ? playerHitBoxWidth : 0));
+            - (player.getX() + playerHitBoxOffsetX + (player.getScaleX() > 0
+            ? playerHitBoxWidth : 0));
         double opposite = mouseCurrY
-                - (player.getY() + playerHitBoxOffsetY + (playerHitBoxHeight / 2));
+            - (player.getY() + playerHitBoxOffsetY + (playerHitBoxHeight / 2));
         double angle = Math.atan2(opposite, adjacent);
         angle = Math.toDegrees(angle);
         dir = Vec2.fromAngle(angle);
@@ -154,7 +185,7 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
     @Override
     public int getDuration(boolean ultimateActivated) {
         int attackDuration = 700; // charge-up time of attacking in milliseconds
-        int ultimateChargeDuration = 1000; // charge-up time of attacking in milliseconds
+        int ultimateChargeDuration = 350; // charge-up time of attacking in milliseconds
         this.ultimateActivated = ultimateActivated;
         return ultimateActivated ? ultimateChargeDuration : attackDuration;
     }

@@ -6,6 +6,7 @@ import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.components.IrremovableComponent;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
+import uwu.openjfx.MainApp;
 
 import static com.almasb.fxgl.dsl.FXGL.spawn;
 
@@ -51,7 +52,7 @@ public class GoldenSword0 implements Weapon {
             new SpawnData(
                 player.getX(), player.getY()).
                 put("weaponFile", !ultimateActivated
-                    ? chosenAttack : "gold_knife_stab_69x26").
+                    ? chosenAttack : "").
                 put("duration", getDuration(ultimateActivated)).
                 put("frameWidth", width).
                 put("frameHeight", height).
@@ -90,6 +91,7 @@ public class GoldenSword0 implements Weapon {
                     player.getX() - ((double) hitBoxWidth / 2) + player.getWidth() / 2
                         + (player.getScaleX() > 0 ? swordOffset : -swordOffset),
                     player.getY() - ((double) hitBoxHeight / 2) + player.getHeight() / 2));
+            MainApp.addToHitBoxDestruction(meleeHitBox);
         } else {
             fanOfKnives(player);
         }
