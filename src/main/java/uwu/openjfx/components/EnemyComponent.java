@@ -46,6 +46,7 @@ public class EnemyComponent extends CreatureComponent {
     /*
         Every Enemy Aspects
      */
+    private int kiteTimer;
     private final String assetName;
     private final int width;
     private final int height;
@@ -63,6 +64,7 @@ public class EnemyComponent extends CreatureComponent {
     private double dist;
     private boolean kiteBack;
     private boolean kiteCircular;
+    private boolean clockwise;
     private boolean kiting = false;
     private boolean overDrive = false; // if enemy needs to slow to a stop if involuntarily moving
     private boolean isStunned = false;
@@ -168,48 +170,23 @@ public class EnemyComponent extends CreatureComponent {
         if (dist > 150) {
             playerLeavesRadius = true;
         }
-        if (moveTimer.elapsed(Duration.seconds(1))) {
-            if (!isStunned) {
-                if (fighterClass.equals("melee")) {
-                    if (dist < 120 && !attackCD) {
-                        playerLeavesRadius = false;
-                        autoAttack();
-                    } else if (dist < 300) {
-                        if (!prepAttack) {
-                            moveToPlayer();
-                        }
-                    } else {
-                        stop();
-                    }
-                } else {
-                    if (dist < 400) {
-                        if (!attackCD) {
-                            autoAttack();
-                        }
-                        if (!prepAttack && !kiting) {
-                            kiting = true;
-                        }
-                    } else if (dist < 500) {
-                        if (!prepAttack) {
-                            moveToPlayer();
-                        }
-                    } else {
-                        stop();
-                    }
-                }
-            }
-            moveTimer.capture();
-        }
+        moveToPlayer();
         if (kiting) {
             kitePlayer();
         }
         if (isStunned) {
             normalizeVelocityX();
             normalizeVelocityY();
-            FXGL.getGameTimer().runAtInterval(() -> {
+            Runnable runnable = () -> {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 isStunned = false;
-                FXGL.getGameTimer().clear();
-            }, Duration.seconds(.5));
+            };
+            Thread thread = new Thread(runnable);
+            thread.start();
         }
 
         if (prepAttack && (physics.getVelocityX() != 0 || physics.getVelocityY() != 0)) {
@@ -257,7 +234,7 @@ public class EnemyComponent extends CreatureComponent {
                 int widthBox = width * 2;
                 int heightBox = height * 2;
                 int sideOffset = widthBox / 2;
-                final Entity meleePunchHitBox = spawn("meleeEnemyPunch",
+                Entity meleePunchHitBox = spawn("meleeEnemyPunch",
                     new SpawnData(enemyX, enemyY).
                         put("widthBox", widthBox).
                         put("heightBox", heightBox));
@@ -267,8 +244,7 @@ public class EnemyComponent extends CreatureComponent {
                         enemyX - ((double) widthBox / 2)
                             + (getEntity().getScaleX() > 0 ? sideOffset : -sideOffset),
                         enemyY - ((double) heightBox / 2)));
-                FXGL.getGameTimer().
-                    runAtInterval(meleePunchHitBox::removeFromWorld, Duration.seconds(.01));
+                MainApp.addToHitBoxDestruction(meleePunchHitBox);
             } else {
                 magicAutoAttack();
             }
@@ -276,29 +252,68 @@ public class EnemyComponent extends CreatureComponent {
             startAttacking = false;
             prepAttack = false;
             attackCD = true;
+            Runnable runnable = () -> {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                attackCD = false;
+            };
+            Thread thread = new Thread(runnable);
+            thread.start();
         }
 
         // Enemy shrinks
         if (startShrink) {
             shrink();
         }
-        // Enemy is on cooldown from attacking recently
-        if (attackCD) {
-            FXGL.getGameTimer().runAtInterval(() -> {
-                attackCD = false;
-                FXGL.getGameTimer().clear();
-            }, Duration.seconds(2));
-        }
         // endregion
     }
 
     // region Movement
     private void moveToPlayer() {
-        double xDir = playerX - enemyX > 0 ? 1 : -1;
-        double yDir = playerY - enemyY > 0 ? 1 : -1;
-        physics.setVelocityX(speed * xDir);
-        physics.setVelocityY(speed * yDir);
-        entity.setScaleX(xDir);
+        if (moveTimer.elapsed(Duration.seconds(1))) {
+            if (!isStunned) {
+                if (fighterClass.equals("melee")) {
+                    if (dist < 120 && !attackCD) {
+                        playerLeavesRadius = false;
+                        autoAttack();
+                    } else if (dist < 300) {
+                        if (!prepAttack) {
+                            double xDir = playerX - enemyX > 0 ? 1 : -1;
+                            double yDir = playerY - enemyY > 0 ? 1 : -1;
+                            physics.setVelocityX(speed * xDir);
+                            physics.setVelocityY(speed * yDir);
+                            entity.setScaleX(xDir);
+                        }
+                    } else {
+                        stop();
+                    }
+                } else {
+                    if (dist < 400) {
+                        if (!attackCD) {
+                            entity.setScaleX(playerX - enemyX > 0 ? 1 : -1);
+                            autoAttack();
+                        }
+                        if (!prepAttack && !kiting) {
+                            kiting = true;
+                        }
+                    } else if (dist < 500) {
+                        if (!prepAttack) {
+                            double xDir = playerX - enemyX > 0 ? 1 : -1;
+                            double yDir = playerY - enemyY > 0 ? 1 : -1;
+                            physics.setVelocityX(speed * xDir);
+                            physics.setVelocityY(speed * yDir);
+                            entity.setScaleX(xDir);
+                        }
+                    } else {
+                        stop();
+                    }
+                }
+            }
+            moveTimer.capture();
+        }
     }
 
     private void stop() {
@@ -375,11 +390,19 @@ public class EnemyComponent extends CreatureComponent {
         if (physics != null && !prepAttack) {
             if (!kiteBack && !kiteCircular) {
                 int random = (int) (Math.random() * 101);
-                if (physics.getVelocityX() == 0 && physics.getVelocityY() == 0) {
-                    random = 50;
+                kiteBack = random < 35;
+                kiteCircular = random >= 35;
+                if ((physics.getVelocityX() == 0 && physics.getVelocityY() == 0) && !prepAttack) {
+                    kiteTimer++;
+                    if (kiteTimer >= 60) {
+                        if (kiteCircular) {
+                            clockwise = !clockwise;
+                        }
+                        kiteBack = false;
+                        kiteCircular = true;
+                        kiteTimer = 0;
+                    }
                 }
-                kiteBack = random < 50;
-                kiteCircular = random >= 50;
             }
             double adjacent = (getEntity().getX()
                 + ((double) width) / 2) - playerX;
@@ -387,7 +410,7 @@ public class EnemyComponent extends CreatureComponent {
                 + ((double) height) / 2) - playerY;
             double radians = (Math.atan2(opposite, adjacent));
             if (kiteCircular) {
-                radians += Math.PI / 2;
+                radians = radians + (clockwise ? Math.PI / 2 : -(Math.PI / 2));
             }
             Vec2 dir = Vec2.fromAngle(Math.toDegrees(radians));
             double xPow = dir.toPoint2D().getX() * speed;

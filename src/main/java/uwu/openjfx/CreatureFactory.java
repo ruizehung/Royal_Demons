@@ -167,7 +167,7 @@ public class CreatureFactory implements EntityFactory {
                         50,
                         20),
                     BoundingShape.box(
-                        widthHeight.get(0) - 90,
+                        widthHeight.get(0) - 70,
                         widthHeight.get(1) - 35)))
                 .with(physics)
                 .with(new CollidableComponent(true))

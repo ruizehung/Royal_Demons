@@ -214,10 +214,10 @@ public abstract class Bow implements Weapon, AngleBehavior {
     }
 
     public void ultimateAttack(Entity player, double angle) {
-        int amountOfArrows = 10;
+        int amountOfArrows = 8;
         Vec2[] angles = new Vec2[amountOfArrows];
-        double angleIncrementer = 2.0 * (30.0) / amountOfArrows;
-        angle -= 30;
+        double angleIncrementer = 2.0 * (10.0) / amountOfArrows;
+        angle -= 10;
         for (int i = 0; i < angles.length; i++) {
             angles[i] = Vec2.fromAngle(angle);
             angle += angleIncrementer;

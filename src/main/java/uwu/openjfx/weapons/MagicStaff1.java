@@ -19,7 +19,7 @@ import static com.almasb.fxgl.dsl.FXGL.spawn;
     - Spawn the player-staff(wand) in the prepAttack() method, whose animation
     will be handled in the WeaponAnimationComponent class.
  */
-public class MagicStaff0 implements Weapon, AngleBehavior {
+public class MagicStaff1 implements Weapon, AngleBehavior {
     private final double playerHitBoxOffsetX = 3; // player's hitbox own offset from top left
     private final double playerHitBoxOffsetY = 15; // player's hitbox own offset from top left
     private final double playerHitBoxWidth = 35; // width of player's hitbox from 3 to 38
@@ -41,7 +41,7 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
         Entity b = spawn("weapon",
             new SpawnData(
                 player.getX(), player.getY()).
-                put("weaponFile", "blue_wand_50x65").
+                put("weaponFile", "red_wand_50x65").
                 put("duration", getDuration(ultimateActivated)).
                 put("frameWidth", width).
                 put("frameHeight", height).
@@ -68,15 +68,15 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
         calculateAnglePlayerRelative(player, mouseCurrX, mouseCurrY);
 
         // top offset used to shrink the top/bot edges of hitbox
-        int topBottomOffset = -4;
+        int topBottomOffset = !ultimateActivated ? 12 : -4;
         // left offset used to shrink the left edge of hitbox
-        int leftOffset = 5;
+        int leftOffset = !ultimateActivated ? 25 : 5;
         // right offset used to shrink the right edge of hitbox
-        int rightOffset = 5;
+        int rightOffset = !ultimateActivated ? 8 : 5;
         // width of the original frame (64 / 32)
-        int frameWidth = 32;
+        int frameWidth = !ultimateActivated ? 64 : 32;
         // height of original frame (64 / 32)
-        int frameHeight = 32;
+        int frameHeight = !ultimateActivated ? 64 : 32;
 
         // the center of the NEW and MODIFIED hitbox
         double centerX = ((double) (leftOffset + (frameWidth - rightOffset)) / 2);
@@ -92,23 +92,23 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
          */
 
         Entity rangedHitBox = spawn("rangedMagicHitBox",
-                new SpawnData(
-                        player.getX(), player.getY()).
-                        put("dir", dir.toPoint2D()).
-                        put("speed", speed).
-                        put("weapon", !ultimateActivated ? "magic1_32x32" : "blueNovaBall_32x32").
-                        put("duration", 500).
-                        put("fpr", 30).
-                        put("ultimateActive", ultimateActivated).
-                        put("topBotOffset", topBottomOffset).
-                        put("leftOffset", leftOffset).
-                        put("rightOffset", rightOffset).
-                        put("frameWidth", frameWidth).
-                        put("frameHeight", frameHeight).
-                        put("isArrow", false).
-                        put("isMagic", true).
-                        put("damage", attackDamage).
-                        put("royalType", RoyalType.PLAYERATTACK));
+            new SpawnData(
+                player.getX(), player.getY()).
+                put("dir", dir.toPoint2D()).
+                put("speed", speed).
+                put("weapon", !ultimateActivated ? "fireball0_64x64" : "orangeNovaBall_32x32").
+                put("duration", 500).
+                put("fpr", !ultimateActivated ? 45 : 30).
+                put("ultimateActive", ultimateActivated).
+                put("topBotOffset", topBottomOffset).
+                put("leftOffset", leftOffset).
+                put("rightOffset", rightOffset).
+                put("frameWidth", frameWidth).
+                put("frameHeight", frameHeight).
+                put("isArrow", false).
+                put("isMagic", true).
+                put("damage", attackDamage).
+                put("royalType", RoyalType.PLAYERATTACK));
         /*
             setLocalAnchor(...) will ensure that the anchor/pivot point of the
             magic spell is located at the CENTER of the NEW hitbox.
@@ -125,12 +125,12 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
         rangedHitBox.getComponent(AttackDamageComponent.class).setActive(false);
         rangedHitBox.setLocalAnchor(new Point2D(centerX, centerY));
         rangedHitBox.setAnchoredPosition(
-                (player.getX() + playerHitBoxOffsetX
-                        + (player.getScaleX() > 0 ? playerHitBoxWidth : 0)), // right-left side
-                (player.getY() + playerHitBoxOffsetY
-                        + (playerHitBoxHeight / 2))); // midpoint player hitbox
+            (player.getX() + playerHitBoxOffsetX
+                + (player.getScaleX() > 0 ? playerHitBoxWidth : 0)), // right-left side
+            (player.getY() + playerHitBoxOffsetY
+                + (playerHitBoxHeight / 2))); // midpoint player hitbox
         rangedHitBox.getTransformComponent().setRotationOrigin(
-                new Point2D(centerX, ((double) (frameHeight)) / 2));
+            new Point2D(centerX, ((double) (frameHeight)) / 2));
         rangedHitBox.addComponent(new ExplosionAtDistComponent(ultimateActivated));
     }
 
@@ -140,10 +140,10 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
         // opposite is distance (y) from mouse to player's "hands"
         // angle calculated with tangent
         double adjacent = mouseCurrX
-                - (player.getX() + playerHitBoxOffsetX + (player.getScaleX() > 0
-                    ? playerHitBoxWidth : 0));
+            - (player.getX() + playerHitBoxOffsetX + (player.getScaleX() > 0
+            ? playerHitBoxWidth : 0));
         double opposite = mouseCurrY
-                - (player.getY() + playerHitBoxOffsetY + (playerHitBoxHeight / 2));
+            - (player.getY() + playerHitBoxOffsetY + (playerHitBoxHeight / 2));
         double angle = Math.atan2(opposite, adjacent);
         angle = Math.toDegrees(angle);
         dir = Vec2.fromAngle(angle);

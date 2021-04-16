@@ -5,15 +5,14 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.geometry.Point2D;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import uwu.openjfx.MainApp;
 import uwu.openjfx.UI;
 import uwu.openjfx.behaviors.GameOverWhenDie;
 import uwu.openjfx.weapons.Weapon;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 
 /*
     This class is responsible for the following:
@@ -25,16 +24,20 @@ public class PlayerComponent extends CreatureComponent {
     private PhysicsComponent physics;
 
     private AnimatedTexture texture; // current player animation
+    private AnimatedTexture textureRaged; // current player animation if raged
 
     private AnimationChannel animIdle;
     private AnimationChannel animWalk;
     private AnimationChannel animAutoAttack;
+    private AnimationChannel animRagedIdle;
+    private AnimationChannel animRagedWalk;
 
     private static Weapon currentWeapon; // Player's current weapon
     private static List<Weapon> weaponInventoryList = new ArrayList<>();
     private static double attackPower = 1;
     private static int piercePow = 1;
     private static int attackPowerHitCount = 5;
+    private static boolean isChanneling = false;
 
     private double currMouseX; // mouse input for x
     private double currMouseY; // mouse input for y
@@ -67,9 +70,18 @@ public class PlayerComponent extends CreatureComponent {
             animAutoAttack = new AnimationChannel(FXGL.image("creatures/lizard_m_40x55.png"), 9,
                     40, 55, Duration.millis(currentWeapon.getDuration(ultimateActivated) / 1000f),
                     8, 8);
+            animRagedIdle = new AnimationChannel(FXGL.image("creatures/lizard_m_glow_50x65.png"), 9,
+                50, 65, Duration.seconds(2), 0, 3);
+            animRagedWalk = new AnimationChannel(FXGL.image("creatures/lizard_m_glow_50x65.png"), 9,
+                50, 65, Duration.seconds(2), 4, 7);
 
             texture = new AnimatedTexture(animIdle);
             texture.loop();
+            textureRaged = new AnimatedTexture(animRagedIdle);
+            textureRaged.loop();
+            textureRaged.setTranslateX(-5);
+            textureRaged.setTranslateY(-5);
+            textureRaged.setVisible(false);
         }
 
     }
@@ -79,6 +91,7 @@ public class PlayerComponent extends CreatureComponent {
     public void onAdded() {
         if (!MainApp.isIsTesting()) {
             entity.getTransformComponent().setScaleOrigin(new Point2D(20, 25));
+            entity.getViewComponent().addChild(textureRaged);
             entity.getViewComponent().addChild(texture);
         }
     }
@@ -90,34 +103,46 @@ public class PlayerComponent extends CreatureComponent {
             normalizeVelocityX();
             normalizeVelocityY();
         }
-
         if (!prepAttack) {
             // if Player has initiated an attack, then do not perform walk/idle animations
             if (physics.isMoving()) {
                 if (texture.getAnimationChannel() != animWalk) {
                     texture.loopAnimationChannel(animWalk);
+                    if (attackPower > 1) {
+                        textureRaged.loopAnimationChannel(animRagedWalk);
+                    }
                 }
             } else {
                 if (texture.getAnimationChannel() != animIdle) {
                     texture.loopAnimationChannel(animIdle);
+                    if (attackPower > 1) {
+                        textureRaged.loopAnimationChannel(animRagedIdle);
+                    }
                 }
             }
         }
+        if (attackPower > 1) {
+            textureRaged.setVisible(true);
+        } else {
+            textureRaged.setVisible(false);
+        }
         //endregion
-
         //region Player performs attack
         if (startAttack) { // Player performs the actual attack
             currentWeapon.attack(getEntity(), currMouseX, currMouseY);
-            startAttack = false;
             prepAttack = false;
-            ultimateActivated = false;
+            startAttack = false;
+            if (!isChanneling) {
+                ultimateActivated = false;
+            }
         }
-        // Player ultimate is on cooldown from recent activation
-        if (ultimateCD) {
-            FXGL.getGameTimer().runAtInterval(() -> {
-                ultimateCD = false;
-                FXGL.getGameTimer().clear();
-            }, Duration.seconds(currentWeapon.getUltimateCD()));
+        if (currentWeapon.getClass().getName().contains("MagicStaff")) {
+            if (isChanneling()) {
+                speed = 85;
+            } else {
+                speed = 170;
+                ultimateActivated = false;
+            }
         }
         // endregion
     }
@@ -158,14 +183,18 @@ public class PlayerComponent extends CreatureComponent {
 
     public void left() {
         if (!prepAttack) {
-            getEntity().setScaleX(-1);
+            if (!isChanneling()) {
+                getEntity().setScaleX(-1);
+            }
             physics.setVelocityX(-speed);
         }
     }
 
     public void right() {
         if (!prepAttack) {
-            getEntity().setScaleX(1);
+            if (!isChanneling()) {
+                getEntity().setScaleX(1);
+            }
             physics.setVelocityX(speed);
         }
     }
@@ -201,6 +230,16 @@ public class PlayerComponent extends CreatureComponent {
         this.ultimateActivated = ultimateActivated;
         if (ultimateActivated) {
             ultimateCD = true;
+            Runnable runnable = () -> {
+                try {
+                    Thread.sleep(currentWeapon.getUltimateCD() * 1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                ultimateCD = false;
+            };
+            Thread thread = new Thread(runnable);
+            thread.start();
         }
         if (currMouseX > entity.getX() + 20) { // turn player in direction of mouse
             entity.setScaleX(1);
@@ -211,17 +250,36 @@ public class PlayerComponent extends CreatureComponent {
         prepAttack = true; // Player has initiated attack
         stop(); // stop moving
         // Player performs the actual attack after duration amount of milliseconds
-        Timer t = new java.util.Timer();
-        t.schedule(
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        startAttack = true; // Player performs the actual attack
-                        t.cancel();
-                    }
-                }, currentWeapon.getDuration(ultimateActivated)
-        );
+        Runnable runnable = () -> {
+            try {
+                Thread.sleep(currentWeapon.getDuration(ultimateActivated));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            startAttack = true; // Player performs the actual attack
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
+        currentWeapon.getDuration(ultimateActivated);
         currentWeapon.prepAttack(getEntity());
+    }
+
+    public static void channelAttack() {
+        isChanneling = true;
+        Runnable runnable = () -> {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            isChanneling = false;
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
+    }
+
+    public static boolean isChanneling() {
+        return isChanneling;
     }
 
     public boolean getUltimateCD() {

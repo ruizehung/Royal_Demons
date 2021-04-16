@@ -90,6 +90,7 @@ public class Bow2 extends Bow implements Weapon, AngleBehavior {
         rangedHitBox.getTransformComponent().setRotationOrigin(
             new Point2D(centerX, ((double) (frameHeight)) / 2));
         rangedHitBox.addComponent(new ExplosionAtDistComponent(ultimateActivated));
+
     }
 
     @Override

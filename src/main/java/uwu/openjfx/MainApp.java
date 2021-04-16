@@ -1,5 +1,6 @@
 package uwu.openjfx;
 
+import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.MenuItem;
@@ -20,7 +21,15 @@ import uwu.openjfx.events.InteractEvent;
 import uwu.openjfx.input.*;
 import uwu.openjfx.items.Heart;
 import uwu.openjfx.items.Item;
+import uwu.openjfx.weapons.Bow0;
+import uwu.openjfx.weapons.Bow1;
+import uwu.openjfx.weapons.Bow2;
 import uwu.openjfx.weapons.GoldenSword0;
+import uwu.openjfx.weapons.GoldenSword1;
+import uwu.openjfx.weapons.GoldenSword2;
+import uwu.openjfx.weapons.MagicStaff0;
+import uwu.openjfx.weapons.MagicStaff1;
+import uwu.openjfx.weapons.MagicStaff2;
 
 import java.io.File;
 import java.util.*;
@@ -40,9 +49,10 @@ public class MainApp extends GameApplication {
     private Set<String> weaponsSet;
     private Map<String, String> itemNameAssetMap;
     private Map<String, Item> itemNameObjMap;
-    private final Boolean developerCheat = false;
+    private final Boolean developerCheat = true;
     private static boolean isTesting = false;
     private static Random random = new Random();
+    private static List<Entity> hitBoxes = new ArrayList<>();
 
     // Top priority : (
 
@@ -75,8 +85,8 @@ public class MainApp extends GameApplication {
         }
         settings.setGameMenuEnabled(true);
         settings.setEnabledMenuItems(EnumSet.of(MenuItem.EXTRA));
-        // settings.setDeveloperMenuEnabled(true);
-        // settings.setApplicationMode(ApplicationMode.DEVELOPER);
+        settings.setDeveloperMenuEnabled(true);
+        settings.setApplicationMode(ApplicationMode.DEVELOPER);
     }
 
 
@@ -94,11 +104,10 @@ public class MainApp extends GameApplication {
 
     @Override
     protected void onUpdate(double tpf) {
-        if (PlayerComponent.getCurrentWeapon().isMeleeAttack()) {
-            List<Entity> hitboxes = FXGL.getGameWorld().getEntitiesByType(RoyalType.PLAYERATTACK);
-            for (Entity hitbox : hitboxes) {
-                if (hitbox != null && hitbox.isActive()) {
-                    hitbox.removeFromWorld();
+        if (!hitBoxes.isEmpty()) {
+            for (Entity hitBox : hitBoxes) {
+                if (hitBox != null && hitBox.isActive()) {
+                    hitBox.removeFromWorld();
                 }
             }
         }
@@ -109,6 +118,7 @@ public class MainApp extends GameApplication {
         if (developerCheat) {
             getInput().addAction(new KillAllEnemy("KillAll"), KeyCode.K);
             getInput().addAction(new TeleportToBossRoom("TeleportToBossRoom"), KeyCode.B);
+            UI.ragePotProperty().set(5);
         }
         // TODO_: refactor all these to input package
         //region Movement
@@ -175,7 +185,8 @@ public class MainApp extends GameApplication {
         getInput().addAction(new UserAction("LMB") {
             @Override
             protected void onActionBegin() {
-                if (!player.getComponent(PlayerComponent.class).isAttacking()) {
+                if (!player.getComponent(PlayerComponent.class).isAttacking()
+                    && !PlayerComponent.isChanneling()) {
                     player.getComponent(PlayerComponent.class).setMousePosition(
                             FXGL.getInput().getMousePositionWorld().getX(),
                             FXGL.getInput().getMousePositionWorld().getY());
@@ -211,46 +222,58 @@ public class MainApp extends GameApplication {
     @Override
     protected void initGame() {
         if (developerCheat) {
-            GoldenSword0 goldenSword0 = new GoldenSword0();
-            PlayerComponent.setCurrentWeapon(goldenSword0);
-            PlayerComponent.getWeaponInventoryList().add(goldenSword0);
-            PlayerComponent.setGold(1000);
-
-            /*
-            GoldenSword1 goldenSword1 = new GoldenSword1();
-            PlayerComponent.setCurrentWeapon(goldenSword1);
-            PlayerComponent.getWeaponInventoryList().add(goldenSword1);
-            PlayerComponent.setGold(1000);
-
-            GoldenSword2 goldenSword2 = new GoldenSword2();
-            PlayerComponent.setCurrentWeapon(goldenSword2);
-            PlayerComponent.getWeaponInventoryList().add(goldenSword2);
-            PlayerComponent.setGold(1000);
-
-            Bow0 bow0 = new Bow0();
-            PlayerComponent.setCurrentWeapon(bow0);
-            PlayerComponent.getWeaponInventoryList().add(bow0);
-
-            Bow1 bow1 = new Bow1();
-            PlayerComponent.setCurrentWeapon(bow1);
-            PlayerComponent.getWeaponInventoryList().add(bow1);
-
-            Bow2 bow2 = new Bow2();
-            PlayerComponent.setCurrentWeapon(bow2);
-            PlayerComponent.getWeaponInventoryList().add(bow2);
-
-            MagicStaff0 magicStaff0 = new MagicStaff0();
-            PlayerComponent.setCurrentWeapon(magicStaff0);
-            PlayerComponent.getWeaponInventoryList().add(magicStaff0);
-
-            MagicStaff1 magicStaff1 = new MagicStaff1();
-            PlayerComponent.setCurrentWeapon(magicStaff1);
-            PlayerComponent.getWeaponInventoryList().add(magicStaff1);
-
-            MagicStaff2 magicStaff2 = new MagicStaff2();
-            PlayerComponent.setCurrentWeapon(magicStaff2);
-            PlayerComponent.getWeaponInventoryList().add(magicStaff2);
-             */
+            int i = 1;
+            switch (i) {
+            case 0:
+                GoldenSword0 goldenSword0 = new GoldenSword0();
+                PlayerComponent.setCurrentWeapon(goldenSword0);
+                PlayerComponent.getWeaponInventoryList().add(goldenSword0);
+                PlayerComponent.setGold(1000);
+                break;
+            case 1:
+                GoldenSword1 goldenSword1 = new GoldenSword1();
+                PlayerComponent.setCurrentWeapon(goldenSword1);
+                PlayerComponent.getWeaponInventoryList().add(goldenSword1);
+                PlayerComponent.setGold(1000);
+                break;
+            case 2:
+                GoldenSword2 goldenSword2 = new GoldenSword2();
+                PlayerComponent.setCurrentWeapon(goldenSword2);
+                PlayerComponent.getWeaponInventoryList().add(goldenSword2);
+                PlayerComponent.setGold(1000);
+                break;
+            case 3:
+                Bow0 bow0 = new Bow0();
+                PlayerComponent.setCurrentWeapon(bow0);
+                PlayerComponent.getWeaponInventoryList().add(bow0);
+                break;
+            case 4:
+                Bow1 bow1 = new Bow1();
+                PlayerComponent.setCurrentWeapon(bow1);
+                PlayerComponent.getWeaponInventoryList().add(bow1);
+                break;
+            case 5:
+                Bow2 bow2 = new Bow2();
+                PlayerComponent.setCurrentWeapon(bow2);
+                PlayerComponent.getWeaponInventoryList().add(bow2);
+                break;
+            case 6:
+                MagicStaff0 magicStaff0 = new MagicStaff0();
+                PlayerComponent.setCurrentWeapon(magicStaff0);
+                PlayerComponent.getWeaponInventoryList().add(magicStaff0);
+                break;
+            case 7:
+                MagicStaff1 magicStaff1 = new MagicStaff1();
+                PlayerComponent.setCurrentWeapon(magicStaff1);
+                PlayerComponent.getWeaponInventoryList().add(magicStaff1);
+                break;
+            case 8:
+                MagicStaff2 magicStaff2 = new MagicStaff2();
+                PlayerComponent.setCurrentWeapon(magicStaff2);
+                PlayerComponent.getWeaponInventoryList().add(magicStaff2);
+                break;
+            default:
+            }
         }
         // Initialize Epressed to false. During the time player press E, this will
         // become true
@@ -347,7 +370,10 @@ public class MainApp extends GameApplication {
 
         textGold.textProperty().bind(UI.getGoldProperty().asString());
         getGameScene().addUINode(textGold); // add to the scene graph
+    }
 
+    public static void addToHitBoxDestruction(Entity hitBox) {
+        hitBoxes.add(hitBox);
     }
 
     public void loadEnemiesAsset() {
