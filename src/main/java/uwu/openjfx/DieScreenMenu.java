@@ -37,7 +37,7 @@ public class DieScreenMenu extends FXGLMenu {
 
         animation = FXGL.animationBuilder()
                 .duration(Duration.seconds(0.5))
-                .interpolator(Interpolators.BACK.EASE_OUT())
+                .interpolator(Interpolators.LINEAR.EASE_IN())
                 .translate(content)
                 .from(new Point2D(FXGL.getAppWidth() / 4.0, -400.0))
                 .to(new Point2D(FXGL.getAppWidth() / 4.0, FXGL.getAppHeight() / 15.0))
