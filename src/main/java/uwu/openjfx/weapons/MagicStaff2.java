@@ -27,10 +27,7 @@ public class MagicStaff2 implements Weapon, AngleBehavior {
     private final double playerHitBoxHeight = 40; // height of player's hitbox from 15 to 55
     private Vec2 dir; // the direction with respect to mouse-pressed location
     private boolean ultimateActivated;
-    private Image sprite = new Image("assets/textures/ui/weapons/staff0_ui.png"); // sprite
-    private String inventoryIconPath = "ui/inventory/nature_staff.png";
-    private String name = "Nature Staff";
-    private double attackDamage = 75;
+    private final Image sprite = new Image("assets/textures/ui/weapons/staff2_ui.png"); // sprite
 
     @Override
     public void prepAttack(Entity player) {
@@ -85,6 +82,7 @@ public class MagicStaff2 implements Weapon, AngleBehavior {
 
         if (!ultimateActivated) {
             int speed = 300; // speed at which magic spell goes
+            double attackDamage = 80;
 
             /*
                 Instantiate a brand new magic spell that will hold the
@@ -221,19 +219,20 @@ public class MagicStaff2 implements Weapon, AngleBehavior {
 
     @Override
     public String getWeaponIconPath() {
-        return inventoryIconPath;
+        return "ui/inventory/staff2.png";
     }
 
     @Override
     public String getName() {
-        return name;
+        return "Dragon's Staff";
     }
 
     @Override
     public String getDescription() {
-        return "Some description";
+        return "A Dragon's Staff's primary element is Fire, shooting fireballs in the "
+            + "direction of target. When casting the ultimate, the wielder shall momentarily "
+            + "release a dragon's breath of fire, damaging any enemies within its range.";
     }
-
     @Override
     public boolean isMeleeAttack() {
         return false;

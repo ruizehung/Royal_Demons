@@ -17,12 +17,15 @@ public class Bow2 extends Bow implements Weapon, AngleBehavior {
         super(new Image(
             "assets/textures/ui/weapons/bow2_ui.png"),
             "bow2_arrow",
-            75,
+            80,
             "bow2_charge_44x43",
             "bow2_charge_44x43",
             650, 800);
-        this.name = "buwu 2";
-        this.description = "This is a buwu 2";
+        this.name = "Marksman's Bow";
+        this.description
+            = "A Marksman's Bow offers the highest stability, allowing for rapid aim and punishing "
+            + "hits. When casting the ultimate, an explosive arrow will be shot and will explode, "
+            + "damaging any enemies nearby.";
         this.inventoryIconPath = "ui/inventory/bow2.png";
     }
 
