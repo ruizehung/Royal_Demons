@@ -61,6 +61,9 @@ public class CreatureComponent extends Component implements HasLife {
                 isInvulnerable = true;
                 invulnerability();
             }
+            if (this instanceof BossComponent) {
+                BossComponent.setBossHealthProperty((int) (healthPoints - (point * attackPower) / armor));
+            }
             playerHealthIntegerProperty.set(healthPoints);
         }
     }

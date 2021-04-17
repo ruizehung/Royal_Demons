@@ -3,14 +3,17 @@ package uwu.openjfx.input;
 import com.almasb.fxgl.cutscene.Cutscene;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.ui.ProgressBar;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import uwu.openjfx.MapGeneration.GameMap;
+import uwu.openjfx.components.BossComponent;
 import uwu.openjfx.components.PlayerComponent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameScene;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
 public class TeleportToBossRoom extends UserAction {
     public TeleportToBossRoom(String name) {
@@ -37,5 +40,17 @@ public class TeleportToBossRoom extends UserAction {
         FXGL.getSceneService().getTimer().runOnceAfter(() -> FXGL.getCutsceneService()
                 .startCutscene(
                         new Cutscene(bossFight)), Duration.millis(1500));
+        getAudioPlayer().stopMusic(FXGL.getAssetLoader().loadMusic("evil4.mp3"));
+        loopBGM("boss/boss_battle_ 2.mp3");
+
+        ProgressBar bossHealth = new ProgressBar();
+        bossHealth.setBackgroundFill(Color.RED);
+        bossHealth.setHeight(25);
+        bossHealth.setMinValue(0);
+        bossHealth.setMaxValue(100);
+        bossHealth.setTranslateX(FXGL.getAppWidth() / 2.0 - bossHealth.getBackgroundBar().getWidth() / 2);
+        bossHealth.setTranslateY(12.5);
+        bossHealth.currentValueProperty().bind(BossComponent.getBossHealthProperty());
+        FXGL.getGameScene().addUINodes(bossHealth);
     }
 }

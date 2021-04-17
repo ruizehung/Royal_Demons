@@ -11,6 +11,7 @@ public class GameOverWhenDie implements Behavior {
     public void act(Entity entity) {
         if (!MainApp.isIsTesting()) {
             FXGL.getSceneService().pushSubScene(new DieScreenMenu(MenuType.GAME_MENU));
+            FXGL.play("die.wav");
         }
     }
 }
