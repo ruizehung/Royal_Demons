@@ -430,7 +430,8 @@ public class MainApp extends GameApplication {
         for (File file : dir.listFiles()) {
             if (file.getName().endsWith(".tmx") && !file.getName().equals("initialRoom.tmx")
                     && !file.getName().equals("bossRoom.tmx")
-                    && !file.getName().equals("challengeRoom.tmx")) {
+                    && !file.getName().equals("challengeRoom.tmx")
+                    && !file.getName().equals("finalWinRoom.tmx")) {
                 roomTypeList.add(file.getName().replaceAll(".tmx", ""));
             }
         }
