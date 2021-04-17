@@ -50,13 +50,21 @@ public class CreatureComponent extends Component implements HasLife {
                 System.out.println("BLOCKED");
                 return;
             }
-            healthPoints -= (point * attackPower) / armor;
+            double damageDealt = (point * attackPower) / armor;
             if (this instanceof EnemyComponent) {
-                System.out.println(healthPoints);
+                if (damageDealt > getHealthPoints()) {
+                    PlayerComponent.addToDamageDealt(getHealthPoints());
+                } else {
+                    PlayerComponent.addToDamageDealt(damageDealt);
+                }
             }
+            healthPoints -= damageDealt;
             if (healthPoints <= 0) { // die
                 healthPoints = 0;
                 die();
+                if (this instanceof EnemyComponent) {
+                    PlayerComponent.addToMonstersKilled();
+                }
             } else {
                 isInvulnerable = true;
                 invulnerability();

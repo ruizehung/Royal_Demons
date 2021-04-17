@@ -4,6 +4,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import uwu.openjfx.MainApp;
 import uwu.openjfx.RoyalType;
 import uwu.openjfx.UI;
 import uwu.openjfx.behaviors.DoNothing;
@@ -26,13 +27,15 @@ public class BossComponent extends EnemyComponent {
     @Override
     public void die() {
         super.die();
-        Entity finalDoor = FXGL.getGameWorld().getEntitiesByType(RoyalType.FINALDOOR).get(0);
-        finalDoor.getViewComponent().clearChildren();
-        finalDoor.getViewComponent().addChild(FXGL.texture("woodenDoorOpened.png"));
-        getAudioPlayer().stopMusic(FXGL.getAssetLoader().loadMusic("boss/boss_battle_ 2.mp3"));
-        loopBGM("end/Training Is Over.mp3");
-        FXGL.getGameScene().clearUINodes();
-        UI.init(FXGL.geto("player"));
+        if (!MainApp.isIsTesting()) {
+            Entity finalDoor = FXGL.getGameWorld().getEntitiesByType(RoyalType.FINALDOOR).get(0);
+            finalDoor.getViewComponent().clearChildren();
+            finalDoor.getViewComponent().addChild(FXGL.texture("woodenDoorOpened.png"));
+            getAudioPlayer().stopMusic(FXGL.getAssetLoader().loadMusic("boss/boss_battle_ 2.mp3"));
+            loopBGM("end/Training Is Over.mp3");
+            FXGL.getGameScene().clearUINodes();
+            UI.init(FXGL.geto("player"));
+        }
     }
 
     public static IntegerProperty getBossHealthProperty() {
