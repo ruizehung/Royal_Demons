@@ -44,7 +44,8 @@ public class PlayerFinalDoorCollisionHandler extends CollisionHandler {
                     "2.image = ui_peach.png",
                     "1: omg is dat u??",
                     "2: ya boo, thnx for saving me",
-                    "1: np, lets go home and watch some netflix ^^"
+                    "1: np, lets go home and watch some netflix ^^, i stole "
+                            + FXGL.geti("coin") + " coins on the way here"
             ));
             FXGL.getSceneService().getTimer().runOnceAfter(() -> FXGL.getCutsceneService()
                     .startCutscene(

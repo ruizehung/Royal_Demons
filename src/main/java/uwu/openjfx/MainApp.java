@@ -271,6 +271,7 @@ public class MainApp extends GameApplication {
         set("Epressed", false);
         set("Fpressed", false);
         set("developerCheat", developerCheat);
+        set("coin", 0);
 
         loadRoomAsset();
         loadEnemiesAsset();
