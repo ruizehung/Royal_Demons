@@ -118,6 +118,7 @@ public class MainApp extends GameApplication {
         if (developerCheat) {
             getInput().addAction(new KillAllEnemy("KillAll"), KeyCode.K);
             getInput().addAction(new TeleportToBossRoom("TeleportToBossRoom"), KeyCode.B);
+            UI.ragePotProperty().set(5);
         }
         // TODO_: refactor all these to input package
         //region Movement
@@ -221,8 +222,8 @@ public class MainApp extends GameApplication {
     @Override
     protected void initGame() {
         if (developerCheat) {
-            int i = 0;
-            switch (i) {
+            int i = 1;
+            switch (8) {
             case 0:
                 GoldenSword0 goldenSword0 = new GoldenSword0();
                 PlayerComponent.setCurrentWeapon(goldenSword0);

@@ -5,7 +5,9 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import uwu.openjfx.MainApp;
+import uwu.openjfx.UI;
 import uwu.openjfx.collision.PlayerAttackEnemyCollisionHandler;
+import uwu.openjfx.collision.PlayerDroppedItemCollisionHandler;
 import uwu.openjfx.components.AttackDamageComponent;
 import uwu.openjfx.components.BossComponent;
 import uwu.openjfx.components.EnemyComponent;
@@ -144,5 +146,48 @@ public class TestPlayerAttackEnemyCollisionHandler {
         // confirm enemy health with armor is greater than what it would've been without armor
         assert enemyComponent.getHealthPoints()
                 >= (enemyComponent.getHealthPoints() - attackDamage);
+    }
+
+    // jason 5
+    @RepeatedTest(10)
+    void testPlayerPierceWithAttackPowerBuff() {
+        /*
+            Pick up potion
+         */
+        Entity potion = new Entity();
+        potion.setProperty("name", "RagePotion");
+
+
+        Entity player = new Entity();
+        PlayerComponent playerComponent = new PlayerComponent(10);
+        player.addComponent(playerComponent);
+
+        PlayerDroppedItemCollisionHandler handler = new PlayerDroppedItemCollisionHandler();
+        handler.onCollision(player, potion);
+
+        /*
+            Drink potion
+         */
+        UI.useRagePot();
+
+        /*
+            Spawn and attack enemy with 100% chance of blocking but Player has Pierce
+         */
+        int origHealth = 100;
+        Entity monster = new Entity();
+        EnemyComponent enemyComponent = new EnemyComponent(
+            origHealth, "", 10, 20);
+        monster.addComponent(enemyComponent);
+        monster.setProperty("CreatureComponent", enemyComponent);
+
+        Entity weapon = new Entity();
+        weapon.addComponent(new AttackDamageComponent(false, 100));
+        enemyComponent.setBlockProbability(100);
+        enemyComponent.setArmorStat(1);
+
+        PlayerAttackEnemyCollisionHandler attackHandler = new PlayerAttackEnemyCollisionHandler();
+        attackHandler.onCollisionBegin(weapon, monster);
+
+        assert enemyComponent.dead();
     }
 }

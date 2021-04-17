@@ -26,7 +26,7 @@ public class MagicStaff1 implements Weapon, AngleBehavior {
     private final double playerHitBoxHeight = 40; // height of player's hitbox from 15 to 55
     private Vec2 dir; // the direction with respect to mouse-pressed location
     private boolean ultimateActivated;
-    private Image sprite = new Image("assets/textures/ui/weapons/staff0_ui.png"); // weapon sprite
+    private Image sprite = new Image("assets/textures/ui/weapons/staff0_ui.png"); // sprite
     private String inventoryIconPath = "ui/inventory/nature_staff.png";
     private String name = "Nature Staff";
     private double attackDamage = 75;
@@ -45,7 +45,7 @@ public class MagicStaff1 implements Weapon, AngleBehavior {
                 put("duration", getDuration(ultimateActivated)).
                 put("frameWidth", width).
                 put("frameHeight", height).
-                put("fpr", 7).
+                put("fpr", 4).
                 put("weaponSprite", sprite));
         // Spawn bow at player's "hands"
         b.getTransformComponent().setAnchoredPosition(
@@ -57,7 +57,8 @@ public class MagicStaff1 implements Weapon, AngleBehavior {
         if (player.getScaleX() == 1) {
             b.setScaleX(1);
         } else {
-            b.translateX(width - 2 * staffOffsetX); // smooth reflection over middle axis rel. to player
+            // smooth reflection over middle axis rel. to player
+            b.translateX(width - 2 * staffOffsetX);
             b.setScaleX(-1);
         }
     }
