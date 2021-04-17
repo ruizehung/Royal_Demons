@@ -1,6 +1,5 @@
 package uwu.openjfx;
 
-import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.MenuItem;
@@ -21,15 +20,7 @@ import uwu.openjfx.events.InteractEvent;
 import uwu.openjfx.input.*;
 import uwu.openjfx.items.Heart;
 import uwu.openjfx.items.Item;
-import uwu.openjfx.weapons.Bow0;
-import uwu.openjfx.weapons.Bow1;
-import uwu.openjfx.weapons.Bow2;
-import uwu.openjfx.weapons.GoldenSword0;
-import uwu.openjfx.weapons.GoldenSword1;
-import uwu.openjfx.weapons.GoldenSword2;
-import uwu.openjfx.weapons.MagicStaff0;
-import uwu.openjfx.weapons.MagicStaff1;
-import uwu.openjfx.weapons.MagicStaff2;
+import uwu.openjfx.weapons.*;
 
 import java.io.File;
 import java.util.*;
@@ -185,7 +176,7 @@ public class MainApp extends GameApplication {
             @Override
             protected void onActionBegin() {
                 if (!player.getComponent(PlayerComponent.class).isAttacking()
-                    && !PlayerComponent.isChanneling()) {
+                        && !PlayerComponent.isChanneling()) {
                     player.getComponent(PlayerComponent.class).setMousePosition(
                             FXGL.getInput().getMousePositionWorld().getX(),
                             FXGL.getInput().getMousePositionWorld().getY());
@@ -197,7 +188,7 @@ public class MainApp extends GameApplication {
             @Override
             protected void onActionBegin() {
                 if (!player.getComponent(PlayerComponent.class).isAttacking()
-                    && !player.getComponent(PlayerComponent.class).getUltimateCD()) {
+                        && !player.getComponent(PlayerComponent.class).getUltimateCD()) {
                     player.getComponent(PlayerComponent.class).setMousePosition(
                             FXGL.getInput().getMousePositionWorld().getX(),
                             FXGL.getInput().getMousePositionWorld().getY());
@@ -223,55 +214,55 @@ public class MainApp extends GameApplication {
         if (developerCheat) {
             int i = 0;
             switch (i) {
-            case 0:
-                GoldenSword0 goldenSword0 = new GoldenSword0();
-                PlayerComponent.setCurrentWeapon(goldenSword0);
-                PlayerComponent.getWeaponInventoryList().add(goldenSword0);
-                PlayerComponent.setGold(1000);
-                break;
-            case 1:
-                GoldenSword1 goldenSword1 = new GoldenSword1();
-                PlayerComponent.setCurrentWeapon(goldenSword1);
-                PlayerComponent.getWeaponInventoryList().add(goldenSword1);
-                PlayerComponent.setGold(1000);
-                break;
-            case 2:
-                GoldenSword2 goldenSword2 = new GoldenSword2();
-                PlayerComponent.setCurrentWeapon(goldenSword2);
-                PlayerComponent.getWeaponInventoryList().add(goldenSword2);
-                PlayerComponent.setGold(1000);
-                break;
-            case 3:
-                Bow0 bow0 = new Bow0();
-                PlayerComponent.setCurrentWeapon(bow0);
-                PlayerComponent.getWeaponInventoryList().add(bow0);
-                break;
-            case 4:
-                Bow1 bow1 = new Bow1();
-                PlayerComponent.setCurrentWeapon(bow1);
-                PlayerComponent.getWeaponInventoryList().add(bow1);
-                break;
-            case 5:
-                Bow2 bow2 = new Bow2();
-                PlayerComponent.setCurrentWeapon(bow2);
-                PlayerComponent.getWeaponInventoryList().add(bow2);
-                break;
-            case 6:
-                MagicStaff0 magicStaff0 = new MagicStaff0();
-                PlayerComponent.setCurrentWeapon(magicStaff0);
-                PlayerComponent.getWeaponInventoryList().add(magicStaff0);
-                break;
-            case 7:
-                MagicStaff1 magicStaff1 = new MagicStaff1();
-                PlayerComponent.setCurrentWeapon(magicStaff1);
-                PlayerComponent.getWeaponInventoryList().add(magicStaff1);
-                break;
-            case 8:
-                MagicStaff2 magicStaff2 = new MagicStaff2();
-                PlayerComponent.setCurrentWeapon(magicStaff2);
-                PlayerComponent.getWeaponInventoryList().add(magicStaff2);
-                break;
-            default:
+                case 0:
+                    GoldenSword0 goldenSword0 = new GoldenSword0();
+                    PlayerComponent.setCurrentWeapon(goldenSword0);
+                    PlayerComponent.getWeaponInventoryList().add(goldenSword0);
+                    PlayerComponent.setGold(1000);
+                    break;
+                case 1:
+                    GoldenSword1 goldenSword1 = new GoldenSword1();
+                    PlayerComponent.setCurrentWeapon(goldenSword1);
+                    PlayerComponent.getWeaponInventoryList().add(goldenSword1);
+                    PlayerComponent.setGold(1000);
+                    break;
+                case 2:
+                    GoldenSword2 goldenSword2 = new GoldenSword2();
+                    PlayerComponent.setCurrentWeapon(goldenSword2);
+                    PlayerComponent.getWeaponInventoryList().add(goldenSword2);
+                    PlayerComponent.setGold(1000);
+                    break;
+                case 3:
+                    Bow0 bow0 = new Bow0();
+                    PlayerComponent.setCurrentWeapon(bow0);
+                    PlayerComponent.getWeaponInventoryList().add(bow0);
+                    break;
+                case 4:
+                    Bow1 bow1 = new Bow1();
+                    PlayerComponent.setCurrentWeapon(bow1);
+                    PlayerComponent.getWeaponInventoryList().add(bow1);
+                    break;
+                case 5:
+                    Bow2 bow2 = new Bow2();
+                    PlayerComponent.setCurrentWeapon(bow2);
+                    PlayerComponent.getWeaponInventoryList().add(bow2);
+                    break;
+                case 6:
+                    MagicStaff0 magicStaff0 = new MagicStaff0();
+                    PlayerComponent.setCurrentWeapon(magicStaff0);
+                    PlayerComponent.getWeaponInventoryList().add(magicStaff0);
+                    break;
+                case 7:
+                    MagicStaff1 magicStaff1 = new MagicStaff1();
+                    PlayerComponent.setCurrentWeapon(magicStaff1);
+                    PlayerComponent.getWeaponInventoryList().add(magicStaff1);
+                    break;
+                case 8:
+                    MagicStaff2 magicStaff2 = new MagicStaff2();
+                    PlayerComponent.setCurrentWeapon(magicStaff2);
+                    PlayerComponent.getWeaponInventoryList().add(magicStaff2);
+                    break;
+                default:
             }
         }
         // Initialize Epressed to false. During the time player press E, this will
@@ -284,7 +275,7 @@ public class MainApp extends GameApplication {
         loadEnemiesAsset();
         initItemsNameAssetMappingAndWeaponsList();
         gameMap = new GameMap(8);
-        gameMap.setRandomSeed(63);
+        // gameMap.setRandomSeed(63);
         gameMap.generateRooms();
         set("gameMap", gameMap);
 
@@ -335,6 +326,8 @@ public class MainApp extends GameApplication {
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerDroppedItemCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerChestCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerNPCCollisionHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new PlayerFinalDoorCollisionHandler());
+
     }
 
     @Override

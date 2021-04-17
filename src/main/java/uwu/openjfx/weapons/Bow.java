@@ -26,7 +26,7 @@ public abstract class Bow implements Weapon, AngleBehavior {
 
     protected boolean ultimateActivated;
     private final Image sprite; // weapon sprite
-    protected  String inventoryIconPath;
+    protected String inventoryIconPath;
     private final String arrow;
     protected String name;
     protected String description;

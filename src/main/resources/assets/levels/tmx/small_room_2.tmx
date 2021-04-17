@@ -3,7 +3,7 @@
  <tileset firstgid="1" name="0x72_DungeonTilesetII_32x32" tilewidth="32" tileheight="32" tilecount="1024" columns="32">
   <image source="0x72_DungeonTilesetII_32x32.png" width="1024" height="1024"/>
  </tileset>
- <layer id="1" name="floor" width="30" height="30">
+ <layer id="1" name="floor" width="30" height="30" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,130,130,130,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,130,130,130,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -37,7 +37,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="2" name="wall" width="30" height="30">
+ <layer id="2" name="wall" width="30" height="30" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,225,4,4,4,292,0,0,0,291,325,325,228,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,257,35,35,35,35,0,0,0,35,35,35,260,0,0,0,0,0,0,0,0,0,
@@ -71,7 +71,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="3" name="env" width="30" height="30">
+ <layer id="3" name="env" width="30" height="30" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -105,7 +105,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="4" name="Object Layer 1">
+ <objectgroup id="4" name="Object Layer 1" locked="1">
   <object id="1" name="Door" type="door" x="323.326" y="847.948" width="57.5143" height="46.5449">
    <properties>
     <property name="direction" value="south"/>
