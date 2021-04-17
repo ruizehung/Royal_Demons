@@ -26,10 +26,7 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
     private final double playerHitBoxHeight = 40; // height of player's hitbox from 15 to 55
     private Vec2 dir; // the direction with respect to mouse-pressed location
     private boolean ultimateActivated;
-    private Image sprite = new Image("assets/textures/ui/weapons/staff0_ui.png"); // sprite
-    private String inventoryIconPath = "ui/inventory/nature_staff.png";
-    private String name = "Nature Staff";
-    private double attackDamage = 75;
+    private final Image sprite = new Image("assets/textures/ui/weapons/staff0_ui.png"); // sprite
 
     @Override
     public void prepAttack(Entity player) {
@@ -83,6 +80,7 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
         double centerY = ((double) (topBottomOffset + (frameHeight - topBottomOffset)) / 2);
 
         int speed = 300; // speed at which magic spell goes
+        double attackDamage = 60;
 
         /*
             Instantiate a brand new magic spell that will hold the
@@ -164,17 +162,19 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
 
     @Override
     public String getWeaponIconPath() {
-        return inventoryIconPath;
+        return "ui/inventory/staff0.png";
     }
 
     @Override
     public String getName() {
-        return name;
+        return "Apprentice's Staff";
     }
 
     @Override
     public String getDescription() {
-        return "Some description";
+        return "An Apprentice's Staff's primary element is Arcanic, shooting Arcane balls in the "
+            + "direction of target. When casting the ultimate, An explosive Arcane ball will be "
+            + "shot and will detonate into a blue nova, damaging enemies nearby.";
     }
 
     @Override

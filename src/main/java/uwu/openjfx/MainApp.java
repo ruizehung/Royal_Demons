@@ -213,7 +213,7 @@ public class MainApp extends GameApplication {
     @Override
     protected void initGame() {
         if (developerCheat) {
-            int i = 6;
+            int i = 8;
             switch (i) {
             case 0:
                 GoldenSword0 goldenSword0 = new GoldenSword0();

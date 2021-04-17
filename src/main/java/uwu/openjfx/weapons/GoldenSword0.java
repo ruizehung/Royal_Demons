@@ -18,10 +18,7 @@ import static com.almasb.fxgl.dsl.FXGL.spawn;
  */
 public class GoldenSword0 implements Weapon {
     private boolean ultimateActivated;
-    private Image sprite = new Image("assets/textures/ui/weapons/sword0_ui.png"); // weapon sprite
-    private String name = "Golden Sword";
-    private String inventoryIconPath = "ui/inventory/golden_sword.png";
-    private double attackDamage = 50;
+    private final double attackDamage = 50;
 
     @Override
     public boolean equals(Object obj) {
@@ -95,44 +92,6 @@ public class GoldenSword0 implements Weapon {
         } else {
             fanOfKnives(player);
         }
-    }
-
-    @Override
-    public int getDuration(boolean ultimateActivated) {
-        int attackDuration = 450; // charge-up time of attacking in milliseconds
-        int ultimateChargeDuration = 500; // charge-up time of attacking in milliseconds
-        this.ultimateActivated = ultimateActivated;
-        return ultimateActivated ? ultimateChargeDuration : attackDuration;
-    }
-
-    @Override
-    public Image getWeaponSprite() {
-        return sprite;
-    }
-
-    @Override
-    public String getWeaponIconPath() {
-        return inventoryIconPath;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public String getDescription() {
-        return "Some description";
-    }
-
-    @Override
-    public boolean isMeleeAttack() {
-        return true;
-    }
-
-    @Override
-    public int getUltimateCD() {
-        return 2;
     }
 
     private void fanOfKnives(Entity player) {
@@ -212,5 +171,45 @@ public class GoldenSword0 implements Weapon {
                 new Point2D(centerX, ((double) (frameHeight)) / 2));
             rangedHitBox.addComponent(new IrremovableComponent());
         }
+    }
+
+    @Override
+    public int getDuration(boolean ultimateActivated) {
+        int attackDuration = 450; // charge-up time of attacking in milliseconds
+        int ultimateChargeDuration = 500; // charge-up time of attacking in milliseconds
+        this.ultimateActivated = ultimateActivated;
+        return ultimateActivated ? ultimateChargeDuration : attackDuration;
+    }
+
+    @Override
+    public Image getWeaponSprite() {
+        return new Image("assets/textures/ui/weapons/sword0_ui.png");
+    }
+
+    @Override
+    public String getWeaponIconPath() {
+        return "ui/inventory/sword0.png";
+    }
+
+    @Override
+    public String getName() {
+        return "Golden Dagger";
+    }
+
+    @Override
+    public String getDescription() {
+        return "A Rogue's Dagger may not deal so much damage, but its lightweight aspect allows "
+            + "very rapid strikes. When casting the ultimate, the wielder shall shoot a nova "
+            + "of daggers outwards.";
+    }
+
+    @Override
+    public boolean isMeleeAttack() {
+        return true;
+    }
+
+    @Override
+    public int getUltimateCD() {
+        return 2;
     }
 }

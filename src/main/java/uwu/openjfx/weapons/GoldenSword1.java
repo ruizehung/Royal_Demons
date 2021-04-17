@@ -15,12 +15,7 @@ import static com.almasb.fxgl.dsl.FXGL.spawn;
     will be handled in the WeaponAnimationComponent class.
  */
 public class GoldenSword1 implements Weapon {
-    private Entity meleeHitBox; // slash hitbox to be spawned (ultimate / nonultimate)
     private boolean ultimateActivated;
-    private Image sprite = new Image("assets/textures/ui/weapons/sword0_ui.png"); // weapon sprite
-    private String name = "Golden Sword";
-    private String inventoryIconPath = "ui/inventory/golden_sword.png";
-    private double attackDamage = 50;
 
     @Override
     public boolean equals(Object obj) {
@@ -57,11 +52,12 @@ public class GoldenSword1 implements Weapon {
         int hitBoxWidth; // width of the hitbox
         int hitBoxHeight; // height of the hitbox
         double swordOffset; // distance from player the hitbox should spawn
+        double attackDamage = 50;
 
         hitBoxWidth = !ultimateActivated ? 82 : 175;
         hitBoxHeight = !ultimateActivated ? 130 : 175;
         swordOffset = !ultimateActivated ? 22 : 0;
-        meleeHitBox = spawn("meleeSwordHitBox",
+        Entity meleeHitBox = spawn("meleeSwordHitBox",
                 new SpawnData(player.getX(), player.getY()).
                         put("width", hitBoxWidth).put("height", hitBoxHeight).
                         put("damage", attackDamage));
@@ -84,22 +80,24 @@ public class GoldenSword1 implements Weapon {
 
     @Override
     public Image getWeaponSprite() {
-        return sprite;
+        return new Image("assets/textures/ui/weapons/sword1_ui.png");
     }
 
     @Override
     public String getWeaponIconPath() {
-        return inventoryIconPath;
+        return "ui/inventory/sword1.png";
     }
 
     @Override
     public String getName() {
-        return name;
+        return "Golden Sword";
     }
 
     @Override
     public String getDescription() {
-        return "Some description";
+        return "Squire Knight's Sword wielded by the kingdom's newest warriors. "
+            + "The length of this sword allows intermediary reach. When casting the "
+            + "ultimate, all enemies surrounding the wielder shall be struck.";
     }
 
     @Override

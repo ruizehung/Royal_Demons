@@ -13,9 +13,12 @@ public class Bow0 extends Bow implements Weapon, AngleBehavior {
             "bow0_charge_44x43",
             "bow0_charge_44x43",
             900, 1000);
-        this.name = "buwu";
-        this.description = "This is a buwu";
-        this.inventoryIconPath = "ui/inventory/bow.png";
+        this.name = "Archer's Bow";
+        this.description
+            = "An Archer's Bow may not offer the most stability, but slow and good aim leads "
+            + "to very punishing hits. When casting the ultimate, a volley of arrows will be shot "
+            + "outwards from the wielder.";
+        this.inventoryIconPath = "ui/inventory/bow0.png";
     }
 
     @Override

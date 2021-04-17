@@ -13,8 +13,11 @@ public class Bow1 extends Bow implements Weapon, AngleBehavior {
             "bow1_charge_44x43",
             "bow1_charge_44x43",
             750, 850);
-        this.name = "buwu 1";
-        this.description = "This is a buwu 1";
+        this.name = "Huntsman's Bow";
+        this.description
+            = "A Huntsman's Bow offers decent stability, allowing for quicker aim and stronger "
+            + "hits. When casting the ultimate, a volley of arrows will be shot outwards from the "
+            + "wielder.";
         this.inventoryIconPath = "ui/inventory/bow1.png";
     }
 
