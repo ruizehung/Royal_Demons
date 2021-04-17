@@ -10,6 +10,7 @@ import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import com.almasb.fxgl.time.LocalTimer;
 import javafx.geometry.Point2D;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import uwu.openjfx.MainApp;
 import uwu.openjfx.MapGeneration.Room;
@@ -18,6 +19,7 @@ import uwu.openjfx.RoyalType;
 import java.util.Timer;
 
 import static com.almasb.fxgl.dsl.FXGL.spawn;
+import static com.almasb.fxgl.dsl.FXGL.text;
 
 /*
     This class is responsible for the following:
@@ -95,7 +97,6 @@ public class EnemyComponent extends CreatureComponent {
                 frames / 2, frames / 2);
 
             texture = new AnimatedTexture(animIdle);
-
             texture.loop();
         }
     }
@@ -384,6 +385,10 @@ public class EnemyComponent extends CreatureComponent {
             double yPow = dir.toPoint2D().getY() * knockBackPower;
             physics.setLinearVelocity(new Point2D(xPow, yPow));
         }
+    }
+
+    public void turnSpriteRed() {
+        if (texture != null) texture.set(texture.multiplyColor(Color.RED));
     }
 
     private void kitePlayer() {

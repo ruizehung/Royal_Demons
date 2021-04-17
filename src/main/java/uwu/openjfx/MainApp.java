@@ -213,8 +213,8 @@ public class MainApp extends GameApplication {
     @Override
     protected void initGame() {
         if (developerCheat) {
-            int i = 1;
-            switch (8) {
+            int i = 6;
+            switch (i) {
             case 0:
                 GoldenSword0 goldenSword0 = new GoldenSword0();
                 PlayerComponent.setCurrentWeapon(goldenSword0);

@@ -41,7 +41,7 @@ public class MagicStaff1 implements Weapon, AngleBehavior {
         Entity b = spawn("weapon",
             new SpawnData(
                 player.getX(), player.getY()).
-                put("weaponFile", "red_wand_50x65").
+                put("weaponFile", "orange_wand_50x65").
                 put("duration", getDuration(ultimateActivated)).
                 put("frameWidth", width).
                 put("frameHeight", height).

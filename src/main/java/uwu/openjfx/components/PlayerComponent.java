@@ -25,26 +25,25 @@ public class PlayerComponent extends CreatureComponent {
     private AnimatedTexture texture; // current player animation
     private AnimatedTexture textureRaged; // current player animation if raged
 
-    private AnimationChannel animIdle;
-    private AnimationChannel animWalk;
-    private AnimationChannel animAutoAttack;
-    private AnimationChannel animRagedIdle;
-    private AnimationChannel animRagedWalk;
+    private AnimationChannel animIdle; // idle player anim
+    private AnimationChannel animWalk; // walk player anim
+    private AnimationChannel animAutoAttack; // attack player anim
+    private AnimationChannel animRagedIdle; // purple glow effect idle player anim
+    private AnimationChannel animRagedWalk; // purple glow effect walk player anim
 
     private static Weapon currentWeapon; // Player's current weapon
     private static List<Weapon> weaponInventoryList = new ArrayList<>();
-    private static double attackPower = 1;
-    private static int piercePow = 1;
-    private static boolean isAttackPowerBuffed = false;
-    private static int attackPowerBuffDuration = 300;
-    private static int attackPowerHitCount = 5;
-    private static boolean isChanneling = false;
+    private static double attackPower = 1; // Player attack power based on power buff or normal
+    private static int piercePow = 1; // Player pierces through blocks if 0
+    private static boolean isAttackPowerBuffed = false; // player has drank a rage potion recently
+    private static int attackPowerBuffDuration = 300; // how long attack power buff lasts / 60 sec
+    private static boolean isChanneling = false; // if player is channeling (fire breath)
 
     private double currMouseX; // mouse input for x
     private double currMouseY; // mouse input for y
 
     private double speed = 170;
-    private double velocityDecrementer = 5;
+    private final double velocityDecrementer = 5; // rate at which player decelerates
     private boolean isPressingMovementKeys = false; // Player is moving with WASD / Arrow keys
     private boolean prepAttack = false; // Player has initiated attack charge/channel
     private boolean startAttack = false; // Player does the actual attack
@@ -54,6 +53,8 @@ public class PlayerComponent extends CreatureComponent {
     // Todo: char state class?
     private static String playerName;
     private static String gameDifficulty;
+    private static int monstersKilled;
+    private static double damageDealt;
 
     // Todo: inventory-esque things, move?
     private static int gold;
@@ -123,6 +124,7 @@ public class PlayerComponent extends CreatureComponent {
             }
         }
         //endregion
+
         //region Player performs attack
         if (startAttack) { // Player performs the actual attack
             currentWeapon.attack(getEntity(), currMouseX, currMouseY);
@@ -238,7 +240,7 @@ public class PlayerComponent extends CreatureComponent {
             ultimateCD = true;
             Runnable runnable = () -> {
                 try {
-                    Thread.sleep(currentWeapon.getUltimateCD() * 1000);
+                    Thread.sleep((long) currentWeapon.getUltimateCD() * 1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -309,10 +311,6 @@ public class PlayerComponent extends CreatureComponent {
         isAttackPowerBuffed = buffed;
         piercePow = 0;
         attackPower = 2.5;
-    }
-
-    public static void setAttackPowerBuffDuration(int duration) {
-        attackPowerBuffDuration = duration;
     }
 
     public static double getAttackPower() {
@@ -388,6 +386,22 @@ public class PlayerComponent extends CreatureComponent {
     public void setMousePosition(double mouseXPos, double mouseYPos) {
         currMouseX = mouseXPos;
         currMouseY = mouseYPos;
+    }
+
+    public static int getMonstersKilled() {
+        return monstersKilled;
+    }
+
+    public static void addToMonstersKilled() {
+        monstersKilled++;
+    }
+
+    public static double getDamageDealt() {
+        return damageDealt;
+    }
+
+    public static void addToDamageDealt(double damageDone) {
+        damageDealt += damageDone;
     }
     // endregion
 }

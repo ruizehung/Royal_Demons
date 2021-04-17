@@ -45,6 +45,7 @@ public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
             && (!weapon.getComponent(ProjectileComponent.class).isPaused()))
             || (!weapon.hasComponent(ProjectileComponent.class))) {
             EnemyComponent enemyComponent = enemy.getObject("CreatureComponent");
+            enemyComponent.turnSpriteRed();
             if (!weapon.hasComponent(DamageOverTimeComponent.class)) {
                 enemyComponent.knockBackFromPlayer();
             }
