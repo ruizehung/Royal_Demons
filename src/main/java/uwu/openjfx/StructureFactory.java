@@ -155,4 +155,13 @@ public class StructureFactory implements EntityFactory {
                 .build();
     }
 
+    @Spawns("finalDoor")
+    public Entity newOpenedDoor(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(RoyalType.FINALDOOR)
+                .viewWithBBox("woodenDoorClosed.png")
+                .with(new CollidableComponent(true))
+                .with(new PhysicsComponent())
+                .build();
+    }
 }

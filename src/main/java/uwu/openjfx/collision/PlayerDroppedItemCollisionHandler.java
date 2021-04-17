@@ -25,6 +25,7 @@ public class PlayerDroppedItemCollisionHandler extends CollisionHandler {
             String itemName = itemEntity.getString("name");
             System.out.println("Player picks up " + itemName);
 
+            // This is a piece of shit !!!!!
             // add things to inventory
             if (itemName.equals("HealthPotion")) {
                 UI.addHealthPot();
