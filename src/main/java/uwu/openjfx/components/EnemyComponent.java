@@ -571,7 +571,7 @@ public class EnemyComponent extends CreatureComponent {
             curRoom.setEntityData(idComponent.getId(), "isAlive", 0);
 
             if (curRoom.getRoomType().equals("challengeRoom") && curRoom.enemiesCleared()) {
-                Entity tempChest = FXGL.spawn("chest", 480, 355);
+                Entity tempChest = FXGL.spawn("chest", 480, 387);
                 tempChest.addComponent(new IDComponent("", 999));
             }
         }
