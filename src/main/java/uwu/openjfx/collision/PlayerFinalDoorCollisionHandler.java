@@ -31,13 +31,16 @@ public class PlayerFinalDoorCollisionHandler extends CollisionHandler {
         } else {
             System.out.println("Teleport Player to final room");
             getInput().setProcessInput(false);
+            PlayerComponent playerComponent = FXGL.geto("playerComponent");
+            playerComponent.stop();
+
             GameMap gameMap = FXGL.geto("gameMap");
             Room finalWinRoom = new Room(new Coordinate(999, 999));
             finalWinRoom.setRoomType("finalWinRoom");
             getGameScene().getViewport().fade(() -> {
                 gameMap.loadRoom(finalWinRoom, "center");
                 getInput().setProcessInput(true);
-                ((PlayerComponent) FXGL.geto("playerComponent")).faceRight();
+                playerComponent.faceRight();
             });
 
             ArrayList<String> savePrincess = new ArrayList<>(Arrays.asList(

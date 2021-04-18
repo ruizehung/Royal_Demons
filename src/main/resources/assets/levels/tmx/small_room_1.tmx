@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="36">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="38">
  <tileset firstgid="1" name="0x72_DungeonTilesetII_32x32" tilewidth="32" tileheight="32" tilecount="1024" columns="32">
   <image source="0x72_DungeonTilesetII_32x32.png" width="1024" height="1024"/>
+ </tileset>
+ <tileset firstgid="1025" name="Simple Dungeon Crawler 32x32 Pixel Art Asset Pack" tilewidth="32" tileheight="32" tilecount="72" columns="9">
+  <image source="Simple Dungeon Crawler 32x32 Pixel Art Asset Pack.png" width="288" height="256"/>
  </tileset>
  <layer id="1" name="Floor" width="30" height="30" locked="1">
   <data encoding="csv">
@@ -93,19 +96,19 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,659,0,0,0,0,0,0,0,0,659,0,0,0,0,0,0,0,0,0,0,163,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1029,0,0,0,0,0,0,0,0,0,
+0,0,0,0,659,0,0,0,0,0,0,0,0,659,0,0,0,0,0,0,0,0,0,1026,1026,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,163,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,163,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,163,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,326,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,1029,0,0,0,0,0,0,0,0,0,1028,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="4" name="door&amp;spawn">
+ <objectgroup id="4" name="door&amp;spawn" locked="1">
   <object id="1" type="door" x="13.6125" y="717.217" width="49.0973" height="43.996">
    <properties>
     <property name="direction" value="west"/>
@@ -191,7 +194,7 @@
   <object id="17" type="wall" x="226.319" y="45.1367" width="92.8163" height="29.8792"/>
   <object id="18" type="wall" x="311.507" y="75.3338" width="7.62876" height="563.891"/>
   <object id="19" type="wall" x="314.05" y="630.006" width="558.169" height="23.5219"/>
-  <object id="20" type="wall" x="866.497" y="635.092" width="57.8512" height="110.617"/>
+  <object id="20" type="wall" x="742.8" y="673.085" width="16.3244" height="24.9128"/>
   <object id="22" type="wall" x="226.306" y="891.608" width="640.827" height="23.5219"/>
   <object id="23" type="wall" x="867.451" y="827.718" width="57.8512" height="66.7518"/>
   <object id="24" type="wall" x="32.8512" y="764.054" width="59.8739" height="125.576"/>
@@ -206,5 +209,7 @@
   <object id="32" type="wall" x="134.099" y="362.354" width="19.274" height="12.0211">
    <ellipse/>
   </object>
+  <object id="36" type="wall" x="851.089" y="610.445" width="57.8512" height="110.617"/>
+  <object id="37" type="wall" x="774.662" y="673.619" width="16.3244" height="24.9128"/>
  </objectgroup>
 </map>

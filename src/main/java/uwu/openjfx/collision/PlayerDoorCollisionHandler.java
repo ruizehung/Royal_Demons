@@ -1,8 +1,10 @@
 package uwu.openjfx.collision;
 
+import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
+import uwu.openjfx.DieScreenMenu;
 import uwu.openjfx.MapGeneration.GameMap;
 import uwu.openjfx.MapGeneration.Room;
 import uwu.openjfx.RoyalType;
@@ -21,6 +23,11 @@ public class PlayerDoorCollisionHandler extends CollisionHandler {
         player.getComponent(PlayerComponent.class).stop();
 
         Room curRoom = FXGL.geto("curRoom");
+        if (curRoom.getRoomType().equals("finalWinRoom")) {
+            triggerWin();
+            return;
+        }
+
         Room newRoom;
         String spawnPosition = "north";
         switch (door.getString("direction")) {
@@ -83,5 +90,9 @@ public class PlayerDoorCollisionHandler extends CollisionHandler {
 
     private void pushNotification(String message) {
         FXGL.getNotificationService().pushNotification(message);
+    }
+
+    private void triggerWin() {
+        FXGL.getSceneService().pushSubScene(new DieScreenMenu(MenuType.MAIN_MENU));
     }
 }
