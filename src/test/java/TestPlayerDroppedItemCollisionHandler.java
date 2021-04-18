@@ -57,7 +57,7 @@ public class TestPlayerDroppedItemCollisionHandler {
     @Test
     void testSwordPickUp() {
         Entity sword = new Entity();
-        sword.setProperty("name", "golden_sword");
+        sword.setProperty("name", "sword1");
 
         Entity player = new Entity();
         PlayerComponent playerComponent = new PlayerComponent(10);
@@ -73,7 +73,7 @@ public class TestPlayerDroppedItemCollisionHandler {
     @Test
     void testBowPickUp() {
         Entity bow = new Entity();
-        bow.setProperty("name", "bow");
+        bow.setProperty("name", "bow0");
 
         Entity player = new Entity();
         PlayerComponent playerComponent = new PlayerComponent(10);

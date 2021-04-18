@@ -151,7 +151,7 @@ public class CreatureFactory implements EntityFactory {
     }
 
     @Spawns("finalBoss")
-    public Entity newfinalBoss(SpawnData data) {
+    public Entity newFinalBoss(SpawnData data) {
         PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.DYNAMIC);
         physics.setFixtureDef(new FixtureDef().friction(1.0f));
