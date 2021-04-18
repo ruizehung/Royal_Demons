@@ -173,6 +173,7 @@ public class StructureFactory implements EntityFactory {
                         "width"), data.<Integer>get("height"))))
                 .with(new CollidableComponent(true))
                 .with(new SpikeComponent())
+                .zIndex(3)
                 .build();
     }
 

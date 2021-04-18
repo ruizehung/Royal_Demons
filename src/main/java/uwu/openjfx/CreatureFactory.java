@@ -77,6 +77,7 @@ public class CreatureFactory implements EntityFactory {
                 .with(new CollidableComponent(true))
                 .with(enemyComponent)
                 .with("CreatureComponent", enemyComponent)
+                .zIndex(5)
                 .build();
     }
 
@@ -111,6 +112,7 @@ public class CreatureFactory implements EntityFactory {
                 .with(new CollidableComponent(true))
                 .with(enemyComponent)
                 .with("CreatureComponent", enemyComponent)
+                .zIndex(5)
                 .build();
     }
 
@@ -144,6 +146,7 @@ public class CreatureFactory implements EntityFactory {
                 .with(enemyComponent)
                 .with(dropItemWhenDie)
                 .with("CreatureComponent", enemyComponent)
+                .zIndex(5)
                 .build();
     }
 
@@ -173,6 +176,7 @@ public class CreatureFactory implements EntityFactory {
                 .with(new CollidableComponent(true))
                 .with(bossComponent)
                 .with("CreatureComponent", bossComponent)
+                .zIndex(5)
                 .build();
     }
 
@@ -183,6 +187,7 @@ public class CreatureFactory implements EntityFactory {
                 .bbox(new HitBox(BoundingShape.circle(8)))
                 .with(new CollidableComponent(true))
                 .with(new CoinComponent(FXGL.random(1, 6)))
+                .zIndex(4)
                 .build();
     }
 
