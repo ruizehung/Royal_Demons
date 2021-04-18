@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="60" height="60" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="188">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="60" height="60" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="194">
  <tileset firstgid="1" name="0x72_DungeonTilesetII_32x32" tilewidth="32" tileheight="32" tilecount="1024" columns="32">
   <image source="0x72_DungeonTilesetII_32x32.png" width="1024" height="1024"/>
  </tileset>
@@ -198,7 +198,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="6" name="Object Layer 1" locked="1">
+ <objectgroup id="6" name="Object Layer 1">
   <object id="177" name="Item" type="itemOnFloor" x="863.993" y="159.442" width="32" height="32">
    <properties>
     <property name="isWeapon" type="bool" value="false"/>
@@ -218,6 +218,31 @@
    </properties>
   </object>
   <object id="180" name="chest" type="chest" x="1439.44" y="511.551" width="32" height="32">
+   <properties>
+    <property name="name" value="HealthPotion"/>
+   </properties>
+  </object>
+  <object id="189" name="Spike" type="spike" x="543.05" y="94.9364" width="32" height="32">
+   <properties>
+    <property name="name" value="HealthPotion"/>
+   </properties>
+  </object>
+  <object id="190" name="Spike" type="spike" x="606.816" y="287.11" width="32" height="32">
+   <properties>
+    <property name="name" value="HealthPotion"/>
+   </properties>
+  </object>
+  <object id="191" name="Spike" type="spike" x="1279.42" y="446.963" width="32" height="32">
+   <properties>
+    <property name="name" value="HealthPotion"/>
+   </properties>
+  </object>
+  <object id="192" name="Spike" type="spike" x="1600" y="607.69" width="32" height="32">
+   <properties>
+    <property name="name" value="HealthPotion"/>
+   </properties>
+  </object>
+  <object id="193" name="Spike" type="spike" x="639.136" y="831.31" width="32" height="32">
    <properties>
     <property name="name" value="HealthPotion"/>
    </properties>
@@ -416,22 +441,13 @@
    </properties>
    <point/>
   </object>
-  <object id="139" name="Minion" type="minion" x="573.356" y="75.1188">
+  <object id="139" name="Minion" type="minion" x="592.573" y="89.095">
    <point/>
   </object>
-  <object id="140" name="Minion" type="minion" x="655.375" y="99.6294">
-   <point/>
-  </object>
-  <object id="141" name="Minion" type="minion" x="600.964" y="121.114">
+  <object id="140" name="Minion" type="minion" x="662.363" y="115.353">
    <point/>
   </object>
   <object id="142" name="Minion" type="minion" x="282.988" y="403.093">
-   <point/>
-  </object>
-  <object id="143" name="Minion" type="minion" x="327.41" y="396.512">
-   <point/>
-  </object>
-  <object id="144" name="Minion" type="minion" x="325.765" y="449.984">
    <point/>
   </object>
   <object id="145" name="Minion" type="minion" x="388.286" y="424.482">
@@ -449,16 +465,10 @@
   <object id="149" name="Mini Boss" type="miniBoss" x="653.175" y="1009.38">
    <point/>
   </object>
-  <object id="150" name="Minion" type="minion" x="714.051" y="943.567">
-   <point/>
-  </object>
   <object id="151" name="Minion" type="minion" x="553.636" y="982.231">
    <point/>
   </object>
   <object id="152" name="Minion" type="minion" x="487.825" y="1068.61">
-   <point/>
-  </object>
-  <object id="153" name="Minion" type="minion" x="665.515" y="895.031">
    <point/>
   </object>
   <object id="154" name="Minion" type="minion" x="808.654" y="1078.48">
@@ -470,9 +480,6 @@
   <object id="156" name="Minion" type="minion" x="1299.19" y="415.834">
    <point/>
   </object>
-  <object id="157" name="Minion" type="minion" x="954.829" y="551.835">
-   <point/>
-  </object>
   <object id="158" name="Minion" type="minion" x="893.265" y="580.765">
    <point/>
   </object>
@@ -482,28 +489,16 @@
   <object id="160" name="Minion" type="minion" x="1524.72" y="421.132">
    <point/>
   </object>
-  <object id="161" name="Minion" type="minion" x="1590.61" y="400.934">
+  <object id="163" name="Minion" type="minion" x="1386.71" y="656.804">
    <point/>
   </object>
-  <object id="162" name="Minion" type="minion" x="1406.3" y="683.628">
-   <point/>
-  </object>
-  <object id="163" name="Minion" type="minion" x="1339.54" y="665.539">
-   <point/>
-  </object>
-  <object id="164" name="Minion" type="minion" x="1548.92" y="649.947">
-   <point/>
-  </object>
-  <object id="165" name="Minion" type="minion" x="1466.8" y="662.31">
+  <object id="165" name="Minion" type="minion" x="1497.37" y="652.701">
    <point/>
   </object>
   <object id="166" name="Minion" type="minion" x="1281.93" y="818.635">
    <point/>
   </object>
   <object id="167" name="Minion" type="minion" x="1402.31" y="821.394">
-   <point/>
-  </object>
-  <object id="168" name="Minion" type="minion" x="1313.67" y="858.58">
    <point/>
   </object>
   <object id="171" name="HiddenFloor" type="trap-black-wall" x="1536.31" y="512.178" width="32" height="32">

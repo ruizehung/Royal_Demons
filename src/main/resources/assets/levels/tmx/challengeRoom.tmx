@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="53">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="56">
  <tileset firstgid="1" name="0x72_DungeonTilesetII_32x32" tilewidth="32" tileheight="32" tilecount="1024" columns="32">
   <image source="0x72_DungeonTilesetII_32x32.png" width="1024" height="1024"/>
  </tileset>
@@ -75,7 +75,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="4" name="Object Layer 1" locked="1">
+ <objectgroup id="4" name="Object Layer 1">
   <object id="1" type="wall" x="83.3959" y="55.2057" width="391.08" height="28.1902"/>
   <object id="2" type="wall" x="547.097" y="55.2057" width="326.798" height="28.1902"/>
   <object id="3" type="wall" x="84.7593" y="571.48" width="386.064" height="28.1902"/>
@@ -148,5 +148,20 @@
    <ellipse/>
   </object>
   <object id="52" type="wall" x="259.442" y="506.256" width="25.2554" height="32.1433"/>
+  <object id="53" name="Spike" type="spike" x="383.895" y="223.239" width="32" height="32">
+   <properties>
+    <property name="name" value="HealthPotion"/>
+   </properties>
+  </object>
+  <object id="54" name="Spike" type="spike" x="512.246" y="351.589" width="32" height="32">
+   <properties>
+    <property name="name" value="HealthPotion"/>
+   </properties>
+  </object>
+  <object id="55" name="Spike" type="spike" x="159.5" y="319.283" width="32" height="32">
+   <properties>
+    <property name="name" value="HealthPotion"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

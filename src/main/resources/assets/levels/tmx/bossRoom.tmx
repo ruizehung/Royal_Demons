@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="81">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="86">
  <tileset firstgid="1" name="0x72_DungeonTilesetII_32x32" tilewidth="32" tileheight="32" tilecount="1024" columns="32">
   <image source="0x72_DungeonTilesetII_32x32.png" width="1024" height="1024"/>
  </tileset>
@@ -57,7 +57,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="2" name="wall" width="50" height="50">
+ <layer id="2" name="wall" width="50" height="50" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -111,7 +111,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="3" name="Tile Layer 3" width="50" height="50">
+ <layer id="3" name="Tile Layer 3" width="50" height="50" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -261,6 +261,31 @@
   <object id="79" type="wall" x="581.229" y="564.418" width="22.9336" height="38.1153"/>
   <object id="80" type="wall" x="581.893" y="555.119" width="19.274" height="12.0211">
    <ellipse/>
+  </object>
+  <object id="81" name="Spike" type="spike" x="639.806" y="798.536" width="32" height="32">
+   <properties>
+    <property name="name" value="HealthPotion"/>
+   </properties>
+  </object>
+  <object id="82" name="Spike" type="spike" x="478.987" y="543.733" width="32" height="32">
+   <properties>
+    <property name="name" value="HealthPotion"/>
+   </properties>
+  </object>
+  <object id="83" name="Spike" type="spike" x="863.282" y="671.135" width="32" height="32">
+   <properties>
+    <property name="name" value="HealthPotion"/>
+   </properties>
+  </object>
+  <object id="84" name="Spike" type="spike" x="735.88" y="477.943" width="32" height="32">
+   <properties>
+    <property name="name" value="HealthPotion"/>
+   </properties>
+  </object>
+  <object id="85" name="Spike" type="spike" x="960.399" y="799.581" width="32" height="32">
+   <properties>
+    <property name="name" value="HealthPotion"/>
+   </properties>
   </object>
  </objectgroup>
 </map>

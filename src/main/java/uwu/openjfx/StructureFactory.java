@@ -164,4 +164,16 @@ public class StructureFactory implements EntityFactory {
                 .with(new PhysicsComponent())
                 .build();
     }
+
+    @Spawns("spike")
+    public Entity newSpike(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(RoyalType.SPIKE)
+                .bbox(new HitBox(BoundingShape.box(data.<Integer>get(
+                        "width"), data.<Integer>get("height"))))
+                .with(new CollidableComponent(true))
+                .with(new SpikeComponent())
+                .build();
+    }
+
 }

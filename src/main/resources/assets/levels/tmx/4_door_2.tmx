@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="60" height="60" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="79">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="60" height="60" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="84">
  <tileset firstgid="1" name="0x72_DungeonTilesetII_32x32" tilewidth="32" tileheight="32" tilecount="1024" columns="32">
   <image source="0x72_DungeonTilesetII_32x32.png" width="1024" height="1024"/>
  </tileset>
- <layer id="2" name="floor" width="60" height="60">
+ <layer id="2" name="floor" width="60" height="60" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -67,7 +67,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="1" name="walls" width="60" height="60">
+ <layer id="1" name="walls" width="60" height="60" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -131,7 +131,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="6" name="environment" width="60" height="60">
+ <layer id="6" name="environment" width="60" height="60" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -195,7 +195,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="3" name="wall objects">
+ <objectgroup id="3" name="wall objects" locked="1">
   <object id="1" type="wall" x="672" y="183.455" width="10.5455" height="123.636"/>
   <object id="3" type="wall" x="672" y="279.636" width="159.818" height="27.4744"/>
   <object id="4" type="wall" x="822.364" y="275.273" width="20.1818" height="190.727"/>
@@ -290,8 +290,33 @@
    </properties>
    <point/>
   </object>
+  <object id="79" name="Spike" type="spike" x="798.226" y="511.871" width="32" height="32">
+   <properties>
+    <property name="name" value="HealthPotion"/>
+   </properties>
+  </object>
+  <object id="80" name="Spike" type="spike" x="542.443" y="1087.64" width="32" height="32">
+   <properties>
+    <property name="name" value="HealthPotion"/>
+   </properties>
+  </object>
+  <object id="81" name="Spike" type="spike" x="639.253" y="1215.02" width="32" height="32">
+   <properties>
+    <property name="name" value="HealthPotion"/>
+   </properties>
+  </object>
+  <object id="82" name="Spike" type="spike" x="1247.63" y="830.836" width="32" height="32">
+   <properties>
+    <property name="name" value="HealthPotion"/>
+   </properties>
+  </object>
+  <object id="83" name="Spike" type="spike" x="1280.24" y="926.627" width="32" height="32">
+   <properties>
+    <property name="name" value="HealthPotion"/>
+   </properties>
+  </object>
  </objectgroup>
- <objectgroup id="5" name="minions">
+ <objectgroup id="5" name="minions" locked="1">
   <object id="55" name="Minion" type="forestMinion" x="638" y="475">
    <point/>
   </object>

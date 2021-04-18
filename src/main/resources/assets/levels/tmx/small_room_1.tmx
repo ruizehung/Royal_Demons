@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="33">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="36">
  <tileset firstgid="1" name="0x72_DungeonTilesetII_32x32" tilewidth="32" tileheight="32" tilecount="1024" columns="32">
   <image source="0x72_DungeonTilesetII_32x32.png" width="1024" height="1024"/>
  </tileset>
@@ -105,7 +105,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="4" name="door&amp;spawn" locked="1">
+ <objectgroup id="4" name="door&amp;spawn">
   <object id="1" type="door" x="13.6125" y="717.217" width="49.0973" height="43.996">
    <properties>
     <property name="direction" value="west"/>
@@ -170,6 +170,21 @@
   </object>
   <object id="16" name="Minion" type="minion" x="643.804" y="739.419">
    <point/>
+  </object>
+  <object id="33" name="Spike" type="spike" x="158.34" y="190.625" width="32" height="32">
+   <properties>
+    <property name="name" value="HealthPotion"/>
+   </properties>
+  </object>
+  <object id="34" name="Spike" type="spike" x="221.834" y="287.481" width="32" height="32">
+   <properties>
+    <property name="name" value="HealthPotion"/>
+   </properties>
+  </object>
+  <object id="35" name="Spike" type="spike" x="160.492" y="607.104" width="32" height="32">
+   <properties>
+    <property name="name" value="HealthPotion"/>
+   </properties>
   </object>
  </objectgroup>
  <objectgroup id="5" name="walls" locked="1">
