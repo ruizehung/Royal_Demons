@@ -170,6 +170,7 @@ public class GoldenSword0 implements Weapon {
             rangedHitBox.getTransformComponent().setRotationOrigin(
                 new Point2D(centerX, ((double) (frameHeight)) / 2));
             rangedHitBox.addComponent(new IrremovableComponent());
+            rangedHitBox.setZIndex(5);
         }
     }
 

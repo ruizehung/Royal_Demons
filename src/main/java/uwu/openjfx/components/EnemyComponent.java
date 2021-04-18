@@ -538,6 +538,7 @@ public class EnemyComponent extends CreatureComponent {
         rangedHitBox.setAnchoredPosition(enemyX, enemyY);
         rangedHitBox.getTransformComponent().setRotationOrigin(
             new Point2D(centerX, ((double) (frameHeight)) / 2));
+        rangedHitBox.setZIndex(5);
     }
 
     private void enlarge() {

@@ -50,7 +50,7 @@ public class MagicStaff1 implements Weapon, AngleBehavior {
                 (player.getX() + playerHitBoxOffsetX + (playerHitBoxWidth / 2))
                     - ((double) width / 2) + staffOffsetX,
                 (player.getY() + staffOffsetY) - ((double) height / 2)));
-        b.setZIndex(2000); // put bow on top of player (z = 1000)
+        b.setZIndex(2000); // put staff on top of player (z = 1000)
         if (player.getScaleX() == 1) {
             b.setScaleX(1);
         } else {
@@ -130,6 +130,7 @@ public class MagicStaff1 implements Weapon, AngleBehavior {
         rangedHitBox.getTransformComponent().setRotationOrigin(
             new Point2D(centerX, ((double) (frameHeight)) / 2));
         rangedHitBox.addComponent(new ExplosionAtDistComponent(ultimateActivated));
+        rangedHitBox.setZIndex(5);
     }
 
     @Override
