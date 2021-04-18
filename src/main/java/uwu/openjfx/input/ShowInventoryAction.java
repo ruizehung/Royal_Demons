@@ -45,6 +45,7 @@ public class ShowInventoryAction extends UserAction {
         itemInfoPane.setPrefWidth(100);
         itemInfoPane.setPrefHeight(200);
         itemInfoPane.setTop(itemInfoTitle);
+        itemInfoPane.setPadding(new Insets(0, 0, 0, 10));
 
 
         inventoryGrid.setHgap(3);
@@ -69,7 +70,7 @@ public class ShowInventoryAction extends UserAction {
                 Weapon selectedWeapon = (Weapon) obm.get("item");
                 itemInfoTitle.setText(selectedWeapon.getName());
                 Text text = FXGL.getUIFactoryService().newText(selectedWeapon.getDescription());
-                text.setWrappingWidth(120);
+                text.setWrappingWidth(200);
 
                 Texture weaponIcon = getAssetLoader().loadTexture(selectedWeapon.
                     getWeaponIconPath());
