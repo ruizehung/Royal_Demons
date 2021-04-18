@@ -157,6 +157,7 @@ public abstract class Bow implements Weapon, AngleBehavior {
                     + (playerHitBoxHeight / 2))); // midpoint player hitbox
             rangedHitBox.getTransformComponent().setRotationOrigin(
                 new Point2D(centerX, ((double) (frameHeight)) / 2));
+            rangedHitBox.setZIndex(5);
         } else {
             ultimateAttack(player, dir.angle());
         }
@@ -249,6 +250,7 @@ public abstract class Bow implements Weapon, AngleBehavior {
                     + (playerHitBoxHeight / 2))); // midpoint player hitbox
             rangedHitBox.getTransformComponent().setRotationOrigin(
                 new Point2D(centerX, ((double) (frameHeight)) / 2));
+            rangedHitBox.setZIndex(5);
         }
     }
 }

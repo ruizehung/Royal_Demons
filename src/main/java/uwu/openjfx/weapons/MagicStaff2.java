@@ -51,7 +51,7 @@ public class MagicStaff2 implements Weapon, AngleBehavior {
                 (player.getX() + playerHitBoxOffsetX + (playerHitBoxWidth / 2))
                     - ((double) width / 2) + staffOffsetX,
                 (player.getY() + staffOffsetY) - ((double) height / 2)));
-        b.setZIndex(2000); // put bow on top of player (z = 1000)
+        b.setZIndex(2000); // put staff on top of player (z = 1000)
         if (player.getScaleX() == 1) {
             b.setScaleX(1);
         } else {
@@ -130,6 +130,7 @@ public class MagicStaff2 implements Weapon, AngleBehavior {
                     + (playerHitBoxHeight / 2))); // midpoint player hitbox
             rangedHitBox.getTransformComponent().setRotationOrigin(
                 new Point2D(centerX, ((double) (frameHeight)) / 2));
+            rangedHitBox.setZIndex(5);
         } else {
             int hitBoxWidth = 175; // width of the hitbox
             int hitBoxHeight = 110; // height of the hitbox
@@ -149,6 +150,7 @@ public class MagicStaff2 implements Weapon, AngleBehavior {
                     put("weaponSprite", sprite));
             breathSprite.setScaleX(2.5);
             breathSprite.setScaleY(2.5);
+            breathSprite.setZIndex(5);
 
             if (player.getScaleX() == 1) {
                 breathSprite.setScaleX(2.5);
