@@ -19,7 +19,6 @@ import uwu.openjfx.RoyalType;
 import java.util.Timer;
 
 import static com.almasb.fxgl.dsl.FXGL.spawn;
-import static com.almasb.fxgl.dsl.FXGL.text;
 
 /*
     This class is responsible for the following:
@@ -388,7 +387,9 @@ public class EnemyComponent extends CreatureComponent {
     }
 
     public void turnSpriteRed() {
-        if (texture != null) texture.set(texture.multiplyColor(Color.RED));
+        if (texture != null) {
+            texture.set(texture.multiplyColor(Color.RED));
+        }
     }
 
     private void kitePlayer() {

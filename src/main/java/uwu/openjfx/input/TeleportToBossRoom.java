@@ -48,7 +48,8 @@ public class TeleportToBossRoom extends UserAction {
         bossHealth.setHeight(25);
         bossHealth.setMinValue(0);
         bossHealth.setMaxValue(100);
-        bossHealth.setTranslateX(FXGL.getAppWidth() / 2.0 - bossHealth.getBackgroundBar().getWidth() / 2);
+        bossHealth.setTranslateX(FXGL.getAppWidth() / 2.0
+            - bossHealth.getBackgroundBar().getWidth() / 2);
         bossHealth.setTranslateY(12.5);
         bossHealth.currentValueProperty().bind(BossComponent.getBossHealthProperty());
         FXGL.getGameScene().addUINodes(bossHealth);

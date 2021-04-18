@@ -62,6 +62,7 @@ public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
     public void onCollision(Entity weapon, Entity enemy) {
         if (weapon.hasComponent(DamageOverTimeComponent.class)) {
             EnemyComponent enemyComponent = enemy.getObject("CreatureComponent");
+            enemyComponent.turnSpriteRed();
             enemyComponent.deductHealth(
                 weapon.getComponent(AttackDamageComponent.class).getAttackDamage(),
                 PlayerComponent.getAttackPower(),
