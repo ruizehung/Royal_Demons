@@ -19,7 +19,7 @@ public class BossComponent extends EnemyComponent {
 
     public BossComponent(int healthPoints, String assetName, int width, int height, int frames) {
         super(healthPoints, assetName, width, height, frames, "finalboss", "melee");
-//        setDieBehavior(new WinWhenDie());
+        // setDieBehavior(new WinWhenDie());
         setDieBehavior(new DoNothing());
         bossHealthProperty.set(healthPoints);
     }
@@ -31,7 +31,8 @@ public class BossComponent extends EnemyComponent {
             Entity finalDoor = FXGL.getGameWorld().getEntitiesByType(RoyalType.FINALDOOR).get(0);
             finalDoor.getViewComponent().clearChildren();
             finalDoor.getViewComponent().addChild(FXGL.texture("woodenDoorOpened.png"));
-            getAudioPlayer().stopMusic(FXGL.getAssetLoader().loadMusic("boss/boss_battle_ 2.mp3"));
+            getAudioPlayer().stopMusic(
+                FXGL.getAssetLoader().loadMusic("boss/boss_battle_ 2.mp3"));
             loopBGM("end/Training Is Over.mp3");
             FXGL.getGameScene().clearUINodes();
             UI.init(FXGL.geto("player"));

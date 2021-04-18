@@ -165,6 +165,10 @@ public class MagicStaff2 implements Weapon, AngleBehavior {
 
             Runnable runnable = () -> {
                 FXGL.getGameTimer().runAtInterval(() -> {
+                    if (!PlayerComponent.isChanneling()) {
+                        breathHitbox.removeFromWorld();
+                        FXGL.getGameTimer().clear();
+                    }
                     breathHitbox.getTransformComponent().setAnchoredPosition(
                         new Point2D(
                             player.getX() - ((double) hitBoxWidth / 2) + player.getWidth() / 2
@@ -178,10 +182,6 @@ public class MagicStaff2 implements Weapon, AngleBehavior {
                                 + (player.getScaleX() > 0
                                 ? breathSpriteOffset : 6 * breathSpriteOffset),
                             player.getY() - ((double) frameHeight / 2) - 40));
-                    if (!PlayerComponent.isChanneling()) {
-                        breathHitbox.removeFromWorld();
-                        FXGL.getGameTimer().clear();
-                    }
                 }, Duration.seconds(.01));
             };
             Thread thread = new Thread(runnable);
