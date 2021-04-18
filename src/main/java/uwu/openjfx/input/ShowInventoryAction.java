@@ -113,12 +113,13 @@ public class ShowInventoryAction extends UserAction {
                 borderPanes[r][c].setStyle(cssLayout);
                 borderPanes[r][c].setPrefWidth(96);
                 borderPanes[r][c].setPrefHeight(96);
-                if (r * rows + c < playerWeaponList.size()) {
+                if (r * cols + c < playerWeaponList.size()) {
+                    System.out.println("setting " + r * cols + c);
                     borderPanes[r][c].setCenter(getAssetLoader()
-                            .loadTexture(playerWeaponList.get(r * rows + c)
+                            .loadTexture(playerWeaponList.get(r * cols + c)
                                     .getWeaponIconPath()));
                     borderPanes[r][c].getProperties()
-                            .put("item", playerWeaponList.get(r * rows + c));
+                            .put("item", playerWeaponList.get(r * cols + c));
                     borderPanes[r][c].addEventFilter(MouseEvent.MOUSE_CLICKED, showInfo);
                 }
                 /*

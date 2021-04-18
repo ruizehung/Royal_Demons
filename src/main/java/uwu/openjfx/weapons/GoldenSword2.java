@@ -19,7 +19,7 @@ public class GoldenSword2 implements Weapon {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof GoldenSword1;
+        return obj instanceof GoldenSword2;
     }
 
     @Override

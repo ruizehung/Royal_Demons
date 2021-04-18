@@ -185,4 +185,9 @@ public class MagicStaff1 implements Weapon, AngleBehavior {
     public int getUltimateCD() {
         return 5;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof MagicStaff1;
+    }
 }

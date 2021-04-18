@@ -22,7 +22,7 @@ public class GoldenSword0 implements Weapon {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof GoldenSword1;
+        return obj instanceof GoldenSword0;
     }
 
     @Override
@@ -212,4 +212,6 @@ public class GoldenSword0 implements Weapon {
     public int getUltimateCD() {
         return 2;
     }
+
+
 }

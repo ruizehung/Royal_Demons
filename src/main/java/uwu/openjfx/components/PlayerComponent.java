@@ -224,6 +224,10 @@ public class PlayerComponent extends CreatureComponent {
         physics.setVelocityY(0);
     }
 
+    public void faceRight() {
+        getEntity().setScaleX(1);
+    }
+
     public boolean isPressingMovementKeys() {
         return isPressingMovementKeys;
     }
@@ -341,7 +345,7 @@ public class PlayerComponent extends CreatureComponent {
     }
 
     public static void addWeaponToInventory(Weapon weapon) {
-        for (Weapon playerWeapon : weaponInventoryList) {
+        for (Weapon playerWeapon: weaponInventoryList) {
             if (playerWeapon.getName().equals(weapon.getName())) {
                 return;
             }

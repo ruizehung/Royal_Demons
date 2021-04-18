@@ -4,6 +4,7 @@ import com.almasb.fxgl.cutscene.Cutscene;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.util.Duration;
 import uwu.openjfx.MapGeneration.Coordinate;
 import uwu.openjfx.MapGeneration.GameMap;
@@ -36,7 +37,9 @@ public class PlayerFinalDoorCollisionHandler extends CollisionHandler {
             getGameScene().getViewport().fade(() -> {
                 gameMap.loadRoom(finalWinRoom, "center");
                 getInput().setProcessInput(true);
+                ((PlayerComponent) FXGL.geto("playerComponent")).faceRight();
             });
+
             ArrayList<String> savePrincess = new ArrayList<>(Arrays.asList(
                     "1.name = " + PlayerComponent.getPlayerName(),
                     "2.name = " + PlayerComponent.getPlayerName() + "'s dino lover",

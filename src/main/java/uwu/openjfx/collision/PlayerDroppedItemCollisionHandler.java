@@ -12,6 +12,7 @@ import uwu.openjfx.components.PlayerComponent;
 import uwu.openjfx.items.Item;
 import uwu.openjfx.weapons.*;
 
+import java.util.List;
 import java.util.Map;
 
 public class PlayerDroppedItemCollisionHandler extends CollisionHandler {
@@ -29,18 +30,29 @@ public class PlayerDroppedItemCollisionHandler extends CollisionHandler {
             // add things to inventory
             if (itemName.equals("HealthPotion")) {
                 UI.addHealthPot();
-            }
-            if (itemName.equals("RagePotion")) {
+            } else if (itemName.equals("RagePotion")) {
                 UI.addRagePot();
             } else {
                 switch (itemName) {
-                case "golden_sword":
+                case "sword0":
+                    PlayerComponent.addWeaponToInventory(new GoldenSword0());
+                    break;
+                case "sword1":
                     PlayerComponent.addWeaponToInventory(new GoldenSword1());
                     break;
-                case "nature_staff":
+                case "sword2":
+                    PlayerComponent.addWeaponToInventory(new GoldenSword2());
+                    break;
+                case "staff0":
                     PlayerComponent.addWeaponToInventory(new MagicStaff0());
                     break;
-                case "bow":
+                case "staff1":
+                    PlayerComponent.addWeaponToInventory(new MagicStaff1());
+                    break;
+                case "staff2":
+                    PlayerComponent.addWeaponToInventory(new MagicStaff2());
+                    break;
+                case "bow0":
                     PlayerComponent.addWeaponToInventory(new Bow0());
                     break;
                 case "bow1":
@@ -50,6 +62,7 @@ public class PlayerDroppedItemCollisionHandler extends CollisionHandler {
                     PlayerComponent.addWeaponToInventory(new Bow2());
                     break;
                 default:
+                    System.out.println("Weapon " + itemName + " not found!");
                 }
             }
 
@@ -75,7 +88,6 @@ public class PlayerDroppedItemCollisionHandler extends CollisionHandler {
                     // do nothing
                 }
             }
-
         }
     }
 }
