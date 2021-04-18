@@ -3,10 +3,12 @@ package uwu.openjfx.components;
 import com.almasb.fxgl.dsl.FXGL;
 import javafx.scene.image.ImageView;
 import uwu.openjfx.MainApp;
+import uwu.openjfx.MapGeneration.Room;
 import uwu.openjfx.behaviors.CanOnlyInteractOnce;
 import uwu.openjfx.behaviors.DropItemComponent;
 import uwu.openjfx.behaviors.Interactable;
 
+import java.util.Arrays;
 import java.util.Set;
 
 public class ChestComponent extends CanOnlyInteractOnce implements Interactable {
@@ -37,21 +39,20 @@ public class ChestComponent extends CanOnlyInteractOnce implements Interactable 
     }
 
     private String pickAWeaponRandomly() {
-        String weaponName = null;
         if (!MainApp.isIsTesting()) {
-            Set<String> weaponsSet = FXGL.geto("weaponsSet");
-            int item = FXGL.random(0, weaponsSet.size() - 1);
-            // In real life, the Random object should be rather more shared than this
-            int i = 0;
-            for (String weapon : weaponsSet) {
-                if (i == item) {
-                    weaponName = weapon;
-                    break;
-                }
-                ++i;
+            Room currentRoom = FXGL.geto("curRoom");
+            int distanceFromStartRoom = currentRoom.getDistFromInitRoom();
+            int itemIndex = FXGL.random(0, 2);
+
+            if (distanceFromStartRoom <= 2) {
+                return Arrays.asList("sword0", "bow0", "staff0").get(itemIndex);
+            } else if (distanceFromStartRoom <= 4) {
+                return Arrays.asList("sword1", "bow1", "staff1").get(itemIndex);
+            } else {
+                return Arrays.asList("sword2", "bow2", "staff2").get(itemIndex);
             }
         }
-        return weaponName;
+        return null;
     }
 
     // Todo: To be refactored

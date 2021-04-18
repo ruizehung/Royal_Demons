@@ -280,6 +280,7 @@ public class MainApp extends GameApplication {
         // gameMap.setRandomSeed(63);
         gameMap.generateRooms();
         set("gameMap", gameMap);
+        set("curRoom", gameMap.getInitialRoom());
 
         getGameWorld().addEntityFactory(new StructureFactory());
         getGameWorld().addEntityFactory(new CreatureFactory());

@@ -37,8 +37,7 @@ public class ShowInventoryAction extends UserAction {
 
         HBox title = new HBox(FXGL.getUIFactoryService().newText("Inventory", 30));
         title.setAlignment(Pos.TOP_CENTER);
-        Insets insets = new Insets(0, 0, 70, 0);
-        title.setPadding(insets);
+
         inventory.setTop(title);
         inventory.setCenter(inventoryGrid);
         inventory.setRight(itemInfoPane);

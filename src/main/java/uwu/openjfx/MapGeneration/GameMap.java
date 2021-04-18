@@ -27,6 +27,10 @@ public class GameMap {
     private Map<Coordinate, Room> rooms = new HashMap<>();
     private Room initialRoom;
     private Room bossRoom;
+    private int maxX = 1;
+    private int minX = -1;
+    private int maxY = 1;
+    private int minY = -1;
 
     private List<Pair<Pair<Integer, Integer>, String>> directions = new ArrayList<>();
 
@@ -102,6 +106,11 @@ public class GameMap {
             if (getRoom(coordinate) == null) { // if the coordinate does not have a room yet
                 Room newRoom = new Room(coordinate);
                 rooms.put(coordinate, newRoom);
+
+                maxX = Math.max(maxX, coordinate.getX());
+                minX = Math.min(minX, coordinate.getX());
+                maxY = Math.max(maxY, coordinate.getY());
+                minY = Math.min(minY, coordinate.getY());
 
                 ++numRoomsGenerated;
                 if (newRoom.getDistFromInitRoom() > maxDistFromInitRoom) {
@@ -187,23 +196,23 @@ public class GameMap {
             adjacentRoom = rooms.get(adjacentCoordinate);
             if (adjacentRoom != null) {
                 switch (dir.getValue()) {
-                case "North":
-                    room.setNorthRoom(adjacentRoom);
-                    adjacentRoom.setSouthRoom(room);
-                    break;
-                case "East":
-                    room.setEastRoom(adjacentRoom);
-                    adjacentRoom.setWestRoom(room);
-                    break;
-                case "South":
-                    room.setSouthRoom(adjacentRoom);
-                    adjacentRoom.setNorthRoom(room);
-                    break;
-                case "West":
-                    room.setWestRoom(adjacentRoom);
-                    adjacentRoom.setEastRoom(room);
-                    break;
-                default:
+                    case "North":
+                        room.setNorthRoom(adjacentRoom);
+                        adjacentRoom.setSouthRoom(room);
+                        break;
+                    case "East":
+                        room.setEastRoom(adjacentRoom);
+                        adjacentRoom.setWestRoom(room);
+                        break;
+                    case "South":
+                        room.setSouthRoom(adjacentRoom);
+                        adjacentRoom.setNorthRoom(room);
+                        break;
+                    case "West":
+                        room.setWestRoom(adjacentRoom);
+                        adjacentRoom.setEastRoom(room);
+                        break;
+                    default:
                 }
             }
         }
@@ -290,4 +299,23 @@ public class GameMap {
         System.out.println(newRoom.getCoordinate());
     }
 
+    public int getWidth() {
+        return maxX - minX;
+    }
+
+    public int getHeight() {
+        return maxY - minY;
+    }
+
+    public int getMinX() {
+        return minX;
+    }
+
+    public int getMinY() {
+        return minY;
+    }
+
+    public int getMaxY() {
+        return maxY;
+    }
 }
