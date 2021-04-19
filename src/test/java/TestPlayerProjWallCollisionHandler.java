@@ -4,10 +4,10 @@ import javafx.geometry.Point2D;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uwu.openjfx.MainApp;
-import uwu.openjfx.collision.ProjectileWallCollisionHandler;
+import uwu.openjfx.collision.PlayerProjWallCollisionHandler;
 import uwu.openjfx.components.ProjectileAnimationComponent;
 
-public class TestProjectileWallCollisionHandler {
+public class TestPlayerProjWallCollisionHandler {
 
     @BeforeEach
     public void init() {
@@ -27,7 +27,7 @@ public class TestProjectileWallCollisionHandler {
 
         // Create a wall
         Entity wall = new Entity();
-        ProjectileWallCollisionHandler handler = new ProjectileWallCollisionHandler();
+        PlayerProjWallCollisionHandler handler = new PlayerProjWallCollisionHandler();
         handler.onCollisionBegin(arrow, wall);
         assert (arrow.getComponent(ProjectileComponent.class).isPaused());
     }
@@ -43,7 +43,7 @@ public class TestProjectileWallCollisionHandler {
 
         // Create a wall
         Entity wall = new Entity();
-        ProjectileWallCollisionHandler handler = new ProjectileWallCollisionHandler();
+        PlayerProjWallCollisionHandler handler = new PlayerProjWallCollisionHandler();
         handler.onCollisionBegin(fireball, wall);
         assert (!fireball.isActive());
     }

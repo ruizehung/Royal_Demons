@@ -15,8 +15,11 @@ public class EnemyAttackPlayerCollisionHandler extends CollisionHandler  {
     }
 
     @Override
-    public void onCollisionBegin(Entity enemy, Entity player) {
+    public void onCollisionBegin(Entity enemyWeapon, Entity player) {
         HasLife playerComponent = player.getComponent(PlayerComponent.class);
+        if (enemyWeapon != null && !playerComponent.isInvulnerable()) {
+            enemyWeapon.removeFromWorld();
+        }
         if (!playerComponent.isInvulnerable()) {
             playerComponent.deductHealth(1, 1, 0, 1, 0);
         }

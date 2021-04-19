@@ -13,9 +13,9 @@ import uwu.openjfx.components.ProjectileAnimationComponent;
 /*
     This class is responsible for when a projectile touches a door.
  */
-public class ProjectileDoorCollisionHandler extends CollisionHandler {
+public class PlayerProjDoorCollisionHandler extends CollisionHandler {
 
-    public ProjectileDoorCollisionHandler() {
+    public PlayerProjDoorCollisionHandler() {
         super(RoyalType.PLAYERATTACK, RoyalType.DOOR);
     }
 

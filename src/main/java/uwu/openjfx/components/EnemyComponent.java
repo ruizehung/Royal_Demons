@@ -59,7 +59,7 @@ public class EnemyComponent extends CreatureComponent {
     private double enemyY; // the center of the enemy Y
     private boolean playerLeavesRadius = false; // if player has stopped interacting with enemy
     private boolean collidingWithPlayer = false;
-    private final int attackDuration = 900; // how long in MS the actual attack/animation takes
+    private int attackDuration; // how long in MS the actual attack/animation takes
     private final double velocityDecrementer = 10; // how much velocity will be deducted on update
     private double speed; // movement speed of the enemy
     private double dist;
@@ -101,7 +101,7 @@ public class EnemyComponent extends CreatureComponent {
     }
 
     public EnemyComponent(int healthPoints, String assetName, int width, int height) {
-        this(healthPoints, assetName, width, height, 8, "small", "melee");
+        this(healthPoints, assetName, width, height, 8, "small", "ranged");
     }
 
     @Override
@@ -126,11 +126,12 @@ public class EnemyComponent extends CreatureComponent {
         case "finalboss":
             massEffect = true;
             blockProbability = 30;
-            armorStat = 5.5;
+            armorStat = 20.5;
             break;
         default:
         }
         speed = fighterClass.equals("melee") ? 70 : 120;
+        attackDuration = fighterClass.equals("melee") ? 900 : 1100;
         // endregion
 
         if (!MainApp.isIsTesting()) {
@@ -222,6 +223,7 @@ public class EnemyComponent extends CreatureComponent {
                 }
             }
         } else {
+            attackCD = true;
             normalizeVelocityX();
             normalizeVelocityY();
             // Grow in size
@@ -251,10 +253,9 @@ public class EnemyComponent extends CreatureComponent {
             startShrink = true;
             startAttacking = false;
             prepAttack = false;
-            attackCD = true;
             Runnable runnable = () -> {
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(fighterClass.equals("melee") ? 2000 : 3500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -508,7 +509,8 @@ public class EnemyComponent extends CreatureComponent {
                 enemyX, enemyY).
                 put("dir", dir.toPoint2D()).
                 put("speed", speed).
-                put("weapon", "fireball_64x64").
+                put("weapon", !type.equals("finalboss")
+                    ? "fireball_enemy_64x64" : "fireball_boss_64x64").
                 put("duration", 500).
                 put("fpr", 60).
                 put("ultimateActive", true).

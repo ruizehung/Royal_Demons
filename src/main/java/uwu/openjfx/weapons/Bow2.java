@@ -19,7 +19,7 @@ public class Bow2 extends Bow implements Weapon, AngleBehavior {
             "bow2_arrow",
             80,
             "bow2_charge_44x43",
-            "bow2_charge_44x43",
+            "bow2_ult_44x43",
             650, 800);
         this.name = "Marksman's Bow";
         this.description
@@ -96,7 +96,7 @@ public class Bow2 extends Bow implements Weapon, AngleBehavior {
         rangedHitBox.getTransformComponent().setRotationOrigin(
             new Point2D(centerX, ((double) (frameHeight)) / 2));
         rangedHitBox.addComponent(new ExplosionAtDistComponent(ultimateActivated));
-
+        rangedHitBox.setZIndex(5);
     }
 
     @Override

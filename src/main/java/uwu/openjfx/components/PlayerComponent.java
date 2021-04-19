@@ -5,6 +5,7 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.geometry.Point2D;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import uwu.openjfx.MainApp;
 import uwu.openjfx.UI;
@@ -151,6 +152,13 @@ public class PlayerComponent extends CreatureComponent {
             }
         } else {
             textureRaged.setVisible(false);
+        }
+        if (isInvulnerable()) {
+            texture.setOpacity(0.5);
+            textureRaged.setOpacity(0.5);
+        } else {
+            texture.setOpacity(1);
+            textureRaged.setOpacity(1);
         }
         // endregion
     }
