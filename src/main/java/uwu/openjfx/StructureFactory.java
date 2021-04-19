@@ -177,4 +177,17 @@ public class StructureFactory implements EntityFactory {
                 .build();
     }
 
+    @Spawns("waterSpring")
+    public Entity newWaterSpring(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .with(new WaterSpringComponent())
+                .build();
+    }
+
+    @Spawns("lavaSpring")
+    public Entity newLavaSpring(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .with(new LavaSpringComponent())
+                .build();
+    }
 }
