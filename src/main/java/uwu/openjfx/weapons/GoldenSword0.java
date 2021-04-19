@@ -60,6 +60,7 @@ public class GoldenSword0 implements Weapon {
                 player.getX() - ((double) width / 2) + player.getWidth() / 2
                     + (player.getScaleX() > 0 ? swordOffset : -swordOffset),
                 player.getY() - ((double) height / 2) + player.getHeight() / 2));
+        gs.setZIndex(5);
         if (player.getScaleX() == 1) {
             gs.setScaleX(1);
         } else {

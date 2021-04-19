@@ -213,7 +213,7 @@ public class MainApp extends GameApplication {
     @Override
     protected void initGame() {
         if (developerCheat) {
-            int i = 8;
+            int i = 2;
             switch (i) {
             case 0:
                 GoldenSword0 goldenSword0 = new GoldenSword0();
@@ -321,8 +321,10 @@ public class MainApp extends GameApplication {
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerEnemyCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerAttackEnemyCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new EnemyAttackPlayerCollisionHandler());
-        FXGL.getPhysicsWorld().addCollisionHandler(new ProjectileWallCollisionHandler());
-        FXGL.getPhysicsWorld().addCollisionHandler(new ProjectileDoorCollisionHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new EnemyProjDoorCollisionHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new EnemyProjWallCollisionHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new PlayerProjWallCollisionHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new PlayerProjDoorCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerTriggerCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerDoorCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerCoinCollisionHandler());

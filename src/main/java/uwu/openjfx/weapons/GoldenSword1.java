@@ -39,6 +39,7 @@ public class GoldenSword1 implements Weapon {
         gs.getTransformComponent().setAnchoredPosition(
                 new Point2D(player.getX() - ((double) width / 2) + player.getWidth() / 2,
                         player.getY() - ((double) height / 2) + player.getHeight() / 2));
+        gs.setZIndex(5);
         if (player.getScaleX() == 1) {
             gs.setScaleX(1);
         } else {
