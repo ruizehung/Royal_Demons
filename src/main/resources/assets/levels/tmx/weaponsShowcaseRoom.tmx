@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="90">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="103">
  <tileset firstgid="1" name="0x72_DungeonTilesetII_32x32" tilewidth="32" tileheight="32" tilecount="1024" columns="32">
   <image source="0x72_DungeonTilesetII_32x32.png" width="1024" height="1024"/>
  </tileset>
  <tileset firstgid="1025" name="Simple Dungeon Crawler 32x32 Pixel Art Asset Pack" tilewidth="32" tileheight="32" tilecount="72" columns="9">
   <image source="Simple Dungeon Crawler 32x32 Pixel Art Asset Pack.png" width="288" height="256"/>
  </tileset>
- <layer id="1" name="Floor" width="50" height="50" locked="1">
+ <layer id="1" name="Floor" width="50" height="50">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -60,7 +60,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="2" name="wall" width="50" height="50" locked="1">
+ <layer id="2" name="wall" width="50" height="50">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -114,7 +114,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="3" name="Tile Layer 3" width="50" height="50" locked="1">
+ <layer id="3" name="Tile Layer 3" width="50" height="50">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -127,8 +127,8 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,418,419,420,421,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,450,0,0,453,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,292,0,0,0,482,0,0,485,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,450,451,452,453,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,292,0,0,0,482,483,484,485,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,35,1038,0,0,0,0,0,0,0,0,0,0,0,0,1038,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,659,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -169,7 +169,7 @@
 </data>
  </layer>
  <objectgroup id="4" name="Object Layer 1">
-  <object id="1" name="Final Boss" type="finalBoss" x="759.788" y="632.713">
+  <object id="1" name="Dummy Final Boss" type="dummyFinalBoss" x="952.235" y="596.845">
    <point/>
   </object>
   <object id="3" name="Spawn" type="point" x="542.544" y="641.693">
@@ -256,7 +256,6 @@
   <object id="68" type="wall" x="934.652" y="714.329" width="19.274" height="12.0211">
    <ellipse/>
   </object>
-  <object id="75" type="finalDoor" x="735.821" y="351.879" width="64" height="64"/>
   <object id="77" type="wall" x="933.517" y="563.493" width="22.9336" height="38.1153"/>
   <object id="78" type="wall" x="934.181" y="554.194" width="19.274" height="12.0211">
    <ellipse/>
@@ -265,34 +264,55 @@
   <object id="80" type="wall" x="581.893" y="555.119" width="19.274" height="12.0211">
    <ellipse/>
   </object>
-  <object id="81" name="Spike" type="spike" x="639.707" y="799.429" width="32" height="32">
-   <properties>
-    <property name="name" value="HealthPotion"/>
-   </properties>
-  </object>
-  <object id="82" name="Spike" type="spike" x="478.987" y="543.733" width="32" height="32">
-   <properties>
-    <property name="name" value="HealthPotion"/>
-   </properties>
-  </object>
-  <object id="83" name="Spike" type="spike" x="863.282" y="671.135" width="32" height="32">
-   <properties>
-    <property name="name" value="HealthPotion"/>
-   </properties>
-  </object>
-  <object id="84" name="Spike" type="spike" x="735.88" y="479.577" width="32" height="32">
-   <properties>
-    <property name="name" value="HealthPotion"/>
-   </properties>
-  </object>
-  <object id="85" name="Spike" type="spike" x="960.399" y="799.581" width="32" height="32">
-   <properties>
-    <property name="name" value="HealthPotion"/>
-   </properties>
-  </object>
   <object id="86" type="lavaSpring" x="672.019" y="384.007" width="32" height="64"/>
   <object id="87" type="lavaSpring" x="480.007" y="447.832" width="32" height="64"/>
   <object id="88" type="lavaSpring" x="832.059" y="383.893" width="32" height="64"/>
   <object id="89" type="lavaSpring" x="1023.99" y="447.93" width="32" height="64"/>
+  <object id="90" name="sword0" type="showcaseChest" x="640.042" y="542.712" width="32" height="32">
+   <properties>
+    <property name="itemName" value="sword0"/>
+   </properties>
+  </object>
+  <object id="92" name="sword1" type="showcaseChest" x="704.069" y="543.367" width="32" height="32">
+   <properties>
+    <property name="itemName" value="sword1"/>
+   </properties>
+  </object>
+  <object id="93" name="sword2" type="showcaseChest" x="767.732" y="543.367" width="32" height="32">
+   <properties>
+    <property name="itemName" value="sword2"/>
+   </properties>
+  </object>
+  <object id="95" name="bow0" type="showcaseChest" x="639.606" y="638.843" width="32" height="32">
+   <properties>
+    <property name="itemName" value="bow0"/>
+   </properties>
+  </object>
+  <object id="96" name="bow1" type="showcaseChest" x="703.633" y="639.498" width="32" height="32">
+   <properties>
+    <property name="itemName" value="bow1"/>
+   </properties>
+  </object>
+  <object id="97" name="bow2" type="showcaseChest" x="767.296" y="639.498" width="32" height="32">
+   <properties>
+    <property name="itemName" value="bow2"/>
+   </properties>
+  </object>
+  <object id="98" name="staff0" type="showcaseChest" x="638.988" y="734.646" width="32" height="32">
+   <properties>
+    <property name="itemName" value="staff0"/>
+   </properties>
+  </object>
+  <object id="99" name="staff1" type="showcaseChest" x="703.015" y="735.301" width="32" height="32">
+   <properties>
+    <property name="itemName" value="staff1"/>
+   </properties>
+  </object>
+  <object id="100" name="staff2" type="showcaseChest" x="766.678" y="735.301" width="32" height="32">
+   <properties>
+    <property name="itemName" value="staff2"/>
+   </properties>
+  </object>
+  <object id="101" type="door" x="735.521" y="358.489" width="64.8989" height="62.4266"/>
  </objectgroup>
 </map>

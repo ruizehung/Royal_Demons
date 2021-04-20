@@ -180,6 +180,36 @@ public class CreatureFactory implements EntityFactory {
                 .build();
     }
 
+    @Spawns("dummyFinalBoss")
+    public Entity newDummyFinalBoss(SpawnData data) {
+        PhysicsComponent physics = new PhysicsComponent();
+        physics.setBodyType(BodyType.DYNAMIC);
+        physics.setFixtureDef(new FixtureDef().friction(1.0f));
+
+        String bossFileName = "Golem_168x105.png";
+        List<Integer> widthHeight = parseSizes(bossFileName);
+
+        DummyBossComponent bossComponent = new DummyBossComponent(
+                100, "creatures/boss/" + bossFileName,
+                widthHeight.get(0), widthHeight.get(1), 12);
+
+        return FXGL.entityBuilder(data)
+                .type(RoyalType.ENEMY)
+                .bbox(new HitBox(
+                        new Point2D(
+                                50,
+                                20),
+                        BoundingShape.box(
+                                widthHeight.get(0) - 70,
+                                widthHeight.get(1) - 35)))
+                .with(physics)
+                .with(new CollidableComponent(true))
+                .with(bossComponent)
+                .with("CreatureComponent", bossComponent)
+                .zIndex(5)
+                .build();
+    }
+
     @Spawns("coin")
     public Entity newCoin(SpawnData data) {
         return FXGL.entityBuilder(data)

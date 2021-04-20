@@ -142,11 +142,6 @@
   <object id="42" name="Wizard" type="initialRoomNPC" x="539.586" y="288.699">
    <point/>
   </object>
-  <object id="43" name="chest" type="chest" x="543.457" y="352.128" width="32" height="32">
-   <properties>
-    <property name="name" value="HealthPotion"/>
-   </properties>
-  </object>
   <object id="49" type="waterSpring" x="287.914" y="63.9507" width="32" height="64"/>
   <object id="50" type="waterSpring" x="671.946" y="63.9892" width="32" height="64"/>
  </objectgroup>

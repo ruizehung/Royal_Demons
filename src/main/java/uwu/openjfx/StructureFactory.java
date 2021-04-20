@@ -141,6 +141,19 @@ public class StructureFactory implements EntityFactory {
                 .build();
     }
 
+    @Spawns("showcaseChest")
+    public Entity newShowcaseChest(SpawnData data) {
+        ShowcaseChestComponent chestComponent = new ShowcaseChestComponent(data.<String>get("itemName"));
+        return FXGL.entityBuilder(data)
+                .type(RoyalType.CHEST)
+                .viewWithBBox("chest_empty_open_anim_f0_32x32.png")
+                .with(new DropItemComponent())
+                .with(chestComponent)
+                .with(new CollidableComponent(true))
+                .with("chestComponent", chestComponent)
+                .build();
+    }
+
     @Spawns("mimicChest")
     public Entity newMimicChest(SpawnData data) {
         MimicChestComponent mimicChestComponent = new MimicChestComponent();

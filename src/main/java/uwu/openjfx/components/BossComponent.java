@@ -14,7 +14,7 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.loopBGM;
 
 // Todo: add more boss behavior here
 public class BossComponent extends EnemyComponent {
-    private static IntegerProperty bossHealthProperty = new SimpleIntegerProperty();
+    protected static IntegerProperty bossHealthProperty = new SimpleIntegerProperty();
 
     public BossComponent(int healthPoints, String assetName, int width, int height, int frames) {
         super(healthPoints, assetName, width, height, frames, "finalboss", "ranged");

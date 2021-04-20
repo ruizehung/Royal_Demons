@@ -4,10 +4,12 @@ import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
+import javafx.scene.control.ProgressBar;
 import uwu.openjfx.DieScreenMenu;
 import uwu.openjfx.MapGeneration.GameMap;
 import uwu.openjfx.MapGeneration.Room;
 import uwu.openjfx.RoyalType;
+import uwu.openjfx.UI;
 import uwu.openjfx.components.PlayerComponent;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameScene;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getInput;
@@ -22,9 +24,18 @@ public class PlayerDoorCollisionHandler extends CollisionHandler {
         getInput().setProcessInput(false);
         player.getComponent(PlayerComponent.class).stop();
 
+        GameMap gameMap = FXGL.geto("gameMap");
         Room curRoom = FXGL.geto("curRoom");
         if (curRoom.getRoomType().equals("finalWinRoom")) {
             triggerWin();
+            return;
+        } else if (curRoom.getRoomType().equals("weaponsShowcaseRoom")) {
+            getGameScene().getViewport().fade(() -> {
+                gameMap.loadRoom(gameMap.getInitialRoom(), "center");
+                FXGL.getGameScene().clearUINodes();
+                UI.init(FXGL.geto("player"));
+                getInput().setProcessInput(true);
+            });
             return;
         }
 
@@ -51,7 +62,7 @@ public class PlayerDoorCollisionHandler extends CollisionHandler {
             newRoom = curRoom;
             System.err.println("Error getting new room!");
         }
-        GameMap gameMap = FXGL.geto("gameMap");
+
 
         if (newRoom != null) {
             if (!newRoom.visited() && !curRoom.enemiesCleared()) {

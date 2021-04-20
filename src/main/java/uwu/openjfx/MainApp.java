@@ -208,6 +208,8 @@ public class MainApp extends GameApplication {
         getInput().addAction(new ShowMapAction("showMap"), KeyCode.M);
         getInput().addAction(new ShowInventoryAction("showInventory"), KeyCode.I);
 
+        getInput().addAction(new TeleportToShowcaseRoom("teleportToShowcaseRoom"), KeyCode.P);
+
     }
 
     @Override
@@ -436,7 +438,8 @@ public class MainApp extends GameApplication {
             if (file.getName().endsWith(".tmx") && !file.getName().equals("initialRoom.tmx")
                     && !file.getName().equals("bossRoom.tmx")
                     && !file.getName().equals("challengeRoom.tmx")
-                    && !file.getName().equals("finalWinRoom.tmx")) {
+                    && !file.getName().equals("finalWinRoom.tmx")
+                    && !file.getName().equals("weaponsShowcaseRoom.tmx")) {
                 roomTypeList.add(file.getName().replaceAll(".tmx", ""));
             }
         }

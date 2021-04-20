@@ -198,20 +198,20 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="6" name="Object Layer 1" locked="1">
+ <objectgroup id="6" name="Object Layer 1">
   <object id="177" name="Item" type="itemOnFloor" x="863.993" y="159.442" width="32" height="32">
    <properties>
     <property name="isWeapon" type="bool" value="false"/>
     <property name="name" value="HealthPotion"/>
    </properties>
   </object>
-  <object id="178" name="Item" type="itemOnFloor" x="1664" y="863.355" width="32" height="32">
+  <object id="178" name="Item" type="itemOnFloor" x="1664" y="863.737" width="32" height="32">
    <properties>
     <property name="isWeapon" type="bool" value="false"/>
     <property name="name" value="RagePotion"/>
    </properties>
   </object>
-  <object id="179" name="Item" type="itemOnFloor" x="1664.54" y="799.339" width="32" height="32">
+  <object id="179" name="Item" type="itemOnFloor" x="1663.9" y="799.848" width="32" height="32">
    <properties>
     <property name="isWeapon" type="bool" value="false"/>
     <property name="name" value="HealthPotion"/>
@@ -222,17 +222,17 @@
     <property name="name" value="HealthPotion"/>
    </properties>
   </object>
-  <object id="189" name="Spike" type="spike" x="543.05" y="94.9364" width="32" height="32">
+  <object id="189" name="Spike" type="spike" x="543.643" y="95.8266" width="32" height="32">
    <properties>
     <property name="name" value="HealthPotion"/>
    </properties>
   </object>
-  <object id="190" name="Spike" type="spike" x="606.816" y="287.11" width="32" height="32">
+  <object id="190" name="Spike" type="spike" x="608.028" y="288.019" width="32" height="32">
    <properties>
     <property name="name" value="HealthPotion"/>
    </properties>
   </object>
-  <object id="191" name="Spike" type="spike" x="1279.42" y="446.963" width="32" height="32">
+  <object id="191" name="Spike" type="spike" x="1279.96" y="447.906" width="32" height="32">
    <properties>
     <property name="name" value="HealthPotion"/>
    </properties>
@@ -242,7 +242,7 @@
     <property name="name" value="HealthPotion"/>
    </properties>
   </object>
-  <object id="193" name="Spike" type="spike" x="639.136" y="831.31" width="32" height="32">
+  <object id="193" name="Spike" type="spike" x="639.972" y="831.842" width="32" height="32">
    <properties>
     <property name="name" value="HealthPotion"/>
    </properties>
@@ -251,7 +251,7 @@
   <object id="196" type="lavaSpring" x="1439.94" y="735.921" width="32" height="64"/>
   <object id="197" type="lavaSpring" x="1280.07" y="735.964" width="32" height="64"/>
  </objectgroup>
- <objectgroup id="5" name="Object Layer 3" locked="1">
+ <objectgroup id="5" name="Object Layer 3">
   <object id="1" type="wall" x="815.712" y="221.418" width="7.66465" height="65.9024"/>
   <object id="2" type="wall" x="872.364" y="218.513" width="7.66465" height="69.3873"/>
   <object id="3" type="wall" x="33.7014" y="117.596" width="281.891" height="21.5115"/>
@@ -510,7 +510,7 @@
     <property name="groupId" type="int" value="1"/>
    </properties>
   </object>
-  <object id="173" name="Lever" type="lever" x="1247.77" y="894.958" width="32" height="32">
+  <object id="173" name="Lever" type="lever" x="1247.77" y="895.932" width="32" height="32">
    <properties>
     <property name="action" value="changeView"/>
     <property name="groupId" type="int" value="1"/>
