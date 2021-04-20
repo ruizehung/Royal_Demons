@@ -87,7 +87,7 @@ public class CreatureComponent extends Component implements HasLife {
                         isInvulnerable = false;
                         t.cancel();
                     }
-                }, 2000
+                }, !(this instanceof EnemyComponent) ? 2000 : 100
         );
     }
 

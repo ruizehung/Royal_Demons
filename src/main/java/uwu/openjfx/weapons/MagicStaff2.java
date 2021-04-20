@@ -161,7 +161,7 @@ public class MagicStaff2 implements Weapon, AngleBehavior {
             Entity breathHitbox = spawn("breathOfFire",
                 new SpawnData(player.getX(), player.getY()).
                     put("width", hitBoxWidth).put("height", hitBoxHeight).
-                    put("damage", 2.0));
+                    put("damage", 0.000000000001));
             // Spawn hitbox on top of player and apply offset
             PlayerComponent.channelAttack();
 

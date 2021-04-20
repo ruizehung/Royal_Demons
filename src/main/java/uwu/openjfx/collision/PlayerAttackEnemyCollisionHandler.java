@@ -63,12 +63,14 @@ public class PlayerAttackEnemyCollisionHandler extends CollisionHandler  {
         if (weapon.hasComponent(DamageOverTimeComponent.class)) {
             EnemyComponent enemyComponent = enemy.getObject("CreatureComponent");
             enemyComponent.turnSpriteRed();
-            enemyComponent.deductHealth(
-                weapon.getComponent(AttackDamageComponent.class).getAttackDamage(),
-                PlayerComponent.getAttackPower(),
-                enemyComponent.getBlockProbability(),
-                enemyComponent.getArmorStat(),
-                PlayerComponent.getPiercePow());
+            if (!enemyComponent.isInvulnerable()) {
+                enemyComponent.deductHealth(
+                    weapon.getComponent(AttackDamageComponent.class).getAttackDamage(),
+                    PlayerComponent.getAttackPower(),
+                    enemyComponent.getBlockProbability(),
+                    enemyComponent.getArmorStat(),
+                    PlayerComponent.getPiercePow());
+            }
         }
     }
 }
