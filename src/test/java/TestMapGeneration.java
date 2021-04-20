@@ -72,4 +72,19 @@ public class TestMapGeneration {
         assert (gameMap.getInitialRoom().getWestRoom() != null);
         gameMap = null;
     }
+
+    // Ray 5
+    @RepeatedTest(500)
+    void testUpTo3ChallengeRooms() {
+        GameMap gameMap = new GameMap(rooms);
+        gameMap.generateRooms();
+        int challengeRoomCount = 0;
+        for (Room room: gameMap.getRooms().values()) {
+            if (room.getRoomType().equals("challengeRoom")) {
+                ++challengeRoomCount;
+            }
+        }
+        assert challengeRoomCount <= 3;
+        gameMap = null;
+    }
 }

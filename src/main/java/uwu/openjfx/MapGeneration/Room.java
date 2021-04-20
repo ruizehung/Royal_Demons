@@ -20,7 +20,7 @@ public class Room {
 
     private Boolean visited = false;
     // set different room type based on numb of adjacent rooms
-    private String roomType;
+    private String roomType = "to_be_determined";
     private Map<Integer, Map<String, Integer>> entitiesData;
     private Map<Integer, Map<String, Integer>> droppedItemsData;
     private Map<Integer, Map<String, Integer>> chestsData;

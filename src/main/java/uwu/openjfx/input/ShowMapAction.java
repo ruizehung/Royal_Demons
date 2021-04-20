@@ -32,6 +32,11 @@ public class ShowMapAction extends UserAction {
 
     @Override
     protected void onActionBegin() {
+        Coordinate coordinate = ((Room) FXGL.geto("curRoom")).getCoordinate();
+        if (coordinate.getX() == 999 && coordinate.getY() == 999) {
+            return;
+        }
+
         Boolean developerCheat = FXGL.getWorldProperties().getBoolean("developerCheat");
 
         BorderPane mapWindow = new BorderPane();
@@ -136,7 +141,7 @@ public class ShowMapAction extends UserAction {
         }
 
         // Highlight current room
-        Coordinate coordinate = ((Room) FXGL.geto("curRoom")).getCoordinate();
+
         Text t = new Text("X");
         t.setFill(Color.WHITE);
         borderPanes[coordinate.getX() - gameMap.getMinX()][gameMap.getMaxY() - coordinate.getY()]

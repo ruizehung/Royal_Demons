@@ -78,7 +78,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="4" name="Object Layer 1" locked="1">
+ <objectgroup id="4" name="Object Layer 1">
   <object id="5" type="wall" x="698.247" y="316.949" width="7.89549" height="95.4127"/>
   <object id="38" name="Spawn" type="point" x="375.733" y="243.823">
    <properties>
@@ -141,7 +141,7 @@
   <object id="93" type="wall" x="646.17" y="162.29" width="16.6174" height="23.6247"/>
   <object id="94" type="wall" x="647.176" y="131.093" width="16.6174" height="23.6247"/>
   <object id="95" type="wall" x="679.38" y="161.955" width="16.6174" height="23.6247"/>
-  <object id="96" type="waterSpring" x="448.274" y="31.0661" width="32" height="64"/>
-  <object id="97" type="waterSpring" x="511.34" y="30.3952" width="32" height="64"/>
+  <object id="96" type="waterSpring" x="447.745" y="31.8596" width="32" height="64"/>
+  <object id="97" type="waterSpring" x="512.001" y="31.8499" width="32" height="64"/>
  </objectgroup>
 </map>
