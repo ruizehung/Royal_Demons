@@ -168,7 +168,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="4" name="Object Layer 1">
+ <objectgroup id="4" name="Object Layer 1" locked="1">
   <object id="1" name="Final Boss" type="finalBoss" x="759.788" y="632.713">
    <point/>
   </object>
@@ -290,9 +290,9 @@
     <property name="name" value="HealthPotion"/>
    </properties>
   </object>
-  <object id="86" type="lavaSpring" x="671.623" y="383.908" width="32" height="64"/>
-  <object id="87" type="lavaSpring" x="479.71" y="447.039" width="32" height="64"/>
-  <object id="88" type="lavaSpring" x="831.266" y="383.298" width="32" height="64"/>
-  <object id="89" type="lavaSpring" x="1023.47" y="447.039" width="32" height="64"/>
+  <object id="86" type="lavaSpring" x="672.019" y="384.007" width="32" height="64"/>
+  <object id="87" type="lavaSpring" x="480.007" y="447.832" width="32" height="64"/>
+  <object id="88" type="lavaSpring" x="832.059" y="383.893" width="32" height="64"/>
+  <object id="89" type="lavaSpring" x="1023.99" y="447.93" width="32" height="64"/>
  </objectgroup>
 </map>

@@ -269,10 +269,10 @@
   <object id="104" type="wall" x="1349.93" y="491.09" width="19.274" height="11.1692">
    <ellipse/>
   </object>
-  <object id="105" type="waterSpring" x="1152.18" y="671.625" width="32" height="64"/>
-  <object id="106" type="waterSpring" x="1151.84" y="1087.66" width="32" height="64"/>
-  <object id="107" type="waterSpring" x="416.28" y="671.547" width="32" height="64"/>
-  <object id="108" type="waterSpring" x="415.634" y="1088.31" width="32" height="64"/>
+  <object id="105" type="waterSpring" x="1151.91" y="672.024" width="32" height="64"/>
+  <object id="106" type="waterSpring" x="1151.97" y="1087.79" width="32" height="64"/>
+  <object id="107" type="waterSpring" x="415.876" y="671.85" width="32" height="64"/>
+  <object id="108" type="waterSpring" x="415.836" y="1088.01" width="32" height="64"/>
  </objectgroup>
  <objectgroup id="5" name="doors" locked="1">
   <object id="55" name="Door" type="door" x="251.667" y="210.333" width="100.667" height="31.6667">

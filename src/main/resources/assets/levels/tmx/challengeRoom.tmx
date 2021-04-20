@@ -3,7 +3,7 @@
  <tileset firstgid="1" name="0x72_DungeonTilesetII_32x32" tilewidth="32" tileheight="32" tilecount="1024" columns="32">
   <image source="0x72_DungeonTilesetII_32x32.png" width="1024" height="1024"/>
  </tileset>
- <layer id="1" name="Tile Layer 1" width="30" height="20">
+ <layer id="1" name="Tile Layer 1" width="30" height="20" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,130,130,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,225,2,3,3,3,3,3,3,3,3,3,3,3,130,130,3,3,3,3,3,3,3,3,3,4,226,0,0,
@@ -27,7 +27,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,130,130,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="3" name="Tile Layer 2" width="30" height="20">
+ <layer id="3" name="Tile Layer 2" width="30" height="20" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -51,7 +51,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,257,0,0,258,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="2" name="Tile Layer 3" width="30" height="20">
+ <layer id="2" name="Tile Layer 3" width="30" height="20" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,418,0,257,0,0,258,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,5,0,0,0,0,5,0,0,0,292,0,0,291,0,0,5,0,0,0,0,5,0,0,0,0,
@@ -75,7 +75,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="4" name="Object Layer 1">
+ <objectgroup id="4" name="Object Layer 1" locked="1">
   <object id="1" type="wall" x="83.3959" y="55.2057" width="391.08" height="28.1902"/>
   <object id="2" type="wall" x="547.097" y="55.2057" width="326.798" height="28.1902"/>
   <object id="3" type="wall" x="84.7593" y="571.48" width="386.064" height="28.1902"/>
@@ -163,9 +163,9 @@
     <property name="name" value="HealthPotion"/>
    </properties>
   </object>
-  <object id="56" type="lavaSpring" x="639.782" y="63.5996" width="32" height="64"/>
-  <object id="57" type="lavaSpring" x="799.731" y="63.5313" width="32" height="64"/>
+  <object id="56" type="lavaSpring" x="639.939" y="63.9131" width="32" height="64"/>
+  <object id="57" type="lavaSpring" x="800.045" y="63.8448" width="32" height="64"/>
   <object id="58" type="lavaSpring" x="319.952" y="64.062" width="32" height="64"/>
-  <object id="59" type="lavaSpring" x="160.202" y="63.5313" width="32" height="64"/>
+  <object id="59" type="lavaSpring" x="159.967" y="64.0016" width="32" height="64"/>
  </objectgroup>
 </map>

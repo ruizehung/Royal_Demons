@@ -207,7 +207,7 @@
    </properties>
    <point/>
   </object>
-  <object id="44" type="lavaSpring" x="703.435" y="479.027" width="32" height="64"/>
-  <object id="45" type="lavaSpring" x="255.929" y="479.741" width="32" height="64"/>
+  <object id="44" type="lavaSpring" x="703.971" y="479.777" width="32" height="64"/>
+  <object id="45" type="lavaSpring" x="256.036" y="479.955" width="32" height="64"/>
  </objectgroup>
 </map>

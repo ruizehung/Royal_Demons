@@ -147,7 +147,7 @@
     <property name="name" value="HealthPotion"/>
    </properties>
   </object>
-  <object id="49" type="waterSpring" x="287.72" y="63.7567" width="32" height="64"/>
-  <object id="50" type="waterSpring" x="671.558" y="63.3102" width="32" height="64"/>
+  <object id="49" type="waterSpring" x="287.914" y="63.9507" width="32" height="64"/>
+  <object id="50" type="waterSpring" x="671.946" y="63.9892" width="32" height="64"/>
  </objectgroup>
 </map>

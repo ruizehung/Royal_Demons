@@ -248,7 +248,7 @@
    </properties>
   </object>
   <object id="195" type="waterSpring" x="831.579" y="128.172" width="32" height="64"/>
-  <object id="196" type="lavaSpring" x="1439.63" y="735.449" width="32" height="64"/>
+  <object id="196" type="lavaSpring" x="1439.94" y="735.921" width="32" height="64"/>
   <object id="197" type="lavaSpring" x="1280.07" y="735.964" width="32" height="64"/>
  </objectgroup>
  <objectgroup id="5" name="Object Layer 3" locked="1">

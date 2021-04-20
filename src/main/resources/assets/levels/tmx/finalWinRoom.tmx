@@ -78,7 +78,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="4" name="Object Layer 1">
+ <objectgroup id="4" name="Object Layer 1" locked="1">
   <object id="5" type="wall" x="698.247" y="316.949" width="7.89549" height="95.4127"/>
   <object id="38" name="Spawn" type="point" x="375.733" y="243.823">
    <properties>
