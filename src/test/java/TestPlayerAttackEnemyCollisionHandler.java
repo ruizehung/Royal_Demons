@@ -25,7 +25,7 @@ public class TestPlayerAttackEnemyCollisionHandler {
     @Test
     void testBossDies() {
         Entity boss = new Entity();
-        BossComponent bossComponent = new BossComponent(1, "", 0, 0, 0);
+        BossComponent bossComponent = new BossComponent(1, "", 0, 0, 0, "melee");
         boss.addComponent(bossComponent);
         boss.setProperty("CreatureComponent", bossComponent);
 
@@ -46,7 +46,7 @@ public class TestPlayerAttackEnemyCollisionHandler {
     void testBossGetHurt() {
         int origHealth = 5;
         Entity boss = new Entity();
-        BossComponent bossComponent = new BossComponent(origHealth, "", 0, 0, 0);
+        BossComponent bossComponent = new BossComponent(origHealth, "", 0, 0, 0, "melee");
         boss.addComponent(bossComponent);
         boss.setProperty("CreatureComponent", bossComponent);
 

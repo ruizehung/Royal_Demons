@@ -5,6 +5,8 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.components.IDComponent;
+import com.almasb.fxgl.physics.BoundingShape;
+import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
@@ -39,7 +41,7 @@ public class EnemyComponent extends CreatureComponent {
         Abstract Enemy
      */
     private final String type;
-    private final String fighterClass; // melee/ranged/magic
+    private String fighterClass; // melee/ranged/magic
     private boolean massEffect = true; // if enemy has ability to reach equilibrium against player
     private double blockProbability; // chance of blocking
     private double armorStat; // how much damage to soak
@@ -48,9 +50,9 @@ public class EnemyComponent extends CreatureComponent {
         Every Enemy Aspects
      */
     private int kiteTimer;
-    private final String assetName;
-    private final int width;
-    private final int height;
+    private String assetName;
+    private int width;
+    private int height;
     private AnimatedTexture texture;
     private AnimationChannel animIdle;
     private AnimationChannel animWalk;
@@ -101,7 +103,7 @@ public class EnemyComponent extends CreatureComponent {
     }
 
     public EnemyComponent(int healthPoints, String assetName, int width, int height) {
-        this(healthPoints, assetName, width, height, 8, "small", "ranged");
+        this(healthPoints, assetName, width, height, 8, "small", "melee");
     }
 
     @Override
@@ -130,7 +132,11 @@ public class EnemyComponent extends CreatureComponent {
             break;
         default:
         }
-        speed = fighterClass.equals("melee") ? 70 : 120;
+        if (type.equals("finalboss")) {
+            speed = fighterClass.equals("melee") ? 100 : 145;
+        } else {
+            speed = fighterClass.equals("melee") ? 70 : 120;
+        }
         attackDuration = fighterClass.equals("melee") ? 900 : 1100;
         // endregion
 
@@ -148,6 +154,12 @@ public class EnemyComponent extends CreatureComponent {
 
     @Override
     public void onUpdate(double tpf) {
+        if (type.equals("finalboss")) {
+            if (getFighterClass().equals("melee") && getHealthPoints() <= 50) {
+                transformBoss("creatures/boss/Golem_168x105.png", 168, 105,
+                    12, "ranged");
+            }
+        }
         /*
         Player Numbers
         */
@@ -233,8 +245,8 @@ public class EnemyComponent extends CreatureComponent {
         // Enemy does the actual attack, spawns hitbox and then shrinks
         if (startAttacking) {
             if (fighterClass.equals("melee")) {
-                int widthBox = width * 2;
-                int heightBox = height * 2;
+                int widthBox = width;
+                int heightBox = height;
                 int sideOffset = widthBox / 2;
                 Entity meleePunchHitBox = spawn("meleeEnemyPunch",
                     new SpawnData(enemyX, enemyY).
@@ -274,13 +286,22 @@ public class EnemyComponent extends CreatureComponent {
 
     // region Movement
     private void moveToPlayer() {
+        int attackDist;
+        int moveDist;
+        if (type.equals("finalboss")) {
+            attackDist = fighterClass.equals("melee") ? 150 : 400;
+            moveDist = 2000;
+        } else {
+            attackDist = fighterClass.equals("melee") ? 120 : 300;
+            moveDist = fighterClass.equals("melee") ? 300 : 500;
+        }
         if (moveTimer.elapsed(Duration.seconds(1))) {
             if (!isStunned) {
                 if (fighterClass.equals("melee")) {
-                    if (dist < 120 && !attackCD) {
+                    if (dist < attackDist && !attackCD) {
                         playerLeavesRadius = false;
                         autoAttack();
-                    } else if (dist < 300) {
+                    } else if (dist < moveDist) {
                         if (!prepAttack) {
                             double xDir = playerX - enemyX > 0 ? 1 : -1;
                             double yDir = playerY - enemyY > 0 ? 1 : -1;
@@ -292,7 +313,7 @@ public class EnemyComponent extends CreatureComponent {
                         stop();
                     }
                 } else {
-                    if (dist < 400) {
+                    if (dist < attackDist) {
                         if (!attackCD) {
                             entity.setScaleX(playerX - enemyX > 0 ? 1 : -1);
                             autoAttack();
@@ -300,7 +321,7 @@ public class EnemyComponent extends CreatureComponent {
                         if (!prepAttack && !kiting) {
                             kiting = true;
                         }
-                    } else if (dist < 500) {
+                    } else if (dist < moveDist) {
                         if (!prepAttack) {
                             double xDir = playerX - enemyX > 0 ? 1 : -1;
                             double yDir = playerY - enemyY > 0 ? 1 : -1;
@@ -577,6 +598,36 @@ public class EnemyComponent extends CreatureComponent {
                 Entity tempChest = FXGL.spawn("chest", 480, 387);
                 tempChest.addComponent(new IDComponent("", 999));
             }
+        }
+    }
+
+    public String getFighterClass() {
+        return fighterClass;
+    }
+
+    public void transformBoss(String assetName, int width, int height, int frames,
+                              String fighterClass) {
+        this.assetName = assetName;
+        this.width = width;
+        this.height = height;
+        this.fighterClass = fighterClass;
+
+        if (!MainApp.isIsTesting()) {
+            animIdle = new AnimationChannel(FXGL.image(assetName), frames,
+                width, height, Duration.seconds(0.5), 0, frames / 2 - 1);
+            animWalk = new AnimationChannel(FXGL.image(assetName), frames,
+                width, height, Duration.seconds(0.5), frames / 2, frames - 1);
+            animMeleeAttack = new AnimationChannel(FXGL.image(assetName), frames,
+                width, height, Duration.seconds((double) attackDuration / 1000),
+                frames / 2, frames / 2);
+            getEntity().getBoundingBoxComponent().clearHitBoxes();
+            getEntity().getBoundingBoxComponent().addHitBox(new HitBox(
+                new Point2D(
+                    0,
+                    0),
+                BoundingShape.box(width, height)));
+            texture.set(new AnimatedTexture(animIdle));
+            texture.loop();
         }
     }
     // endregion

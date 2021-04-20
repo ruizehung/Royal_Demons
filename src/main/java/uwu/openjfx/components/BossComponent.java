@@ -2,6 +2,7 @@ package uwu.openjfx.components;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.SpawnData;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import uwu.openjfx.MainApp;
@@ -9,6 +10,7 @@ import uwu.openjfx.RoyalType;
 import uwu.openjfx.UI;
 import uwu.openjfx.behaviors.DoNothing;
 
+import static com.almasb.fxgl.dsl.FXGL.spawn;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getAudioPlayer;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.loopBGM;
 
@@ -16,23 +18,13 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.loopBGM;
 public class BossComponent extends EnemyComponent {
     protected static IntegerProperty bossHealthProperty = new SimpleIntegerProperty();
 
-    public BossComponent(int healthPoints, String assetName, int width, int height, int frames) {
-        super(healthPoints, assetName, width, height, frames, "finalboss", "ranged");
+    public BossComponent(int healthPoints, String assetName, int width, int height, int frames,
+                         String fighterClass) {
+        super(healthPoints, assetName, width, height, frames, "finalboss", fighterClass);
         // setDieBehavior(new WinWhenDie());
         setDieBehavior(new DoNothing());
         bossHealthProperty.set(healthPoints);
     }
-
-//    @Override
-//    public void onUpdate(double tpf) {
-//        if (!prepAttack) {
-//            int random = (int) (Math.random() * 101);
-//            if (random >= 50) {
-//                prepAttack = true;
-//                attackCD = true;
-//            }
-//        }
-//    }
 
     @Override
     public void die() {
