@@ -156,22 +156,22 @@ public class CreatureFactory implements EntityFactory {
         physics.setBodyType(BodyType.DYNAMIC);
         physics.setFixtureDef(new FixtureDef().friction(1.0f));
 
-        String bossFileName = "Golem_168x105.png";
+        String bossFileName = "ForestGuardian_96x96.png";
         List<Integer> widthHeight = parseSizes(bossFileName);
 
         BossComponent bossComponent = new BossComponent(
                 100, "creatures/boss/" + bossFileName,
-                widthHeight.get(0), widthHeight.get(1), 12);
+                widthHeight.get(0), widthHeight.get(1), 8, "melee");
 
         return FXGL.entityBuilder(data)
                 .type(RoyalType.ENEMY)
                 .bbox(new HitBox(
                     new Point2D(
-                        50,
-                        20),
+                        15,
+                        5),
                     BoundingShape.box(
-                        widthHeight.get(0) - 70,
-                        widthHeight.get(1) - 35)))
+                        widthHeight.get(0) - 20,
+                        widthHeight.get(1) - 15)))
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .with(bossComponent)

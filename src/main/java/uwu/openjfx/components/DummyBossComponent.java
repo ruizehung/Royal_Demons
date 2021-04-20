@@ -7,7 +7,7 @@ public class DummyBossComponent extends BossComponent {
 
 
     public DummyBossComponent(int healthPoints, String assetName, int width, int height, int frames) {
-        super(healthPoints, assetName, width, height, frames);
+        super(healthPoints, assetName, width, height, frames, "melee");
     }
 
     @Override
