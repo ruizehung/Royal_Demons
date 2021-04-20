@@ -69,10 +69,10 @@ public class EnemyComponent extends CreatureComponent {
     private boolean kiting = false;
     private boolean overDrive = false; // if enemy needs to slow to a stop if involuntarily moving
     private boolean isStunned = false;
-    private boolean attackCD = false; // when the enemy can attack again
-    private boolean prepAttack = false; // enemy begins attack charge
-    private boolean startAttacking = false; // enemy does the attack animation / instantiate hitbox
-    private boolean startShrink = false; // for growing enemies
+    protected boolean attackCD = false; // when the enemy can attack again
+    protected boolean prepAttack = false; // enemy begins attack charge
+    protected boolean startAttacking = false; // enemy does the attack animation / instantiate hitbox
+    protected boolean startShrink = false; // for growing enemies
     private double scaler = 1.0; // to keep track of scale when shrinking/enlarging
     private LocalTimer moveTimer; // time to check player's location
 
@@ -126,7 +126,7 @@ public class EnemyComponent extends CreatureComponent {
         case "finalboss":
             massEffect = true;
             blockProbability = 30;
-            armorStat = 20.5;
+            armorStat = 12.5;
             break;
         default:
         }

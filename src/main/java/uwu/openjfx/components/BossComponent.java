@@ -16,13 +16,23 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.loopBGM;
 public class BossComponent extends EnemyComponent {
     private static IntegerProperty bossHealthProperty = new SimpleIntegerProperty();
 
-
     public BossComponent(int healthPoints, String assetName, int width, int height, int frames) {
         super(healthPoints, assetName, width, height, frames, "finalboss", "ranged");
         // setDieBehavior(new WinWhenDie());
         setDieBehavior(new DoNothing());
         bossHealthProperty.set(healthPoints);
     }
+
+//    @Override
+//    public void onUpdate(double tpf) {
+//        if (!prepAttack) {
+//            int random = (int) (Math.random() * 101);
+//            if (random >= 50) {
+//                prepAttack = true;
+//                attackCD = true;
+//            }
+//        }
+//    }
 
     @Override
     public void die() {
