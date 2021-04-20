@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="96">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="98">
  <tileset firstgid="1" name="0x72_DungeonTilesetII_32x32" tilewidth="32" tileheight="32" tilecount="1024" columns="32">
   <image source="0x72_DungeonTilesetII_32x32.png" width="1024" height="1024"/>
  </tileset>
  <tileset firstgid="1025" name="Simple Dungeon Crawler 32x32 Pixel Art Asset Pack" tilewidth="32" tileheight="32" tilecount="72" columns="9">
   <image source="Simple Dungeon Crawler 32x32 Pixel Art Asset Pack.png" width="288" height="256"/>
  </tileset>
- <layer id="5" name="floor" width="30" height="20">
+ <layer id="5" name="floor" width="30" height="20" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,225,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,225,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,225,0,0,0,130,130,130,130,130,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,225,0,0,0,130,0,130,0,130,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,225,0,0,130,130,130,130,130,130,130,130,130,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,130,130,130,130,130,130,130,130,130,130,130,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,225,0,0,130,130,130,130,130,130,130,130,130,130,130,130,0,0,0,0,0,0,0,0,
@@ -30,10 +30,10 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="6" name="wall" width="30" height="20">
+ <layer id="6" name="wall" width="30" height="20" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,2,4,3,2,4,226,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,326,261,35,35,35,35,35,262,325,226,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,326,261,35,0,35,0,35,262,325,226,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,292,35,35,0,0,0,0,0,35,35,262,226,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,292,35,0,0,0,0,0,0,0,0,0,35,291,226,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,257,35,0,0,0,0,0,0,0,0,0,0,0,35,258,0,0,0,0,0,0,0,
@@ -54,11 +54,11 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="7" name="env" width="30" height="20">
+ <layer id="7" name="env" width="30" height="20" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,101,0,101,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,595,0,133,0,133,0,595,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,595,0,0,0,0,0,595,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,98,0,627,0,0,0,0,0,627,0,98,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,630,0,0,0,0,1026,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1026,1026,0,0,0,0,0,0,0,0,
@@ -121,8 +121,6 @@
   <object id="74" type="wall" x="346.606" y="58.6338" width="62.9106" height="20.941"/>
   <object id="75" type="wall" x="579.078" y="35.1518" width="7.89549" height="35.0303"/>
   <object id="76" type="wall" x="410.007" y="27.7717" width="173.612" height="20.941"/>
-  <object id="77" type="wall" x="452.946" y="34.1454" width="22.6556" height="32.3466"/>
-  <object id="78" type="wall" x="517.354" y="34.1454" width="22.6556" height="32.3466"/>
   <object id="79" type="wall" x="404.64" y="49.241" width="9.23734" height="10.8773"/>
   <object id="80" type="wall" x="579.749" y="59.9757" width="62.9106" height="20.941"/>
   <object id="81" type="wall" x="340.232" y="62.3238" width="7.89549" height="35.0303"/>
@@ -143,5 +141,7 @@
   <object id="93" type="wall" x="646.17" y="162.29" width="16.6174" height="23.6247"/>
   <object id="94" type="wall" x="647.176" y="131.093" width="16.6174" height="23.6247"/>
   <object id="95" type="wall" x="679.38" y="161.955" width="16.6174" height="23.6247"/>
+  <object id="96" type="waterSpring" x="447.745" y="31.8596" width="32" height="64"/>
+  <object id="97" type="waterSpring" x="512.001" y="31.8499" width="32" height="64"/>
  </objectgroup>
 </map>

@@ -131,24 +131,27 @@ public class GameMap {
         bossRoom.setRoomType("bossRoom");
 
         if (!MainApp.isIsTesting()) {
-            int challengeRooms = 1 + random.nextInt(3);
-            Object[] roomList = rooms.values().toArray();
-            for (int i = 0; i < challengeRooms; ++i) {
-                // randomly pick a room
-                Room room = null;
-                while (true) {
-                    room = (Room) roomList[random.nextInt(roomList.length)];
-                    // make sure it's not initial room or boss room or challenge room
-                    if (!(room.getRoomType().equals("initialRoom")
-                            || room.getRoomType().equals("bossRoom")
-                            || room.getRoomType().equals("challengeRoom"))) {
-                        break;
-                    }
-                }
-                // set to challenge room
-                room.setRoomType("challengeRoom");
-            }
+            random = new Random();
         }
+
+        int challengeRooms = 1 + random.nextInt(3);
+        Object[] roomList = rooms.values().toArray();
+        for (int i = 0; i < challengeRooms; ++i) {
+            // randomly pick a room
+            Room room = null;
+            while (true) {
+                room = (Room) roomList[random.nextInt(roomList.length)];
+                // make sure it's not initial room or boss room or challenge room
+                if (!(room.getRoomType().equals("initialRoom")
+                        || room.getRoomType().equals("bossRoom")
+                        || room.getRoomType().equals("challengeRoom"))) {
+                    break;
+                }
+            }
+            // set to challenge room
+            room.setRoomType("challengeRoom");
+        }
+
     }
 
     private void generate4RoomsAroundInitialRoom(List<Coordinate> roomsToCreate) {
