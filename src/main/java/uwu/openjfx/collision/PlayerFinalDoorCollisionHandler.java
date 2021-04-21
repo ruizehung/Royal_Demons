@@ -4,7 +4,6 @@ import com.almasb.fxgl.cutscene.Cutscene;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.util.Duration;
 import uwu.openjfx.MapGeneration.Coordinate;
 import uwu.openjfx.MapGeneration.GameMap;
@@ -51,7 +50,9 @@ public class PlayerFinalDoorCollisionHandler extends CollisionHandler {
                     "1: omg is dat u??",
                     "2: ya boo, thnx for saving me",
                     "1: np, lets go home and watch some netflix ^^, i stole "
-                            + FXGL.geti("coin") + " coins on the way here"
+                            + FXGL.geti("coin") + " coins on the way here "
+                            + "did " + (int) PlayerComponent.getDamageDealt() + " damage and "
+                            + "killed " + PlayerComponent.getMonstersKilled() + " monsters!"
             ));
             FXGL.getSceneService().getTimer().runOnceAfter(() -> FXGL.getCutsceneService()
                     .startCutscene(

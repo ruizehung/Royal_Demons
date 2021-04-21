@@ -21,6 +21,7 @@ public class PlayerCoinCollisionHandler extends CollisionHandler {
         if (!MainApp.isIsTesting()) {
             int coins = FXGL.geti("coin") + coinComponent.getValue();
             FXGL.set("coin", coins);
+            FXGL.play("ui/coin2.wav");
         }
         coin.removeFromWorld();
     }

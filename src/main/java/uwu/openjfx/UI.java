@@ -171,6 +171,7 @@ public class UI {
                     .getMaxHealthPoints()) {
                 healthPotProperty.set(healthPotProperty.get() - 1);
                 player.getComponent(PlayerComponent.class).increaseHealth(3);
+                FXGL.play("ui/pot.wav");
             }
         }
     }
@@ -185,6 +186,7 @@ public class UI {
         if (ragePotProperty.get() > 0) {
             ragePotProperty.set(ragePotProperty.get() - 1);
             PlayerComponent.setIsAttackPowerBuffed(true);
+            FXGL.play("ui/pot2.wav");
         }
     }
 }

@@ -20,6 +20,7 @@ public class PlayerChestCollisionHandler extends CollisionHandler {
         if ((MainApp.isIsTesting() || FXGL.getb("Fpressed"))
                 && !chestComponent.hasInteractedBefore()) {
             chestComponent.interact();
+            FXGL.play("ui/chest.wav");
         }
     }
 }

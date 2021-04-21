@@ -86,6 +86,7 @@ public class ShowInventoryAction extends UserAction {
                     if (!PlayerComponent.getCurrentWeapon().getName()
                             .equals(selectedWeapon.getName())) {
                         PlayerComponent.setCurrentWeapon(selectedWeapon);
+                        FXGL.play("ui/pickup.wav");
                     }
                 });
 
@@ -98,6 +99,7 @@ public class ShowInventoryAction extends UserAction {
                         itemInfoTitle.setText("");
                         descriptionAndIcon.getChildren().clear();
                         itemInfoPane.setBottom(null);
+                        FXGL.play("ui/drop_loot.wav");
                     }
                 });
                 itemInfoPane.setBottom(buttons);

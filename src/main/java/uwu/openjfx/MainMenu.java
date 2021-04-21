@@ -678,10 +678,10 @@ public class MainMenu extends FXGLMenu {
             btn.setStyle("-fx-background-color: transparent;");
             btn.setAlignment(Pos.CENTER_LEFT);
             btn.setOnMouseEntered(event -> {
-                FXGL.play("ui_hover.wav");
+                FXGL.play("ui/ui_hover.wav");
             });
             btn.setOnMouseClicked(event -> {
-                FXGL.play("ui_confirm.wav");
+                FXGL.play("ui/ui_confirm.wav");
             });
 
             Polygon p = new Polygon(0.0, 0.0, 220.0, 0.0, 250.0, 35.0, 0.0, 35.0);

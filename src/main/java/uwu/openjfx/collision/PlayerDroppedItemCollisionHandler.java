@@ -12,7 +12,6 @@ import uwu.openjfx.components.PlayerComponent;
 import uwu.openjfx.items.Item;
 import uwu.openjfx.weapons.*;
 
-import java.util.List;
 import java.util.Map;
 
 public class PlayerDroppedItemCollisionHandler extends CollisionHandler {
@@ -25,6 +24,7 @@ public class PlayerDroppedItemCollisionHandler extends CollisionHandler {
         if (MainApp.isIsTesting() || FXGL.getb("Epressed")) {
             String itemName = itemEntity.getString("name");
             System.out.println("Player picks up " + itemName);
+            FXGL.play("ui/weapon_swap.wav");
 
             // This is a piece of shit !!!!!
             // add things to inventory
