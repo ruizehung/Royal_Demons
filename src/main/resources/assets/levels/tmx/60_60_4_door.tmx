@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="60" height="60" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="198">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="60" height="60" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="199">
  <tileset firstgid="1" name="0x72_DungeonTilesetII_32x32" tilewidth="32" tileheight="32" tilecount="1024" columns="32">
   <image source="0x72_DungeonTilesetII_32x32.png" width="1024" height="1024"/>
  </tileset>
@@ -498,7 +498,7 @@
   <object id="165" name="Minion" type="minion" x="1497.37" y="652.701">
    <point/>
   </object>
-  <object id="166" name="Minion" type="minion" x="1281.93" y="818.635">
+  <object id="166" name="Minion" type="minion" x="1275.52" y="888.363">
    <point/>
   </object>
   <object id="167" name="Minion" type="minion" x="1402.31" y="821.394">
@@ -510,7 +510,7 @@
     <property name="groupId" type="int" value="1"/>
    </properties>
   </object>
-  <object id="173" name="Lever" type="lever" x="1247.77" y="895.932" width="32" height="32">
+  <object id="173" name="Lever" type="lever" x="1311.51" y="831.814" width="32" height="32">
    <properties>
     <property name="action" value="changeView"/>
     <property name="groupId" type="int" value="1"/>
@@ -527,5 +527,6 @@
   <object id="185" type="projectile-penetrable-wall" x="1598.84" y="839.963" width="31.6197" height="17.3399">
    <ellipse/>
   </object>
+  <object id="198" type="wall" x="1573.76" y="711.085" width="54.2917" height="41.3896"/>
  </objectgroup>
 </map>

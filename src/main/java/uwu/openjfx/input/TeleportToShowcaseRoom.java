@@ -2,13 +2,11 @@ package uwu.openjfx.input;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.input.UserAction;
-import com.almasb.fxgl.ui.FXGLScrollPane;
 import com.almasb.fxgl.ui.ProgressBar;
 import javafx.scene.paint.Color;
 import uwu.openjfx.MapGeneration.Coordinate;
 import uwu.openjfx.MapGeneration.GameMap;
 import uwu.openjfx.MapGeneration.Room;
-import uwu.openjfx.components.BossComponent;
 import uwu.openjfx.components.DummyBossComponent;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameScene;

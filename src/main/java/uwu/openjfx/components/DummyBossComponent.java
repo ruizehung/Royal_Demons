@@ -6,7 +6,8 @@ public class DummyBossComponent extends BossComponent {
     private int healingTimer;
 
 
-    public DummyBossComponent(int healthPoints, String assetName, int width, int height, int frames) {
+    public DummyBossComponent(int healthPoints, String assetName,
+                              int width, int height, int frames) {
         super(healthPoints, assetName, width, height, frames, "melee");
     }
 
@@ -29,7 +30,8 @@ public class DummyBossComponent extends BossComponent {
     }
 
     @Override
-    public void deductHealth(double point, double attackPower, double blockProb, double armor, int pierce) {
+    public void deductHealth(double point, double attackPower, double blockProb,
+                             double armor, int pierce) {
         super.deductHealth(point, attackPower, blockProb, armor, pierce);
         healingTimer = healingBufferAfterInjury;
     }

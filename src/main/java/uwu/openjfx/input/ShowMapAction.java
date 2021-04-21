@@ -10,7 +10,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import org.jetbrains.annotations.NotNull;
@@ -18,15 +17,19 @@ import uwu.openjfx.MapGeneration.Coordinate;
 import uwu.openjfx.MapGeneration.GameMap;
 import uwu.openjfx.MapGeneration.Room;
 
-import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getInput;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getUIFactoryService;
 
 public class ShowMapAction extends UserAction {
 
-    private String initRoomLayout = "-fx-border-color: #06f108; -fx-border-insets: 1; -fx-border-width: 2;";
-    private String normalRoomLayout = "-fx-border-color: white; -fx-border-insets: 1; -fx-border-width: 2;";
-    private String bossRoomLayout = "-fx-border-color: red; -fx-border-insets: 1; -fx-border-width: 2;";
-    private String challengeRoomLayout = "-fx-border-color: yellow; -fx-border-insets: 1; -fx-border-width: 3;";
+    private String initRoomLayout = "-fx-border-color: #06f108;"
+            + " -fx-border-insets: 1; -fx-border-width: 2;";
+    private String normalRoomLayout = "-fx-border-color: white;"
+            + " -fx-border-insets: 1; -fx-border-width: 2;";
+    private String bossRoomLayout = "-fx-border-color: red;"
+            + " -fx-border-insets: 1; -fx-border-width: 2;";
+    private String challengeRoomLayout = "-fx-border-color: yellow;"
+            + " -fx-border-insets: 1; -fx-border-width: 3;";
 
     public ShowMapAction(@NotNull String name) {
         super(name);
@@ -117,9 +120,11 @@ public class ShowMapAction extends UserAction {
 
         GameMap gameMap = FXGL.geto("gameMap");
 
-        BorderPane[][] borderPanes = new BorderPane[gameMap.getWidth() + 1][gameMap.getHeight() + 1];
+        int borderWidth = gameMap.getWidth() + 1;
+        int borderHeight = gameMap.getHeight() + 1;
+        BorderPane[][] borderPanes = new BorderPane[borderWidth][borderHeight];
 
-        for (Room room: gameMap.getRooms().values()) {
+        for (Room room : gameMap.getRooms().values()) {
             int x = room.getCoordinate().getX() - gameMap.getMinX();
             int y = gameMap.getMaxY() - room.getCoordinate().getY();
 
@@ -141,7 +146,7 @@ public class ShowMapAction extends UserAction {
                         if (mouseEvent.getButton().equals(MouseButton.PRIMARY)
                                 && mouseEvent.getClickCount() == 2) {
                             getInput().setProcessInput(false);
-                            getGameScene().getViewport().fade(() -> {
+                            FXGL.getGameScene().getViewport().fade(() -> {
                                 gameMap.loadRoom(room, "west");
                                 getInput().setProcessInput(true);
                             });

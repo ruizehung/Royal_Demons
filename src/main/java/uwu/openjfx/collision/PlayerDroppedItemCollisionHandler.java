@@ -70,6 +70,7 @@ public class PlayerDroppedItemCollisionHandler extends CollisionHandler {
 
             if (!MainApp.isIsTesting()) {
                 // handle onPickup
+                FXGL.play("ui/weapon_swap.wav");
                 Item itemObj;
                 Map<String, Item> itemNameObjMap = FXGL.geto("itemNameObjMap");
                 if (itemNameObjMap.containsKey(itemName)) {

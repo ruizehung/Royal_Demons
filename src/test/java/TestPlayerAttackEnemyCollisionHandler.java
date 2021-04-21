@@ -190,4 +190,46 @@ public class TestPlayerAttackEnemyCollisionHandler {
 
         assert enemyComponent.dead();
     }
+
+    // devan m6-1
+    @Test
+    void testBossGetHurtAddsToDamageCountStatistic() {
+        int origHealth = 5;
+        double currentDamage = PlayerComponent.getDamageDealt();
+        Entity boss = new Entity();
+        BossComponent bossComponent = new BossComponent(origHealth, "", 0, 0, 0, "melee");
+        boss.addComponent(bossComponent);
+        boss.setProperty("CreatureComponent", bossComponent);
+
+        Entity weapon = new Entity();
+        weapon.addComponent(new AttackDamageComponent(false, Double.MAX_VALUE));
+        boss.getComponent(bossComponent.getClass()).setBlockProbability(0);
+        boss.getComponent(bossComponent.getClass()).setArmorStat(1);
+
+        PlayerAttackEnemyCollisionHandler handler = new PlayerAttackEnemyCollisionHandler();
+        handler.onCollisionBegin(weapon, boss);
+
+        assert (PlayerComponent.getDamageDealt() > currentDamage);
+    }
+
+    // devan m6-2
+    @Test
+    void testMinionDiesAddsToKillCountStatistic() {
+        Entity monster = new Entity();
+        int currentKills = PlayerComponent.getMonstersKilled();
+        EnemyComponent enemyComponent = new EnemyComponent(
+                1, "", 10, 20);
+        monster.addComponent(enemyComponent);
+        monster.setProperty("CreatureComponent", enemyComponent);
+
+        Entity weapon = new Entity();
+        weapon.addComponent(new AttackDamageComponent(false, Double.MAX_VALUE));
+        enemyComponent.setBlockProbability(0);
+        enemyComponent.setArmorStat(1);
+
+        PlayerAttackEnemyCollisionHandler handler = new PlayerAttackEnemyCollisionHandler();
+        handler.onCollisionBegin(weapon, monster);
+
+        assert PlayerComponent.getMonstersKilled() > currentKills;
+    }
 }

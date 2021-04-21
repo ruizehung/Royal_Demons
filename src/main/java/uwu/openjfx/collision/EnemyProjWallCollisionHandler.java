@@ -1,11 +1,7 @@
 package uwu.openjfx.collision;
 
-import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.dsl.components.ProjectileComponent;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.components.IrremovableComponent;
 import com.almasb.fxgl.physics.CollisionHandler;
-import javafx.util.Duration;
 import uwu.openjfx.RoyalType;
 import uwu.openjfx.components.ExplosionAtDistComponent;
 import uwu.openjfx.components.ProjectileAnimationComponent;

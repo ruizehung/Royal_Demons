@@ -76,15 +76,15 @@ public class MainApp extends GameApplication {
         }
         settings.setGameMenuEnabled(true);
         settings.setEnabledMenuItems(EnumSet.of(MenuItem.EXTRA));
-//        settings.setDeveloperMenuEnabled(true);
-//        settings.setApplicationMode(ApplicationMode.DEVELOPER);
+        //settings.setDeveloperMenuEnabled(true);
+        //settings.setApplicationMode(ApplicationMode.DEVELOPER);
     }
 
 
     @Override
     protected void onPreInit() {
-        getSettings().setGlobalMusicVolume(developerCheat ? 0 : 0.05);
-        getSettings().setGlobalSoundVolume(0.5);
+        getSettings().setGlobalMusicVolume(developerCheat ? 0 : 0.03);
+        getSettings().setGlobalSoundVolume(0.1);
         loopBGM("MainMenu.mp3");
 
         getEventBus().addEventHandler(InteractEvent.ANY, event -> {
