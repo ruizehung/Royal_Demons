@@ -279,7 +279,7 @@ public class MainApp extends GameApplication {
         loadRoomAsset();
         loadEnemiesAsset();
         initItemsNameAssetMappingAndWeaponsList();
-        gameMap = new GameMap(8);
+        gameMap = new GameMap(10);
         // gameMap.setRandomSeed(63);
         gameMap.generateRooms();
         set("gameMap", gameMap);

@@ -1,8 +1,12 @@
+import com.almasb.fxgl.dsl.FXGL;
+import javafx.fxml.FXMLLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 import uwu.openjfx.MainApp;
 import uwu.openjfx.MapGeneration.GameMap;
 import uwu.openjfx.MapGeneration.Room;
+import uwu.openjfx.input.TeleportToBossRoom;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -75,7 +79,7 @@ public class TestMapGeneration {
 
     // Ray 5
     @RepeatedTest(500)
-    void testUpTo3ChallengeRooms() {
+    void testAtLeast2ChallengeRooms() {
         GameMap gameMap = new GameMap(rooms);
         gameMap.generateRooms();
         int challengeRoomCount = 0;
@@ -84,7 +88,31 @@ public class TestMapGeneration {
                 ++challengeRoomCount;
             }
         }
-        assert challengeRoomCount <= 3;
+        assert challengeRoomCount >= 2;
+        gameMap = null;
+    }
+
+    // Ray 6
+    @Test
+    void testCannotGoToBossRoomBeforeVisiting2ChallengeRooms() {
+        GameMap gameMap = new GameMap(rooms);
+        gameMap.generateRooms();
+        TeleportToBossRoom teleportToBossRoom = new TeleportToBossRoom("");
+        assert !teleportToBossRoom.canProceed(gameMap);
+
+        int toVisit = 2;
+        for (Room room: gameMap.getRooms().values()) {
+            if (room.getRoomType().equals("challengeRoom")) {
+                room.setVisited(true);
+                --toVisit;
+                if (toVisit <= 0) {
+                    break;
+                }
+            }
+        }
+
+        assert teleportToBossRoom.canProceed(gameMap);
+
         gameMap = null;
     }
 }

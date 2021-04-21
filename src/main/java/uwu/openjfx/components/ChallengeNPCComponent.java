@@ -8,7 +8,9 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+import uwu.openjfx.MainApp;
 import uwu.openjfx.behaviors.CanOnlyInteractOnce;
+import uwu.openjfx.behaviors.DoNothing;
 import uwu.openjfx.behaviors.SpawnMinions;
 
 
@@ -23,14 +25,18 @@ public class ChallengeNPCComponent extends CanOnlyInteractOnce {
     public ChallengeNPCComponent() {
         this.width = 57;
         this.height = 57;
-        animIdle = new AnimationChannel(FXGL.image("creatures/ally/Wizard_57x57.png"),
-                4, width, height, Duration.seconds(0.5), 0, 3);
+        if (!MainApp.isIsTesting()) {
+            animIdle = new AnimationChannel(FXGL.image("creatures/ally/Wizard_57x57.png"),
+                    4, width, height, Duration.seconds(0.5), 0, 3);
 
-        texture = new AnimatedTexture(animIdle);
+            texture = new AnimatedTexture(animIdle);
 
-        texture.loop();
+            texture.loop();
+            setBehavior(new SpawnMinions(5, "minion"));
+        } else {
+            setBehavior(new DoNothing());
+        }
 
-        setBehavior(new SpawnMinions(5, "minion"));
     }
 
 

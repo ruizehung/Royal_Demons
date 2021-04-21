@@ -134,7 +134,7 @@ public class GameMap {
             random = new Random();
         }
 
-        int challengeRooms = 1 + random.nextInt(3);
+        int challengeRooms = 2 + random.nextInt(3);
         Object[] roomList = rooms.values().toArray();
         for (int i = 0; i < challengeRooms; ++i) {
             // randomly pick a room

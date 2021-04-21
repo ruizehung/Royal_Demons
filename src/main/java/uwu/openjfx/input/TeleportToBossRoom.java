@@ -5,6 +5,7 @@ import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.ui.ProgressBar;
 import javafx.scene.paint.Color;
 import uwu.openjfx.MapGeneration.GameMap;
+import uwu.openjfx.MapGeneration.Room;
 import uwu.openjfx.components.BossComponent;
 import uwu.openjfx.components.PlayerComponent;
 
@@ -19,8 +20,11 @@ public class TeleportToBossRoom extends UserAction {
     }
 
     @Override
-    protected void onActionBegin() {
+    public void onActionBegin() {
         GameMap gameMap = FXGL.geto("gameMap");
+        if (!canProceed(gameMap)) {
+            return;
+        }
         getGameScene().getViewport().fade(() -> {
             gameMap.loadRoom(gameMap.getBossRoom(), "west");
         });
@@ -51,5 +55,15 @@ public class TeleportToBossRoom extends UserAction {
         bossHealth.setTranslateY(12.5);
         bossHealth.currentValueProperty().bind(BossComponent.getBossHealthProperty());
         FXGL.getGameScene().addUINodes(bossHealth);
+    }
+
+    public boolean canProceed(GameMap gameMap) {
+        int challengeRoomsVisited = 0;
+        for (Room room : gameMap.getRooms().values()) {
+            if (room.getRoomType().equals("challengeRoom") && room.visited()) {
+                ++challengeRoomsVisited;
+            }
+        }
+        return challengeRoomsVisited >= 2;
     }
 }

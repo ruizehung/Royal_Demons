@@ -5,6 +5,8 @@ import com.almasb.fxgl.input.UserAction;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -16,8 +18,8 @@ import uwu.openjfx.MapGeneration.Coordinate;
 import uwu.openjfx.MapGeneration.GameMap;
 import uwu.openjfx.MapGeneration.Room;
 
-import static com.almasb.fxgl.dsl.FXGLForKtKt.getUIFactoryService;
-import static com.almasb.fxgl.dsl.FXGLForKtKt.random;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getInput;
 
 public class ShowMapAction extends UserAction {
 
@@ -132,6 +134,19 @@ public class ShowMapAction extends UserAction {
                     borderPanes[x][y].setStyle(challengeRoomLayout);
                 } else {
                     borderPanes[x][y].setStyle(normalRoomLayout);
+                }
+
+                if (developerCheat) {
+                    borderPanes[x][y].setOnMouseClicked((MouseEvent mouseEvent) -> {
+                        if (mouseEvent.getButton().equals(MouseButton.PRIMARY)
+                                && mouseEvent.getClickCount() == 2) {
+                            getInput().setProcessInput(false);
+                            getGameScene().getViewport().fade(() -> {
+                                gameMap.loadRoom(room, "west");
+                                getInput().setProcessInput(true);
+                            });
+                        }
+                    });
                 }
             }
 

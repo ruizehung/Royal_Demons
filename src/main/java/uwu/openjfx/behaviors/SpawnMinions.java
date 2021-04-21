@@ -18,8 +18,8 @@ public class SpawnMinions implements Behavior {
     public void act(Entity entity) {
         Room curRoom = FXGL.geto("curRoom");
         for (int i = 0; i < numberOfMinions; ++i) {
-            Entity enemy = FXGL.spawn(category, entity.getX() + FXGL.random(-96, 96),
-                    entity.getY() + FXGL.random(-96, 96));
+            Entity enemy = FXGL.spawn(category, entity.getX() + FXGL.random(-180, 180),
+                    entity.getY() + FXGL.random(-180, 180));
             IDComponent idComponent = new IDComponent("enemy", 5000 + i);
             enemy.addComponent(idComponent);
             curRoom.setEntityData(idComponent.getId(), "isAlive", 1);
