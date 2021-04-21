@@ -1,9 +1,11 @@
 package uwu.openjfx.input;
 
+import com.almasb.fxgl.cutscene.Cutscene;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.ui.ProgressBar;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import uwu.openjfx.MapGeneration.GameMap;
 import uwu.openjfx.components.BossComponent;
 import uwu.openjfx.components.PlayerComponent;
@@ -35,9 +37,9 @@ public class TeleportToBossRoom extends UserAction {
                         + " for some time now MUAHAHAHA",
                 "1: thats gross man..."
         ));
-//        FXGL.getSceneService().getTimer().runOnceAfter(() -> FXGL.getCutsceneService()
-//                .startCutscene(
-//                        new Cutscene(bossFight)), Duration.millis(1500));
+        FXGL.getSceneService().getTimer().runOnceAfter(() -> FXGL.getCutsceneService()
+                .startCutscene(
+                        new Cutscene(bossFight)), Duration.millis(1500));
         getAudioPlayer().stopMusic(FXGL.getAssetLoader().loadMusic("evil4.mp3"));
         loopBGM("boss/boss_battle_ 2.mp3");
 

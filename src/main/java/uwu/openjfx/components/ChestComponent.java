@@ -9,7 +9,6 @@ import uwu.openjfx.behaviors.DropItemComponent;
 import uwu.openjfx.behaviors.Interactable;
 
 import java.util.Arrays;
-import java.util.Set;
 
 public class ChestComponent extends CanOnlyInteractOnce implements Interactable {
     private DropItemComponent dropItemComponent;

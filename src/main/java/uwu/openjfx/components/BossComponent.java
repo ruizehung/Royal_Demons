@@ -2,7 +2,6 @@ package uwu.openjfx.components;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.SpawnData;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import uwu.openjfx.MainApp;
@@ -10,7 +9,6 @@ import uwu.openjfx.RoyalType;
 import uwu.openjfx.UI;
 import uwu.openjfx.behaviors.DoNothing;
 
-import static com.almasb.fxgl.dsl.FXGL.spawn;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getAudioPlayer;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.loopBGM;
 

@@ -24,7 +24,6 @@ public class PlayerDroppedItemCollisionHandler extends CollisionHandler {
         if (MainApp.isIsTesting() || FXGL.getb("Epressed")) {
             String itemName = itemEntity.getString("name");
             System.out.println("Player picks up " + itemName);
-            FXGL.play("ui/weapon_swap.wav");
 
             // This is a piece of shit !!!!!
             // add things to inventory
@@ -68,6 +67,7 @@ public class PlayerDroppedItemCollisionHandler extends CollisionHandler {
 
             if (!MainApp.isIsTesting()) {
                 // handle onPickup
+                FXGL.play("ui/weapon_swap.wav");
                 Item itemObj;
                 Map<String, Item> itemNameObjMap = FXGL.geto("itemNameObjMap");
                 if (itemNameObjMap.containsKey(itemName)) {

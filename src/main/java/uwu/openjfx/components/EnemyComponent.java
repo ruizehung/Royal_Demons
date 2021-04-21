@@ -73,7 +73,7 @@ public class EnemyComponent extends CreatureComponent {
     private boolean isStunned = false;
     protected boolean attackCD = false; // when the enemy can attack again
     protected boolean prepAttack = false; // enemy begins attack charge
-    protected boolean startAttacking = false; // enemy does the attack animation / instantiate hitbox
+    protected boolean startAttacking = false; // enemy does the attack animation/instantiate hitbox
     protected boolean startShrink = false; // for growing enemies
     private double scaler = 1.0; // to keep track of scale when shrinking/enlarging
     private LocalTimer moveTimer; // time to check player's location

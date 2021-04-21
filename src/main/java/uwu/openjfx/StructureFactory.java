@@ -143,7 +143,8 @@ public class StructureFactory implements EntityFactory {
 
     @Spawns("showcaseChest")
     public Entity newShowcaseChest(SpawnData data) {
-        ShowcaseChestComponent chestComponent = new ShowcaseChestComponent(data.<String>get("itemName"));
+        ShowcaseChestComponent chestComponent = new ShowcaseChestComponent(
+                data.<String>get("itemName"));
         return FXGL.entityBuilder(data)
                 .type(RoyalType.CHEST)
                 .viewWithBBox("chest_empty_open_anim_f0_32x32.png")
