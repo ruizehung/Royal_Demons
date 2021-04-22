@@ -26,16 +26,18 @@ public class BossComponent extends EnemyComponent {
 
     @Override
     public void die() {
-        super.die();
-        if (!MainApp.isIsTesting()) {
-            Entity finalDoor = FXGL.getGameWorld().getEntitiesByType(RoyalType.FINALDOOR).get(0);
-            finalDoor.getViewComponent().clearChildren();
-            finalDoor.getViewComponent().addChild(FXGL.texture("woodenDoorOpened.png"));
-            getAudioPlayer().stopMusic(
-                FXGL.getAssetLoader().loadMusic("boss/boss_battle_ 2.mp3"));
-            loopBGM("end/Training Is Over.mp3");
-            FXGL.getGameScene().clearUINodes();
-            UI.init(FXGL.geto("player"));
+        if (!(this instanceof DummyBossComponent)) {
+            super.die();
+            if (!MainApp.isIsTesting()) {
+                Entity finalDoor = FXGL.getGameWorld().getEntitiesByType(RoyalType.FINALDOOR).get(0);
+                finalDoor.getViewComponent().clearChildren();
+                finalDoor.getViewComponent().addChild(FXGL.texture("woodenDoorOpened.png"));
+                getAudioPlayer().stopMusic(
+                    FXGL.getAssetLoader().loadMusic("boss/boss_battle_ 2.mp3"));
+                loopBGM("end/Training Is Over.mp3");
+                FXGL.getGameScene().clearUINodes();
+                UI.init(FXGL.geto("player"));
+            }
         }
     }
 

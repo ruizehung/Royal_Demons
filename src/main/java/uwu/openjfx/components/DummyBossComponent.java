@@ -5,7 +5,6 @@ public class DummyBossComponent extends BossComponent {
     private final int healingBufferAfterInjury = 120;
     private int healingTimer;
 
-
     public DummyBossComponent(int healthPoints, String assetName,
                               int width, int height, int frames) {
         super(healthPoints, assetName, width, height, frames, "melee");
@@ -27,6 +26,8 @@ public class DummyBossComponent extends BossComponent {
         } else {
             --healingTimer;
         }
+        getEntity().setX(952);
+        getEntity().setY(596);
     }
 
     @Override
