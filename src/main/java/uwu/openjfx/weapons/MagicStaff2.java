@@ -148,7 +148,6 @@ public class MagicStaff2 implements Weapon, AngleBehavior {
                     put("frameHeight", frameHeight).
                     put("fpr", 60).
                     put("weaponSprite", sprite));
-            breathSprite.setScaleX(2.5);
             breathSprite.setScaleY(2.5);
             breathSprite.setZIndex(5);
 
@@ -170,20 +169,21 @@ public class MagicStaff2 implements Weapon, AngleBehavior {
                     if (!PlayerComponent.isChanneling()) {
                         breathHitbox.removeFromWorld();
                         FXGL.getGameTimer().clear();
+                    } else {
+                        breathHitbox.getTransformComponent().setAnchoredPosition(
+                            new Point2D(
+                                player.getX() - ((double) hitBoxWidth / 2)
+                                    + player.getWidth() / 2 + (player.getScaleX() > 0
+                                    ? breathHitBoxOffset : -breathHitBoxOffset),
+                                player.getY() - ((double) hitBoxHeight / 2)
+                                    + player.getHeight() / 2));
+                        breathSprite.getTransformComponent().setAnchoredPosition(
+                            new Point2D(
+                                player.getX() - ((double) frameWidth / 2)
+                                    + (player.getScaleX() > 0
+                                    ? breathSpriteOffset : 6 * breathSpriteOffset),
+                                player.getY() - ((double) frameHeight / 2) - 40));
                     }
-                    breathHitbox.getTransformComponent().setAnchoredPosition(
-                        new Point2D(
-                            player.getX() - ((double) hitBoxWidth / 2) + player.getWidth() / 2
-                                + (player.getScaleX() > 0
-                                ? breathHitBoxOffset : -breathHitBoxOffset),
-                            player.getY() - ((double) hitBoxHeight / 2)
-                                + player.getHeight() / 2));
-                    breathSprite.getTransformComponent().setAnchoredPosition(
-                        new Point2D(
-                            player.getX() - ((double) frameWidth / 2)
-                                + (player.getScaleX() > 0
-                                ? breathSpriteOffset : 6 * breathSpriteOffset),
-                            player.getY() - ((double) frameHeight / 2) - 40));
                 }, Duration.seconds(.01));
             };
             Thread thread = new Thread(runnable);
