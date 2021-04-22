@@ -45,7 +45,6 @@ public class EnemyComponent extends CreatureComponent {
     private boolean massEffect = true; // if enemy has ability to reach equilibrium against player
     private double blockProbability; // chance of blocking
     private double armorStat; // how much damage to soak
-
     /*
         Every Enemy Aspects
      */
@@ -78,6 +77,16 @@ public class EnemyComponent extends CreatureComponent {
     private double scaler = 1.0; // to keep track of scale when shrinking/enlarging
     private LocalTimer moveTimer; // time to check player's location
 
+    /*
+        Boss Attributes
+     */
+    private int attackBreaktime; // how long before can cast ultimate again
+    private int hammerUltimateDuration = 2000; // how long smash charge is
+    private int hammerChargeCounter = 0; // count up to hammerUltimateDuration then smash
+    private boolean isHammerSmashing = false;
+    private int novaCounter; // track of how many times nova has been done by chance
+    private int ricochetCounter; // track of how many times ricochet has been done by chance
+
     public EnemyComponent(int maxHP, String assetName, int width, int height, int frames,
                           String type, String fighterClass) {
         super(maxHP, maxHP);
@@ -100,6 +109,7 @@ public class EnemyComponent extends CreatureComponent {
             texture = new AnimatedTexture(animIdle);
             texture.loop();
         }
+        int[] nameOfArray = new int[100];
     }
 
     public EnemyComponent(int healthPoints, String assetName, int width, int height) {
@@ -132,14 +142,16 @@ public class EnemyComponent extends CreatureComponent {
             break;
         default:
         }
-        if (type.equals("finalboss")) {
-            speed = fighterClass.equals("melee") ? 100 : 145;
-        } else {
-            speed = fighterClass.equals("melee") ? 70 : 120;
-        }
+        speed = !fighterClass.equals("finalboss") ? 70 : 100;
         attackDuration = fighterClass.equals("melee") ? 900 : 1100;
+        if (type.equals("finalboss")) {
+            attackBreaktime = 1500;
+        } else {
+            attackBreaktime = fighterClass.equals("melee") ? 2000 : 2500;
+        }
         // endregion
 
+        // region Initializations
         if (!MainApp.isIsTesting()) {
             entity.getTransformComponent().setScaleOrigin(
                 new Point2D(width / 2.0, height / 2.0));
@@ -150,16 +162,18 @@ public class EnemyComponent extends CreatureComponent {
         } else {
             entity.setProperty("isDead", false);
         }
+        // endregion
     }
 
     @Override
     public void onUpdate(double tpf) {
         if (type.equals("finalboss")) {
-            if (getFighterClass().equals("melee") && getHealthPoints() <= 90) {
+            if (getFighterClass().equals("melee") && getHealthPoints() <= 50) {
                 transformBoss("creatures/boss/HighElf_M_48x48.png", 48, 48,
                     4, "ranged");
             }
         }
+
         /*
         Player Numbers
         */
@@ -241,14 +255,17 @@ public class EnemyComponent extends CreatureComponent {
             // Grow in size
             enlarge();
         }
-
         // Enemy does the actual attack, spawns hitbox and then shrinks
         if (startAttacking) {
             if (fighterClass.equals("melee")) {
                 if (!type.equals("finalboss")) {
                     meleePunch();
                 } else {
-                    hammerAttack();
+                    if (!isHammerSmashing) {
+                        hammerAttack();
+                    } else {
+                        hammerUltimateSmash();
+                    }
                 }
             } else {
                 magicAutoAttack();
@@ -256,9 +273,10 @@ public class EnemyComponent extends CreatureComponent {
             startShrink = true;
             startAttacking = false;
             prepAttack = false;
+            isHammerSmashing = false;
             Runnable runnable = () -> {
                 try {
-                    Thread.sleep(fighterClass.equals("melee") ? 2000 : 3500);
+                    Thread.sleep(attackBreaktime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -271,6 +289,14 @@ public class EnemyComponent extends CreatureComponent {
         // Enemy shrinks
         if (startShrink) {
             shrink();
+        }
+
+        if (isHammerSmashing) {
+            hammerChargeCounter++;
+            if (hammerChargeCounter >= (hammerUltimateDuration / 1000) * 60) {
+                hammerChargeCounter = 0;
+                startAttacking = true;
+            }
         }
         // endregion
     }
@@ -287,43 +313,71 @@ public class EnemyComponent extends CreatureComponent {
             moveDist = fighterClass.equals("melee") ? 300 : 500;
         }
         double reactionTime = type.equals("finalboss") ? 0.25 : 1;
-        if (moveTimer.elapsed(Duration.seconds(reactionTime))) {
-            if (!isStunned) {
-                if (fighterClass.equals("melee")) {
-                    if (dist < attackDist && !attackCD) {
-                        playerLeavesRadius = false;
-                        autoAttack();
-                    } else if (dist < moveDist) {
-                        if (!prepAttack) {
-                            double xDir = playerX - enemyX > 0 ? 1 : -1;
-                            double yDir = playerY - enemyY > 0 ? 1 : -1;
-                            physics.setVelocityX(speed * xDir);
-                            physics.setVelocityY(speed * yDir);
-                            entity.setScaleX(xDir);
-                        }
-                    } else {
+        if (moveTimer.elapsed(Duration.seconds(reactionTime)) && !isStunned) {
+            if (fighterClass.equals("melee")) {
+                if (dist < attackDist && !attackCD) {
+                    playerLeavesRadius = false;
+                    // ultimate < 50 and regular autoattack >= 50
+                    int chooseAttack = (int) (Math.random() * 101);
+                    if (chooseAttack < 50) {
+                        prepAttack = true;
                         stop();
+                        texture.playAnimationChannel(animMeleeAttack);
+                        hammerUltimatePrepSprite();
+                        isHammerSmashing = true;
+                    } else {
+                        autoAttack();
                     }
+                } else if (dist < moveDist && !prepAttack) {
+                    double xDir = playerX - enemyX > 0 ? 1 : -1;
+                    double yDir = playerY - enemyY > 0 ? 1 : -1;
+                    physics.setVelocityX(speed * xDir);
+                    physics.setVelocityY(speed * yDir);
+                    entity.setScaleX(xDir);
                 } else {
-                    if (dist < attackDist) {
-                        if (!attackCD) {
-                            entity.setScaleX(playerX - enemyX > 0 ? 1 : -1);
+                    stop();
+                }
+            } else {
+                if (dist < attackDist) {
+                    if (!attackCD) {
+                        entity.setScaleX(playerX - enemyX > 0 ? 1 : -1);
+                        // ultimate < 50 and regular autoattack >= 50
+                        int chooseAttack = 40;//(int) (Math.random() * 101);
+                        if (chooseAttack < 50) {
+                            int chooseUltimate;
+                            do {
+                                chooseUltimate = (int) (Math.random() * 101);
+                            } while ((novaCounter >= 2 && chooseUltimate < 50)
+                                || (ricochetCounter >= 2 && chooseUltimate >= 50));
+                            if (chooseUltimate < 50) {
+                                ricochetCounter = 0;
+                                // nova
+                                System.out.println("nova");
+                                autoAttack(); // temp
+                                novaCounter++;
+                            } else {
+                                novaCounter = 0;
+                                // ricochet
+                                System.out.println("rico");
+                                autoAttack(); // temp
+                                ricochetCounter++;
+                            }
+                        } else {
+                            System.out.println("auto");
                             autoAttack();
                         }
-                        if (!prepAttack && !kiting) {
-                            kiting = true;
-                        }
-                    } else if (dist < moveDist) {
-                        if (!prepAttack) {
-                            double xDir = playerX - enemyX > 0 ? 1 : -1;
-                            double yDir = playerY - enemyY > 0 ? 1 : -1;
-                            physics.setVelocityX(speed * xDir);
-                            physics.setVelocityY(speed * yDir);
-                            entity.setScaleX(xDir);
-                        }
-                    } else {
-                        stop();
                     }
+                    if (!prepAttack && !kiting) {
+                        kiting = true;
+                    }
+                } else if (dist < moveDist && !prepAttack) {
+                    double xDir = playerX - enemyX > 0 ? 1 : -1;
+                    double yDir = playerY - enemyY > 0 ? 1 : -1;
+                    physics.setVelocityX(speed * xDir);
+                    physics.setVelocityY(speed * yDir);
+                    entity.setScaleX(xDir);
+                } else {
+                    stop();
                 }
             }
             moveTimer.capture();
@@ -471,7 +525,9 @@ public class EnemyComponent extends CreatureComponent {
         prepAttack = true;
         stop();
         texture.playAnimationChannel(animMeleeAttack);
-        bossPrepAttack();
+        if (type.equals("finalboss") && fighterClass.equals("melee")) {
+            bossPrepAttack();
+        }
         Timer t = new java.util.Timer();
         t.schedule(
             new java.util.TimerTask() {
@@ -618,6 +674,48 @@ public class EnemyComponent extends CreatureComponent {
         MainApp.addToHitBoxDestruction(hammerHitBox);
     }
 
+    private void hammerUltimatePrepSprite() {
+        int width = 175; // width of the frame
+        int height = 180; // height of the frame
+        Entity gs = spawn("weapon",
+            new SpawnData(
+                getEntity().getX(), getEntity().getY()).
+                put("weaponFile", "legend_sword_175x180").
+                put("duration", hammerUltimateDuration).
+                put("frameWidth", width).
+                put("frameHeight", height).
+                put("fpr", 6));
+        // Spawn the sword at boss's "hands"
+        gs.getTransformComponent().setAnchoredPosition(
+            new Point2D(entity.getX() - ((double) width / 2) + entity.getWidth() / 2,
+                entity.getY() - ((double) height / 2) + entity.getHeight() / 2));
+        gs.setZIndex(5);
+        if (entity.getScaleX() == 1) {
+            gs.setScaleX(1);
+        } else {
+            gs.translateX(width); // smooth reflection over middle axis of player
+            gs.setScaleX(-1);
+        }
+    }
+
+    private void hammerUltimateSmash() {
+        int hitBoxWidth = 450; // width of the hitbox
+        int hitBoxHeight = 450; // height of the hitbox
+        double swordOffset = 0; // distance from player the hitbox should spawn
+
+        Entity hammerHitBox = spawn("meleeEnemyPunch",
+            new SpawnData(getEntity().getX(), getEntity().getY()).
+                put("widthBox", hitBoxWidth).put("heightBox", hitBoxHeight));
+        // Spawn hitbox on top of player and apply offset
+        hammerHitBox.getTransformComponent().setAnchoredPosition(
+            new Point2D(
+                getEntity().getX() - ((double) hitBoxWidth / 2) + getEntity().getWidth() / 2
+                    + (getEntity().getScaleX() > 0 ? swordOffset : -swordOffset),
+                getEntity().getY() - ((double) hitBoxHeight / 2) + getEntity().getHeight() / 2));
+
+        //MainApp.addToHitBoxDestruction(hammerHitBox);
+    }
+
     private void enlarge() {
         entity.setScaleX(scaler * Math.signum(entity.getScaleX()));
         entity.setScaleY(scaler * Math.signum(entity.getScaleY()));
@@ -684,6 +782,9 @@ public class EnemyComponent extends CreatureComponent {
                 new Point2D(width / 2.0, height / 2.0));
             texture.set(new AnimatedTexture(animIdle));
             texture.loop();
+            speed = 100;
+            attackDuration = 1100;
+            attackBreaktime = 2000;
         }
     }
     // endregion
