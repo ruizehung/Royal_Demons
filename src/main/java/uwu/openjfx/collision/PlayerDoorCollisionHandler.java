@@ -43,25 +43,25 @@ public class PlayerDoorCollisionHandler extends CollisionHandler {
         Room newRoom;
         String spawnPosition = "north";
         switch (door.getString("direction")) {
-            case "north":
-                newRoom = curRoom.getNorthRoom();
-                spawnPosition = "south";
-                break;
-            case "east":
-                newRoom = curRoom.getEastRoom();
-                spawnPosition = "west";
-                break;
-            case "south":
-                newRoom = curRoom.getSouthRoom();
-                spawnPosition = "north";
-                break;
-            case "west":
-                newRoom = curRoom.getWestRoom();
-                spawnPosition = "east";
-                break;
-            default:
-                newRoom = curRoom;
-                System.err.println("Error getting new room!");
+        case "north":
+            newRoom = curRoom.getNorthRoom();
+            spawnPosition = "south";
+            break;
+        case "east":
+            newRoom = curRoom.getEastRoom();
+            spawnPosition = "west";
+            break;
+        case "south":
+            newRoom = curRoom.getSouthRoom();
+            spawnPosition = "north";
+            break;
+        case "west":
+            newRoom = curRoom.getWestRoom();
+            spawnPosition = "east";
+            break;
+        default:
+            newRoom = curRoom;
+            System.err.println("Error getting new room!");
         }
 
 
@@ -79,23 +79,23 @@ public class PlayerDoorCollisionHandler extends CollisionHandler {
 
                     if (challengeRoomsVisited < 2) {
                         FXGL.getDialogService().showMessageBox(
-                                "Hmmm .... I feel like I haven't visited enough challenge " +
-                                        "rooms.\n Let's find " + (2 - challengeRoomsVisited) + " more " +
-                                        "challenge rooms before proceeding!",
-                                () -> {});
+                                "Hmmm .... I feel like I haven't visited enough challenge "
+                                    + "rooms.\n Let's find " + (2 - challengeRoomsVisited)
+                                    + " more challenge rooms before proceeding!",
+                            () -> { });
                     } else {
                         String finalSpawnPosition = spawnPosition;
                         FXGL.getDialogService().showConfirmationBox(
-                        "\"Ahhhhh........ help!!!!\" Sounds like there is a young women\n" +
-                                "screaming inside. And this room smells really really bad. Are you\n" +
-                                " sure you want to proceed?", answer -> {
-                            if (answer) {
-                                TeleportToBossRoom teleportToBossRoom =
-                                        new TeleportToBossRoom("");
-                                teleportToBossRoom.onActionBegin();
-                                getInput().setProcessInput(true);
-                            }
-                        });
+                            "\"Ahhhhh........ help!!!!\" Sounds like there is a young woman\n"
+                            + "screaming inside. And this room smells really really bad. Are you\n"
+                            + " sure you want to proceed?", answer -> {
+                                if (answer) {
+                                    TeleportToBossRoom teleportToBossRoom =
+                                            new TeleportToBossRoom("");
+                                    teleportToBossRoom.onActionBegin();
+                                    getInput().setProcessInput(true);
+                                }
+                            });
                     }
                 } else {
                     final String spawnPositionFinal = spawnPosition;

@@ -29,7 +29,8 @@ public class BossComponent extends EnemyComponent {
         if (!(this instanceof DummyBossComponent)) {
             super.die();
             if (!MainApp.isIsTesting()) {
-                Entity finalDoor = FXGL.getGameWorld().getEntitiesByType(RoyalType.FINALDOOR).get(0);
+                Entity finalDoor = FXGL.getGameWorld().
+                    getEntitiesByType(RoyalType.FINALDOOR).get(0);
                 finalDoor.getViewComponent().clearChildren();
                 finalDoor.getViewComponent().addChild(FXGL.texture("woodenDoorOpened.png"));
                 getAudioPlayer().stopMusic(

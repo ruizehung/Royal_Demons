@@ -342,7 +342,7 @@ public class EnemyComponent extends CreatureComponent {
                     if (!attackCD) {
                         entity.setScaleX(playerX - enemyX > 0 ? 1 : -1);
                         // ultimate < 50 and regular autoattack >= 50
-                        int chooseAttack = 40;//(int) (Math.random() * 101);
+                        int chooseAttack = (int) (Math.random() * 101);
                         if (chooseAttack < 50) {
                             int chooseUltimate;
                             do {

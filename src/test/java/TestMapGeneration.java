@@ -1,5 +1,3 @@
-import com.almasb.fxgl.dsl.FXGL;
-import javafx.fxml.FXMLLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
