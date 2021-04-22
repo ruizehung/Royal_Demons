@@ -1,5 +1,6 @@
 package uwu.openjfx.collision;
 
+import com.almasb.fxgl.dsl.components.ProjectileComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import uwu.openjfx.RoyalType;
@@ -17,7 +18,8 @@ public class EnemyAttackPlayerCollisionHandler extends CollisionHandler  {
     @Override
     public void onCollisionBegin(Entity enemyWeapon, Entity player) {
         HasLife playerComponent = player.getComponent(PlayerComponent.class);
-        if (enemyWeapon != null && !playerComponent.isInvulnerable()) {
+        if (enemyWeapon != null && !playerComponent.isInvulnerable()
+            && enemyWeapon.hasComponent(ProjectileComponent.class)) {
             enemyWeapon.removeFromWorld();
         }
         if (!playerComponent.isInvulnerable()) {

@@ -71,14 +71,11 @@ public class GoldenSword0 implements Weapon {
 
     @Override
     public void attack(Entity player, double mouseCurrX, double mouseCurrY) {
-        int hitBoxWidth; // width of the hitbox
-        int hitBoxHeight; // height of the hitbox
-        double swordOffset; // distance from player the hitbox should spawn
+        int hitBoxWidth = 70; // width of the hitbox
+        int hitBoxHeight = 75; // height of the hitbox
+        double swordOffset = 22; // distance from player the hitbox should spawn
 
         if (!ultimateActivated) {
-            hitBoxWidth = 70;
-            hitBoxHeight = 75;
-            swordOffset = 22;
             Entity meleeHitBox = spawn("meleeSwordHitBox",
                 new SpawnData(player.getX(), player.getY()).
                     put("width", hitBoxWidth).put("height", hitBoxHeight).

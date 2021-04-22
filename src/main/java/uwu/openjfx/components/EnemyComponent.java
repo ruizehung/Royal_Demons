@@ -155,9 +155,9 @@ public class EnemyComponent extends CreatureComponent {
     @Override
     public void onUpdate(double tpf) {
         if (type.equals("finalboss")) {
-            if (getFighterClass().equals("melee") && getHealthPoints() <= 50) {
-                transformBoss("creatures/boss/Golem_168x105.png", 168, 105,
-                    12, "ranged");
+            if (getFighterClass().equals("melee") && getHealthPoints() <= 90) {
+                transformBoss("creatures/boss/HighElf_M_48x48.png", 48, 48,
+                    4, "ranged");
             }
         }
         /*
@@ -245,20 +245,11 @@ public class EnemyComponent extends CreatureComponent {
         // Enemy does the actual attack, spawns hitbox and then shrinks
         if (startAttacking) {
             if (fighterClass.equals("melee")) {
-                int widthBox = width;
-                int heightBox = height;
-                int sideOffset = widthBox / 2;
-                Entity meleePunchHitBox = spawn("meleeEnemyPunch",
-                    new SpawnData(enemyX, enemyY).
-                        put("widthBox", widthBox).
-                        put("heightBox", heightBox));
-                // Spawn hitbox on top of enemy and apply offset
-                meleePunchHitBox.getTransformComponent().setAnchoredPosition(
-                    new Point2D(
-                        enemyX - ((double) widthBox / 2)
-                            + (getEntity().getScaleX() > 0 ? sideOffset : -sideOffset),
-                        enemyY - ((double) heightBox / 2)));
-                MainApp.addToHitBoxDestruction(meleePunchHitBox);
+                if (!type.equals("finalboss")) {
+                    meleePunch();
+                } else {
+                    hammerAttack();
+                }
             } else {
                 magicAutoAttack();
             }
@@ -289,13 +280,14 @@ public class EnemyComponent extends CreatureComponent {
         int attackDist;
         int moveDist;
         if (type.equals("finalboss")) {
-            attackDist = fighterClass.equals("melee") ? 150 : 400;
+            attackDist = fighterClass.equals("melee") ? 150 : 300;
             moveDist = 2000;
         } else {
             attackDist = fighterClass.equals("melee") ? 120 : 300;
             moveDist = fighterClass.equals("melee") ? 300 : 500;
         }
-        if (moveTimer.elapsed(Duration.seconds(1))) {
+        double reactionTime = type.equals("finalboss") ? 0.25 : 1;
+        if (moveTimer.elapsed(Duration.seconds(reactionTime))) {
             if (!isStunned) {
                 if (fighterClass.equals("melee")) {
                     if (dist < attackDist && !attackCD) {
@@ -479,6 +471,7 @@ public class EnemyComponent extends CreatureComponent {
         prepAttack = true;
         stop();
         texture.playAnimationChannel(animMeleeAttack);
+        bossPrepAttack();
         Timer t = new java.util.Timer();
         t.schedule(
             new java.util.TimerTask() {
@@ -564,6 +557,67 @@ public class EnemyComponent extends CreatureComponent {
         rangedHitBox.setZIndex(5);
     }
 
+    private void meleePunch() {
+        int widthBox = width;
+        int heightBox = height;
+        int sideOffset = widthBox / 2;
+        Entity meleePunchHitBox = spawn("meleeEnemyPunch",
+            new SpawnData(enemyX, enemyY).
+                put("widthBox", widthBox).
+                put("heightBox", heightBox));
+        // Spawn hitbox on top of enemy and apply offset
+        meleePunchHitBox.getTransformComponent().setAnchoredPosition(
+            new Point2D(
+                enemyX - ((double) widthBox / 2)
+                    + (getEntity().getScaleX() > 0 ? sideOffset : -sideOffset),
+                enemyY - ((double) heightBox / 2)));
+        MainApp.addToHitBoxDestruction(meleePunchHitBox);
+    }
+
+    private void bossPrepAttack() {
+        if (fighterClass.equals("melee")) {
+            int width = 175; // width of the frame
+            int height = 180; // height of the frame
+            Entity gs = spawn("weapon",
+                new SpawnData(
+                    getEntity().getX(), getEntity().getY()).
+                    put("weaponFile", "legend_sword_175x180").
+                    put("duration", attackDuration).
+                    put("frameWidth", width).
+                    put("frameHeight", height).
+                    put("fpr", 6));
+            // Spawn the sword at boss's "hands"
+            gs.getTransformComponent().setAnchoredPosition(
+                new Point2D(entity.getX() - ((double) width / 2) + entity.getWidth() / 2,
+                    entity.getY() - ((double) height / 2) + entity.getHeight() / 2));
+            gs.setZIndex(5);
+            if (entity.getScaleX() == 1) {
+                gs.setScaleX(1);
+            } else {
+                gs.translateX(width); // smooth reflection over middle axis of player
+                gs.setScaleX(-1);
+            }
+        }
+    }
+
+    private void hammerAttack() {
+        int hitBoxWidth = 160; // width of the hitbox
+        int hitBoxHeight = 160; // height of the hitbox
+        double swordOffset = 55; // distance from player the hitbox should spawn
+
+        Entity hammerHitBox = spawn("meleeEnemyPunch",
+            new SpawnData(getEntity().getX(), getEntity().getY()).
+                put("widthBox", hitBoxWidth).put("heightBox", hitBoxHeight));
+        // Spawn hitbox on top of player and apply offset
+        hammerHitBox.getTransformComponent().setAnchoredPosition(
+            new Point2D(
+                getEntity().getX() - ((double) hitBoxWidth / 2) + getEntity().getWidth() / 2
+                    + (getEntity().getScaleX() > 0 ? swordOffset : -swordOffset),
+                getEntity().getY() - ((double) hitBoxHeight / 2) + getEntity().getHeight() / 2));
+
+        MainApp.addToHitBoxDestruction(hammerHitBox);
+    }
+
     private void enlarge() {
         entity.setScaleX(scaler * Math.signum(entity.getScaleX()));
         entity.setScaleY(scaler * Math.signum(entity.getScaleY()));
@@ -623,9 +677,11 @@ public class EnemyComponent extends CreatureComponent {
             getEntity().getBoundingBoxComponent().clearHitBoxes();
             getEntity().getBoundingBoxComponent().addHitBox(new HitBox(
                 new Point2D(
-                    0,
-                    0),
-                BoundingShape.box(width, height)));
+                    5,
+                    5),
+                BoundingShape.box(width - 5, height - 5)));
+            entity.getTransformComponent().setScaleOrigin(
+                new Point2D(width / 2.0, height / 2.0));
             texture.set(new AnimatedTexture(animIdle));
             texture.loop();
         }
