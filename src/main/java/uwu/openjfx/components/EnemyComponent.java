@@ -117,7 +117,7 @@ public class EnemyComponent extends CreatureComponent {
     }
 
     public EnemyComponent(int healthPoints, String assetName, int width, int height) {
-        this(healthPoints, assetName, width, height, 8, "small", "ranged");
+        this(healthPoints, assetName, width, height, 8, "small", "melee");
     }
 
     @Override
@@ -128,11 +128,6 @@ public class EnemyComponent extends CreatureComponent {
             massEffect = false;
             blockProbability = 10;
             armorStat = 1;
-            break;
-        case "large":
-            massEffect = true;
-            blockProbability = 20;
-            armorStat = 2.5;
             break;
         case "miniboss":
             massEffect = true;
@@ -200,8 +195,9 @@ public class EnemyComponent extends CreatureComponent {
         Entity player = FXGL.geto("player");
         playerX = player.getX() + playerHitBoxOffsetX + (playerHitBoxWidth / 2);
         playerY = player.getY() + playerHitBoxOffsetY + (playerHitBoxHeight / 2);
-        enemyX = entity.getX() + ((double) width / 2);
-        enemyY = entity.getY() + ((double) height / 2);
+        enemyX = getEntity().getX() + getEntity().getWidth() / 2;
+        enemyY = getEntity().getY() + getEntity().getHeight() / 2;
+
 
         double xPythag = Math.abs(playerX - enemyX);
         double yPythag = Math.abs(playerY - enemyY);
@@ -688,20 +684,20 @@ public class EnemyComponent extends CreatureComponent {
     }
 
     private void meleePunch() {
-        int widthBox = width * 2;
-        int heightBox = height * 2;
-        int sideOffset = widthBox / 2;
-        Entity meleePunchHitBox = spawn("meleeEnemyPunch",
-            new SpawnData(enemyX, enemyY).
-                put("widthBox", widthBox).
-                put("heightBox", heightBox));
-        // Spawn hitbox on top of enemy and apply offset
-        meleePunchHitBox.getTransformComponent().setAnchoredPosition(
+        int hitBoxWidth = (int) getEntity().getBoundingBoxComponent().getWidth() * 2;
+        int hitBoxHeight = (int) getEntity().getBoundingBoxComponent().getHeight() * 2;
+        double swordOffset = (double) hitBoxWidth / 2; // distance from player hitbox should spawn
+
+        Entity punch = spawn("meleeEnemyPunch",
+            new SpawnData(getEntity().getX(), getEntity().getY()).
+                put("widthBox", hitBoxWidth).put("heightBox", hitBoxHeight));
+        // Spawn hitbox on top of player and apply offset
+        punch.getTransformComponent().setAnchoredPosition(
             new Point2D(
-                enemyX - ((double) widthBox / 2)
-                    + (getEntity().getScaleX() > 0 ? sideOffset : -sideOffset),
-                enemyY - ((double) heightBox / 2)));
-        MainApp.addToHitBoxDestruction(meleePunchHitBox);
+                enemyX - ((double) hitBoxWidth / 2)
+                    + (getEntity().getScaleX() > 0 ? swordOffset : -swordOffset),
+                enemyY - ((double) hitBoxHeight / 2)));
+        MainApp.addToHitBoxDestruction(punch);
     }
 
     private void bossPrepAttack() {
