@@ -139,7 +139,7 @@ public class UI {
     public static void initBossCutsceneAndUI() {
         ArrayList<String> bossFight = new ArrayList<>(Arrays.asList(
                 "1.name = " + PlayerComponent.getPlayerName(),
-                "2.name = boss guy",
+                "2.name = Ultra Extremely Bad Guy Who Kidnapped the Princess Bc He is The Worst",
                 "1.image = ui_yoshi.png",
                 "2.image = ui_peach.png",
                 "1: Where is the princess?! >:-(",
