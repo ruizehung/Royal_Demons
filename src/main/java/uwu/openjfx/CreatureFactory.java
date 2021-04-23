@@ -56,11 +56,18 @@ public class CreatureFactory implements EntityFactory {
 
         List<String> minionList = FXGL.geto("normalMinionList");
         String minionFileName = minionList.get(FXGL.random(0, minionList.size() - 1));
+        String type = "melee";
+        if (minionFileName.equals("ice_zombie_40x40.png")
+                || minionFileName.equals("necromancer_32x40.png")
+                || minionFileName.equals("zombie_40x40.png")
+                || minionFileName.equals("wogol_36x45.png")
+                || minionFileName.equals("orc_shaman_36x45.png")) {
+            type = "ranged";
+        }
         List<Integer> widthHeight = parseSizes(minionFileName);
         EnemyComponent enemyComponent = new EnemyComponent(
-                100,
-                "creatures/minions/normal/" + minionFileName,
-                widthHeight.get(0), widthHeight.get(1));
+                100, "creatures/minions/normal/" + minionFileName,
+                widthHeight.get(0), widthHeight.get(1), 8, "small", type);
 
         enemyComponent.setDieBehavior(new DropCoinBehavior(1, 5));
 
