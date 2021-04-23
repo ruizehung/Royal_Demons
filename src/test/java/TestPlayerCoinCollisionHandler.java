@@ -20,7 +20,6 @@ public class TestPlayerCoinCollisionHandler {
         int initialGold = 1000;
         int coinValue = 5;
 
-
         PlayerComponent.setGold(initialGold);
 
         Entity player = new Entity();
@@ -35,6 +34,26 @@ public class TestPlayerCoinCollisionHandler {
         handler.onCollisionBegin(player, coin);
 
         assert (PlayerComponent.getGold() == initialGold + coinValue);
+    }
+
+    // alice 5
+    @Test
+    void testCoinPickUpAddsToGoldCountStatistic() {
+
+        int coinValue = 5;
+        Entity player = new Entity();
+        PlayerComponent playerComponent = new PlayerComponent(1);
+        player.addComponent(playerComponent);
+        player.setProperty("CreatureComponent", playerComponent);
+
+        Entity coin = new Entity();
+        coin.addComponent(new CoinComponent(coinValue));
+        int currentGold = PlayerComponent.getGold();
+
+        PlayerCoinCollisionHandler handler = new PlayerCoinCollisionHandler();
+        handler.onCollisionBegin(player, coin);
+
+        assert PlayerComponent.getGold() > currentGold;
     }
 
 }
