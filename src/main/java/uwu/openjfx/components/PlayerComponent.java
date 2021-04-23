@@ -322,7 +322,7 @@ public class PlayerComponent extends CreatureComponent {
     public static void setIsAttackPowerBuffed(boolean buffed) {
         isAttackPowerBuffed = buffed;
         piercePow = 0;
-        attackPower = 2.5;
+        attackPower = 1.5;
     }
 
     public static double getAttackPower() {
