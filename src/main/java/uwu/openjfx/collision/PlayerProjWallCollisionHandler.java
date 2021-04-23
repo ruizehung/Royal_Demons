@@ -6,6 +6,7 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.components.IrremovableComponent;
 import com.almasb.fxgl.physics.CollisionHandler;
 import javafx.util.Duration;
+import uwu.openjfx.MainApp;
 import uwu.openjfx.RoyalType;
 import uwu.openjfx.components.ExplosionAtDistComponent;
 import uwu.openjfx.components.ProjectileAnimationComponent;
@@ -24,7 +25,9 @@ public class PlayerProjWallCollisionHandler extends CollisionHandler {
             if (weapon.getComponent(ProjectileAnimationComponent.class).getIsArrow()) {
                 weapon.getComponent(ProjectileComponent.class).pause();
                 if (!weapon.hasComponent(ExplosionAtDistComponent.class)) {
-                    FXGL.play("skills/arrow_dagger_stuck.wav");
+                    if (!MainApp.isIsTesting()) {
+                        FXGL.play("skills/arrow_dagger_stuck.wav");
+                    }
                 }
             }
             if (weapon.getComponent(ProjectileAnimationComponent.class).getIsMagic()

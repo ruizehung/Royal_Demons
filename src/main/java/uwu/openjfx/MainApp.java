@@ -50,7 +50,7 @@ public class MainApp extends GameApplication {
 
     // Tier 2 priority
     // Todo: Boss special attack??
-    // Todo: Alice try making some rooms
+    // Todo: Alice try making some roomsg
 
 
     // Tier 3 priority : )

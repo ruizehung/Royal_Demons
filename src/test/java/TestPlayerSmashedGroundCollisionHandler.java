@@ -2,7 +2,6 @@ import com.almasb.fxgl.entity.Entity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uwu.openjfx.MainApp;
-import uwu.openjfx.collision.EnemyAttackPlayerCollisionHandler;
 import uwu.openjfx.collision.PlayerSmashedGroundCollisionHandler;
 import uwu.openjfx.components.PlayerComponent;
 
