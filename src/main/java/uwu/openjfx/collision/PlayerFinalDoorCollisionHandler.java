@@ -44,13 +44,14 @@ public class PlayerFinalDoorCollisionHandler extends CollisionHandler {
 
             ArrayList<String> savePrincess = new ArrayList<>(Arrays.asList(
                     "1.name = " + PlayerComponent.getPlayerName(),
-                    "2.name = " + PlayerComponent.getPlayerName() + "'s dino lover",
+                    "2.name = " + PlayerComponent.getPlayerName() + "'s Super Amazing n Cute and "
+                            + "Now Un-Kidnapped Princess",
                     "1.image = ui_yoshi.png",
                     "2.image = ui_peach.png",
                     "1: My princess, I was so worried!",
                     "2: Omg, ily, thx for saving me. U the best. Old man was gross af",
-                    "1: My love, no problem. Let's go home so you can rest! During my journey, I stole "
-                            + FXGL.geti("coin") + " coins on the way here, "
+                    "1: My love, no problem. Let's go home so you can rest! During my journey, I "
+                            + "stole " + FXGL.geti("coin") + " coins on the way here, "
                             + "did " + (int) PlayerComponent.getDamageDealt() + " damage, and "
                             + "killed " + PlayerComponent.getMonstersKilled() + " monsters!"
             ));
