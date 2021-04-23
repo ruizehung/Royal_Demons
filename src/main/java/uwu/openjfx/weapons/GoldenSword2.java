@@ -1,5 +1,6 @@
 package uwu.openjfx.weapons;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import javafx.geometry.Point2D;
@@ -46,6 +47,9 @@ public class GoldenSword2 implements Weapon {
             gs.translateX(width); // smooth reflection over middle axis of player
             gs.setScaleX(-1);
         }
+        if (ultimateActivated) {
+            FXGL.play("skills/charge_sword.wav");
+        }
     }
 
     @Override
@@ -54,6 +58,8 @@ public class GoldenSword2 implements Weapon {
         int hitBoxHeight = !ultimateActivated ? 155 : 175; // height of the hitbox
         double swordOffset = !ultimateActivated ? 22 : 0; // distance from player hitbox spawns
         double attackDamage = 80;
+        String attSound = ultimateActivated ? "skills/sword_ulti.wav" : "skills/sword_basic.wav";
+        FXGL.play(attSound);
 
         Entity meleeHitBox = spawn("meleeSwordHitBox",
             new SpawnData(player.getX(), player.getY()).

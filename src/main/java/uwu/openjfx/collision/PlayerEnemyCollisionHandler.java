@@ -48,7 +48,6 @@ public class PlayerEnemyCollisionHandler extends CollisionHandler {
         if (!playerComponent.isInvulnerable()) {
             playerComponent.deductHealth(1, 1, 0, 1, 0);
         }
-
         if (!MainApp.isIsTesting()) {
             if (enemyComponent.getMassEffect()) {
                 playerPhysics = player.getComponent(PhysicsComponent.class);
@@ -57,6 +56,9 @@ public class PlayerEnemyCollisionHandler extends CollisionHandler {
                     reachEquilibrium();
                     stabilizeEquilibrium();
                 }
+            }
+            if (enemyComponent.getType().equals("finalboss")) {
+                velocityNormalizeVal = Integer.MAX_VALUE;
             }
         }
     }
