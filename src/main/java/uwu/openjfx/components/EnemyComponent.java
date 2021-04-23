@@ -81,15 +81,12 @@ public class EnemyComponent extends CreatureComponent {
         Boss Attributes
      */
     private int attackBreaktime; // how long before can cast ultimate again
-    private Entity hammerHitBox; // the large AOE hitbox of hammer ground smash
-    private final int hammerUltimateDuration = 2000; // how long smash charge is
-    private int hammerChargeCounter = 0; // count up to hammerUltimateDuration then smash
+    private final int ultimateDuration = 2000; // how long ultimate charge is
     private boolean isHammerSmashing = false;
     private int novaCounter; // track of how many times nova has been done by chance
-    private final int magicUltimate360Duration = 2000; // how long 360 charge is
-    private int magic360Counter = 0; // count up to magicUltimate360Duration then fire
     private boolean isMagic360Firing = false;
     private int ricochetCounter; // track of how many times ricochet has been done by chance
+    private boolean isRicochetFiring = false;
 
     public EnemyComponent(int maxHP, String assetName, int width, int height, int frames,
                           String type, String fighterClass) {
@@ -176,7 +173,7 @@ public class EnemyComponent extends CreatureComponent {
     public void onUpdate(double tpf) {
         // region Boss Update Attributes
         if (type.equals("finalboss")) {
-            if (getFighterClass().equals("melee") && getHealthPoints() <= 95 && !prepAttack) {
+            if (getFighterClass().equals("melee") && getHealthPoints() <= 50 && !prepAttack) {
                 setHealthPoints(50);
                 Entity poof = spawn("weapon",
                     new SpawnData(
@@ -194,7 +191,6 @@ public class EnemyComponent extends CreatureComponent {
             }
         }
         // endregion
-
         // region Player to Enemy Distance Relationship
         final double playerHitBoxOffsetX = 3; // player's hitbox own offset from top left
         final double playerHitBoxOffsetY = 15; // player's hitbox own offset from top left
@@ -270,67 +266,19 @@ public class EnemyComponent extends CreatureComponent {
             normalizeVelocityX();
             normalizeVelocityY();
             // Grow in size
-            enlarge();
+            if (!type.equals("finalboss")) {
+                enlarge();
+            }
         }
+
         // Enemy does the actual attack, spawns hitbox and then shrinks
         if (startAttacking) {
-            if (fighterClass.equals("melee")) { // if enemy is melee
-                if (!type.equals("finalboss")) { // if enemy is normal melee
-                    meleePunch();
-                } else { // if enemy is boss melee
-                    if (!isHammerSmashing) { // perform attack based on boss's chosen attack
-                        hammerAttack();
-                    } else {
-                        hammerUltimateSmash();
-                    }
-                }
-            } else { // if enemy is ranged
-                if (!type.equals("finalboss")) {
-                    magicAutoAttack();
-                } else {
-                    if (!isMagic360Firing) {
-                        magicAutoAttack();
-                    } else {
-                        magicUltimate360Fire();
-                    }
-                }
-            }
-            startShrink = true; // start shrinking
-            startAttacking = false; // not attacking anymore
-            prepAttack = false; // not charging anymore
-            isHammerSmashing = false; // not smashing anymore
-            isMagic360Firing = false; // not 360 firing anymore
-            Runnable runnable = () -> { // attackBreaktime amount of time before cooldown is done
-                try {
-                    Thread.sleep(attackBreaktime);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                attackCD = false;
-            };
-            Thread thread = new Thread(runnable);
-            thread.start();
+            performAttack();
         }
 
         // Enemy shrinks
         if (startShrink) {
             shrink();
-        }
-
-        if (isHammerSmashing) {
-            hammerChargeCounter++;
-            if (hammerChargeCounter >= (hammerUltimateDuration / 1000) * 60) {
-                hammerChargeCounter = 0;
-                startAttacking = true;
-            }
-        }
-
-        if (isMagic360Firing) {
-            magic360Counter++;
-            if (magic360Counter >= (magicUltimate360Duration / 1000) * 60) {
-                magic360Counter = 0;
-                startAttacking = true;
-            }
         }
         // endregion
     }
@@ -359,12 +307,22 @@ public class EnemyComponent extends CreatureComponent {
                             stop();
                             texture.playAnimationChannel(animMeleeAttack);
                             hammerUltimatePrepAttack();
+                            Runnable runnable = () -> {
+                                try {
+                                    Thread.sleep(ultimateDuration);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                startAttacking = true;
+                            };
+                            Thread thread = new Thread(runnable);
+                            thread.start();
                             isHammerSmashing = true;
                         } else {
-                            autoAttack();
+                            initiateAutoAttack();
                         }
                     } else {
-                        autoAttack();
+                        initiateAutoAttack();
                     }
                 } else if (dist < moveDist && !prepAttack) { // if within big radius and no charge
                     double xDir = playerX - enemyX > 0 ? 1 : -1;
@@ -379,7 +337,7 @@ public class EnemyComponent extends CreatureComponent {
                 if (dist < attackDist) {
                     if (!attackCD) {
                         // ultimate < 50 and regular autoattack >= 50
-                        int chooseAttack = (int) (Math.random() * 101);
+                        int chooseAttack = 0;//(int) (Math.random() * 101);
                         if (chooseAttack < 50) {
                             int chooseUltimate;
                             do { // ensure ultimate has not already been spammed twice
@@ -396,14 +354,26 @@ public class EnemyComponent extends CreatureComponent {
                                 novaCounter++;
                             } else {
                                 novaCounter = 0;
-                                // ricochet
-                                System.out.println("rico");
-                                autoAttack(); // temp
+                                prepAttack = true;
+                                stop();
+                                texture.playAnimationChannel(animMeleeAttack);
+                                magicUltimateRicochetPrepAttack();
+                                isRicochetFiring = true;
                                 ricochetCounter++;
                             }
+                            Runnable runnable = () -> {
+                                try {
+                                    Thread.sleep(ultimateDuration);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                startAttacking = true;
+                            };
+                            Thread thread = new Thread(runnable);
+                            thread.start();
                         } else {
                             System.out.println("auto");
-                            autoAttack();
+                            initiateAutoAttack();
                         }
                     }
                     if (!prepAttack && !kiting) {
@@ -476,6 +446,7 @@ public class EnemyComponent extends CreatureComponent {
 
     private void kitePlayer() {
         if (physics != null && !prepAttack) {
+            getEntity().setScaleX(playerX - enemyX > 0 ? 1 : -1);
             if (!kiteBack && !kiteCircular) {
                 int random = (int) (Math.random() * 101);
                 kiteBack = random < 35;
@@ -543,7 +514,49 @@ public class EnemyComponent extends CreatureComponent {
 
     // region Attack
     // region Regular Attacks
-    private void autoAttack() {
+    private void performAttack() {
+        if (fighterClass.equals("melee")) { // if enemy is melee
+            if (!type.equals("finalboss")) { // if enemy is normal melee
+                meleePunch();
+            } else { // if enemy is boss melee
+                if (!isHammerSmashing) { // perform attack based on boss's chosen attack
+                    hammerAttack();
+                } else {
+                    hammerUltimateSmash();
+                }
+            }
+        } else { // if enemy is ranged
+            if (!type.equals("finalboss")) {
+                magicAutoAttack();
+            } else {
+                if (isMagic360Firing) {
+                    magicUltimate360Fire();
+                } else if (isRicochetFiring) {
+                    magicUltimateRicochetFire();
+                } else {
+                    magicAutoAttack();
+                }
+            }
+        }
+        startShrink = true; // start shrinking
+        startAttacking = false; // not attacking anymore
+        prepAttack = false; // not charging anymore
+        isHammerSmashing = false; // not smashing anymore
+        isMagic360Firing = false; // not 360 firing anymore
+        isRicochetFiring = false; // not ricochet firing anymore
+        Runnable runnable = () -> { // attackBreaktime amount of time before cooldown is done
+            try {
+                Thread.sleep(attackBreaktime);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            attackCD = false;
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
+    }
+
+    private void initiateAutoAttack() {
         prepAttack = true;
         stop();
         texture.playAnimationChannel(animMeleeAttack);
@@ -613,7 +626,7 @@ public class EnemyComponent extends CreatureComponent {
                 put("frameHeight", frameHeight).
                 put("isArrow", false).
                 put("isMagic", true).
-                put("damage", 50.0).
+                put("damage", 1.0).
                 put("royalType", RoyalType.ENEMYATTACK));
         /*
             setLocalAnchor(...) will ensure that the anchor/pivot point of the
@@ -679,6 +692,7 @@ public class EnemyComponent extends CreatureComponent {
         } else {
             int width = 16; // width of the frame
             int height = 16; // height of the frame
+            int handOffset = 5; // offset away from center of entity
             Entity fb = spawn("weapon",
                 new SpawnData(
                     getEntity().getX(), getEntity().getY()).
@@ -689,7 +703,8 @@ public class EnemyComponent extends CreatureComponent {
                     put("fpr", 15));
             // Spawn the sword at boss's "hands"
             fb.getTransformComponent().setAnchoredPosition(
-                new Point2D(entity.getX() - ((double) width / 2) + entity.getWidth() / 2,
+                new Point2D(entity.getX() - ((double) width / 2) + entity.getWidth() / 2
+                    + handOffset,
                     entity.getY() - ((double) height / 2) + entity.getHeight() / 2 + 10));
             fb.setZIndex(5);
             fb.setScaleX(1.5);
@@ -697,7 +712,8 @@ public class EnemyComponent extends CreatureComponent {
             if (entity.getScaleX() == 1) {
                 fb.setScaleX(1.5);
             } else {
-                fb.translateX(width); // smooth reflection over middle axis of player
+                // smooth reflection over middle axis rel. to player
+                fb.translateX(width - 2 * handOffset);
                 fb.setScaleX(-1.5);
             }
         }
@@ -729,7 +745,7 @@ public class EnemyComponent extends CreatureComponent {
             new SpawnData(
                 getEntity().getX(), getEntity().getY()).
                 put("weaponFile", "legend_sword_175x180").
-                put("duration", hammerUltimateDuration).
+                put("duration", ultimateDuration).
                 put("frameWidth", width).
                 put("frameHeight", height).
                 put("fpr", 6));
@@ -751,7 +767,7 @@ public class EnemyComponent extends CreatureComponent {
         int hitBoxHeight = 350; // height of the hitbox
         double swordOffset = 0; // distance from player the hitbox should spawn
 
-        hammerHitBox = spawn("meleeEnemyPunch",
+        Entity hammerHitBox = spawn("meleeEnemyPunch",
             new SpawnData(getEntity().getX(), getEntity().getY()).
                 put("widthBox", hitBoxWidth).put("heightBox", hitBoxHeight));
         hammerHitBox.addComponent(new GroundSmashComponent());
@@ -771,11 +787,12 @@ public class EnemyComponent extends CreatureComponent {
         int height = 100; // height of magic spell
         int vOffset = 10; // vertical offset
 
+        System.out.println(ultimateDuration);
         Entity b = spawn("weapon",
             new SpawnData(
                 enemyX - ((double) width / 2), enemyY - ((double) height / 2) + vOffset).
                 put("weaponFile", "fire360_100x100").
-                put("duration", magicUltimate360Duration).
+                put("duration", ultimateDuration).
                 put("frameWidth", width).
                 put("frameHeight", height).
                 put("fpr", 60));
@@ -833,7 +850,7 @@ public class EnemyComponent extends CreatureComponent {
                     put("frameHeight", frameHeight).
                     put("isArrow", false).
                     put("isMagic", true).
-                    put("damage", 50.0).
+                    put("damage", 1.0).
                     put("royalType", RoyalType.ENEMYATTACK));
             /*
                 setLocalAnchor(...) will ensure that the anchor/pivot point of the
@@ -854,6 +871,107 @@ public class EnemyComponent extends CreatureComponent {
                 new Point2D(centerX, ((double) (frameHeight)) / 2));
             rangedHitBox.setZIndex(5);
         }
+    }
+
+    private void magicUltimateRicochetPrepAttack() {
+        int width = 32; // width of the frame
+        int height = 32; // height of the frame
+        int handOffset = 10; // offset away from center of entity
+        Entity fb = spawn("weapon",
+            new SpawnData(
+                getEntity().getX(), getEntity().getY()).
+                put("weaponFile", "orangeNovaBall_32x32").
+                put("duration", attackDuration).
+                put("frameWidth", width).
+                put("frameHeight", height).
+                put("fpr", 32));
+        // Spawn the sword at boss's "hands"
+        fb.getTransformComponent().setAnchoredPosition(
+            new Point2D(entity.getX() - ((double) width / 2) + entity.getWidth() / 2
+                + handOffset,
+                entity.getY() - ((double) height / 2) + entity.getHeight() / 2 + 10));
+        fb.setZIndex(5);
+        if (entity.getScaleX() == 1) {
+            fb.setScaleX(1);
+        } else {
+            // smooth reflection over middle axis rel. to player
+            fb.translateX(width - 2 * handOffset);
+            fb.setScaleX(-1);
+        }
+    }
+
+    private void magicUltimateRicochetFire() {
+        // adjacent is distance (x) from mouse to player's "hands"
+        // opposite is distance (y) from mouse to player's "hands"
+        // angle calculated with tangent
+        double adjacent = playerX - enemyX;
+        double opposite = playerY - enemyY;
+        double angle = Math.atan2(opposite, adjacent);
+        angle = Math.toDegrees(angle);
+        Vec2 dir = Vec2.fromAngle(angle);
+
+        // top offset used to shrink the top/bot edges of hitbox
+        int topBottomOffset = 20;
+        // left offset used to shrink the left edge of hitbox
+        int leftOffset = 30;
+        // right offset used to shrink the right edge of hitbox
+        int rightOffset = 20;
+        // width of the original frame (64 / 32)
+        int frameWidth = 64;
+        // height of original frame (64 / 32)
+        int frameHeight = 64;
+
+        // the center of the NEW and MODIFIED hitbox
+        double centerX = ((double) (leftOffset + (frameWidth - rightOffset)) / 2);
+        double centerY = ((double) (topBottomOffset + (frameHeight - topBottomOffset)) / 2);
+
+        int speed = 300; // speed at which magic spell goes
+
+        /*
+            Instantiate a brand new magic spell that will hold the
+            corresponding dimensions, components, and speed. It will temporarily
+            spawn the magic spell at the players ORIGINAL getX() and getY() excluding
+            its modified hitbox done in CreatureFactory.
+         */
+        entity.setScaleX(playerX - enemyX > 0 ? 1 : -1);
+        Entity rangedHitBox = spawn("rangedMagicHitBox",
+            new SpawnData(
+                enemyX, enemyY).
+                put("dir", dir.toPoint2D()).
+                put("speed", speed).
+                put("weapon", !type.equals("finalboss")
+                    ? "fireball_enemy_64x64" : "fireball_boss_64x64").
+                put("duration", 500).
+                put("fpr", 60).
+                put("ultimateActive", true).
+                put("topBotOffset", topBottomOffset).
+                put("leftOffset", leftOffset).
+                put("rightOffset", rightOffset).
+                put("frameWidth", frameWidth).
+                put("frameHeight", frameHeight).
+                put("isArrow", false).
+                put("isMagic", true).
+                put("damage", 1.0).
+                put("royalType", RoyalType.ENEMYATTACK));
+        rangedHitBox.addComponent(new RicochetComponent());
+        /*
+            setLocalAnchor(...) will ensure that the anchor/pivot point of the
+            magic spell is located at the CENTER of the NEW hitbox.
+            setAnchoredPosition(...) will spawn the magic spell to the right
+            of the player if player is facing right, and left if the player is
+            facing left, and located at the player's "hands".
+            setRotationOrigin(...) will ensure that the rotation anchor/pivot
+            point of the magic spell is located at the CENTER of the NEW hitbox.
+            The arguments are offsets based off of the top-left point of the
+            ORIGINAL frameWidth x frameHeight frame. Therefore, we need to offset
+            centerX in the x-direction, and the center of the magic spell will
+            CONSISTENTLY be at its midpoint in the y-direction.
+         */
+        rangedHitBox.setLocalAnchor(new Point2D(centerX, centerY));
+        rangedHitBox.setAnchoredPosition(enemyX, enemyY);
+        rangedHitBox.getTransformComponent().setRotationOrigin(
+            new Point2D(centerX, ((double) (frameHeight)) / 2));
+        rangedHitBox.setZIndex(5);
     }
     // endregion
 
