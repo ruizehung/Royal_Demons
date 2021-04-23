@@ -265,21 +265,29 @@ public class EnemyComponent extends CreatureComponent {
             if (fighterClass.equals("melee")) { // if enemy is melee
                 if (!type.equals("finalboss")) { // if enemy is normal melee
                     meleePunch();
+                    int random = (int) (Math.random() + .5);
+                    String attSound = random == 1 ? "mob/minion_1.wav" : "mob/minion_2.wav";
+                    FXGL.play(attSound);
                 } else { // if enemy is boss melee
                     if (!isHammerSmashing) { // perform attack based on boss's chosen attack
                         hammerAttack();
+                        FXGL.play("skills/sword_basic.wav");
                     } else {
                         hammerUltimateSmash();
+                        FXGL.play("skills/explosion_largest2.wav");
                     }
                 }
             } else { // if enemy is ranged
                 if (!type.equals("finalboss")) {
                     magicAutoAttack();
+                    FXGL.play("skills/fireball2.wav");
                 } else {
                     if (!isMagic360Firing) {
                         magicAutoAttack();
+                        FXGL.play("skills/fireball3.wav");
                     } else {
                         magicUltimate360Fire();
+                        FXGL.play("skills/explosion_largest.wav");
                     }
                 }
             }

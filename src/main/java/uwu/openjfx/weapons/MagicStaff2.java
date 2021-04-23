@@ -79,6 +79,11 @@ public class MagicStaff2 implements Weapon, AngleBehavior {
         double centerX = ((double) (leftOffset + (frameWidth - rightOffset)) / 2);
         double centerY = ((double) (topBottomOffset + (frameHeight - topBottomOffset)) / 2);
 
+        FXGL.play("skills/fireball 2.wav");
+        if (ultimateActivated) {
+            FXGL.play("skills/firebreath.wav");
+        }
+
         if (!ultimateActivated) {
             int speed = 300; // speed at which magic spell goes
             double attackDamage = 80;

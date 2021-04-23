@@ -1,6 +1,7 @@
 package uwu.openjfx.weapons;
 
 import com.almasb.fxgl.core.math.Vec2;
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import javafx.geometry.Point2D;
@@ -87,6 +88,8 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
             spawn the magic spell at the players ORIGINAL getX() and getY() excluding
             its modified hitbox done in CreatureFactory.
          */
+        String attSound = ultimateActivated ? "skills/fireball.wav" : "skills/magic ball.wav";
+        FXGL.play(attSound);
 
         Entity rangedHitBox = spawn("rangedMagicHitBox",
                 new SpawnData(
