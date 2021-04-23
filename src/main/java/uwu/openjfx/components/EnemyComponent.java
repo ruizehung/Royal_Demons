@@ -337,7 +337,7 @@ public class EnemyComponent extends CreatureComponent {
                 if (dist < attackDist) {
                     if (!attackCD) {
                         // ultimate < 50 and regular autoattack >= 50
-                        int chooseAttack = 0;//(int) (Math.random() * 101);
+                        int chooseAttack = (int) (Math.random() * 101);
                         if (chooseAttack < 50) {
                             int chooseUltimate;
                             do { // ensure ultimate has not already been spammed twice
