@@ -1,6 +1,7 @@
 package uwu.openjfx.weapons;
 
 import com.almasb.fxgl.core.math.Vec2;
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import javafx.geometry.Point2D;
@@ -73,6 +74,8 @@ public class GoldenSword0 implements Weapon {
         int hitBoxWidth = 70; // width of the hitbox
         int hitBoxHeight = 75; // height of the hitbox
         double swordOffset = 22; // distance from player the hitbox should spawn
+        String attSound = ultimateActivated ? "skills/arrow.wav" : "skills/sword_basic.wav";
+        FXGL.play(attSound);
 
         if (!ultimateActivated) {
             Entity meleeHitBox = spawn("meleeSwordHitBox",

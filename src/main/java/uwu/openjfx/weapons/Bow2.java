@@ -1,5 +1,6 @@
 package uwu.openjfx.weapons;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import javafx.geometry.Point2D;
@@ -56,6 +57,7 @@ public class Bow2 extends Bow implements Weapon, AngleBehavior {
             spawn the magic spell at the players ORIGINAL getX() and getY() excluding
             its modified hitbox done in CreatureFactory.
          */
+        FXGL.play("skills/arrow.wav");
         Entity rangedHitBox = spawn("rangedArrowHitBox",
             new SpawnData(
                 player.getX(), player.getY()).
