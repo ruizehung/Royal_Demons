@@ -3,7 +3,6 @@ package uwu.openjfx.weapons;
 import com.almasb.fxgl.core.math.Vec2;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
-import com.almasb.fxgl.entity.components.IrremovableComponent;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import uwu.openjfx.MainApp;
@@ -167,7 +166,6 @@ public class GoldenSword0 implements Weapon {
                 (player.getY() + playerHitBoxOffsetY + (playerHitBoxHeight / 2)));
             rangedHitBox.getTransformComponent().setRotationOrigin(
                 new Point2D(centerX, ((double) (frameHeight)) / 2));
-            rangedHitBox.addComponent(new IrremovableComponent());
             rangedHitBox.setZIndex(5);
         }
     }
