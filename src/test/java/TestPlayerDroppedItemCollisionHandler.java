@@ -11,6 +11,7 @@ import uwu.openjfx.weapons.Bow0;
 import uwu.openjfx.weapons.GoldenSword1;
 import uwu.openjfx.items.Heart;
 import uwu.openjfx.items.Item;
+import uwu.openjfx.weapons.MagicStaff0;
 
 @ExtendWith(RunWithFX.class)
 public class TestPlayerDroppedItemCollisionHandler {
@@ -83,6 +84,22 @@ public class TestPlayerDroppedItemCollisionHandler {
         handler.onCollision(player, bow);
 
         assert PlayerComponent.getWeaponInventoryList().contains(new Bow0());
+    }
+
+    //james 5
+    @Test
+    void testWandPickUp() {
+        Entity wand = new Entity();
+        wand.setProperty("name", "staff0");
+
+        Entity player = new Entity();
+        PlayerComponent playerComponent = new PlayerComponent(10);
+        player.addComponent(playerComponent);
+
+        PlayerDroppedItemCollisionHandler handler = new PlayerDroppedItemCollisionHandler();
+        handler.onCollision(player, wand);
+
+        assert PlayerComponent.getWeaponInventoryList().contains(new MagicStaff0());
     }
 
     // Ray 4
