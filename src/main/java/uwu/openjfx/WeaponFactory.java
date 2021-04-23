@@ -89,7 +89,7 @@ public class WeaponFactory implements EntityFactory {
                                 heightHitBox)))
                 .with(new ProjectileAnimationComponent(
                         weapon, duration, frameWidth, frameHeight, fpr, isArrow, isMagic))
-                .with(new AttackDamageComponent(ultimateActive, attackDamage))
+                .with(new AttackDamageComponent(false, attackDamage))
                 .with(new CollidableComponent(true))
                 .with(new ProjectileComponent(dir, speed))
                 .build();

@@ -242,7 +242,7 @@ public abstract class Bow implements Weapon, AngleBehavior {
                     put("frameHeight", frameHeight).
                     put("isArrow", true).
                     put("isMagic", false).
-                    put("damage", attackDamage));
+                    put("damage", attackDamage - (attackDamage / 2)));
             rangedHitBox.setLocalAnchor(new Point2D(centerX, centerY));
             rangedHitBox.setAnchoredPosition(
                 (player.getX() + playerHitBoxOffsetX
