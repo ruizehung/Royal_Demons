@@ -88,12 +88,6 @@ public class EnemyComponent extends CreatureComponent {
     private int ricochetCounter; // track of how many times ricochet has been done by chance
     private boolean isRicochetFiring = false;
 
-    private Entity hammerAutoHB; // sprite of hammer auto
-    private Entity hammerUltimateHB; // sprite of hammer ult
-    private Entity magicBossAutoHB; // sprite of fire auto
-    private Entity magic360AuraHB; // sprite of fire circle
-    private Entity magicUltimateRicoHB; // sprite of fire ricochet
-
     public EnemyComponent(int maxHP, String assetName, int width, int height, int frames,
                           String type, String fighterClass) {
         super(maxHP, maxHP);
@@ -123,7 +117,7 @@ public class EnemyComponent extends CreatureComponent {
     }
 
     public EnemyComponent(int healthPoints, String assetName, int width, int height) {
-        this(healthPoints, assetName, width, height, 8, "small", "melee");
+        this(healthPoints, assetName, width, height, 8, "small", "ranged");
     }
 
     @Override
@@ -342,41 +336,45 @@ public class EnemyComponent extends CreatureComponent {
             } else { // if ranged enemy
                 if (dist < attackDist) {
                     if (!attackCD) {
-                        // ultimate < 50 and regular autoattack >= 50
-                        int chooseAttack = (int) (Math.random() * 101);
-                        if (chooseAttack < 58) {
-                            int chooseUltimate;
-                            do { // ensure ultimate has not already been spammed twice
-                                chooseUltimate = (int) (Math.random() * 101);
-                            } while ((novaCounter >= 2 && chooseUltimate < 50)
-                                || (ricochetCounter >= 2 && chooseUltimate >= 50));
-                            if (chooseUltimate < 50) {
-                                ricochetCounter = 0;
-                                prepAttack = true;
-                                stop();
-                                texture.playAnimationChannel(animMeleeAttack);
-                                magicUltimate360PrepAttack();
-                                isMagic360Firing = true;
-                                novaCounter++;
-                            } else {
-                                novaCounter = 0;
-                                prepAttack = true;
-                                stop();
-                                texture.playAnimationChannel(animMeleeAttack);
-                                magicUltimateRicochetPrepAttack();
-                                isRicochetFiring = true;
-                                ricochetCounter++;
-                            }
-                            Runnable runnable = () -> {
-                                try {
-                                    Thread.sleep(ultimateDuration);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
+                        if (type.equals("finalboss")) {
+                            // ultimate < 50 and regular autoattack >= 50
+                            int chooseAttack = (int) (Math.random() * 101);
+                            if (chooseAttack < 58) {
+                                int chooseUltimate;
+                                do { // ensure ultimate has not already been spammed twice
+                                    chooseUltimate = (int) (Math.random() * 101);
+                                } while ((novaCounter >= 2 && chooseUltimate < 50)
+                                    || (ricochetCounter >= 2 && chooseUltimate >= 50));
+                                if (chooseUltimate < 50) {
+                                    ricochetCounter = 0;
+                                    prepAttack = true;
+                                    stop();
+                                    texture.playAnimationChannel(animMeleeAttack);
+                                    magicUltimate360PrepAttack();
+                                    isMagic360Firing = true;
+                                    novaCounter++;
+                                } else {
+                                    novaCounter = 0;
+                                    prepAttack = true;
+                                    stop();
+                                    texture.playAnimationChannel(animMeleeAttack);
+                                    magicUltimateRicochetPrepAttack();
+                                    isRicochetFiring = true;
+                                    ricochetCounter++;
                                 }
-                                startAttacking = true;
-                            };
-                            Thread thread = new Thread(runnable);
-                            thread.start();
+                                Runnable runnable = () -> {
+                                    try {
+                                        Thread.sleep(ultimateDuration);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    startAttacking = true;
+                                };
+                                Thread thread = new Thread(runnable);
+                                thread.start();
+                            } else {
+                                initiateAutoAttack();
+                            }
                         } else {
                             initiateAutoAttack();
                         }
@@ -576,6 +574,33 @@ public class EnemyComponent extends CreatureComponent {
         texture.playAnimationChannel(animMeleeAttack);
         if (type.equals("finalboss")) {
             bossPrepAttack();
+        } else if (fighterClass.equals("ranged")) {
+            int width = 16; // width of the frame
+            int height = 16; // height of the frame
+            int handOffset = 5; // offset away from center of entity
+            Entity magicHB = spawn("weapon",
+                new SpawnData(
+                    getEntity().getX(), getEntity().getY()).
+                    put("weaponFile", "fireCharge_16x16").
+                    put("duration", attackDuration).
+                    put("frameWidth", width).
+                    put("frameHeight", height).
+                    put("fpr", 15));
+            // Spawn the sword at boss's "hands"
+            magicHB.getTransformComponent().setAnchoredPosition(
+                new Point2D(entity.getX() - ((double) width / 2) + entity.getWidth() / 2
+                    + handOffset,
+                    entity.getY() - ((double) height / 2) + entity.getHeight() / 2 + 10));
+            magicHB.setZIndex(5);
+            magicHB.setScaleX(1.5);
+            magicHB.setScaleY(1.5);
+            if (entity.getScaleX() == 1) {
+                magicHB.setScaleX(1.5);
+            } else {
+                // smooth reflection over middle axis rel. to player
+                magicHB.translateX(width - 2 * handOffset);
+                magicHB.setScaleX(-1.5);
+            }
         }
         Timer t = new java.util.Timer();
         t.schedule(
@@ -683,7 +708,7 @@ public class EnemyComponent extends CreatureComponent {
         if (fighterClass.equals("melee")) {
             int width = 175; // width of the frame
             int height = 180; // height of the frame
-            hammerAutoHB = spawn("weapon",
+            Entity hammerAutoHB = spawn("weapon",
                 new SpawnData(
                     getEntity().getX(), getEntity().getY()).
                     put("weaponFile", "legend_sword_175x180").
@@ -706,7 +731,7 @@ public class EnemyComponent extends CreatureComponent {
             int width = 16; // width of the frame
             int height = 16; // height of the frame
             int handOffset = 5; // offset away from center of entity
-            magicBossAutoHB = spawn("weapon",
+            Entity magicBossAutoHB = spawn("weapon",
                 new SpawnData(
                     getEntity().getX(), getEntity().getY()).
                     put("weaponFile", "fireCharge_16x16").
@@ -755,7 +780,7 @@ public class EnemyComponent extends CreatureComponent {
     private void hammerUltimatePrepAttack() {
         int width = 175; // width of the frame
         int height = 180; // height of the frame
-        hammerUltimateHB = spawn("weapon",
+        Entity hammerUltimateHB = spawn("weapon",
             new SpawnData(
                 getEntity().getX(), getEntity().getY()).
                 put("weaponFile", "legend_sword_175x180").
@@ -803,7 +828,7 @@ public class EnemyComponent extends CreatureComponent {
         int vOffset = 10; // vertical offset
         FXGL.play("skills/charge_boss.wav");
 
-        magic360AuraHB = spawn("weapon",
+        Entity magic360AuraHB = spawn("weapon",
             new SpawnData(
                 enemyX - ((double) width / 2), enemyY - ((double) height / 2) + vOffset).
                 put("weaponFile", "fire360_100x100").
@@ -892,7 +917,7 @@ public class EnemyComponent extends CreatureComponent {
         int width = 32; // width of the frame
         int height = 32; // height of the frame
         int handOffset = 10; // offset away from center of entity
-        magicUltimateRicoHB = spawn("weapon",
+        Entity magicUltimateRicoHB = spawn("weapon",
             new SpawnData(
                 getEntity().getX(), getEntity().getY()).
                 put("weaponFile", "orangeNovaBall_32x32").
