@@ -23,6 +23,9 @@ public class PlayerProjWallCollisionHandler extends CollisionHandler {
         if (weapon.hasComponent(ProjectileAnimationComponent.class)) {
             if (weapon.getComponent(ProjectileAnimationComponent.class).getIsArrow()) {
                 weapon.getComponent(ProjectileComponent.class).pause();
+                if (!weapon.hasComponent(ExplosionAtDistComponent.class)) {
+                    FXGL.play("skills/arrow_dagger_stuck.wav");
+                }
             }
             if (weapon.getComponent(ProjectileAnimationComponent.class).getIsMagic()
                 || weapon.hasComponent(ExplosionAtDistComponent.class)) {

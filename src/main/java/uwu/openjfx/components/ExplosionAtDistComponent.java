@@ -1,4 +1,5 @@
 package uwu.openjfx.components;
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.component.Component;
@@ -43,6 +44,7 @@ public class ExplosionAtDistComponent extends Component {
         int novaDuration = 200;
         int novaOffsetX = 30;
         if (PlayerComponent.getCurrentWeapon() instanceof MagicStaff0) {
+            FXGL.play("skills/explosion_small.wav");
             int frameWidth = 96;
             int frameHeight = 96;
             Entity blueNova = spawn("weapon",
@@ -58,6 +60,7 @@ public class ExplosionAtDistComponent extends Component {
             blueNova.setScaleX(2);
             blueNova.setScaleY(2);
         } else if (PlayerComponent.getCurrentWeapon() instanceof MagicStaff1) {
+            FXGL.play("skills/explosion_med.wav");
             int frameWidth = 96;
             int frameHeight = 96;
             Entity orangeNova = spawn("weapon",
@@ -73,6 +76,7 @@ public class ExplosionAtDistComponent extends Component {
             orangeNova.setScaleX(2);
             orangeNova.setScaleY(2);
         } else if (PlayerComponent.getCurrentWeapon() instanceof Bow2) {
+            FXGL.play("skills/explosion_med.wav");
             int frameWidth = 64;
             int frameHeight = 64;
             Entity orangeNova = spawn("weapon",

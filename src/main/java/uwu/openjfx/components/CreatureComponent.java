@@ -1,5 +1,6 @@
 package uwu.openjfx.components;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -51,6 +52,7 @@ public class CreatureComponent extends Component implements HasLife {
             int blockRand = (int) (Math.random() * 100) + 1;
             if (blockRand <= blockProb * pierce) {
                 System.out.println("BLOCKED");
+                FXGL.play("block.wav");
                 return;
             }
             double damageDealt = (point * attackPower) / armor;

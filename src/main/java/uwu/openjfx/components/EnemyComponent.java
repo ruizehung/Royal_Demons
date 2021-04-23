@@ -768,6 +768,7 @@ public class EnemyComponent extends CreatureComponent {
             hm.translateX(width); // smooth reflection over middle axis of player
             hm.setScaleX(-1);
         }
+        FXGL.play("skills/charge_hammer.wav");
     }
 
     private void hammerUltimateSmash() {
