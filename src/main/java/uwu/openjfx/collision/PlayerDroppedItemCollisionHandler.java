@@ -28,12 +28,14 @@ public class PlayerDroppedItemCollisionHandler extends CollisionHandler {
                 FXGL.play("ui/weapon_swap.wav");
             }
 
-            // This is a piece of shit !!!!!
+            // This is a huge piece of shit !!!!!
             // add things to inventory
             if (itemName.equals("HealthPotion")) {
                 UI.addHealthPot();
             } else if (itemName.equals("RagePotion")) {
                 UI.addRagePot();
+            } else if (itemName.equals("Heart")) {
+                System.out.println("Grabbed Heart");
             } else {
                 switch (itemName) {
                 case "sword0":
