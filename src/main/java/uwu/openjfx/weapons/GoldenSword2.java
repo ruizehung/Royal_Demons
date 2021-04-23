@@ -57,7 +57,7 @@ public class GoldenSword2 implements Weapon {
         int hitBoxWidth = !ultimateActivated ? 105 : 175; // width of the hitbox
         int hitBoxHeight = !ultimateActivated ? 155 : 175; // height of the hitbox
         double swordOffset = !ultimateActivated ? 22 : 0; // distance from player hitbox spawns
-        double attackDamage = 80;
+        double attackDamage = 90;
         String attSound = ultimateActivated ? "skills/sword_ulti.wav" : "skills/sword_basic.wav";
         FXGL.play(attSound);
 

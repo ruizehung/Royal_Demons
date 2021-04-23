@@ -151,7 +151,7 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
 
     @Override
     public int getDuration(boolean ultimateActivated) {
-        int attackDuration = 700; // charge-up time of attacking in milliseconds
+        int attackDuration = 900; // charge-up time of attacking in milliseconds
         int ultimateChargeDuration = 1000; // charge-up time of attacking in milliseconds
         this.ultimateActivated = ultimateActivated;
         return ultimateActivated ? ultimateChargeDuration : attackDuration;

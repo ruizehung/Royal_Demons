@@ -97,7 +97,7 @@ public class ExplosionAtDistComponent extends Component {
             new SpawnData(getEntity().getX() - 55,
                 getEntity().getY() - ((double) hitBoxHeight / 2)).
                 put("width", hitBoxWidth).put("height", hitBoxHeight).
-                put("damage", 50.0));
+                put("damage", 90.0));
         Runnable runnable = () -> {
             try {
                 Thread.sleep(100);
