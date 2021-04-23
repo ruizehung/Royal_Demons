@@ -212,6 +212,26 @@ public class TestPlayerAttackEnemyCollisionHandler {
         assert (PlayerComponent.getDamageDealt() > currentDamage);
     }
 
+    // alice 6
+    @Test
+    void testMinionGetHurtAddsToDamageCountStatistic() {
+        double currentDamage = PlayerComponent.getDamageDealt();
+        Entity minion = new Entity();
+        EnemyComponent enemyComponent = new EnemyComponent(100, "", 10, 20);
+        minion.addComponent(enemyComponent);
+        minion.setProperty("CreatureComponent", enemyComponent);
+
+        Entity weapon = new Entity();
+        weapon.addComponent(new AttackDamageComponent(false, Double.MAX_VALUE));
+        enemyComponent.setBlockProbability(0);
+        enemyComponent.setArmorStat(1);
+
+        PlayerAttackEnemyCollisionHandler handler = new PlayerAttackEnemyCollisionHandler();
+        handler.onCollisionBegin(weapon, minion);
+
+        assert (PlayerComponent.getDamageDealt() > currentDamage);
+    }
+
     // devan m6-2
     @Test
     void testMinionDiesAddsToKillCountStatistic() {
