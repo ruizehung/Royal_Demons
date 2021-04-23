@@ -145,7 +145,7 @@ public class EnemyComponent extends CreatureComponent {
         case "finalboss":
             massEffect = true;
             blockProbability = 30;
-            armorStat = 12.5;
+            armorStat = 15.5;
             break;
         default:
         }
@@ -176,7 +176,19 @@ public class EnemyComponent extends CreatureComponent {
     public void onUpdate(double tpf) {
         // region Boss Update Attributes
         if (type.equals("finalboss")) {
-            if (getFighterClass().equals("melee") && getHealthPoints() <= 50 && !prepAttack) {
+            if (getFighterClass().equals("melee") && getHealthPoints() <= 95 && !prepAttack) {
+                setHealthPoints(50);
+                Entity poof = spawn("weapon",
+                    new SpawnData(
+                        enemyX - 80, enemyY - 80).
+                        put("weaponFile", "poof").
+                        put("duration", 1000).
+                        put("frameWidth", 32).
+                        put("frameHeight", 32).
+                        put("fpr", 5));
+                poof.setZIndex(2000);
+                poof.setScaleX(5);
+                poof.setScaleY(5);
                 transformBoss("creatures/boss/HighElf_M_48x48.png", 48, 48,
                     4, "ranged");
             }
@@ -374,7 +386,6 @@ public class EnemyComponent extends CreatureComponent {
             } else { // if ranged enemy
                 if (dist < attackDist) {
                     if (!attackCD) {
-                        entity.setScaleX(playerX - enemyX > 0 ? 1 : -1);
                         // ultimate < 50 and regular autoattack >= 50
                         int chooseAttack = (int) (Math.random() * 101);
                         if (chooseAttack < 50) {
@@ -544,7 +555,7 @@ public class EnemyComponent extends CreatureComponent {
         prepAttack = true;
         stop();
         texture.playAnimationChannel(animMeleeAttack);
-        if (type.equals("finalboss") && fighterClass.equals("melee")) {
+        if (type.equals("finalboss")) {
             bossPrepAttack();
         }
         Timer t = new java.util.Timer();
@@ -592,7 +603,7 @@ public class EnemyComponent extends CreatureComponent {
             spawn the magic spell at the players ORIGINAL getX() and getY() excluding
             its modified hitbox done in CreatureFactory.
          */
-
+        entity.setScaleX(playerX - enemyX > 0 ? 1 : -1);
         Entity rangedHitBox = spawn("rangedMagicHitBox",
             new SpawnData(
                 enemyX, enemyY).
@@ -654,7 +665,7 @@ public class EnemyComponent extends CreatureComponent {
         if (fighterClass.equals("melee")) {
             int width = 175; // width of the frame
             int height = 180; // height of the frame
-            Entity gs = spawn("weapon",
+            Entity hm = spawn("weapon",
                 new SpawnData(
                     getEntity().getX(), getEntity().getY()).
                     put("weaponFile", "legend_sword_175x180").
@@ -663,15 +674,39 @@ public class EnemyComponent extends CreatureComponent {
                     put("frameHeight", height).
                     put("fpr", 6));
             // Spawn the sword at boss's "hands"
-            gs.getTransformComponent().setAnchoredPosition(
+            hm.getTransformComponent().setAnchoredPosition(
                 new Point2D(entity.getX() - ((double) width / 2) + entity.getWidth() / 2,
                     entity.getY() - ((double) height / 2) + entity.getHeight() / 2));
-            gs.setZIndex(5);
+            hm.setZIndex(5);
             if (entity.getScaleX() == 1) {
-                gs.setScaleX(1);
+                hm.setScaleX(1);
             } else {
-                gs.translateX(width); // smooth reflection over middle axis of player
-                gs.setScaleX(-1);
+                hm.translateX(width); // smooth reflection over middle axis of player
+                hm.setScaleX(-1);
+            }
+        } else {
+            int width = 16; // width of the frame
+            int height = 16; // height of the frame
+            Entity fb = spawn("weapon",
+                new SpawnData(
+                    getEntity().getX(), getEntity().getY()).
+                    put("weaponFile", "fireCharge_16x16").
+                    put("duration", attackDuration).
+                    put("frameWidth", width).
+                    put("frameHeight", height).
+                    put("fpr", 15));
+            // Spawn the sword at boss's "hands"
+            fb.getTransformComponent().setAnchoredPosition(
+                new Point2D(entity.getX() - ((double) width / 2) + entity.getWidth() / 2,
+                    entity.getY() - ((double) height / 2) + entity.getHeight() / 2 + 10));
+            fb.setZIndex(5);
+            fb.setScaleX(1.5);
+            fb.setScaleY(1.5);
+            if (entity.getScaleX() == 1) {
+                fb.setScaleX(1.5);
+            } else {
+                fb.translateX(width); // smooth reflection over middle axis of player
+                fb.setScaleX(-1.5);
             }
         }
     }
@@ -740,18 +775,18 @@ public class EnemyComponent extends CreatureComponent {
 
     // region Boss Ranged Attacks
     private void magicUltimate360PrepAttack() {
-        int width = 96; // width of magic spell
-        int height = 96; // height of magic spell
+        int width = 100; // width of magic spell
+        int height = 100; // height of magic spell
         int vOffset = 10; // vertical offset
 
         Entity b = spawn("weapon",
             new SpawnData(
                 enemyX - ((double) width / 2), enemyY - ((double) height / 2) + vOffset).
-                put("weaponFile", "fire360_96x96").
+                put("weaponFile", "fire360_100x100").
                 put("duration", magicUltimate360Duration).
                 put("frameWidth", width).
                 put("frameHeight", height).
-                put("fpr", 28));
+                put("fpr", 60));
         b.setZIndex(5);
     }
 
