@@ -88,6 +88,12 @@ public class EnemyComponent extends CreatureComponent {
     private int ricochetCounter; // track of how many times ricochet has been done by chance
     private boolean isRicochetFiring = false;
 
+    private Entity hammerAutoHB; // sprite of hammer auto
+    private Entity hammerUltimateHB; // sprite of hammer ult
+    private Entity magicBossAutoHB; // sprite of fire auto
+    private Entity magic360AuraHB; // sprite of fire circle
+    private Entity magicUltimateRicoHB; // sprite of fire ricochet
+
     public EnemyComponent(int maxHP, String assetName, int width, int height, int frames,
                           String type, String fighterClass) {
         super(maxHP, maxHP);
@@ -338,7 +344,7 @@ public class EnemyComponent extends CreatureComponent {
                     if (!attackCD) {
                         // ultimate < 50 and regular autoattack >= 50
                         int chooseAttack = (int) (Math.random() * 101);
-                        if (chooseAttack < 50) {
+                        if (chooseAttack < 58) {
                             int chooseUltimate;
                             do { // ensure ultimate has not already been spammed twice
                                 chooseUltimate = (int) (Math.random() * 101);
@@ -609,7 +615,7 @@ public class EnemyComponent extends CreatureComponent {
             its modified hitbox done in CreatureFactory.
          */
         entity.setScaleX(playerX - enemyX > 0 ? 1 : -1);
-        Entity rangedHitBox = spawn("rangedMagicHitBox",
+        Entity magicRegAutoHB = spawn("rangedMagicHitBox",
             new SpawnData(
                 enemyX, enemyY).
                 put("dir", dir.toPoint2D()).
@@ -641,16 +647,16 @@ public class EnemyComponent extends CreatureComponent {
             centerX in the x-direction, and the center of the magic spell will
             CONSISTENTLY be at its midpoint in the y-direction.
          */
-        rangedHitBox.setLocalAnchor(new Point2D(centerX, centerY));
-        rangedHitBox.setAnchoredPosition(enemyX, enemyY);
-        rangedHitBox.getTransformComponent().setRotationOrigin(
+        magicRegAutoHB.setLocalAnchor(new Point2D(centerX, centerY));
+        magicRegAutoHB.setAnchoredPosition(enemyX, enemyY);
+        magicRegAutoHB.getTransformComponent().setRotationOrigin(
             new Point2D(centerX, ((double) (frameHeight)) / 2));
-        rangedHitBox.setZIndex(5);
+        magicRegAutoHB.setZIndex(5);
     }
 
     private void meleePunch() {
-        int widthBox = width;
-        int heightBox = height;
+        int widthBox = width * 2;
+        int heightBox = height * 2;
         int sideOffset = widthBox / 2;
         Entity meleePunchHitBox = spawn("meleeEnemyPunch",
             new SpawnData(enemyX, enemyY).
@@ -664,13 +670,12 @@ public class EnemyComponent extends CreatureComponent {
                 enemyY - ((double) heightBox / 2)));
         MainApp.addToHitBoxDestruction(meleePunchHitBox);
     }
-    // endregion
 
     private void bossPrepAttack() {
         if (fighterClass.equals("melee")) {
             int width = 175; // width of the frame
             int height = 180; // height of the frame
-            Entity hm = spawn("weapon",
+            hammerAutoHB = spawn("weapon",
                 new SpawnData(
                     getEntity().getX(), getEntity().getY()).
                     put("weaponFile", "legend_sword_175x180").
@@ -679,21 +684,21 @@ public class EnemyComponent extends CreatureComponent {
                     put("frameHeight", height).
                     put("fpr", 6));
             // Spawn the sword at boss's "hands"
-            hm.getTransformComponent().setAnchoredPosition(
-                new Point2D(entity.getX() - ((double) width / 2) + entity.getWidth() / 2,
-                    entity.getY() - ((double) height / 2) + entity.getHeight() / 2));
-            hm.setZIndex(5);
+            hammerAutoHB.getTransformComponent().setAnchoredPosition(new Point2D(
+                entity.getX() - ((double) width / 2) + entity.getWidth() / 2,
+                entity.getY() - ((double) height / 2) + entity.getHeight() / 2));
+            hammerAutoHB.setZIndex(5);
             if (entity.getScaleX() == 1) {
-                hm.setScaleX(1);
+                hammerAutoHB.setScaleX(1);
             } else {
-                hm.translateX(width); // smooth reflection over middle axis of player
-                hm.setScaleX(-1);
+                hammerAutoHB.translateX(width); // smooth reflection over middle axis of player
+                hammerAutoHB.setScaleX(-1);
             }
         } else {
             int width = 16; // width of the frame
             int height = 16; // height of the frame
             int handOffset = 5; // offset away from center of entity
-            Entity fb = spawn("weapon",
+            magicBossAutoHB = spawn("weapon",
                 new SpawnData(
                     getEntity().getX(), getEntity().getY()).
                     put("weaponFile", "fireCharge_16x16").
@@ -702,22 +707,23 @@ public class EnemyComponent extends CreatureComponent {
                     put("frameHeight", height).
                     put("fpr", 15));
             // Spawn the sword at boss's "hands"
-            fb.getTransformComponent().setAnchoredPosition(
+            magicBossAutoHB.getTransformComponent().setAnchoredPosition(
                 new Point2D(entity.getX() - ((double) width / 2) + entity.getWidth() / 2
                     + handOffset,
                     entity.getY() - ((double) height / 2) + entity.getHeight() / 2 + 10));
-            fb.setZIndex(5);
-            fb.setScaleX(1.5);
-            fb.setScaleY(1.5);
+            magicBossAutoHB.setZIndex(5);
+            magicBossAutoHB.setScaleX(1.5);
+            magicBossAutoHB.setScaleY(1.5);
             if (entity.getScaleX() == 1) {
-                fb.setScaleX(1.5);
+                magicBossAutoHB.setScaleX(1.5);
             } else {
                 // smooth reflection over middle axis rel. to player
-                fb.translateX(width - 2 * handOffset);
-                fb.setScaleX(-1.5);
+                magicBossAutoHB.translateX(width - 2 * handOffset);
+                magicBossAutoHB.setScaleX(-1.5);
             }
         }
     }
+    // endregion
 
     // region Boss Melee Attacks
     private void hammerAttack() {
@@ -741,7 +747,7 @@ public class EnemyComponent extends CreatureComponent {
     private void hammerUltimatePrepAttack() {
         int width = 175; // width of the frame
         int height = 180; // height of the frame
-        Entity hm = spawn("weapon",
+        hammerUltimateHB = spawn("weapon",
             new SpawnData(
                 getEntity().getX(), getEntity().getY()).
                 put("weaponFile", "legend_sword_175x180").
@@ -750,15 +756,15 @@ public class EnemyComponent extends CreatureComponent {
                 put("frameHeight", height).
                 put("fpr", 6));
         // Spawn the sword at boss's "hands"
-        hm.getTransformComponent().setAnchoredPosition(
+        hammerUltimateHB.getTransformComponent().setAnchoredPosition(
             new Point2D(entity.getX() - ((double) width / 2) + entity.getWidth() / 2,
                 entity.getY() - ((double) height / 2) + entity.getHeight() / 2));
-        hm.setZIndex(5);
+        hammerUltimateHB.setZIndex(5);
         if (entity.getScaleX() == 1) {
-            hm.setScaleX(1);
+            hammerUltimateHB.setScaleX(1);
         } else {
-            hm.translateX(width); // smooth reflection over middle axis of player
-            hm.setScaleX(-1);
+            hammerUltimateHB.translateX(width); // smooth reflection over middle axis of player
+            hammerUltimateHB.setScaleX(-1);
         }
     }
 
@@ -787,8 +793,7 @@ public class EnemyComponent extends CreatureComponent {
         int height = 100; // height of magic spell
         int vOffset = 10; // vertical offset
 
-        System.out.println(ultimateDuration);
-        Entity b = spawn("weapon",
+        magic360AuraHB = spawn("weapon",
             new SpawnData(
                 enemyX - ((double) width / 2), enemyY - ((double) height / 2) + vOffset).
                 put("weaponFile", "fire360_100x100").
@@ -796,7 +801,7 @@ public class EnemyComponent extends CreatureComponent {
                 put("frameWidth", width).
                 put("frameHeight", height).
                 put("fpr", 60));
-        b.setZIndex(5);
+        magic360AuraHB.setZIndex(5);
     }
 
     private void magicUltimate360Fire() {
@@ -877,7 +882,7 @@ public class EnemyComponent extends CreatureComponent {
         int width = 32; // width of the frame
         int height = 32; // height of the frame
         int handOffset = 10; // offset away from center of entity
-        Entity fb = spawn("weapon",
+        magicUltimateRicoHB = spawn("weapon",
             new SpawnData(
                 getEntity().getX(), getEntity().getY()).
                 put("weaponFile", "orangeNovaBall_32x32").
@@ -886,17 +891,17 @@ public class EnemyComponent extends CreatureComponent {
                 put("frameHeight", height).
                 put("fpr", 32));
         // Spawn the sword at boss's "hands"
-        fb.getTransformComponent().setAnchoredPosition(
+        magicUltimateRicoHB.getTransformComponent().setAnchoredPosition(
             new Point2D(entity.getX() - ((double) width / 2) + entity.getWidth() / 2
                 + handOffset,
                 entity.getY() - ((double) height / 2) + entity.getHeight() / 2 + 10));
-        fb.setZIndex(5);
+        magicUltimateRicoHB.setZIndex(5);
         if (entity.getScaleX() == 1) {
-            fb.setScaleX(1);
+            magicUltimateRicoHB.setScaleX(1);
         } else {
             // smooth reflection over middle axis rel. to player
-            fb.translateX(width - 2 * handOffset);
-            fb.setScaleX(-1);
+            magicUltimateRicoHB.translateX(width - 2 * handOffset);
+            magicUltimateRicoHB.setScaleX(-1);
         }
     }
 
@@ -1016,6 +1021,10 @@ public class EnemyComponent extends CreatureComponent {
 
     public String getFighterClass() {
         return fighterClass;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public void transformBoss(String assetName, int width, int height, int frames,
