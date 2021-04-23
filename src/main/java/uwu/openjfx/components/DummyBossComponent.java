@@ -19,6 +19,7 @@ public class DummyBossComponent extends BossComponent {
 
     @Override
     public void onUpdate(double tpf) {
+        setBlockProbability(0);
         if (healingTimer <= 0) {
             if (super.getHealthPoints() < super.getMaxHealthPoints()) {
                 super.increaseHealth(1);

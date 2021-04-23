@@ -115,7 +115,6 @@ public class ShowInventoryAction extends UserAction {
                 borderPanes[r][c].setPrefWidth(96);
                 borderPanes[r][c].setPrefHeight(96);
                 if (r * cols + c < playerWeaponList.size()) {
-                    System.out.println("setting " + r * cols + c);
                     borderPanes[r][c].setCenter(getAssetLoader()
                             .loadTexture(playerWeaponList.get(r * cols + c)
                                     .getWeaponIconPath()));
