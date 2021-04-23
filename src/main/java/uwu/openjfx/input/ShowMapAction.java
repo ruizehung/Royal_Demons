@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import uwu.openjfx.MapGeneration.Coordinate;
 import uwu.openjfx.MapGeneration.GameMap;
 import uwu.openjfx.MapGeneration.Room;
+import uwu.openjfx.UI;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getInput;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getUIFactoryService;
@@ -149,6 +150,10 @@ public class ShowMapAction extends UserAction {
                             FXGL.getGameScene().getViewport().fade(() -> {
                                 gameMap.loadRoom(room, "west");
                                 getInput().setProcessInput(true);
+                                if (room.getCoordinate().equals(
+                                        gameMap.getBossRoom().getCoordinate())) {
+                                    UI.initBossCutsceneAndUI();
+                                }
                             });
                         }
                     });

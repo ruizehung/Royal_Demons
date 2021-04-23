@@ -1,8 +1,10 @@
 package uwu.openjfx;
 
+import com.almasb.fxgl.cutscene.Cutscene;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.texture.Texture;
+import com.almasb.fxgl.ui.ProgressBar;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -10,7 +12,15 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
+import uwu.openjfx.components.BossComponent;
 import uwu.openjfx.components.PlayerComponent;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getAudioPlayer;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.loopBGM;
 
 public class UI {
     private static Entity player;
@@ -124,6 +134,36 @@ public class UI {
                     textRagePot
             );
         }
+    }
+
+    public static void initBossCutsceneAndUI() {
+        ArrayList<String> bossFight = new ArrayList<>(Arrays.asList(
+                "1.name = " + PlayerComponent.getPlayerName(),
+                "2.name = boss guy",
+                "1.image = ui_yoshi.png",
+                "2.image = ui_peach.png",
+                "1: where mah boo?",
+                "2: theyre NOT behind the only door in the room,"
+                        + "to which i ate the key and have been constipated"
+                        + " for some time now MUAHAHAHA",
+                "1: thats gross man..."
+        ));
+        FXGL.getSceneService().getTimer().runOnceAfter(() -> FXGL.getCutsceneService()
+                .startCutscene(
+                        new Cutscene(bossFight)), Duration.millis(750));
+        getAudioPlayer().stopMusic(FXGL.getAssetLoader().loadMusic("evil4.mp3"));
+        loopBGM("boss/boss_battle_ 2.mp3");
+
+        ProgressBar bossHealth = new ProgressBar();
+        bossHealth.setBackgroundFill(Color.RED);
+        bossHealth.setHeight(25);
+        bossHealth.setMinValue(0);
+        bossHealth.setMaxValue(100);
+        bossHealth.setTranslateX(FXGL.getAppWidth() / 2.0
+                - bossHealth.getBackgroundBar().getWidth() / 2);
+        bossHealth.setTranslateY(12.5);
+        bossHealth.currentValueProperty().bind(BossComponent.getBossHealthProperty());
+        FXGL.getGameScene().addUINodes(bossHealth);
     }
 
     public static IntegerProperty getGoldProperty() {
