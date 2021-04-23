@@ -911,15 +911,15 @@ public class EnemyComponent extends CreatureComponent {
         Vec2 dir = Vec2.fromAngle(angle);
 
         // top offset used to shrink the top/bot edges of hitbox
-        int topBottomOffset = 20;
+        int topBottomOffset = 40;
         // left offset used to shrink the left edge of hitbox
-        int leftOffset = 30;
+        int leftOffset = 50;
         // right offset used to shrink the right edge of hitbox
-        int rightOffset = 20;
+        int rightOffset = 25;
         // width of the original frame (64 / 32)
-        int frameWidth = 64;
+        int frameWidth = 100;
         // height of original frame (64 / 32)
-        int frameHeight = 64;
+        int frameHeight = 100;
 
         // the center of the NEW and MODIFIED hitbox
         double centerX = ((double) (leftOffset + (frameWidth - rightOffset)) / 2);
@@ -939,8 +939,7 @@ public class EnemyComponent extends CreatureComponent {
                 enemyX, enemyY).
                 put("dir", dir.toPoint2D()).
                 put("speed", speed).
-                put("weapon", !type.equals("finalboss")
-                    ? "fireball_enemy_64x64" : "fireball_boss_64x64").
+                put("weapon", "ricochetBall_100x100").
                 put("duration", 500).
                 put("fpr", 60).
                 put("ultimateActive", true).
