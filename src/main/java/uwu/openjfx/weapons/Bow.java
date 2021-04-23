@@ -76,8 +76,7 @@ public abstract class Bow implements Weapon, AngleBehavior {
                 put("duration", getDuration(ultimateActivated)).
                 put("frameWidth", width).
                 put("frameHeight", height).
-                put("fpr", 5).
-                put("weaponSprite", sprite));
+                put("fpr", 5));
         // Spawn bow at player's "hands"
         b.getTransformComponent().setAnchoredPosition(
             new Point2D(

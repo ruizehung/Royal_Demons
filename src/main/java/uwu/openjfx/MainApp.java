@@ -336,7 +336,7 @@ public class MainApp extends GameApplication {
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerNPCCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerFinalDoorCollisionHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new PlayerSpikeCollisionHandler());
-
+        FXGL.getPhysicsWorld().addCollisionHandler(new PlayerSmashedGroundCollisionHandler());
     }
 
     @Override

@@ -42,8 +42,7 @@ public class MagicStaff0 implements Weapon, AngleBehavior {
                 put("duration", getDuration(ultimateActivated)).
                 put("frameWidth", width).
                 put("frameHeight", height).
-                put("fpr", 4).
-                put("weaponSprite", sprite));
+                put("fpr", 4));
         // Spawn bow at player's "hands"
         b.getTransformComponent().setAnchoredPosition(
             new Point2D(
