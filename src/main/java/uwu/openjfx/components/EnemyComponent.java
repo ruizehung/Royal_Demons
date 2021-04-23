@@ -372,7 +372,6 @@ public class EnemyComponent extends CreatureComponent {
                             Thread thread = new Thread(runnable);
                             thread.start();
                         } else {
-                            System.out.println("auto");
                             initiateAutoAttack();
                         }
                     }
@@ -518,23 +517,32 @@ public class EnemyComponent extends CreatureComponent {
         if (fighterClass.equals("melee")) { // if enemy is melee
             if (!type.equals("finalboss")) { // if enemy is normal melee
                 meleePunch();
+                int random = (int) (Math.random() + .5);
+                String attSound = random == 1 ? "mob/minion_1.wav" : "mob/minion_2.wav";
+                FXGL.play(attSound);
             } else { // if enemy is boss melee
                 if (!isHammerSmashing) { // perform attack based on boss's chosen attack
                     hammerAttack();
+                    FXGL.play("skills/sword_basic.wav");
                 } else {
                     hammerUltimateSmash();
+                    FXGL.play("skills/explosion_largest2.wav");
                 }
             }
         } else { // if enemy is ranged
             if (!type.equals("finalboss")) {
                 magicAutoAttack();
+                FXGL.play("skills/fireball2.wav");
             } else {
                 if (isMagic360Firing) {
                     magicUltimate360Fire();
+                    FXGL.play("skills/explosion_largest.wav");
                 } else if (isRicochetFiring) {
                     magicUltimateRicochetFire();
+                    FXGL.play("skills/fireball3.wav");
                 } else {
                     magicAutoAttack();
+                    FXGL.play("skills/fireball3.wav");
                 }
             }
         }
@@ -786,6 +794,7 @@ public class EnemyComponent extends CreatureComponent {
         int width = 100; // width of magic spell
         int height = 100; // height of magic spell
         int vOffset = 10; // vertical offset
+        FXGL.play("skills/charge_boss.wav");
 
         System.out.println(ultimateDuration);
         Entity b = spawn("weapon",

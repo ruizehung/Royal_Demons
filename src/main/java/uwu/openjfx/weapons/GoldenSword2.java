@@ -48,7 +48,7 @@ public class GoldenSword2 implements Weapon {
             gs.setScaleX(-1);
         }
         if (ultimateActivated) {
-            FXGL.play("skills/charge_fast.wav");
+            FXGL.play("skills/charge_sword.wav");
         }
     }
 

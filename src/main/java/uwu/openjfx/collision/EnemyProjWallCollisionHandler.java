@@ -30,7 +30,6 @@ public class EnemyProjWallCollisionHandler extends CollisionHandler {
                 weapon.removeFromWorld();
             }
         } else if (weapon.hasComponent(RicochetComponent.class)) {
-            System.out.println("hello");
             weapon.getComponent(RicochetComponent.class).incrementWallHit();
             ProjectileComponent pc = weapon.getComponent(ProjectileComponent.class);
             pc.setDirection(new Point2D(
