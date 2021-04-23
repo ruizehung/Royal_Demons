@@ -47,11 +47,11 @@ public class PlayerFinalDoorCollisionHandler extends CollisionHandler {
                     "2.name = " + PlayerComponent.getPlayerName() + "'s dino lover",
                     "1.image = ui_yoshi.png",
                     "2.image = ui_peach.png",
-                    "1: omg is dat u??",
-                    "2: ya boo, thnx for saving me",
-                    "1: np, lets go home and watch some netflix ^^, i stole "
-                            + FXGL.geti("coin") + " coins on the way here "
-                            + "did " + (int) PlayerComponent.getDamageDealt() + " damage and "
+                    "1: My princess, I was so worried!",
+                    "2: Omg, ily, thx for saving me. U the best. Old man was gross af",
+                    "1: My love, no problem. Let's go home so you can rest! During my journey, I stole "
+                            + FXGL.geti("coin") + " coins on the way here, "
+                            + "did " + (int) PlayerComponent.getDamageDealt() + " damage, and "
                             + "killed " + PlayerComponent.getMonstersKilled() + " monsters!"
             ));
             FXGL.getSceneService().getTimer().runOnceAfter(() -> FXGL.getCutsceneService()

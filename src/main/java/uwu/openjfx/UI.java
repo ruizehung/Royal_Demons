@@ -142,11 +142,9 @@ public class UI {
                 "2.name = boss guy",
                 "1.image = ui_yoshi.png",
                 "2.image = ui_peach.png",
-                "1: where mah boo?",
-                "2: theyre NOT behind the only door in the room,"
-                        + "to which i ate the key and have been constipated"
-                        + " for some time now MUAHAHAHA",
-                "1: thats gross man..."
+                "1: Where is the princess?! >:-(",
+                "2: You'll have to defeat me to find out, you fool!",
+                "1: I'll save her!"
         ));
         FXGL.getSceneService().getTimer().runOnceAfter(() -> FXGL.getCutsceneService()
                 .startCutscene(
