@@ -28,4 +28,19 @@ public class TestPlayerSmashedGroundCollisionHandler {
 
         assert playerComponent.getHealthPoints() < origHealth;
     }
+
+    // jason 6 version 2
+    @Test
+    void testSmashedGroundSlowsPlayerSpeed() {
+        Entity player = new Entity();
+        PlayerComponent playerComponent = new PlayerComponent(10);
+        player.addComponent(playerComponent);
+        double originalSpeed = playerComponent.getSpeed();
+
+        Entity smashedGround = new Entity();
+
+        PlayerSmashedGroundCollisionHandler handler = new PlayerSmashedGroundCollisionHandler();
+        handler.onCollision(smashedGround, player);
+        assert playerComponent.getSpeed() < originalSpeed;
+    }
 }

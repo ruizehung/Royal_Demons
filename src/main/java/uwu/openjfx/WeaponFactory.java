@@ -154,7 +154,7 @@ public class WeaponFactory implements EntityFactory {
     public Entity newMeleeHitBox(SpawnData data) {
         int frameWidth = data.get("widthBox");
         int frameHeight = data.get("heightBox");
-        Rectangle hitBox = new Rectangle(frameWidth, frameHeight, Color.RED);
+        Rectangle hitBox = new Rectangle(frameWidth, frameHeight, Color.TRANSPARENT);
         hitBox.setOpacity(0.5);
         return FXGL.entityBuilder(data)
                 .type(RoyalType.ENEMYATTACK)

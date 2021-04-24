@@ -55,6 +55,7 @@ public class EnemyComponent extends CreatureComponent {
     private AnimationChannel animIdle;
     private AnimationChannel animWalk;
     private AnimationChannel animMeleeAttack;
+    private AnimationChannel animBossHammerAttack;
     private double enemyX; // the center of the enemy X
     private double enemyY; // the center of the enemy Y
     private boolean playerLeavesRadius = false; // if player has stopped interacting with enemy
@@ -166,7 +167,7 @@ public class EnemyComponent extends CreatureComponent {
 
     @Override
     public void onUpdate(double tpf) {
-        // region Boss Update Attributes
+       // region Boss Update Attributes
         if (type.equals("finalboss")) {
             if (getFighterClass().equals("melee") && getHealthPoints() <= 50 && !prepAttack) {
                 setHealthPoints(50);
@@ -300,9 +301,9 @@ public class EnemyComponent extends CreatureComponent {
                         int chooseAttack = (int) (Math.random() * 101); // choose an attack
                         if (chooseAttack < 42) {
                             prepAttack = true;
+                            isHammerSmashing = true;
                             stop();
                             texture.playAnimationChannel(animMeleeAttack);
-                            hammerUltimatePrepAttack();
                             Runnable runnable = () -> {
                                 try {
                                     Thread.sleep(ultimateDuration);
@@ -313,7 +314,7 @@ public class EnemyComponent extends CreatureComponent {
                             };
                             Thread thread = new Thread(runnable);
                             thread.start();
-                            isHammerSmashing = true;
+                            hammerUltimatePrepAttack();
                         } else {
                             initiateAutoAttack();
                         }
@@ -723,6 +724,13 @@ public class EnemyComponent extends CreatureComponent {
                 hammerAutoHB.translateX(width); // smooth reflection over middle axis of player
                 hammerAutoHB.setScaleX(-1);
             }
+//            animBossHammerAttack = new AnimationChannel(FXGL.image(
+//                "creatures/boss/bossUltSpriteSheet_215x175.png"),
+//                10, 215, 175,
+//                Duration.seconds(
+//                    (double) (!isHammerSmashing ? attackDuration : ultimateDuration) / 1000),
+//                0, 5);
+//            texture.playAnimationChannel(animBossHammerAttack);
         } else {
             int width = 16; // width of the frame
             int height = 16; // height of the frame
@@ -795,7 +803,14 @@ public class EnemyComponent extends CreatureComponent {
             hammerUltimateHB.translateX(width); // smooth reflection over middle axis of player
             hammerUltimateHB.setScaleX(-1);
         }
-        FXGL.play("skills/charge_hammer.wav");
+//        animBossHammerAttack = new AnimationChannel(FXGL.image(
+//            "creatures/boss/bossUltSpriteSheet_215x175.png"),
+//            10, 215, 175,
+//            Duration.seconds(
+//                (double) (!isHammerSmashing ? attackDuration : ultimateDuration) / 1000),
+//            0, 5);
+//        texture.playAnimationChannel(animBossHammerAttack);
+//        FXGL.play("skills/charge_hammer.wav");
     }
 
     private void hammerUltimateSmash() {
@@ -814,6 +829,20 @@ public class EnemyComponent extends CreatureComponent {
                     + (getEntity().getScaleX() > 0 ? swordOffset : -swordOffset),
                 getEntity().getY() - ((double) hitBoxHeight / 2) + getEntity().getHeight() / 2));
         hammerHitBox.setType(RoyalType.SMASHEDGROUND);
+        Entity sg = spawn("weapon",
+            new SpawnData(
+                getEntity().getX(), getEntity().getY()).
+                put("weaponFile", "smashedGround").
+                put("duration", 4000).
+                put("frameWidth", hitBoxWidth).
+                put("frameHeight", hitBoxHeight).
+                put("fpr", 1));
+        // Spawn the sword at boss's "hands"
+        sg.getTransformComponent().setAnchoredPosition(
+            new Point2D(
+                getEntity().getX() - ((double) hitBoxWidth / 2) + getEntity().getWidth() / 2
+                    + (getEntity().getScaleX() > 0 ? swordOffset : -swordOffset),
+                getEntity().getY() - ((double) hitBoxHeight / 2) + getEntity().getHeight() / 2));
     }
     // endregion
 
@@ -1058,7 +1087,7 @@ public class EnemyComponent extends CreatureComponent {
         return type;
     }
 
-    public void transformBoss(String assetName, int width, int height, int frames,
+    public String transformBoss(String assetName, int width, int height, int frames,
                               String fighterClass) {
         this.assetName = assetName;
         this.width = width;
@@ -1086,7 +1115,10 @@ public class EnemyComponent extends CreatureComponent {
             speed = 100;
             attackDuration = 1100;
             attackBreaktime = 2000;
+        } else {
+            return "transformed";
         }
+        return null;
     }
 
     public boolean getPlayerLeavesRadius() {
