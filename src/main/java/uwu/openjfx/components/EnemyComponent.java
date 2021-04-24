@@ -167,7 +167,7 @@ public class EnemyComponent extends CreatureComponent {
 
     @Override
     public void onUpdate(double tpf) {
-       // region Boss Update Attributes
+        // region Boss Update Attributes
         if (type.equals("finalboss")) {
             if (getFighterClass().equals("melee") && getHealthPoints() <= 50 && !prepAttack) {
                 setHealthPoints(50);
@@ -724,13 +724,15 @@ public class EnemyComponent extends CreatureComponent {
                 hammerAutoHB.translateX(width); // smooth reflection over middle axis of player
                 hammerAutoHB.setScaleX(-1);
             }
-//            animBossHammerAttack = new AnimationChannel(FXGL.image(
-//                "creatures/boss/bossUltSpriteSheet_215x175.png"),
-//                10, 215, 175,
-//                Duration.seconds(
-//                    (double) (!isHammerSmashing ? attackDuration : ultimateDuration) / 1000),
-//                0, 5);
-//            texture.playAnimationChannel(animBossHammerAttack);
+            /*
+            animBossHammerAttack = new AnimationChannel(FXGL.image(
+                "creatures/boss/bossUltSpriteSheet_215x175.png"),
+                10, 215, 175,
+                Duration.seconds(
+                    (double) (!isHammerSmashing ? attackDuration : ultimateDuration) / 1000),
+                0, 5);
+            texture.playAnimationChannel(animBossHammerAttack);
+             */
         } else {
             int width = 16; // width of the frame
             int height = 16; // height of the frame
@@ -803,14 +805,16 @@ public class EnemyComponent extends CreatureComponent {
             hammerUltimateHB.translateX(width); // smooth reflection over middle axis of player
             hammerUltimateHB.setScaleX(-1);
         }
-//        animBossHammerAttack = new AnimationChannel(FXGL.image(
-//            "creatures/boss/bossUltSpriteSheet_215x175.png"),
-//            10, 215, 175,
-//            Duration.seconds(
-//                (double) (!isHammerSmashing ? attackDuration : ultimateDuration) / 1000),
-//            0, 5);
-//        texture.playAnimationChannel(animBossHammerAttack);
-//        FXGL.play("skills/charge_hammer.wav");
+        /*
+        animBossHammerAttack = new AnimationChannel(FXGL.image(
+            "creatures/boss/bossUltSpriteSheet_215x175.png"),
+            10, 215, 175,
+            Duration.seconds(
+                (double) (!isHammerSmashing ? attackDuration : ultimateDuration) / 1000),
+            0, 5);
+        texture.playAnimationChannel(animBossHammerAttack);
+        FXGL.play("skills/charge_hammer.wav");
+         */
     }
 
     private void hammerUltimateSmash() {

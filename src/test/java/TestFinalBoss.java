@@ -2,11 +2,7 @@ import com.almasb.fxgl.entity.Entity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uwu.openjfx.MainApp;
-import uwu.openjfx.collision.EnemyAttackPlayerCollisionHandler;
-import uwu.openjfx.collision.PlayerAttackEnemyCollisionHandler;
-import uwu.openjfx.components.AttackDamageComponent;
 import uwu.openjfx.components.BossComponent;
-import uwu.openjfx.components.PlayerComponent;
 
 public class TestFinalBoss {
     @BeforeEach

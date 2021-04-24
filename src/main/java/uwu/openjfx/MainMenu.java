@@ -421,8 +421,7 @@ public class MainMenu extends FXGLMenu {
                 "",
                 "Author: Almas Baimagambetov",
                 "",
-                "https://github.com/AlmasB/FXGL"
-                ,
+                "https://github.com/AlmasB/FXGL",
                 "",
                 "Skill assets by ppeldo & XYEzawr from itch.io"
         ));
