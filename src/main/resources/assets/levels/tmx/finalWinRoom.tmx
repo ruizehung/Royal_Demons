@@ -86,7 +86,7 @@
    </properties>
    <point/>
   </object>
-  <object id="44" name="GreenFElf" type="GreenFElf" x="546.843" y="244.43">
+  <object id="44" name="Princess" type="Princess" x="546.843" y="244.43">
    <point/>
   </object>
   <object id="45" type="wall" x="703.868" y="317.272" width="95.1145" height="20.941"/>
