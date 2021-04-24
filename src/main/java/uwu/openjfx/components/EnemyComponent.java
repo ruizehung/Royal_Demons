@@ -182,8 +182,8 @@ public class EnemyComponent extends CreatureComponent {
                 poof.setZIndex(2000);
                 poof.setScaleX(5);
                 poof.setScaleY(5);
-                transformBoss("creatures/boss/HighElf_M_48x48.png", 48, 48,
-                    4, "ranged");
+                transformBoss("creatures/boss/wizard_40x70.png", 40, 70,
+                    9, "ranged");
             }
         }
         // endregion
@@ -574,7 +574,7 @@ public class EnemyComponent extends CreatureComponent {
         } else if (fighterClass.equals("ranged")) {
             int width = 16; // width of the frame
             int height = 16; // height of the frame
-            int handOffset = 5; // offset away from center of entity
+            int handOffset = 7; // offset away from center of entity
             Entity magicHB = spawn("weapon",
                 new SpawnData(
                     getEntity().getX(), getEntity().getY()).
@@ -587,7 +587,7 @@ public class EnemyComponent extends CreatureComponent {
             magicHB.getTransformComponent().setAnchoredPosition(
                 new Point2D(entity.getX() - ((double) width / 2) + entity.getWidth() / 2
                     + handOffset,
-                    entity.getY() - ((double) height / 2) + entity.getHeight() / 2 + 10));
+                    entity.getY() - ((double) height / 2) + entity.getHeight() / 2 + 15));
             magicHB.setZIndex(5);
             magicHB.setScaleX(1.5);
             magicHB.setScaleY(1.5);
@@ -703,40 +703,33 @@ public class EnemyComponent extends CreatureComponent {
 
     private void bossPrepAttack() {
         if (fighterClass.equals("melee")) {
-            int width = 175; // width of the frame
-            int height = 180; // height of the frame
+            int width = 255; // width of the frame
+            int height = 130; // height of the frame
+            int offsetX = 35; // offset of weapon
+            int offsetY = -10; // offset of weapon
             Entity hammerAutoHB = spawn("weapon",
                 new SpawnData(
                     getEntity().getX(), getEntity().getY()).
-                    put("weaponFile", "legend_sword_175x180").
+                    put("weaponFile", "bossAttack_255x130_2").
                     put("duration", attackDuration).
                     put("frameWidth", width).
                     put("frameHeight", height).
-                    put("fpr", 6));
+                    put("fpr", 5));
             // Spawn the sword at boss's "hands"
             hammerAutoHB.getTransformComponent().setAnchoredPosition(new Point2D(
-                entity.getX() - ((double) width / 2) + entity.getWidth() / 2,
-                entity.getY() - ((double) height / 2) + entity.getHeight() / 2));
+                entity.getX() - ((double) width / 2) + entity.getWidth() / 2 + offsetX,
+                entity.getY() - ((double) height / 2) + entity.getHeight() / 2 + offsetY));
             hammerAutoHB.setZIndex(5);
             if (entity.getScaleX() == 1) {
                 hammerAutoHB.setScaleX(1);
             } else {
-                hammerAutoHB.translateX(width); // smooth reflection over middle axis of player
+                hammerAutoHB.translateX(width - 2 * offsetX + 20);
                 hammerAutoHB.setScaleX(-1);
             }
-            /*
-            animBossHammerAttack = new AnimationChannel(FXGL.image(
-                "creatures/boss/bossUltSpriteSheet_215x175.png"),
-                10, 215, 175,
-                Duration.seconds(
-                    (double) (!isHammerSmashing ? attackDuration : ultimateDuration) / 1000),
-                0, 5);
-            texture.playAnimationChannel(animBossHammerAttack);
-             */
         } else {
             int width = 16; // width of the frame
             int height = 16; // height of the frame
-            int handOffset = 5; // offset away from center of entity
+            int handOffset = 15; // offset away from center of entity
             Entity magicBossAutoHB = spawn("weapon",
                 new SpawnData(
                     getEntity().getX(), getEntity().getY()).
@@ -749,7 +742,7 @@ public class EnemyComponent extends CreatureComponent {
             magicBossAutoHB.getTransformComponent().setAnchoredPosition(
                 new Point2D(entity.getX() - ((double) width / 2) + entity.getWidth() / 2
                     + handOffset,
-                    entity.getY() - ((double) height / 2) + entity.getHeight() / 2 + 10));
+                    entity.getY() - ((double) height / 2) + entity.getHeight() / 2 + 15));
             magicBossAutoHB.setZIndex(5);
             magicBossAutoHB.setScaleX(1.5);
             magicBossAutoHB.setScaleY(1.5);
@@ -784,37 +777,29 @@ public class EnemyComponent extends CreatureComponent {
     }
 
     private void hammerUltimatePrepAttack() {
-        int width = 175; // width of the frame
-        int height = 180; // height of the frame
+        int width = 215; // width of the frame
+        int height = 175; // height of the frame
+        int offsetX = 16;
+        int offsetY = -27;
         Entity hammerUltimateHB = spawn("weapon",
             new SpawnData(
                 getEntity().getX(), getEntity().getY()).
-                put("weaponFile", "legend_sword_175x180").
+                put("weaponFile", "bossUltSpriteSheet_215x175").
                 put("duration", ultimateDuration).
                 put("frameWidth", width).
                 put("frameHeight", height).
-                put("fpr", 6));
+                put("fpr", 7));
         // Spawn the sword at boss's "hands"
         hammerUltimateHB.getTransformComponent().setAnchoredPosition(
-            new Point2D(entity.getX() - ((double) width / 2) + entity.getWidth() / 2,
-                entity.getY() - ((double) height / 2) + entity.getHeight() / 2));
+            new Point2D(entity.getX() - ((double) width / 2) + entity.getWidth() / 2 + offsetX,
+                entity.getY() - ((double) height / 2) + entity.getHeight() / 2 + offsetY));
         hammerUltimateHB.setZIndex(5);
         if (entity.getScaleX() == 1) {
             hammerUltimateHB.setScaleX(1);
         } else {
-            hammerUltimateHB.translateX(width); // smooth reflection over middle axis of player
+            hammerUltimateHB.translateX(width - 2 * offsetX + 20);
             hammerUltimateHB.setScaleX(-1);
         }
-        /*
-        animBossHammerAttack = new AnimationChannel(FXGL.image(
-            "creatures/boss/bossUltSpriteSheet_215x175.png"),
-            10, 215, 175,
-            Duration.seconds(
-                (double) (!isHammerSmashing ? attackDuration : ultimateDuration) / 1000),
-            0, 5);
-        texture.playAnimationChannel(animBossHammerAttack);
-        FXGL.play("skills/charge_hammer.wav");
-         */
     }
 
     private void hammerUltimateSmash() {
@@ -854,12 +839,11 @@ public class EnemyComponent extends CreatureComponent {
     private void magicUltimate360PrepAttack() {
         int width = 100; // width of magic spell
         int height = 100; // height of magic spell
-        int vOffset = 10; // vertical offset
         FXGL.play("skills/charge_boss.wav");
 
         Entity magic360AuraHB = spawn("weapon",
             new SpawnData(
-                enemyX - ((double) width / 2), enemyY - ((double) height / 2) + vOffset).
+                enemyX - ((double) width / 2) + 4, enemyY - ((double) height / 2) + 10).
                 put("weaponFile", "fire360_100x100").
                 put("duration", ultimateDuration).
                 put("frameWidth", width).
@@ -945,7 +929,7 @@ public class EnemyComponent extends CreatureComponent {
     private void magicUltimateRicochetPrepAttack() {
         int width = 32; // width of the frame
         int height = 32; // height of the frame
-        int handOffset = 10; // offset away from center of entity
+        int handOffset = 22; // offset away from center of entity
         Entity magicUltimateRicoHB = spawn("weapon",
             new SpawnData(
                 getEntity().getX(), getEntity().getY()).
@@ -958,7 +942,7 @@ public class EnemyComponent extends CreatureComponent {
         magicUltimateRicoHB.getTransformComponent().setAnchoredPosition(
             new Point2D(entity.getX() - ((double) width / 2) + entity.getWidth() / 2
                 + handOffset,
-                entity.getY() - ((double) height / 2) + entity.getHeight() / 2 + 10));
+                entity.getY() - ((double) height / 2) + entity.getHeight() / 2 + 15));
         magicUltimateRicoHB.setZIndex(5);
         if (entity.getScaleX() == 1) {
             magicUltimateRicoHB.setScaleX(1);
