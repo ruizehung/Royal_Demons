@@ -77,6 +77,7 @@ public class EnemyComponent extends CreatureComponent {
     protected boolean startShrink = false; // for growing enemies
     private double scaler = 1.0; // to keep track of scale when shrinking/enlarging
     private LocalTimer moveTimer; // time to check player's location
+    private Entity dizzyEffect; // dizzy sprite on top of enemy
 
     /*
         Boss Attributes
@@ -210,12 +211,19 @@ public class EnemyComponent extends CreatureComponent {
         if (kiting) {
             kitePlayer();
         }
+
+        if(dizzyEffect != null) {
+            dizzyEffect.setAnchoredPosition(
+                getEntity().getX() + (getEntity().getWidth() / 2) - (55.0 / 2),
+                getEntity().getY() + (getEntity().getHeight() / 2) - (30.0 / 2) - 10);
+        }
+
         if (isStunned) {
             normalizeVelocityX();
             normalizeVelocityY();
             Runnable runnable = () -> {
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(1500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -441,6 +449,18 @@ public class EnemyComponent extends CreatureComponent {
             double xPow = dir.toPoint2D().getX() * knockBackPower;
             double yPow = dir.toPoint2D().getY() * knockBackPower;
             physics.setLinearVelocity(new Point2D(xPow, yPow));
+            if (dizzyEffect != null) {
+                dizzyEffect.removeFromWorld();
+            }
+            dizzyEffect = spawn("weapon",
+                new SpawnData(
+                    enemyX, enemyY).
+                    put("weaponFile", "dizzyEffect_55x30").
+                    put("duration", 1500).
+                    put("frameWidth", 55).
+                    put("frameHeight", 30).
+                    put("fpr", 6));
+            dizzyEffect.setZIndex(5);
         }
     }
 
@@ -1056,6 +1076,9 @@ public class EnemyComponent extends CreatureComponent {
         super.die();
         if (!MainApp.isIsTesting()) {
             getEntity().removeFromWorld();
+            if (dizzyEffect != null) {
+                dizzyEffect.removeFromWorld();
+            }
             IDComponent idComponent = getEntity().getComponent(IDComponent.class);
             Room curRoom = FXGL.geto("curRoom");
             curRoom.setEntityData(idComponent.getId(), "isAlive", 0);
