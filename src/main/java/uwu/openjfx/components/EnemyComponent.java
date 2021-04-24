@@ -788,7 +788,7 @@ public class EnemyComponent extends CreatureComponent {
                 put("duration", ultimateDuration).
                 put("frameWidth", width).
                 put("frameHeight", height).
-                put("fpr", 7));
+                put("fpr", 10));
         // Spawn the sword at boss's "hands"
         hammerUltimateHB.getTransformComponent().setAnchoredPosition(
             new Point2D(entity.getX() - ((double) width / 2) + entity.getWidth() / 2 + offsetX,
