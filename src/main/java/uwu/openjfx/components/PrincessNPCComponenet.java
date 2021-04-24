@@ -20,11 +20,11 @@ public class PrincessNPCComponenet extends Component implements Interactable {
     private AnimationChannel animIdle;
 
     public PrincessNPCComponenet() {
-        this.width = 37;
-        this.height = 39;
+        this.width = 80;
+        this.height = 80;
         // Change this to princess sprite sheet
-        animIdle = new AnimationChannel(FXGL.image("creatures/ally/elf_f_green_37x39.png"),
-                8, width, height, Duration.seconds(0.5), 0, 3);
+        animIdle = new AnimationChannel(FXGL.image("creatures/ally/princess_80x80.png"),
+                4, width, height, Duration.seconds(0.5), 0, 3);
 
         texture = new AnimatedTexture(animIdle);
 
