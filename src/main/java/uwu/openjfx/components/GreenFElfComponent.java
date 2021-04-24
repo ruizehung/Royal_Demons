@@ -38,8 +38,8 @@ public class GreenFElfComponent extends Component implements Interactable {
 
     @Override
     public void interact() {
-        String s = "“It's Not Until You Lose Everything That You Can Truly " +
-                "Appreciate Everything.” — Belle";
+        String s = "“It's Not Until You Lose Everything That You Can Truly "
+            + "Appreciate Everything.” da— Belle";
         Text text = FXGL.getUIFactoryService().newText(s);
         text.setWrappingWidth(620);
         VBox content = new VBox(
