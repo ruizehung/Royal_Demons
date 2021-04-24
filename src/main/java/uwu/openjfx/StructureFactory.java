@@ -12,7 +12,7 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import uwu.openjfx.behaviors.DropItemComponent;
-import uwu.openjfx.behaviors.SpawnMinions;
+import uwu.openjfx.behaviors.SpawnMinionsBehavior;
 import uwu.openjfx.components.*;
 
 import java.util.Map;
@@ -158,7 +158,7 @@ public class StructureFactory implements EntityFactory {
     @Spawns("mimicChest")
     public Entity newMimicChest(SpawnData data) {
         MimicChestComponent mimicChestComponent = new MimicChestComponent();
-        mimicChestComponent.setBehavior(new SpawnMinions(3, "minion"));
+        mimicChestComponent.setBehavior(new SpawnMinionsBehavior(3, "minion"));
 
         return FXGL.entityBuilder(data)
                 .type(RoyalType.CHEST)

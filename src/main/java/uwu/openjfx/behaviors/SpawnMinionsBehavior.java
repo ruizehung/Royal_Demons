@@ -5,11 +5,11 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.components.IDComponent;
 import uwu.openjfx.MapGeneration.Room;
 
-public class SpawnMinions implements Behavior {
+public class SpawnMinionsBehavior implements Behavior {
     private int numberOfMinions;
     private String category;
 
-    public SpawnMinions(int numberOfMinions, String category) {
+    public SpawnMinionsBehavior(int numberOfMinions, String category) {
         this.numberOfMinions = numberOfMinions;
         this.category = category;
     }

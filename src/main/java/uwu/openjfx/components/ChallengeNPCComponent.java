@@ -11,7 +11,7 @@ import javafx.util.Duration;
 import uwu.openjfx.MainApp;
 import uwu.openjfx.behaviors.CanOnlyInteractOnce;
 import uwu.openjfx.behaviors.DoNothing;
-import uwu.openjfx.behaviors.SpawnMinions;
+import uwu.openjfx.behaviors.SpawnMinionsBehavior;
 
 
 public class ChallengeNPCComponent extends CanOnlyInteractOnce {
@@ -32,7 +32,7 @@ public class ChallengeNPCComponent extends CanOnlyInteractOnce {
             texture = new AnimatedTexture(animIdle);
 
             texture.loop();
-            setBehavior(new SpawnMinions(5, "minion"));
+            setBehavior(new SpawnMinionsBehavior(5, "minion"));
         } else {
             setBehavior(new DoNothing());
         }
