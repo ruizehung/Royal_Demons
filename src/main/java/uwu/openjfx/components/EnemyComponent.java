@@ -137,7 +137,7 @@ public class EnemyComponent extends CreatureComponent {
         case "finalboss":
             massEffect = true;
             blockProbability = 30;
-            armorStat = 15.5;
+            armorStat = 25;
             break;
         default:
         }
