@@ -553,7 +553,7 @@ public class EnemyComponent extends CreatureComponent {
         } else { // if enemy is ranged
             if (!type.equals("finalboss")) {
                 magicAutoAttack();
-                FXGL.play("skills/fireball2.wav");
+                FXGL.play("skills/fireball 2.wav");
             } else {
                 if (isMagic360Firing) {
                     magicUltimate360Fire();
@@ -801,6 +801,7 @@ public class EnemyComponent extends CreatureComponent {
         int height = 175; // height of the frame
         int offsetX = 16;
         int offsetY = -27;
+        FXGL.play("skills/charge_hammer.wav");
         Entity hammerUltimateHB = spawn("weapon",
             new SpawnData(
                 getEntity().getX(), getEntity().getY()).
