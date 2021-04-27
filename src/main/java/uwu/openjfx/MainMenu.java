@@ -410,17 +410,16 @@ public class MainMenu extends FXGLMenu {
         vbox.setPrefWidth(pane.getPrefWidth() - 15);
 
         ArrayList<String> credits = new ArrayList<>(Arrays.asList(
-                "Asset by 0x72, aekae13 from itch.io",
-                "",
+                "Asset by 0x72, aekae13, superdark, o-lobster from itch.io",
                 "0x72.itch.io/dungeontileset-ii",
-                "",
+                "0x72.itch.io/dungeonui",
                 "aekae13.itch.io/16x16-dungeon-walls-reconfig",
-                "",
+                "superdark.itch.io/16x16-free-npc-pack",
+                "superdark.itch.io/enchanted-forest-characters",
+                "o-lobster.itch.io/simple-dungeon-crawler-16x16-pixel-pack",
                 "",
                 "Powered by FXGL " + FXGL.getVersion(),
-                "",
                 "Author: Almas Baimagambetov",
-                "",
                 "https://github.com/AlmasB/FXGL",
                 "",
                 "Skill assets by ppeldo & XYEzawr from itch.io"

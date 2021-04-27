@@ -40,7 +40,7 @@ public class MainApp extends GameApplication {
     private Set<String> weaponsSet;
     private Map<String, String> itemNameAssetMap;
     private Map<String, Item> itemNameObjMap;
-    private final Boolean developerCheat = true;
+    private final Boolean developerCheat = false;
     private static boolean isTesting = false;
     private static Random random = new Random();
     private static List<Entity> hitBoxes = new ArrayList<>();
