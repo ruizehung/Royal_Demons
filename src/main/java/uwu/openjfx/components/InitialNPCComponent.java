@@ -38,17 +38,18 @@ public class InitialNPCComponent extends Component implements Interactable {
 
     @Override
     public void interact() {
-        String s = "The Royal Kingdom once lived in harmony with the wild’s various types of" +
-                " creatures. Aimed for the goal of living peacefully with nature’s wildlife, " +
-                "the Royal Kingdom set out to bring humans and creatures together in one " +
-                "environment. After a century-long established kingdom of peace and prosperity, " +
-                "a demonized man soon realized another perspective to view these creatures, " +
-                "to carry out his own greedy desires. Using dark magic to possess these " +
-                "creatures and slowly take over the kingdom, the evil man kidnaps creatures " +
-                "one by one to his dungeon and uses them against the Royal Kingdom. It " +
-                "didn’t take long for Demon Man to acquire his new army of once-happily-living" +
-                " possessed creatures. After having just captured his best friend, Dino Baby " +
-                "journeys out in vengeance to retrieve his GF and restore balance to his kingdom.";
+        String s = "The Royal Kingdom once lived in harmony with the wild’s various types of"
+                + " creatures. Aimed for the goal of living peacefully with nature’s wildlife, "
+                + "the Royal Kingdom set out to bring humans and creatures together in one "
+                + "environment. After a century-long established kingdom of peace and prosperity, "
+                + "a demonized man soon realized another perspective to view these creatures, "
+                + "to carry out his own greedy desires. Using dark magic to possess these "
+                + "creatures and slowly take over the kingdom, the evil man kidnaps creatures "
+                + "one by one to his dungeon and uses them against the Royal Kingdom. It "
+                + "didn’t take long for Demon Man to acquire his new army of once-happily-living"
+                + " possessed creatures. After having just captured his best friend, Dino Baby "
+                + "journeys out in vengeance to retrieve his GF and restore "
+                + "balance to his kingdom.";
         Text text = FXGL.getUIFactoryService().newText(s);
         text.setWrappingWidth(450);
         VBox content = new VBox(

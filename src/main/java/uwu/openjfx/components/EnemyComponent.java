@@ -212,7 +212,7 @@ public class EnemyComponent extends CreatureComponent {
             kitePlayer();
         }
 
-        if(dizzyEffect != null) {
+        if (dizzyEffect != null) {
             dizzyEffect.setAnchoredPosition(
                 getEntity().getX() + (getEntity().getWidth() / 2) - (55.0 / 2),
                 getEntity().getY() + (getEntity().getHeight() / 2) - (30.0 / 2) - 10);
