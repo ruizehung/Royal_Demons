@@ -1,7 +1,11 @@
 # Royal Demons
 Royal Demons is a Dungeon Crawler game written in Java that won the Best Project Competition out of a total of 114 teams at Georgia Tech CS 2340 Objects and Design course during Spring 2021.
 
-![Royal Daemon](src/main/resources/assets/Royal_Demons.png)
+![Sword Man](src/main/resources/assets/Royal-Demons-sword-man.gif)
+
+![Boss Fight](src/main/resources/assets/Royal-Demons-boss-fight.gif)
+
+![Dungeon](src/main/resources/assets/Royal-Demons-dungeon.gif)
 
 Demo Video: https://www.youtube.com/watch?v=rOLvdaMtE1Y
 
